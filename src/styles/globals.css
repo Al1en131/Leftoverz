@@ -4,6 +4,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-agrandir: "Agrandir", sans-serif;
 }
 
 @theme inline {
@@ -20,8 +21,27 @@
   }
 }
 
+@layer utilities {
+  .border-gradient {
+    border-image: linear-gradient(to right, #7f60ff, #2acfff) 1;
+    border-radius: 1rem; /* Sesuai dengan Tailwind 'rounded-2xl' */
+    -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
+    mask-image: radial-gradient(circle, white 100%, transparent 100%);
+  }
+}
+
+
+
+@font-face {
+  font-family: 'Agrandir';
+  src: url('/font/Agrandir-Tight.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Agrandir',Arial, Helvetica, sans-serif;
 }
