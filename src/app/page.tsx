@@ -51,12 +51,12 @@ export default function Home() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-96 -z-0"
+          className="w-4 absolute top-36 left-[550px] -z-0"
         />
         <div className="flex justify-between p-8 sm:py-10 sm:px-20 items-center">
           <div className="w-1/2 block space-y-4">
-            <h1 className="text-5xl font-bold text-white">Leftoverz</h1>
-            <h4 className="text-2xl">
+            <h1 className="text-8xl font-bold text-white">Leftoverz</h1>
+            <h4 className="text-4xl">
               Barang Bekas Kos dengan Harga Terjangkau dan Kualitas Terjamin
             </h4>
             <p>
@@ -83,9 +83,58 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className=" justify-between flex items-center relative w-full">
-          <div className="absolute inset-0 bg-white opacity-5 z-0"></div>
-          <div className="relative z-10 p-8 text-white">
+        <div className=" justify-between flex items-center relative mb-10 w-full">
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/bubble-3.svg"
+            className="h-[356px] w-[356px] absolute top-48 -z-0 left-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/bubble-4.svg"
+            className="h-[356px] w-[356px] absolute -top-28 -z-0 right-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute -top-10 right-96 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-5 absolute top-28 right-48 opacity-20 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-5 absolute top-20 right-20 opacity-20 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute top-10 opacity-20 left-56 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute top-56 opacity-20 left-[850px] -z-0"
+          />
+          <div className="absolute inset-0 bg-white opacity-5 z-10"></div>
+          <div className="relative z-50 w-2/4 ps-20 text-white">
             <h4 className="text-5xl pb-4">Why Choose Us?</h4>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -95,6 +144,19 @@ export default function Home() {
               survived not only five centuries, but also the leap into
               electronic typesetting, remaining essentially unchanged.
             </p>
+            <button className="bg-[#15BFFD] px-4 mt-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+                About Us
+              </button>
+          </div>
+          <div className="w-2/4 z-50 flex justify-end">
+            {" "}
+            <Image
+              width={100}
+              height={100}
+              alt=""
+              src="/images/hero-2.svg"
+              className="h-[456px] w-full"
+            />
           </div>
         </div>
       </main>
