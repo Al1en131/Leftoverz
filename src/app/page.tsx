@@ -201,7 +201,7 @@ export default function Home() {
                   width={100}
                   height={10}
                   alt=""
-                  src="/images/Camera.svg"
+                  src="/images/camera.svg"
                   className="z-50 w-full h-3/4"
                 />
 
