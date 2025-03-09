@@ -53,7 +53,7 @@ export default function Home() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] -z-0"
         />
-        <div className="flex justify-between p-8 sm:pt-28 sm:px-20 items-center">
+        <div className="flex justify-between pt-28 px-20 items-center">
           <div className="w-1/2 block space-y-4">
             <h1 className="text-8xl leading-14 font-bold text-white">
               <span className="text-[#15BFFD]">Left</span>overz
