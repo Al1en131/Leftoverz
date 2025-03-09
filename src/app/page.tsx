@@ -91,7 +91,7 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/bubble-3.svg"
-            className="h-[356px] w-[356px] absolute top-48 -z-0 left-0"
+            className="h-[456px] w-[456px] absolute top-60 -z-0 left-0"
           />
           <Image
             width={100}
@@ -161,53 +161,305 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="p-20 w-full">
-          <div className="text-center justify-center">
+        <div className="p-20 w-full relative">
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/bubble-5.svg"
+            className="h-[456px] w-[456px] absolute z-0 -bottom-20 left-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-8 absolute top-40 right-10 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute bottom-6 right-96 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute top-20 left-56 -z-0"
+          />
+          <div className="text-center justify-center z-50">
             <h3 className="text-3xl font-bold text-white">Features</h3>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry
             </p>
-            <div>
-              <div className="relative w-80 p-5  border rounded-2xl border-gradient shadow-md">
+            <div className=" pt-14 flex justify-between items-center">
+              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 w-80 shadow-lg relative">
+                <Image
+                  width={100}
+                  height={10}
+                  alt=""
+                  src="/images/Camera.svg"
+                  className="z-50 w-full h-3/4"
+                />
 
-                {/* Header */}
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-sm text-gray-300 font-medium">
-                      Current bid
-                    </p>
-                    <div className="flex items-center text-blue-500 font-semibold">
-                      <span>3.2 ETH</span>
-                    </div>
-                  </div>
-                  <button className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">
-                    Place bid
-                  </button>
+                {/* Card Content */}
+                <div className="mt-4 h-1/4">
+                  <p className="text-lg font-semibold">Pencarian Visual</p>
                 </div>
+              </div>
+              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 w-80 shadow-lg relative">
+                <Image
+                  width={100}
+                  height={10}
+                  alt=""
+                  src="/images/Bag.svg"
+                  className="z-50 w-full h-3/4"
+                />
 
-                {/* Empty Image Placeholder */}
-                <div className="h-40 mt-3 bg-gray-100 rounded-lg"></div>
-
-                {/* Footer */}
-                <div className="flex justify-between items-center mt-4">
-                  <div className="flex items-center">
-                    <div className="w-7 h-7 bg-gray-400 rounded-full"></div>
-                    <p className="ml-2 text-sm text-gray-500">John Doe</p>
-                  </div>
-                  <div className="flex -space-x-2">
-                    <div className="w-7 h-7 bg-gray-300 rounded-full border border-gray-400"></div>
-                    <div className="w-7 h-7 bg-gray-300 rounded-full border border-gray-400"></div>
-                    <div className="w-7 h-7 bg-gray-300 rounded-full border border-gray-400"></div>
-                  </div>
+                {/* Card Content */}
+                <div className="mt-4 h-1/4">
+                  <p className="text-lg font-semibold">
+                    Pembayaran Auto Verfication
+                  </p>
                 </div>
+              </div>
+              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 w-80 shadow-lg relative">
+                <Image
+                  width={100}
+                  height={10}
+                  alt=""
+                  src="/images/Home.svg"
+                  className="z-50 w-full h-3/4"
+                />
 
-                {/* Title */}
-                <p className="text-gray-400 mt-1 text-sm font-medium">
-                  Golden Hour
-                </p>
+                {/* Card Content */}
+                <div className="mt-4 h-1/4">
+                  <p className="text-lg font-semibold">
+                    Terintegrasi dengan pengiriman
+                  </p>
+                </div>
               </div>
             </div>
+          </div>
+        </div>
+        <div className="px-20 pb-20 w-full">
+          <div className="flex flex-col items-center justify-center relative">
+            <Image
+              width={100}
+              height={100}
+              alt=""
+              src="/images/Star-1.svg"
+              className="w-4 absolute bottom-6 right-96 -z-0"
+            />
+            <Image
+              width={100}
+              height={100}
+              alt=""
+              src="/images/Star-1.svg"
+              className="w-4 absolute top-20 left-56 -z-0"
+            />
+            <Image
+              width={100}
+              height={100}
+              alt=""
+              src="/images/Star-1.svg"
+              className="w-4 absolute top-6 right-20 -z-0"
+            />
+            <Image
+              width={100}
+              height={100}
+              alt=""
+              src="/images/Star-1.svg"
+              className="w-8 absolute top-10 right-5 -z-0"
+            />
+            <div className="pb-12 text-center">
+              <h3 className="text-3xl font-bold text-white">How It Work?</h3>
+              <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry
+              </p>
+            </div>
+            <div className="relative w-full">
+              <div className="px-20 space-y-10">
+                <div className="relative flex md:justify-end">
+                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                    <p className="text-xl font-bold mb-1 text-blue-400">
+                      1. Login atau Registrasi
+                    </p>
+                    <p className="text-white text-lg">
+                      Pengguna dapat login jika sudah memiliki akun atau
+                      melakukan registrasi dengan mengisi data seperti nama,
+                      email, dan password.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative flex md:justify-start">
+                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                    <p className="text-xl font-bold mb-1 text-blue-400">
+                      2. Mencari Barang
+                    </p>
+                    <p className="text-white text-lg">
+                      Gunakan fitur pencarian dan filter untuk menemukan barang
+                      yang diinginkan, lalu klik produk untuk melihat detailnya.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative flex md:justify-end">
+                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                    <p className="text-xl font-bold mb-1 text-blue-400">
+                      3. Memesan Barang
+                    </p>
+                    <p className="text-white text-lg">
+                      Klik “Beli” atau tambahkan ke favorit jika ingin membeli
+                      lebih dari satu barang, lalu lanjutkan ke checkout.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative flex md:justify-start">
+                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                    <p className="text-xl font-bold mb-1 text-blue-400">
+                      4. Mengisi Detail Pemesanan
+                    </p>
+                    <p className="text-white text-lg">
+                      Periksa pesanan, pilih metode pembayaran (transfer,
+                      e-wallet, atau COD), lalu konfirmasi pesanan.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative flex md:justify-end">
+                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                    <p className="text-xl font-bold mb-1 text-blue-400">
+                      5. Pembayaran & Verifikasi Otomatis
+                    </p>
+                    <p className="text-white text-lg">
+                      Lakukan pembayaran sesuai instruksi. Sistem akan otomatis
+                      memverifikasi tanpa perlu unggah bukti.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative flex md:justify-start">
+                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                    <p className="text-xl font-bold mb-1 text-blue-400">
+                      6. Mengambil atau Menerima Barang
+                    </p>
+                    <p className="text-white text-lg">
+                      Tunggu barang dikirim sesuai estimasi waktu, lalu
+                      konfirmasi penerimaan dan beri ulasan setelah barang
+                      sampai.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="px-20 pb-20 w-full justify-center">
+          <div className="pb-12 text-center">
+            <h3 className="text-3xl font-bold text-white">
+              Newly Added Product
+            </h3>
+            <p>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry
+            </p>
+          </div>
+          <div className="flex justify-center gap-10 items-center">
+            <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
+              {/* Bagian Atas */}
+              <div className="mb-4 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
+                  <p className="text-blue-400 font-semibold">James Watson</p>
+                </div>
+                <button className="bg-[#15BFFD] px-6 py-1 text-center text-white rounded-lg hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+                  Beli
+                </button>
+              </div>
+              <div className="mb-5">
+                <Image
+                  width={100}
+                  height={100}
+                  alt=""
+                  src="/images/hero-2.jpg"
+                  className="w-full rounded-2xl "
+                />
+              </div>
+
+              {/* Bagian Bawah */}
+              <div className="mt-4">
+                <h3 className="text-white text-lg font-bold">
+                  Punk Art Collection
+                </h3>
+                <p className="text-blue-400 text-base">Jakarta</p>
+              </div>
+            </div>
+            <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
+              {/* Bagian Atas */}
+              <div className="mb-4 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
+                  <p className="text-blue-400 font-semibold">James Watson</p>
+                </div>
+                <button className="bg-[#15BFFD] px-6 py-1 text-center text-white rounded-lg hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+                  Beli
+                </button>
+              </div>
+              <div className="mb-5">
+                <Image
+                  width={100}
+                  height={100}
+                  alt=""
+                  src="/images/hero-2.jpg"
+                  className="w-full rounded-2xl "
+                />
+              </div>
+
+              {/* Bagian Bawah */}
+              <div className="mt-4">
+                <h3 className="text-white text-lg font-bold">
+                  Punk Art Collection
+                </h3>
+                <p className="text-blue-400 text-base">Jakarta</p>
+              </div>
+            </div>
+            <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
+              {/* Bagian Atas */}
+              <div className="mb-4 flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
+                  <p className="text-blue-400 font-semibold">James Watson</p>
+                </div>
+                <button className="bg-[#15BFFD] px-6 py-1 text-center text-white rounded-lg hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+                  Beli
+                </button>
+              </div>
+              <div className="mb-5">
+                <Image
+                  width={100}
+                  height={100}
+                  alt=""
+                  src="/images/hero-2.jpg"
+                  className="w-full rounded-2xl "
+                />
+              </div>
+
+              {/* Bagian Bawah */}
+              <div className="mt-4">
+                <h3 className="text-white text-lg font-bold">
+                  Punk Art Collection
+                </h3>
+                <p className="text-blue-400 text-base">Jakarta</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center mt-10">
+            <button className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+              Next
+            </button>
           </div>
         </div>
       </main>

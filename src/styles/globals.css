@@ -22,13 +22,39 @@
 }
 
 @layer utilities {
-  .border-gradient {
-    border-image: linear-gradient(to right, #7f60ff, #2acfff) 1;
-    border-radius: 1rem; /* Sesuai dengan Tailwind 'rounded-2xl' */
-    -webkit-mask-image: radial-gradient(circle, white 100%, transparent 100%);
-    mask-image: radial-gradient(circle, white 100%, transparent 100%);
+  .border_section {
+    position: relative;
+  }
+  .border_section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 1px;
+    background: radial-gradient(100% 178.46% at 0% 0%, #7f60ff 0%, #2acfff 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .border_style {
+    position: relative;
+  }
+  .border_style::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    padding: 1px;
+    background: radial-gradient(100% 178.46% at 0% 0%, #2acfff 0%, #7f60ff  100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
   }
 }
+
+
+
+
 
 
 
