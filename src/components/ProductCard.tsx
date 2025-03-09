@@ -1,7 +1,9 @@
+import Image from "next/image";
+
 export default function ProductCard() {
     return (
       <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-        <img src="https://via.placeholder.com/150" alt="Product" className="w-full h-40 object-cover rounded-md" />
+        <Image src="https://via.placeholder.com/150" width={100} height={100} alt="Product" className="w-full h-40 object-cover rounded-md" />
         <h3 className="text-lg font-semibold mt-2">Product Name</h3>
         <p className="text-gray-500">Description of the product...</p>
         <div className="mt-2 flex justify-between items-center">
