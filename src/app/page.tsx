@@ -53,7 +53,7 @@ export default function Home() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] -z-0"
         />
-        <div className="flex justify-between p-8 sm:py-10 sm:px-20 items-center">
+        <div className="flex justify-between p-8 sm:pt-28 sm:px-20 items-center">
           <div className="w-1/2 block space-y-4">
             <h1 className="text-8xl leading-14 font-bold text-white">
               <span className="text-[#15BFFD]">Left</span>overz
@@ -140,9 +140,9 @@ export default function Home() {
             <h4 className="text-5xl font-bold pb-4">Why Choose Us?</h4>
             <p className="text-lg">
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
+              industry. Lorem Ipsum has been the industry&apos;s standard dummy
+              text ever since the 1500s, when an unknown printer took a galley
+              of type and scrambled it to make a type specimen book. It has
               survived not only five centuries, but also the leap into
               electronic typesetting, remaining essentially unchanged.
             </p>
@@ -313,8 +313,9 @@ export default function Home() {
                       3. Memesan Barang
                     </p>
                     <p className="text-white text-lg">
-                      Klik &apos;Beli&apos; atau tambahkan ke favorit jika ingin membeli
-                      lebih dari satu barang, lalu lanjutkan ke checkout.
+                      Klik &apos;Beli&apos; atau tambahkan ke favorit jika ingin
+                      membeli lebih dari satu barang, lalu lanjutkan ke
+                      checkout.
                     </p>
                   </div>
                 </div>
@@ -356,7 +357,28 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="px-20 pb-20 w-full justify-center">
+        <div className="px-20 pb-20 w-full justify-center relative">
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/bubble-6.svg"
+            className="w-[456px] absolute -top-44 left-0 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/bubble-7.svg"
+            className="w-[456px] absolute -bottom-10 right-0 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-8 absolute top-44 right-20 -z-0"
+          />
           <div className="pb-12 text-center">
             <h3 className="text-3xl font-bold text-white">
               Newly Added Product
@@ -366,7 +388,7 @@ export default function Home() {
               industry
             </p>
           </div>
-          <div className="flex justify-center gap-10 items-center">
+          <div className="flex justify-center gap-10 z-50 items-center">
             <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
               {/* Bagian Atas */}
               <div className="mb-4 flex justify-between items-center">

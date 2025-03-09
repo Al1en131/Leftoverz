@@ -2,6 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../styles/globals.css";
 
+
 export default function RootLayout({
   children,
 }: {
@@ -9,7 +10,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-[#080B2A] relative font-[Poppins]">
+      <body className="bg-[#080B2A] relative">
         <Navbar />
         <main>{children}</main>
         <Footer />

@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@import "flowbite";
 
 :root {
   --background: #ffffff;
@@ -31,8 +31,13 @@
     inset: 0;
     border-radius: 1rem;
     padding: 1px;
-    background: radial-gradient(100% 178.46% at 0% 0%, #7f60ff 0%, #2acfff 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    background: radial-gradient(
+      100% 178.46% at 0% 0%,
+      #7f60ff 0%,
+      #15bffd 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
   }
@@ -45,29 +50,71 @@
     inset: 0;
     border-radius: 8px;
     padding: 1px;
-    background: radial-gradient(100% 178.46% at 0% 0%, #2acfff 0%, #7f60ff  100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    background: radial-gradient(
+      100% 178.46% at 0% 0%,
+      #15bffd 0%,
+      #7f60ff 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
+    mask-composite: exclude;
+  }
+  .border_accordion {
+    position: relative;
+  }
+
+  .border_accordion::before {
+    content: "";
+    position: absolute;
+    inset: 0; /* Memastikan elemen menutupi seluruh area */
+    border-radius: 8px 8px 0 0; /* Border radius hanya untuk top */
+    padding: 1px;
+    background: radial-gradient(
+      100% 178.46% at 0% 0%,
+      #15bffd 0%,
+      #7f60ff 100%
+    );
+
+    /* Trik untuk menghilangkan border di bawah */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(to bottom, #fff 100%, transparent 100%) border-box;
+    -webkit-mask-composite: destination-out;
+    mask-composite: exclude;
+  }
+  .border_accordion2 {
+    position: relative;
+  }
+
+  .border_accordion2::before {
+    content: "";
+    position: absolute;
+    inset: 0; /* Memastikan elemen menutupi seluruh area */
+    border-radius: 0; /* Border radius hanya untuk top */
+    padding: 1px;
+    background: radial-gradient(
+      100% 178.46% at 0% 0%,
+      #15bffd 0%,
+      #7f60ff 100%
+    );
+
+    /* Trik untuk menghilangkan border di bawah */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(to bottom, #fff 100%, transparent 100%) border-box;
+    -webkit-mask-composite: destination-out;
     mask-composite: exclude;
   }
 }
 
-
-
-
-
-
-
 @font-face {
-  font-family: 'Agrandir';
-  src: url('/font/Agrandir-Tight.otf') format('truetype');
+  font-family: "Agrandir";
+  src: url("/font/Agrandir-Tight.otf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Agrandir',Arial, Helvetica, sans-serif;
+  font-family: "Agrandir", Arial, Helvetica, sans-serif;
 }
