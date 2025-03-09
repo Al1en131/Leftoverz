@@ -140,7 +140,7 @@ export default function Home() {
             <h4 className="text-5xl font-bold pb-4">Why Choose Us?</h4>
             <p className="text-lg">
               Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
+              industry. Lorem Ipsum has been the industry&apos;s standard dummy text
               ever since the 1500s, when an unknown printer took a galley of
               type and scrambled it to make a type specimen book. It has
               survived not only five centuries, but also the leap into
@@ -151,7 +151,6 @@ export default function Home() {
             </button>
           </div>
           <div className="w-2/4 z-50 flex justify-end">
-            {" "}
             <Image
               width={100}
               height={100}
@@ -314,7 +313,7 @@ export default function Home() {
                       3. Memesan Barang
                     </p>
                     <p className="text-white text-lg">
-                      Klik “Beli” atau tambahkan ke favorit jika ingin membeli
+                      Klik &apos;Beli&apos; atau tambahkan ke favorit jika ingin membeli
                       lebih dari satu barang, lalu lanjutkan ke checkout.
                     </p>
                   </div>
