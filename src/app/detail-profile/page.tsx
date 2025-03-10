@@ -3,7 +3,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default function DetailProfile() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -13,21 +13,28 @@ export default function Home() {
     coverImage: null,
   });
 
+  // Handle perubahan input
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
+
+    // Simpan nilai sebelum React menghapus event
+    const newValue = type === "file" ? files[0] : value;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "file" ? files[0] : value,
+      [name]: newValue,
     }));
   };
 
+  // Handle submit form
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
   };
+
   return (
-    <div className="bg-[#080B2A]  items-center justify-items-center min-h-screen ">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+    <div className="bg-[#080B2A] items-center min-h-screen ">
+      <main className="">
         <Image
           width={100}
           height={100}
@@ -41,13 +48,6 @@ export default function Home() {
           alt=""
           src="/images/bubble-2.svg"
           className="h-[356px] w-[356px] absolute top-0 right-0"
-        />
-        <Image
-          width={100}
-          height={100}
-          alt=""
-          src="/images/Vector.svg"
-          className="h-[678px] w-[514.09px] absolute top-28 right-0 -z-0"
         />
         <Image
           width={100}
@@ -77,23 +77,38 @@ export default function Home() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] -z-0"
         />
-        <div className="flex justify-between pt-28 px-20 items-center">
-          <section className="py-10 my-auto dark:bg-gray-900">
-            <div className="lg:w-[80%] md:w-[90%] w-[96%] mx-auto flex gap-4">
-              <div className="lg:w-[88%] sm:w-[88%] w-full mx-auto shadow-2xl p-4 rounded-xl h-fit self-center dark:bg-gray-800/40">
+        {/* Hero Section */}
+        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+          <div className="relative w-full">
+            <Image
+              width={600}
+              height={400}
+              alt="Hero About"
+              src="/images/hero-product.jpg"
+              className="rounded-2xl w-full h-64"
+            />
+            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-40"></div>
+            <h1 className="text-5xl md:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-50">
+              Detail Profile
+            </h1>
+          </div>
+        </div>
+        <div className="flex justify-between py-10 px-20 w-full items-center">
+          <section className="p-10 w-full my-auto bg-white/10 rounded-2xl border_section">
+            <div className="w-full flex gap-4">
+              <div className="w-full h-fit self-center">
                 <div className="">
-                  <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-                    <h2 className="text-gray-700 text-xl font-semibold text-center">
-                      Create Profile
+                  <div className="">
+                    <h2 className="text-white text-xl font-semibold text-center">
+                      Edit Profile
                     </h2>
                     <form onSubmit={handleSubmit}>
-                      {/* Upload Profile & Cover Image */}
                       <div className="flex flex-col items-center my-4">
                         <label
                           htmlFor="profileImage"
                           className="cursor-pointer"
                         >
-                          <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
+                          <div className="w-24 h-24 bg-gray-500 rounded-full flex items-center justify-center">
                             {formData.profileImage ? (
                               <img
                                 src={URL.createObjectURL(formData.profileImage)}
@@ -112,75 +127,72 @@ export default function Home() {
                           onChange={handleChange}
                         />
                       </div>
+                      <div className="mt-4 mb-10 w-full">
+                        <p className="text-lg text-white text-center">
+                          Penjual
+                        </p>
+                      </div>
 
-                      {/* First Name & Last Name */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="firstName" className="text-gray-700">
-                            First Name
+                          <label htmlFor="firstName" className="text-white">
+                            Name
                           </label>
                           <input
                             type="text"
                             name="firstName"
                             id="firstName"
-                            className="w-full border p-2 rounded-lg"
+                            className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
                             placeholder="First Name"
                             onChange={handleChange}
                           />
                         </div>
                         <div>
-                          <label htmlFor="lastName" className="text-gray-700">
-                            Last Name
+                          <label htmlFor="lastName" className="text-white">
+                            Email
                           </label>
                           <input
-                            type="text"
+                            type="email"
                             name="lastName"
                             id="lastName"
-                            className="w-full border p-2 rounded-lg"
-                            placeholder="Last Name"
+                            className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                            placeholder="john@example.com"
                             onChange={handleChange}
                           />
                         </div>
                       </div>
-
-                      {/* Sex & Date of Birth */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      <div className="grid grid-cols-1 mt-4 md:grid-cols-2 gap-4">
                         <div>
-                          <label htmlFor="sex" className="text-gray-700">
-                            Sex
-                          </label>
-                          <select
-                            name="sex"
-                            id="sex"
-                            className="w-full border p-2 rounded-lg"
-                            onChange={handleChange}
-                          >
-                            <option value="">Select Sex</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label
-                            htmlFor="dateOfBirth"
-                            className="text-gray-700"
-                          >
-                            Date of Birth
+                          <label htmlFor="firstName" className="text-white">
+                            Number Phone
                           </label>
                           <input
-                            type="date"
-                            name="dateOfBirth"
-                            id="dateOfBirth"
-                            className="w-full border p-2 rounded-lg"
+                            type="tel"
+                            name="firstName"
+                            id="firstName"
+                            className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                            placeholder="085172041077"
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="lastName" className="text-white">
+                            Password
+                          </label>
+                          <input
+                            type="password"
+                            name="lastName"
+                            id="lastName"
+                            className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                            placeholder="password"
                             onChange={handleChange}
                           />
                         </div>
                       </div>
-
                       {/* Submit Button */}
                       <button
                         type="submit"
-                        className="w-full mt-6 bg-blue-500 text-white py-2 rounded-lg"
+                        className="w-full mt-6 bg-blue-400 text-white py-2 rounded-lg"
                       >
                         Submit
                       </button>
