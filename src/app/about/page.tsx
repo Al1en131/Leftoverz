@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import "flowbite";
 import "flowbite/dist/flowbite.css";
 
-export default function Home() {
+export default function About() {
   useEffect(() => {
     import("flowbite").then((flowbite) => {
       flowbite.initAccordions();

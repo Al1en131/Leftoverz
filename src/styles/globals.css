@@ -67,8 +67,8 @@
   .border_accordion::before {
     content: "";
     position: absolute;
-    inset: 0; /* Memastikan elemen menutupi seluruh area */
-    border-radius: 8px 8px 0 0; /* Border radius hanya untuk top */
+    inset: 0;
+    border-radius: 8px 8px 0 0;
     padding: 1px;
     background: radial-gradient(
       100% 178.46% at 0% 0%,
@@ -76,7 +76,6 @@
       #7f60ff 100%
     );
 
-    /* Trik untuk menghilangkan border di bawah */
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
       linear-gradient(to bottom, #fff 100%, transparent 100%) border-box;
     -webkit-mask-composite: destination-out;
@@ -89,8 +88,8 @@
   .border_accordion2::before {
     content: "";
     position: absolute;
-    inset: 0; /* Memastikan elemen menutupi seluruh area */
-    border-radius: 0; /* Border radius hanya untuk top */
+    inset: 0;
+    border-radius: 0;
     padding: 1px;
     background: radial-gradient(
       100% 178.46% at 0% 0%,
@@ -98,12 +97,40 @@
       #7f60ff 100%
     );
 
-    /* Trik untuk menghilangkan border di bawah */
     -webkit-mask: linear-gradient(#fff 0 0) content-box,
       linear-gradient(to bottom, #fff 100%, transparent 100%) border-box;
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
   }
+  .text-gradian {
+    background: radial-gradient(
+      100% 178.46% at 0% 0%,
+      #7f60ff 0%,
+      #15bffd 100%
+    );
+    -webkit-background-clip: text; /* Untuk browser berbasis Webkit (Chrome, Safari) */
+    background-clip: text; /* Untuk browser lainnya */
+    color: transparent; /* Menghilangkan warna teks asli */
+  }
+
+  .text-gradian-border {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    color: transparent; /* Agar teksnya transparan dan hanya gradien yang terlihat */
+  }
+  
+  .text-gradian-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px; /* Ketebalan border */
+    background: linear-gradient(90deg, #7f60ff, #15bffd); /* Gradasi pada border */
+  }
+  
+  
 }
 
 @font-face {
@@ -111,6 +138,16 @@
   src: url("/font/Agrandir-Tight.otf") format("truetype");
   font-weight: normal;
   font-style: normal;
+}
+
+[data-theme="custom"] select {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
+}
+
+[data-theme="custom"] select option {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: white !important;
 }
 
 body {

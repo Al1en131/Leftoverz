@@ -68,11 +68,8 @@ export default function Home() {
               sampah.
             </p>
             <div className="flex gap-4 pt-4">
-              <Link href='/auth/register' className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
-                Registrer
-              </Link>
-              <Link href='/auth/login' className="border-[#15BFFD] text-[#15BFFD] border-2 w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-[#15BFFD] hover:text-white">
-                Login
+              <Link href='' className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+                Log Out
               </Link>
             </div>
           </div>
@@ -82,7 +79,7 @@ export default function Home() {
               height={10}
               alt=""
               src="/images/hero.svg"
-              className="z-40 w-full"
+              className="z-50 w-full"
             />
           </div>
         </div>
