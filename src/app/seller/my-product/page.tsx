@@ -158,7 +158,7 @@ export default function MyProduct() {
 
           <div className="w-2/12 flex justify-end">
             <Link
-              href="#"
+              href="/seller/my-product/add"
               className="bg-blue-400 text-white font-medium rounded-lg p-4 w-full flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
             >
               <svg
@@ -216,15 +216,12 @@ export default function MyProduct() {
                   <td className="px-6 py-4 text-white">Rp. {item.price}</td>
                   <td className="px-6 py-4 text-white">{item.status}</td>
                   <td className="px-6 py-4 flex justify-center space-x-2">
-                    {/* Edit Button */}
                     <Link
-                      href={``}
+                      href="/seller/my-product/edit"
                       className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
                     >
                       Edit
                     </Link>
-
-                    {/* Delete Button */}
                     <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
                       Delete
                     </button>

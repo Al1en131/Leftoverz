@@ -354,7 +354,7 @@ export default function MyOrder() {
                 {/* Tombol Beli */}
                 <div className="w-full text-white justify-center flex">
                   <Link
-                    href=""
+                    href="/buyer/status-order"
                     className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
                   >
                     Lihat Status Pesanan
