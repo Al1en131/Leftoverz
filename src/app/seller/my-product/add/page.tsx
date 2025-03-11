@@ -88,7 +88,7 @@ export default function AddProduct() {
             />
             <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-40"></div>
             <h1 className="text-5xl md:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-50">
-              Product
+              Add Product
             </h1>
           </div>
         </div>
