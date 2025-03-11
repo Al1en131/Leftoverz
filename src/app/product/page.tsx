@@ -358,7 +358,7 @@ export default function Product() {
                 {/* Bagian Bawah */}
                 <div className="my-4 flex justify-between items-center">
                   <p className="text-blue-400 text-lg">{item.location}</p>
-                  <p className="text-blue-400 text-base">{item.price}</p>
+                  <p className="text-blue-400 text-base">Rp. {item.price}</p>
                 </div>
 
                 {/* Tombol Beli */}
