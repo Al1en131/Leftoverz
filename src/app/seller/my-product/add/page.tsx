@@ -12,16 +12,21 @@ export default function AddProduct() {
     productImage: null,
   });
 
-  const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
-    const newValue = type === "file" ? files[0] : value;
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value, type, files } = e.target as HTMLInputElement;
+    const newValue = type === "file" ? files?.[0] || null : value;
+
     setFormData((prev) => ({
       ...prev,
       [name]: newValue,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form Data:", formData);
   };
@@ -97,9 +102,7 @@ export default function AddProduct() {
               {/* Upload Image */}
               <div className="flex flex-col items-center mb-6">
                 <div className="flex items-center justify-center w-full">
-                  <label
-                    className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40"
-                  >
+                  <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                       <svg
                         className="w-8 h-8 mb-4 text-white"

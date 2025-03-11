@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function DetailProfile() {
   const [formData, setFormData] = useState({
@@ -13,12 +12,9 @@ export default function DetailProfile() {
     coverImage: null,
   });
 
-  // Handle perubahan input
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, files } = e.target;
-
-    // Simpan nilai sebelum React menghapus event
-    const newValue = type === "file" ? files[0] : value;
+    const newValue = type === "file" ? files?.[0] || null : value;
 
     setFormData((prev) => ({
       ...prev,
@@ -26,8 +22,7 @@ export default function DetailProfile() {
     }));
   };
 
-  // Handle submit form
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form Data:", formData);
   };
@@ -110,7 +105,10 @@ export default function DetailProfile() {
                         >
                           <div className="w-24 h-24 bg-gray-500 rounded-full flex items-center justify-center">
                             {formData.profileImage ? (
-                              <img
+                              <Image
+                                width={100}
+                                height={100}
+                                alt=""
                                 src={URL.createObjectURL(formData.profileImage)}
                                 className="w-full h-full rounded-full object-cover"
                               />
