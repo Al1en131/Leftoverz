@@ -270,7 +270,15 @@ export default function Product() {
                     className="mt-1 block w-full text-sm border bg-white/30 rounded-lg"
                   />
                 </div>
-                {image && <Image src={image} alt="Preview" width={100} height={100} className="mt-2 rounded-lg" />}
+                {image && (
+                  <Image
+                    src={image}
+                    alt="Preview"
+                    width={100}
+                    height={100}
+                    className="mt-2 rounded-lg"
+                  />
+                )}
 
                 {/* Price Range */}
                 <div className="mb-3">
@@ -359,7 +367,7 @@ export default function Product() {
                     href=""
                     className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
                   >
-                    Beli
+                    Lihat Detail
                   </Link>
                   <Image
                     src="/images/heart-add.svg"
