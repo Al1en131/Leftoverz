@@ -103,13 +103,13 @@ export default function Navbar() {
               </div>
               <hr />
               <Link
-                href="/profile"
+                href="/detail-profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
                 Lihat Profil
               </Link>
               <Link
-                href="/favorite"
+                href="/buyer/favorite"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
                 Favorit

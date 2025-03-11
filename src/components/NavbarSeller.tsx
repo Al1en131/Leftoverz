@@ -66,7 +66,7 @@ export default function Navbar() {
                 </div>
                 <hr />
                 <Link
-                  href="/profile"
+                  href="/detail-profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Lihat Profil
@@ -115,7 +115,7 @@ export default function Navbar() {
               </button>
             </div>
           )}
-                    <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+          <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
