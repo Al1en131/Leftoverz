@@ -223,7 +223,7 @@ export default function EditProduct() {
                 type="submit"
                 className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500"
               >
-                Submit Product
+                Edit Product
               </button>
             </form>
           </section>
