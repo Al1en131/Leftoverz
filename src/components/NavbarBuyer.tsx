@@ -83,7 +83,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu & Profile */}
         <div className="flex items-center gap-2 md:hidden relative">
           <button onClick={() => setProfileOpen(!profileOpen)}>
             <Image
@@ -151,7 +150,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="block md:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
           {navLinks.map(({ href, label }, index) => (

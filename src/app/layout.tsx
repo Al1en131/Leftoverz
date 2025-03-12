@@ -1,11 +1,12 @@
 "use client";
 
-import Navbar from "../components/Navbar"; // Navbar untuk halaman umum (Home, About, dll.)
-import NavbarSeller from "../components/NavbarSeller"; // Navbar untuk seller
-import NavbarBuyer from "../components/NavbarBuyer"; // Navbar untuk buyer
-import NavbarDashboardSeller from "../components/NavbarDashboardSeller"; // Navbar khusus dashboard seller
+import Navbar from "../components/Navbar";
+import NavbarSeller from "../components/NavbarSeller";
+import NavbarBuyer from "../components/NavbarBuyer";
+import NavbarDashboardSeller from "../components/NavbarDashboardSeller";
+import Sidebar from "@/components/Sidebar";
 import Footer from "../components/Footer";
-import { usePathname } from "next/navigation"; // Import usePathname
+import { usePathname } from "next/navigation";
 import "../styles/globals.css";
 
 export default function RootLayout({
@@ -13,28 +14,23 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname(); // Mendapatkan pathname saat ini
+  const pathname = usePathname();
 
-  // Mengecek jika kita berada di halaman login atau register
   const isAuthPage =
     pathname === "/auth/login" || pathname === "/auth/register";
 
-  // Mengecek jika kita berada di halaman seller
   const isSellerPage = pathname.startsWith("/seller");
 
-  // Mengecek jika kita berada di halaman dashboard seller
   const isSellerDashboardPage =
     pathname.startsWith("/seller/my-product") ||
     pathname.startsWith("/seller/transaction") ||
     pathname.startsWith("/seller/chat");
 
-  // Mengecek jika kita berada di halaman buyer
   const isBuyerPage = pathname.startsWith("/buyer");
+  const isAdminPage = pathname.startsWith("/admin");
 
-  // Menentukan Navbar berdasarkan halaman
-  let NavbarComponent = Navbar; // Default Navbar untuk halaman umum
+  let NavbarComponent = Navbar;
 
-  // Menggunakan NavbarDashboardSeller jika berada di halaman dashboard seller (my-product atau transaction)
   if (isSellerDashboardPage) {
     NavbarComponent = NavbarDashboardSeller;
   } else if (isSellerPage) {
@@ -46,10 +42,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-[#080B2A] relative">
-        {/* Menampilkan Navbar dan Footer hanya jika bukan di halaman auth/login dan auth/register */}
-        {!isAuthPage && <NavbarComponent />}
-        <main>{children}</main>
-        {!isAuthPage && <Footer />}
+        {isAdminPage ? (
+          <div className="flex min-h-screen">
+            <Sidebar /> 
+            <main className="flex-1 bg-[#0f1535] text-white">
+              {children}
+            </main>
+          </div>
+        ) : (
+          <>
+            {!isAuthPage && <NavbarComponent />}
+            <main>{children}</main>
+            {!isAuthPage && <Footer />}
+          </>
+        )}
       </body>
     </html>
   );
