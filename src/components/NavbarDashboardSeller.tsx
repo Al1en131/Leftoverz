@@ -13,6 +13,7 @@ export default function Navbar() {
   const navLinks = [
     { href: "/seller/my-product", label: "My Product" },
     { href: "/seller/transaction", label: "Transaction" },
+    { href: "/seller/chat", label: "Chat" },
   ];
 
   return (
@@ -45,7 +46,6 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Desktop Profile */}
           <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <Image
@@ -65,7 +65,7 @@ export default function Navbar() {
                 </div>
                 <hr />
                 <Link
-                  href="/profile"
+                  href="/seller/profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Lihat Profil
@@ -81,7 +81,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu & Profile */}
         <div className="flex items-center gap-2 md:hidden relative">
           <button onClick={() => setProfileOpen(!profileOpen)}>
             <Image
@@ -143,7 +142,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Dropdown */}
       {isOpen && (
         <div className="block md:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
           {navLinks.map(({ href, label }, index) => (

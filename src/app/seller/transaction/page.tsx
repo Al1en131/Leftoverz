@@ -12,7 +12,25 @@ export default function Transaction() {
       buyer: "John",
       payment: "COD",
       price: "20.000",
-      status: "Available",
+      status: "Paid",
+    },
+    {
+      id: 1,
+      image: "/images/hero-1.jpg",
+      name: "Apple Watch Series 4",
+      buyer: "John",
+      payment: "Gopay",
+      price: "20.000",
+      status: "Paid",
+    },
+    {
+      id: 1,
+      image: "/images/hero-1.jpg",
+      name: "Apple Watch Series 4",
+      buyer: "John",
+      payment: "Bri",
+      price: "20.000",
+      status: "Paid",
     },
     {
       id: 1,
@@ -21,25 +39,7 @@ export default function Transaction() {
       buyer: "John",
       payment: "COD",
       price: "20.000",
-      status: "Available",
-    },
-    {
-      id: 1,
-      image: "/images/hero-1.jpg",
-      name: "Apple Watch Series 4",
-      buyer: "John",
-      payment: "COD",
-      price: "20.000",
-      status: "Available",
-    },
-    {
-      id: 1,
-      image: "/images/hero-1.jpg",
-      name: "Apple Watch Series 4",
-      buyer: "John",
-      payment: "COD",
-      price: "20.000",
-      status: "Available",
+      status: "Unpaid",
     },
   ];
 
@@ -180,9 +180,18 @@ export default function Transaction() {
                   <td className="px-6 py-4 text-white">{item.buyer}</td>
                   <td className="px-6 py-4 text-white">{item.payment}</td>
                   <td className="px-6 py-4 text-white">Rp. {item.price}</td>
-                  <td className="px-6 py-4 text-white">{item.status}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
+                        item.status === "Paid"
+                          ? "bg-green-700 text-white"
+                          : "bg-red-700 text-white"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
                   <td className="px-6 py-4 flex justify-center space-x-2">
-                    {/* Edit Button */}
                     <Link
                       href={``}
                       className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"

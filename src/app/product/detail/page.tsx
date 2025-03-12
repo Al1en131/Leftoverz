@@ -20,51 +20,52 @@ const products = [
 ];
 
 const data = [
-    {
-      name: "James Watson",
-      title: "Punk Art Collection",
-      location: "Jakarta",
-      image: "/images/hero-2.jpg",
-      price: "60.000",
-    },
-    {
-      name: "Anna Smith",
-      title: "Modern Art Series",
-      location: "Bali",
-      image: "/images/hero-3.jpg",
-      price: "50.000",
-    },
-    {
-      name: "John Doe",
-      title: "Abstract Art Pieces",
-      location: "Surabaya",
-      image: "/images/hero-4.jpg",
-      price: "60.000",
-    },
-    {
-      name: "James Watson",
-      title: "Punk Art Collection",
-      location: "Jakarta",
-      image: "/images/hero-2.jpg",
-      price: "60.000",
-    },
-    {
-      name: "Anna Smith",
-      title: "Modern Art Series",
-      location: "Bali",
-      image: "/images/hero-3.jpg",
-      price: "60.000",
-    },
-    {
-      name: "John Doe",
-      title: "Abstract Art Pieces",
-      location: "Surabaya",
-      image: "/images/hero-4.jpg",
-      price: "60.000",
-    },
-  ];
+  {
+    name: "James Watson",
+    title: "Punk Art Collection",
+    location: "Jakarta",
+    image: "/images/hero-2.jpg",
+    price: "60.000",
+  },
+  {
+    name: "Anna Smith",
+    title: "Modern Art Series",
+    location: "Bali",
+    image: "/images/hero-3.jpg",
+    price: "50.000",
+  },
+  {
+    name: "John Doe",
+    title: "Abstract Art Pieces",
+    location: "Surabaya",
+    image: "/images/hero-4.jpg",
+    price: "60.000",
+  },
+  {
+    name: "James Watson",
+    title: "Punk Art Collection",
+    location: "Jakarta",
+    image: "/images/hero-2.jpg",
+    price: "60.000",
+  },
+  {
+    name: "Anna Smith",
+    title: "Modern Art Series",
+    location: "Bali",
+    image: "/images/hero-3.jpg",
+    price: "60.000",
+  },
+  {
+    name: "John Doe",
+    title: "Abstract Art Pieces",
+    location: "Surabaya",
+    image: "/images/hero-4.jpg",
+    price: "60.000",
+  },
+];
 
 export default function ProductDetail() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const product = products[0];
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
 
@@ -190,7 +191,6 @@ export default function ProductDetail() {
               key={index}
               className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
             >
-              {/* Bagian Atas */}
               <div className="mb-4 flex justify-between items-center">
                 <div className="block">
                   <h3 className="text-white text-lg mb-1 font-bold">
@@ -212,13 +212,11 @@ export default function ProductDetail() {
                 />
               </div>
 
-              {/* Bagian Bawah */}
               <div className="my-4 flex justify-between items-center">
                 <p className="text-blue-400 text-lg">{item.location}</p>
                 <p className="text-blue-400 text-base">{item.price}</p>
               </div>
 
-              {/* Tombol Beli */}
               <div className="w-full flex justify-between items-center gap-2 text-white">
                 <Link
                   href="/buyer/buy-product"
@@ -237,6 +235,78 @@ export default function ProductDetail() {
             </div>
           ))}
         </div>
+      </div>
+      <div className="fixed bottom-6 right-6 z-50">
+        <button
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className="bg-[#15BFFD] hover:bg-blue-400 text-white p-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+        >
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/chat.svg"
+            className="w-8 h-8"
+          />
+        </button>
+
+        {isChatOpen && (
+          <div className="mt-4 w-80 bg-white border_section rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+            <div className="bg-[#15BFFD] text-white px-4 py-3 font-semibold flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
+                <p className="text-white font-semibold">Alien</p>
+              </div>
+              <button onClick={() => setIsChatOpen(false)}>
+                <svg
+                  className="w-6 h-6 text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18 17.94 6M18 18 6.06 6"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="p-4 max-h-60 overflow-y-auto space-y-3 text-sm">
+              <div className="text-gray-700 bg-gray-300 w-fit p-2 rounded-lg">
+                Halo! Ada yang bisa kami bantu?
+              </div>
+              <div className="text-white bg-[#15BFFD] p-2 rounded-lg self-end text-right ml-auto w-fit">
+                Ya, saya ingin tanya tentang produk.
+              </div>
+            </div>
+            <div className="border-t px-4 py-2 bg-gray-50">
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                }}
+                className="flex items-center gap-2"
+              >
+                <input
+                  type="text"
+                  placeholder="Tulis pesan..."
+                  className="flex-grow px-3 py-2 text-sm border rounded-lg focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="text-white bg-[#15BFFD] px-3 py-2 rounded-lg text-sm hover:bg-blue-400"
+                >
+                  Kirim
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

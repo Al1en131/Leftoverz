@@ -19,7 +19,6 @@ export default function Navbar() {
   return (
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
         <Link href="/" className="text-white text-lg font-semibold">
           <Image
             width={100}
@@ -30,7 +29,6 @@ export default function Navbar() {
           />
         </Link>
 
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-12 text-lg">
           {navLinks.map(({ href, label }, index) => (
             <Link
@@ -46,7 +44,6 @@ export default function Navbar() {
             </Link>
           ))}
 
-          {/* Desktop Profile */}
           <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <Image
@@ -66,7 +63,7 @@ export default function Navbar() {
                 </div>
                 <hr />
                 <Link
-                  href="/detail-profile"
+                  href="/seller/detail-profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Lihat Profil
@@ -82,7 +79,6 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu & Profile */}
         <div className="flex items-center gap-2 md:hidden relative">
           <button onClick={() => setProfileOpen(!profileOpen)}>
             <Image

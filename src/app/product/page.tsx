@@ -68,7 +68,7 @@ export default function Product() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImage(URL.createObjectURL(file)); // Simpan URL gambar untuk ditampilkan
+      setImage(URL.createObjectURL(file)); 
     }
   };
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -132,7 +132,6 @@ export default function Product() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] -z-0"
         />
-        {/* Hero Section */}
         <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
@@ -148,8 +147,6 @@ export default function Product() {
             </h1>
           </div>
         </div>
-
-        {/* Search & Filter */}
         <div className="py-10 px-20 flex justify-between items-center">
           {/* Search Form */}
           <form className="w-full mx-auto relative">

@@ -25,7 +25,8 @@ export default function RootLayout({
   // Mengecek jika kita berada di halaman dashboard seller
   const isSellerDashboardPage =
     pathname.startsWith("/seller/my-product") ||
-    pathname.startsWith("/seller/transaction");
+    pathname.startsWith("/seller/transaction") ||
+    pathname.startsWith("/seller/chat");
 
   // Mengecek jika kita berada di halaman buyer
   const isBuyerPage = pathname.startsWith("/buyer");

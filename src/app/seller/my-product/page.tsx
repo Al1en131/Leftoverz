@@ -14,7 +14,7 @@ export default function MyProduct() {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit ...",
       location: "New York",
       price: "20.000",
-      status: "Available",
+      status: "Sold Out",
     },
     {
       id: 2,
@@ -182,7 +182,6 @@ export default function MyProduct() {
 
         <div className="relative overflow-x-auto px-20 pb-10 shadow-lg rounded-lg">
           <table className="w-full border border-blue-400 rounded-lg overflow-hidden">
-            {/* Header */}
             <thead className="bg-white/10 text-white text-md">
               <tr className="border-b">
                 <th className="px-6 py-3 text-left">Image</th>
@@ -214,7 +213,18 @@ export default function MyProduct() {
                   <td className="px-6 py-4 text-white">{item.description}</td>
                   <td className="px-6 py-4 text-white">{item.location}</td>
                   <td className="px-6 py-4 text-white">Rp. {item.price}</td>
-                  <td className="px-6 py-4 text-white">{item.status}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
+                        item.status === "Available"
+                          ? "bg-green-700 text-white"
+                          : "bg-red-700 text-white"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+                  </td>
+
                   <td className="px-6 py-4 flex justify-center space-x-2">
                     <Link
                       href="/seller/my-product/edit"

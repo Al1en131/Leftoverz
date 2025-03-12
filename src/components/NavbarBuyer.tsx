@@ -103,7 +103,7 @@ export default function Navbar() {
               </div>
               <hr />
               <Link
-                href="/detail-profile"
+                href="/buyer/detail-profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
                 Lihat Profil
