@@ -58,13 +58,9 @@ export default function Dashboard() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-36 left-[550px] -z-0"
       />
-      <div className="flex justify-between items-center mb-8 relative z-40">
-        {/* Title */}
+      <div className="flex justify-between items-center mb-8 relative z-20">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-
-        {/* Search & Profile Section */}
         <div className="relative flex items-center gap-1 w-1/4">
-          {/* Search Input */}
           <div className="relative w-full">
             <input
               type="text"
@@ -76,8 +72,6 @@ export default function Dashboard() {
               size={18}
             />
           </div>
-
-          {/* Profile Button */}
           <button
             onClick={() => setProfileOpen(!profileOpen)}
             className="w-1/4 flex justify-end"
@@ -90,8 +84,6 @@ export default function Dashboard() {
               className="w-10 h-10 rounded-full cursor-pointer"
             />
           </button>
-
-          {/* Profile Dropdown */}
           {profileOpen && (
             <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
               <div className="px-4 py-2 text-gray-800">
@@ -121,7 +113,6 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-
       <div className="grid grid-cols-4 gap-6 mb-6 z-40">
         {[
           {
@@ -168,7 +159,6 @@ export default function Dashboard() {
           }}
         >
           <div className="absolute inset-0 bg-blue-900 opacity-40 rounded-lg"></div>
-          {/* Overlay */}
           <div className="relative z-10 text-white  p-6">
             <span className="text-sm font-normal">Welcome back,</span>
             <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
@@ -208,7 +198,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-
         <div
           className="p-6 rounded-lg shadow z-40"
           style={{
@@ -231,7 +220,6 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-
       <div className="grid grid-cols-2 gap-6 mb-6">
         <div
           className="shadow rounded-lg p-4 sm:p-6 xl:p-8  z-50"

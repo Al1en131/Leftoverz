@@ -10,136 +10,145 @@ export default function Home() {
           height={100}
           alt=""
           src="/images/bubble.svg"
-          className="h-[356px] w-[356px] absolute top-0 left-0"
+          className="lg:h-[356px] lg:w-[356px] max-lg:w-52 max-lg:h-72 absolute top-0 left-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble-2.svg"
-          className="h-[356px] w-[356px] absolute top-0 right-0"
+          className="lg:h-[356px] lg:w-[356px] max-lg:w-52 max-lg:h-72 absolute top-0 right-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Vector.svg"
-          className="h-[678px] w-[514.09px] absolute top-28 right-0 -z-0"
+          className="lg:h-[678px] lg:w-[514.09px] max-lg:h-44 max-lg:w-52 absolute top-28 right-0 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-8 absolute top-28 right-26 -z-0"
+          className="w-8 absolute top-28 max-lg:right-20 right-26 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-96 -z-0"
+          className="w-4 absolute lg:top-28 max-lg:top-20 lg:right-96 max-lg:left-10 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-56 -z-0"
+          className="w-4 absolute lg:top-44 lg:left-56 max-lg:right-5 max-lg:top-72 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 lg:left-[550px] max-lg:hidden -z-0"
         />
-        <div className="flex justify-between pt-28 px-20 items-center">
-          <div className="w-1/2 block space-y-4">
-            <h1 className="text-8xl leading-14 font-bold text-white">
-              <span className="text-[#15BFFD]">Left</span>overz
+        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full items-center pt-28 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
+          <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1">
+            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 font-bold text-[#15BFFD]">
+              Left
+              <span className="text-white">overz</span>
             </h1>
-            <h4 className="text-4xl font-bold">
+            <p className="lg:text-4xl max-lg:text-xl font-bold">
               Barang Bekas Kos dengan Harga Terjangkau dan Kualitas Terjamin
-            </h4>
-            <p className="text-lg leading-6">
+            </p>
+            <p className="text-lg max-lg:text-base leading-6">
               Jual beli barang bekas kos yang masih layak pakai dan berkualitas.
               Hemat uang, dapatkan barang yang kamu butuhkan, dan bantu kurangi
               sampah.
             </p>
             <div className="flex gap-4 pt-4">
-              <Link href='/auth/register' className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+              <Link
+                href="/auth/register"
+                className="bg-[#15BFFD] px-4 py-3 max-lg:py-1 max-lg:px-3 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+              >
                 Registrer
               </Link>
-              <Link href='/auth/login' className="border-[#15BFFD] text-[#15BFFD] border-2 w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-[#15BFFD] hover:text-white">
+              <Link
+                href="/auth/login"
+                className="border-[#15BFFD] text-[#15BFFD] max-lg:py-1 max-lg:px-3 border-2 lg:w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-[#15BFFD] hover:text-white"
+              >
                 Login
               </Link>
             </div>
           </div>
-          <div className="z-50 w-1/2 flex">
+          <div className="z-50 w-1/2 max-lg:hidden flex">
             <Image
               width={100}
               height={10}
               alt=""
               src="/images/hero.svg"
-              className="z-40 w-full"
+              className="z-40 w-full max-lg:hidden"
             />
           </div>
         </div>
-        <div className=" justify-between flex items-center relative mb-10 w-full">
+        <div className="lg:justify-between max-lg:justify-center lg:px-20 max-lg:px-6 max-lg:py-6 max-lg:space-y-4 lg:flex max-lg:block items-center relative lg:mb-10 max-lg:mb-0 w-full">
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-3.svg"
-            className="h-[456px] w-[456px] absolute top-60 -z-0 left-0"
+            className="lg:h-[456px] lg:w-[456px] max-lg:h-72 max-lg:w-72 absolute lg:top-60 max-lg:bottom-0 -z-0 left-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-4.svg"
-            className="h-[356px] w-[356px] absolute -top-28 -z-0 right-0"
+            className="lg:h-[356px] lg:w-[356px] max-lg:w-72 max-lg:h-72 absolute -top-28 -z-0 right-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute -top-10 right-96 -z-0"
+            className="w-4 absolute -top-10 lg:right-96 max-lg:right-24 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-5 absolute top-28 right-48 opacity-20 -z-0"
+            className="w-5 absolute top-28 right-48 max-lg:hidden opacity-20 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-5 absolute top-20 right-20 opacity-20 -z-0"
+            className="w-5 absolute top-20 right-20 opacity-20 max-lg:hidden -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-10 opacity-20 left-56 -z-0"
+            className="w-4 absolute top-10 opacity-20 left-56 max-lg:hidden -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-56 opacity-20 left-[850px] -z-0"
+            className="w-4 absolute top-56 opacity-20 left-[850px] max-lg:hidden -z-0"
           />
           <div className="absolute inset-0 bg-white opacity-5 z-10"></div>
-          <div className="relative z-50 w-2/4 ps-20 text-white">
-            <h4 className="text-5xl font-bold pb-4">Why Choose Us?</h4>
-            <p className="text-lg">
+          <div className="relative z-50 lg:w-2/4 max-lg:w-full text-white max-lg:text-center max-lg:justify-center">
+            <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
+              Why Choose Us?
+            </h4>
+            <p className="text-lg max-lg:text-justify">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry&apos;s standard dummy
               text ever since the 1500s, when an unknown printer took a galley
@@ -151,23 +160,23 @@ export default function Home() {
               About Us
             </button>
           </div>
-          <div className="w-2/4 z-50 flex justify-end">
+          <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/hero-2.svg"
-              className="h-[456px] w-full"
+              className="lg:h-[456px] max-lg:h-60 w-full"
             />
           </div>
         </div>
-        <div className="p-20 w-full relative">
+        <div className="lg:p-20 max-lg:p-6 w-full relative">
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-5.svg"
-            className="h-[456px] w-[456px] absolute z-0 -bottom-20 left-0"
+            className="lg:h-[456px] lg:w-[456px] max-lg:h-72 max-lg:w-72 absolute z-0 -bottom-20 left-0"
           />
           <Image
             width={100}
@@ -181,14 +190,14 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute bottom-6 right-96 -z-0"
+            className="w-4 absolute lg:bottom-6 lg:right-96 max-lg:right-10 max-lg:bottom-0 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-20 left-56 -z-0"
+            className="w-4 absolute lg:top-20 max-lg:top-0 lg:left-56 max-lg:left-28 -z-0"
           />
           <div className="text-center justify-center z-50">
             <h3 className="text-3xl font-bold text-white">Features</h3>
@@ -196,8 +205,8 @@ export default function Home() {
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry
             </p>
-            <div className=" pt-14 flex justify-between items-center">
-              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 w-80 shadow-lg relative">
+            <div className="lg:pt-14 max-lg:pt-8 lg:flex lg:justify-between max-lg:justify-center max-lg:w-full max-lg:block max-lg:space-y-4 items-center">
+              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 lg:w-80 max-lg:w-full shadow-lg relative">
                 <Image
                   width={100}
                   height={10}
@@ -205,13 +214,11 @@ export default function Home() {
                   src="/images/camera.svg"
                   className="z-50 w-full h-3/4"
                 />
-
-                {/* Card Content */}
                 <div className="mt-4 h-1/4">
                   <p className="text-lg font-semibold">Pencarian Visual</p>
                 </div>
               </div>
-              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 w-80 shadow-lg relative">
+              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 lg:w-80 max-lg:w-full shadow-lg relative">
                 <Image
                   width={100}
                   height={10}
@@ -219,15 +226,13 @@ export default function Home() {
                   src="/images/Bag.svg"
                   className="z-50 w-full h-3/4"
                 />
-
-                {/* Card Content */}
                 <div className="mt-4 h-1/4">
                   <p className="text-lg font-semibold">
                     Pembayaran Auto Verfication
                   </p>
                 </div>
               </div>
-              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 w-80 shadow-lg relative">
+              <div className="border_section bg-transparent h-[350px] text-white rounded-xl p-5 lg:w-80 max-lg:w-full shadow-lg relative">
                 <Image
                   width={100}
                   height={10}
@@ -235,8 +240,6 @@ export default function Home() {
                   src="/images/Home.svg"
                   className="z-50 w-full h-3/4"
                 />
-
-                {/* Card Content */}
                 <div className="mt-4 h-1/4">
                   <p className="text-lg font-semibold">
                     Terintegrasi dengan pengiriman
@@ -246,35 +249,35 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="px-20 pb-20 w-full">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-6 w-full">
           <div className="flex flex-col items-center justify-center relative">
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute bottom-6 right-96 -z-0"
+              className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-11 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute top-20 left-56 -z-0"
+              className="w-4 absolute top-20 lg:left-56 max-lg:left-10 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute top-6 right-20 -z-0"
+              className="w-4 absolute lg:top-6 lg:right-20 max-lg:right-14 max-lg:top-4 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-8 absolute top-10 right-5 -z-0"
+              className="w-8 absolute lg:top-10 max-lg:top-16 right-5 -z-0"
             />
             <div className="pb-12 text-center">
               <h3 className="text-3xl font-bold text-white">How It Work?</h3>
@@ -284,9 +287,9 @@ export default function Home() {
               </p>
             </div>
             <div className="relative w-full">
-              <div className="px-20 space-y-10">
-                <div className="relative flex md:justify-end">
-                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+              <div className="lg:px-20 max-lg:px-6 space-y-10">
+                <div className="relative md:flex max-lg:justify-center max-lg:w-full md:justify-end">
+                  <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       1. Login atau Registrasi
                     </p>
@@ -297,8 +300,8 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative flex md:justify-start">
-                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-start">
+                  <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       2. Mencari Barang
                     </p>
@@ -308,8 +311,8 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative flex md:justify-end">
-                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-end">
+                  <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       3. Memesan Barang
                     </p>
@@ -320,8 +323,8 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative flex md:justify-start">
-                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-start">
+                  <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       4. Mengisi Detail Pemesanan
                     </p>
@@ -331,8 +334,8 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative flex md:justify-end">
-                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-end">
+                  <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       5. Pembayaran & Verifikasi Otomatis
                     </p>
@@ -342,8 +345,8 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative flex md:justify-start">
-                  <div className="relative w-[580px] p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
+                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-start">
+                  <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       6. Mengambil atau Menerima Barang
                     </p>
@@ -358,27 +361,27 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="px-20 pb-20 w-full justify-center relative">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-6 w-full justify-center relative">
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-6.svg"
-            className="w-[456px] absolute -top-44 left-0 -z-0"
+            className="lg:w-[456px] max-lg:w-72 absolute -top-44 left-0 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-7.svg"
-            className="w-[456px] absolute -bottom-10 right-0 -z-0"
+            className="lg:w-[456px] max-lg:w-72 absolute -bottom-10 right-0 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-8 absolute top-44 right-20 -z-0"
+            className="w-8 absolute top-44 right-20 max-lg:hidden -z-0"
           />
           <div className="pb-12 text-center">
             <h3 className="text-3xl font-bold text-white">
@@ -389,9 +392,8 @@ export default function Home() {
               industry
             </p>
           </div>
-          <div className="flex justify-center gap-10 z-50 items-center">
-            <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
-              {/* Bagian Atas */}
+          <div className="md:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center">
+            <div className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
               <div className="mb-4 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
@@ -410,8 +412,6 @@ export default function Home() {
                   className="w-full rounded-2xl "
                 />
               </div>
-
-              {/* Bagian Bawah */}
               <div className="mt-4">
                 <h3 className="text-white text-lg font-bold">
                   Punk Art Collection
@@ -419,8 +419,7 @@ export default function Home() {
                 <p className="text-blue-400 text-base">Jakarta</p>
               </div>
             </div>
-            <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
-              {/* Bagian Atas */}
+            <div className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
               <div className="mb-4 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
@@ -439,8 +438,6 @@ export default function Home() {
                   className="w-full rounded-2xl "
                 />
               </div>
-
-              {/* Bagian Bawah */}
               <div className="mt-4">
                 <h3 className="text-white text-lg font-bold">
                   Punk Art Collection
@@ -448,8 +445,7 @@ export default function Home() {
                 <p className="text-blue-400 text-base">Jakarta</p>
               </div>
             </div>
-            <div className="w-80 p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
-              {/* Bagian Atas */}
+            <div className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
               <div className="mb-4 flex justify-between items-center">
                 <div className="flex items-center gap-2">
                   <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
@@ -468,8 +464,6 @@ export default function Home() {
                   className="w-full rounded-2xl "
                 />
               </div>
-
-              {/* Bagian Bawah */}
               <div className="mt-4">
                 <h3 className="text-white text-lg font-bold">
                   Punk Art Collection
