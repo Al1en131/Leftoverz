@@ -31,7 +31,7 @@ export default function Navbar() {
                 pathname === route
                   ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
                   : "text-white"
-              } capitalize`} // Menambahkan kelas `capitalize`
+              } capitalize`} 
             >
               {route === "/"
                 ? "Home"

@@ -5,13 +5,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function Navbar() {
+export default function NavbarBuyer() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const navLinks = [
-    { href: "/", label: "Home" },
+    { href: "/buyer/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/product", label: "Product" },
     { href: "/buyer/my-order", label: "My Order" },
@@ -20,7 +20,6 @@ export default function Navbar() {
   return (
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
       <div className="container mx-auto flex justify-between items-center">
-        {/* Logo */}
         <Link href="/" className="text-white text-lg font-semibold">
           <Image
             width={100}
@@ -30,8 +29,6 @@ export default function Navbar() {
             className="h-12 w-36"
           />
         </Link>
-
-        {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-12 text-lg">
           {navLinks.map(({ href, label }, index) => (
             <Link
@@ -46,8 +43,6 @@ export default function Navbar() {
               {label}
             </Link>
           ))}
-
-          {/* Desktop Profile */}
           <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <Image
@@ -67,10 +62,10 @@ export default function Navbar() {
                 </div>
                 <hr />
                 <Link
-                  href="/profile"
+                  href="/buyer/favorite"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
-                  Lihat Profil
+                  Favorit
                 </Link>
                 <button
                   className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
@@ -101,12 +96,6 @@ export default function Navbar() {
                 <p className="text-sm text-gray-500">john.doe@example.com</p>
               </div>
               <hr />
-              <Link
-                href="/buyer/detail-profile"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
-                Lihat Profil
-              </Link>
               <Link
                 href="/buyer/favorite"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
