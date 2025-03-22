@@ -76,46 +76,45 @@ export default function ProductDetail() {
         height={100}
         alt=""
         src="/images/bubble.svg"
-        className="h-[356px] w-[356px] absolute top-0 left-0"
+        className="h-[356px] w-[356px] absolute top-0 left-0 -z-0 max-lg:hidden"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/bubble-2.svg"
-        className="h-[356px] w-[356px] absolute top-0 right-0"
+        className="h-[356px] w-[356px] absolute top-0 right-0 max-lg:hidden"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-8 absolute top-28 right-26 -z-0"
+        className="w-8 absolute top-28 max-lg:hidden right-26 -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-28 right-96 -z-0"
+        className="w-4 absolute top-28 right-96 max-lg:hidden -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-[750px] left-56 -z-0"
+        className="w-4 absolute top-[750px] left-56 max-lg:hidden -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-[700px] right-[300px] -z-0"
+        className="w-4 absolute top-[700px] max-lg:hidden right-[300px] -z-0"
       />
-      <div className="flex gap-10 p-20 mt-10 h-auto">
-        <div className="w-4/12 z-40">
-          {" "}
+      <div className="md:flex md:gap-10 gap-4 md:p-20 px-6 py-14 mt-10 h-auto">
+        <div className="md:w-4/12 w-full z-40 max-lg:mb-4">
           <div className="h-96 rounded-lg overflow-hidden">
             <Image
               src={selectedImage}
@@ -125,7 +124,7 @@ export default function ProductDetail() {
               className="w-full h-auto rounded-lg"
             />
           </div>
-          <div className="grid grid-cols-5 gap-4 mt-6">
+          <div className="grid grid-cols-5 gap-4 md:mt-6 mt-0">
             {product.images.map((img, index) => (
               <button
                 key={index}
@@ -139,13 +138,13 @@ export default function ProductDetail() {
                   alt={`Thumbnail ${index}`}
                   width={100}
                   height={100}
-                  className="w-24 h-24 object-cover rounded-lg"
+                  className="md:w-24 md:h-24 h-16 object-cover rounded-lg"
                 />
               </button>
             ))}
           </div>
         </div>
-        <div className="mb-4 w-8/12 block items-center relative">
+        <div className="mb-4 md:w-8/12 w-full block items-center relative">
           <div className="block">
             <h3 className="text-white text-xl mb-4 font-bold tracking-wide">
               Product Name
@@ -154,7 +153,7 @@ export default function ProductDetail() {
               <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
               <p className="text-blue-400 font-semibold">Alien</p>
             </div>
-            <p className="text-base">
+            <p className="text-base max-lg:text-justify">
               Contrary to popular belief, Lorem Ipsum is not simply random text.
               It has roots in a piece of classical Latin literature from 45 BC,
               making it over 2000 years old. Richard McClintock, a Latin
@@ -164,7 +163,7 @@ export default function ProductDetail() {
               literature, discovered the undoubtable source.
             </p>
           </div>
-          <div className="flex items-center gap-4 absolute bottom-0 right-0">
+          <div className="flex items-center gap-4 md:absolute max-lg:mt-4 max-lg:justify-end md:bottom-0 md:right-0">
             <Image
               src="/images/heart-remove.svg"
               width={100}
@@ -181,11 +180,11 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className="pb-20 pt-10 w-full px-20">
+      <div className="md:pb-20 pb-10 md:pt-10 pt-0 w-full px-6 md:px-20">
         <h1 className="text-5xl font-bold text-white mb-8 text-center">
           Similar Product
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 z-50">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 gap-4 z-50">
           {data.map((item, index) => (
             <div
               key={index}

@@ -68,7 +68,7 @@ export default function Product() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImage(URL.createObjectURL(file)); 
+      setImage(URL.createObjectURL(file));
     }
   };
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -95,44 +95,44 @@ export default function Product() {
           height={100}
           alt=""
           src="/images/bubble.svg"
-          className="h-[356px] w-[356px] absolute top-0 left-0"
+          className="h-[356px] w-[356px] max-lg:hidden absolute top-0 left-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble-2.svg"
-          className="h-[356px] w-[356px] absolute top-0 right-0"
+          className="h-[356px] w-[356px] max-lg:hidden absolute top-0 right-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-8 -z-0"
+          className="w-4 absolute top-28 max-lg:hidden right-8 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-[400px] right-32 -z-0"
+          className="w-4 absolute top-[400px] max-lg:hidden right-32 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-10 -z-0"
+          className="w-4 absolute top-44 max-lg:hidden left-10 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 md:pb-20 pb-10 w-full md:px-20 px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -147,17 +147,15 @@ export default function Product() {
             </h1>
           </div>
         </div>
-        <div className="py-10 px-20 flex justify-between items-center">
-          {/* Search Form */}
+        <div className="py-10 md:px-20 px-6 flex justify-between items-center">
           <form className="w-full mx-auto relative">
             <div className="flex">
-              {/* Dropdown Button */}
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   setDropdownOpen(!dropdownOpen);
                 }}
-                className="shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
+                className="shrink-0 z-10 md:inline-flex hidden items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
                 type="button"
               >
                 {selectedCategory}
@@ -176,7 +174,6 @@ export default function Product() {
                 </svg>
               </button>
 
-              {/* Dropdown Menu */}
               {dropdownOpen && (
                 <div
                   ref={dropdownRef}
@@ -207,7 +204,7 @@ export default function Product() {
               <div className="relative w-full">
                 <input
                   type="search"
-                  className="block p-2.5 w-full z-20 text-base text-white bg-white/10 rounded-e-lg border border-blue-400"
+                  className="block p-2.5 w-full z-20 text-base text-white bg-white/10 md:rounded-e-lg rounded-lg border border-blue-400"
                   placeholder={`Search ${selectedCategory}...`}
                   required
                 />
@@ -229,10 +226,9 @@ export default function Product() {
             </div>
           </form>
           <div className="relative">
-            {/* Filter Button */}
             <button
               onClick={() => setOpen(!open)}
-              className="text-blue-400 bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm px-4 py-2.5 inline-flex items-center"
+              className="text-blue-400 bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm ps-4 py-2.5 inline-flex items-center"
             >
               <svg
                 className="w-6 h-6"
@@ -251,12 +247,9 @@ export default function Product() {
                 />
               </svg>
             </button>
-            {/* Dropdown */}
             {open && (
               <div className="absolute z-10 w-72 p-4 right-0 top-10 bg-black/50 border border-white rounded-lg shadow-lg mt-2">
                 <h6 className="mb-3 text-sm font-medium text-white">Filter</h6>
-
-                {/* Upload Image */}
                 <div className="mb-3">
                   <label className="text-sm font-medium text-white">
                     Upload Image
@@ -276,8 +269,6 @@ export default function Product() {
                     className="mt-2 rounded-lg"
                   />
                 )}
-
-                {/* Price Range */}
                 <div className="mb-3">
                   <label className="text-sm font-medium text-white">
                     Price
@@ -299,8 +290,6 @@ export default function Product() {
                     />
                   </div>
                 </div>
-
-                {/* Sort By */}
                 <div className="relative">
                   <Listbox value={selected} onChange={setSelected}>
                     <Listbox.Button className="w-full p-2 border rounded-lg text-white bg-white/30">
@@ -323,14 +312,13 @@ export default function Product() {
             )}
           </div>
         </div>
-        <div className="py-10 px-20 w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 z-50">
+        <div className="md:py-10 pt-0 pb-10 md:px-20 px-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 gap-4 z-50">
             {data.map((item, index) => (
               <div
                 key={index}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
               >
-                {/* Bagian Atas */}
                 <div className="mb-4 flex justify-between items-center">
                   <div className="block">
                     <h3 className="text-white text-lg mb-1 font-bold">
@@ -351,14 +339,10 @@ export default function Product() {
                     className="w-full rounded-2xl"
                   />
                 </div>
-
-                {/* Bagian Bawah */}
                 <div className="my-4 flex justify-between items-center">
                   <p className="text-blue-400 text-lg">{item.location}</p>
                   <p className="text-blue-400 text-base">Rp. {item.price}</p>
                 </div>
-
-                {/* Tombol Beli */}
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link
                     href="/product/detail"
