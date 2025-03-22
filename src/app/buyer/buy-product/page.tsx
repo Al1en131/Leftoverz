@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function BuyProduct() {
-
   return (
     <div className="bg-[#080B2A] min-h-screen flex flex-col items-center">
       <Image
@@ -48,11 +47,11 @@ export default function BuyProduct() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-[700px] right-[300px] opacity-35 -z-0"
       />
-      <div className="p-20 mt-10">
-        <div className="bg-white/20 p-10 border_section rounded-2xl">
-          <div className="flex justify-between relative items-center h-auto">
-            <div className="w-1/3">
-              <div className="flex items-center mb-4 gap-2">
+      <div className="md:p-20 max-lg:px-6 max-lg:py-14 mt-10 w-full">
+        <div className="bg-white/20 md:p-10 p-7 border_section rounded-2xl">
+          <div className="md:flex md:gap-2 relative max-lg:space-y-6 items-center h-auto">
+            <div className="md:w-1/3 max-lg:w-full">
+              <div className="max-lg:flex items-center mb-4 gap-2 md:hidden">
                 <span className="w-8 h-8 bg-gray-300 rounded-full"></span>
                 <p className="text-blue-400 text-xl tracking-wide font-semibold">
                   Alien
@@ -63,23 +62,21 @@ export default function BuyProduct() {
                 alt=""
                 width={100}
                 height={100}
-                className="w-60 h-60 object-cover rounded-lg"
+                className="md:w-60 h-60 max-lg:w-full object-cover rounded-lg"
               />
             </div>
             <div className="w-full">
-              <h3 className="text-blue-400 text-xl mb-4 font-bold tracking-wide">
+              <div className="max-lg:hidden items-center mb-4 gap-2 md:block">
+                <span className="w-8 h-8 bg-gray-300 rounded-full"></span>
+                <p className="text-blue-400 text-xl tracking-wide font-semibold">
+                  Alien
+                </p>
+              </div>
+              <h3 className="text-blue-400 text-xl md:mb-4 mb-2 font-bold tracking-wide">
                 Product Name
               </h3>
-              <p className="text-base">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old. Richard McClintock, a
-                Latin professor at Hampden-Sydney College in Virginia, looked up
-                one of the more obscure Latin words, consectetur, from a Lorem
-                Ipsum passage, and going through the cites of the word in
-                classical literature, discovered the undoubtable source.
-              </p>
-              <div className="flex items-center gap-4 absolute bottom-0 right-0">
+              <p className="text-base">Rp. 20.000</p>
+              <div className="flex items-center gap-4 md:absolute md:bottom-0 md:right-0 mt-4">
                 <Link
                   href=""
                   className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"

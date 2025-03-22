@@ -113,8 +113,8 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-[700px] max-lg:hidden right-[300px] -z-0"
       />
-      <div className="md:flex md:gap-10 gap-4 md:p-20 px-6 py-14 mt-10 h-auto">
-        <div className="md:w-4/12 w-full z-40 max-lg:mb-4">
+      <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 max-lg:py-14 mt-10 h-auto">
+        <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
           <div className="h-96 rounded-lg overflow-hidden">
             <Image
               src={selectedImage}
@@ -124,7 +124,7 @@ export default function ProductDetail() {
               className="w-full h-auto rounded-lg"
             />
           </div>
-          <div className="grid grid-cols-5 gap-4 md:mt-6 mt-0">
+          <div className="grid grid-cols-5 gap-4 md:mt-6 max-lg:mt-0">
             {product.images.map((img, index) => (
               <button
                 key={index}
@@ -138,13 +138,13 @@ export default function ProductDetail() {
                   alt={`Thumbnail ${index}`}
                   width={100}
                   height={100}
-                  className="md:w-24 md:h-24 h-16 object-cover rounded-lg"
+                  className="md:w-24 md:h-24 max-lg:h-16 object-cover rounded-lg"
                 />
               </button>
             ))}
           </div>
         </div>
-        <div className="mb-4 md:w-8/12 w-full block items-center relative">
+        <div className="mb-4 md:w-8/12 max-lg:w-full block items-center relative">
           <div className="block">
             <h3 className="text-white text-xl mb-4 font-bold tracking-wide">
               Product Name
@@ -180,11 +180,11 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-      <div className="md:pb-20 pb-10 md:pt-10 pt-0 w-full px-6 md:px-20">
+      <div className="md:pb-20 max-lg:pb-10 md:pt-10 max-lg:pt-0 w-full max-lg:px-6 md:px-20">
         <h1 className="text-5xl font-bold text-white mb-8 text-center">
           Similar Product
         </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 gap-4 z-50">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
           {data.map((item, index) => (
             <div
               key={index}

@@ -56,7 +56,7 @@ export default function About() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
-        <div className="bg-white/5 pt-28 md:pb-20 pb-10 w-full md:px-20 px-6 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 md:pb-20 max-lg:b-10 w-full md:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -66,12 +66,12 @@ export default function About() {
               className="rounded-2xl w-full h-64"
             />
             <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-40"></div>{" "}
-            <h1 className="text-4xl md:text-8xl tracking-wide text-white font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+            <h1 className="max-lg:text-4xl md:text-8xl tracking-wide text-white font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
               About Us
             </h1>
           </div>
         </div>
-        <div className="py-10 md:px-20 px-6">
+        <div className="py-10 md:px-20 max-lg:px-6">
           <p className="text-white text-base md:text-center max-lg:text-justify tracking-wide">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry&apos;s standard dummy text
@@ -84,13 +84,13 @@ export default function About() {
             PageMaker including versions of Lorem Ipsum.
           </p>
         </div>
-        <div className="md:px-20 md:py-20 px-6 py-10 relative">
+        <div className="md:px-20 md:py-20 max-lg:px-6 max-lg:py-10 relative">
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-8 absolute md:bottom-20 bottom-2 right-10 -z-0"
+            className="w-8 absolute md:bottom-20 max-lg:bottom-2 right-10 -z-0"
           />
           <Image
             width={100}
@@ -111,34 +111,34 @@ export default function About() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute md:bottom-28 bottom-4 left-20 -z-0"
+            className="w-4 absolute md:bottom-28 max-lg:bottom-4 left-20 -z-0"
           />
           <div className="justify-center w-full text-center mb-10">
             <h3 className="text-4xl text-white font-bold mb-1">Question</h3>
             <p>Lorem ipsum</p>
           </div>
-          <div className="md:flex block gap-10 items-center max-lg:space-y-6">
+          <div className="md:flex max-lg:block gap-10 items-center max-lg:space-y-6">
             <div className="relative">
               <Image
                 width={100}
                 height={100}
                 alt=""
                 src="/images/bubble-8.svg"
-                className="md:h-[556px] md:w-[556px] w-72 h-72 absolute md:-top-48 -top-20 md:-left-28  -left-5 -z-0"
+                className="md:h-[556px] md:w-[556px] max-lg:w-72 max-lg:h-72 absolute md:-top-48 max-lg:-top-20 md:-left-28  max-lg:-left-5 -z-0"
               />
               <Image
                 width={100}
                 height={100}
                 alt=""
                 src="/images/bubble-8.svg"
-                className="md:h-[556px] md:w-[556px] w-72 h-72 absolute md:top-0 bottom-0 md:-right-20 -right-5 -z-0"
+                className="md:h-[556px] md:w-[556px] max-lg:w-72 max-lg:h-72 absolute md:top-0 max-lg:bottom-0 md:-right-20 max-lg:-right-5 -z-0"
               />
               <Image
                 width={600}
                 height={400}
                 alt="Hero About"
                 src="/images/question.png"
-                className="md:w-[650px] w-[400px] md:h-[450px] h-[380px] relative z-50"
+                className="md:w-[650px] max-lg:w-[400px] md:h-[450px] max-lg:h-[380px] relative z-50"
               />
             </div>
             <div className="w-full">
