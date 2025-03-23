@@ -141,8 +141,8 @@ export default function MyOrder() {
               src="/images/hero-product.jpg"
               className="rounded-2xl w-full h-64"
             />
-            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-40"></div>
-            <h1 className="max-lg:text-5xl md:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-50">
+            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-20"></div>
+            <h1 className="max-lg:text-5xl md:text-6xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
               My Order
             </h1>
           </div>

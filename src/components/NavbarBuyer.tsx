@@ -11,9 +11,9 @@ export default function NavbarBuyer() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const navLinks = [
-    { href: "/buyer/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/product", label: "Product" },
+    { href: "/buyer", label: "Home" },
+    { href: "/buyer/about", label: "About" },
+    { href: "/buyer/product", label: "Product" },
     { href: "/buyer/my-order", label: "My Order" },
   ];
 
