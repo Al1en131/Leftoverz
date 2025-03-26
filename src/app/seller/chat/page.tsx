@@ -23,30 +23,30 @@ export default function RoomChat() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-8 -z-0"
+          className="w-4 absolute top-28 right-8 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-[400px] right-32 -z-0"
+          className="w-4 absolute top-[400px] right-32 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-10 -z-0"
+          className="w-4 absolute top-44 left-10 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -56,9 +56,9 @@ export default function RoomChat() {
               className="rounded-2xl w-full h-64"
             />
 
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center ps-10 md:ps-20 gap-2 text-white z-40">
-              <h1 className="text-6xl font-bold">Chat</h1>
-              <p className="text-base md:text-lg max-w-3xl">
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 md:ps-20 gap-2 text-white z-40">
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Chat</h1>
+              <p className="max-lg:text-base md:text-lg max-w-3xl">
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
                 45 BC, making it over 2000 years old.
@@ -66,10 +66,10 @@ export default function RoomChat() {
             </div>
           </div>
         </div>
-        <div className="px-20 py-10 justify-center items-center rounded-lg ">
-          <div className="bg-white/5 p-10 rounded-2xl border_section">
-            <div className="flex flex-row justify-between z-50">
-              <div className="flex flex-col w-2/5 border-r-2 overflow-y-auto">
+        <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
+          <div className="bg-white/5 p-10 rounded-2xl border-2 border-blue-400">
+            <div className="lg:flex lg:flex-row lg:justify-between max-lg:block z-50">
+              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 overflow-y-auto">
                 <div className="border-b-2 py-4 px-2">
                   <input
                     type="text"
@@ -185,7 +185,7 @@ export default function RoomChat() {
                   </div>
                 </div>
               </div>
-              <div className="w-full px-5 flex flex-col justify-between">
+              <div className="w-full lg:px-5 flex flex-col justify-between">
                 <div className="flex flex-col mt-5">
                   <div className="flex justify-end mb-4">
                     <div className="mr-2 py-3 px-4 bg-blue-400 rounded-bl-3xl rounded-tl-3xl rounded-tr-xl text-white">
@@ -255,7 +255,7 @@ export default function RoomChat() {
                   />
                 </div>
               </div>
-              <div className="w-2/5 border-l-2 px-5">
+              <div className="lg:w-2/5 max-lg:w-full lg:border-l-2 lg:px-5">
                 <div className="flex flex-col">
                   <div className="font-semibold text-xl py-4">
                     Mern Stack Group

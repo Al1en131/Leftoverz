@@ -70,7 +70,7 @@ export default function SellerHome() {
             </p>
             <div className="flex gap-4 pt-4">
               <Link
-                href="/seller/transaction"
+                href="/seller/my-product"
                 className="border-[#15BFFD] text-[#15BFFD] max-lg:py-1 max-lg:px-3 border-2 lg:w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-[#15BFFD] hover:text-white"
               >
                 Dashboard

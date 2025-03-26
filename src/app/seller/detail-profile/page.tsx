@@ -49,31 +49,30 @@ export default function DetailProfile() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-8 absolute top-28 right-26 -z-0"
+          className="w-8 absolute top-28 right-26 -z-0 max-lg:hidden"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-96 -z-0"
+          className="w-4 absolute top-28 right-96 -z-0 max-lg:hidden"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-56 -z-0"
+          className="w-4 absolute top-44 left-56 -z-0 max-lg:hidden"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
-        {/* Hero Section */}
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -82,14 +81,14 @@ export default function DetailProfile() {
               src="/images/hero-product.jpg"
               className="rounded-2xl w-full h-64"
             />
-            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-40"></div>
-            <h1 className="text-5xl md:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-50">
+            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-20"></div>
+            <h1 className="text-5xl md:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
               Detail Profile
             </h1>
           </div>
         </div>
-        <div className="flex justify-between py-10 px-20 w-full items-center">
-          <section className="p-10 w-full my-auto bg-white/10 rounded-2xl border_section">
+        <div className="flex justify-between py-10 lg:px-20 max-lg:px-6 w-full items-center">
+          <section className="lg:p-10 max-lg:p-6 w-full my-auto bg-white/10 rounded-2xl border_section">
             <div className="w-full flex gap-4">
               <div className="w-full h-fit self-center">
                 <div className="">
@@ -187,7 +186,6 @@ export default function DetailProfile() {
                           />
                         </div>
                       </div>
-                      {/* Submit Button */}
                       <button
                         type="submit"
                         className="w-full mt-6 bg-blue-400 text-white py-2 rounded-lg"

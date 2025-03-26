@@ -53,31 +53,30 @@ export default function AddProduct() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-8 -z-0"
+          className="w-4 absolute top-28 right-8 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-[400px] right-32 -z-0"
+          className="w-4 absolute top-[400px] right-32 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-10 -z-0"
+          className="w-4 absolute top-44 left-10 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 max-lg:hidden left-[550px] -z-0"
         />
-        {/* Hero Section */}
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -93,13 +92,12 @@ export default function AddProduct() {
           </div>
         </div>
 
-        <div className="flex justify-center py-10 px-20 w-full">
-          <section className="p-10 bg-white/10 rounded-2xl w-full border border-blue-400">
+        <div className="flex justify-center py-10 lg:px-20 max-lg:px-6 w-full">
+          <section className="lg:p-10 max-lg:p-6 bg-white/10 rounded-2xl w-full border border-blue-400">
             <h2 className="text-white text-2xl font-semibold text-center mb-6">
               Product Details
             </h2>
             <form onSubmit={handleSubmit}>
-              {/* Upload Image */}
               <div className="flex flex-col items-center mb-6">
                 <div className="flex items-center justify-center w-full">
                   <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">

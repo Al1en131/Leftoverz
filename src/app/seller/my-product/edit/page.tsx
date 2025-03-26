@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export default function EditProduct() {
+export default function AddProduct() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -53,31 +53,30 @@ export default function EditProduct() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-8 -z-0"
+          className="w-4 absolute top-28 right-8 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-[400px] right-32 -z-0"
+          className="w-4 absolute top-[400px] right-32 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-10 -z-0"
+          className="w-4 absolute top-44 left-10 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 max-lg:hidden left-[550px] -z-0"
         />
-        {/* Hero Section */}
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -93,13 +92,12 @@ export default function EditProduct() {
           </div>
         </div>
 
-        <div className="flex justify-center py-10 px-20 w-full">
-          <section className="p-10 bg-white/10 rounded-2xl w-full border border-blue-400">
+        <div className="flex justify-center py-10 lg:px-20 max-lg:px-6 w-full">
+          <section className="lg:p-10 max-lg:p-6 bg-white/10 rounded-2xl w-full border border-blue-400">
             <h2 className="text-white text-2xl font-semibold text-center mb-6">
               Product Details
             </h2>
             <form onSubmit={handleSubmit}>
-              {/* Upload Image */}
               <div className="flex flex-col items-center mb-6">
                 <div className="flex items-center justify-center w-full">
                   <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
@@ -131,8 +129,6 @@ export default function EditProduct() {
                   </label>
                 </div>
               </div>
-
-              {/* Product Name */}
               <div className="mb-4">
                 <label htmlFor="name" className="text-white block">
                   Product Name
@@ -147,8 +143,6 @@ export default function EditProduct() {
                   value={formData.name}
                 />
               </div>
-
-              {/* Price */}
               <div className="mb-4">
                 <label htmlFor="price" className="text-white block">
                   Price (Rp.)
@@ -163,8 +157,6 @@ export default function EditProduct() {
                   value={formData.price}
                 />
               </div>
-
-              {/* Location */}
               <div className="mb-4">
                 <label htmlFor="location" className="text-white block">
                   Location
@@ -179,8 +171,6 @@ export default function EditProduct() {
                   value={formData.location}
                 />
               </div>
-
-              {/* Category */}
               <div className="mb-4">
                 <label htmlFor="category" className="text-white block">
                   Category
@@ -201,8 +191,6 @@ export default function EditProduct() {
                   <option value="Health & Beauty">Health & Beauty</option>
                 </select>
               </div>
-
-              {/* Description */}
               <div className="mb-6">
                 <label htmlFor="description" className="text-white block">
                   Description
@@ -217,13 +205,11 @@ export default function EditProduct() {
                   value={formData.description}
                 />
               </div>
-
-              {/* Submit Button */}
               <button
                 type="submit"
                 className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500"
               >
-                Edit Product
+                Update Product
               </button>
             </form>
           </section>

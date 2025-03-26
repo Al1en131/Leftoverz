@@ -49,7 +49,6 @@ export default function MyProduct() {
       price: "20.000",
       status: "Available",
     },
-    // Tambahkan data lain di sini
   ];
 
   return (
@@ -74,32 +73,31 @@ export default function MyProduct() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-28 right-8 -z-0"
+          className="w-4 absolute top-28 right-8 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-[400px] right-32 -z-0"
+          className="w-4 absolute top-[400px] max-lg:hidden right-32 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-10 -z-0"
+          className="w-4 absolute top-44 left-10 max-lg:hidden -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
-            {/* Hero Image */}
             <Image
               width={600}
               height={400}
@@ -107,11 +105,9 @@ export default function MyProduct() {
               src="/images/hero-product.jpg"
               className="rounded-2xl w-full h-64"
             />
-
-            {/* Overlay */}
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center ps-10 md:ps-20 gap-2 text-white z-40">
-              <h1 className="text-6xl font-bold">Product</h1>
-              <p className="text-base md:text-lg max-w-3xl">
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 md:ps-20 gap-2 text-white z-40">
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Product</h1>
+              <p className="max-lg:text-base md:text-lg max-w-3xl">
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
                 45 BC, making it over 2000 years old.
@@ -120,14 +116,12 @@ export default function MyProduct() {
           </div>
         </div>
 
-        <div className="py-10 px-20 flex justify-between items-center gap-4">
-          {/* Search Form */}
-          <form className="w-10/12">
+        <div className="py-10 lg:px-20 max-lg:px-6 lg:flex lg:justify-between max-lg:space-y-4 items-center gap-4">
+          <form className="lg:w-10/12 max-lg:w-full">
             <label className="mb-2 text-sm font-medium text-white sr-only">
               Search
             </label>
             <div className="relative">
-              {/* Search Icon */}
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
                 <svg
                   className="w-4 h-4 text-white"
@@ -145,7 +139,6 @@ export default function MyProduct() {
                   />
                 </svg>
               </div>
-              {/* Search Input */}
               <input
                 type="search"
                 id="default-search"
@@ -156,7 +149,7 @@ export default function MyProduct() {
             </div>
           </form>
 
-          <div className="w-2/12 flex justify-end">
+          <div className="lg:w-2/12 max-lg:w-full lg:flex lg:justify-end">
             <Link
               href="/seller/my-product/add"
               className="bg-blue-400 text-white font-medium rounded-lg p-4 w-full flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
@@ -180,8 +173,8 @@ export default function MyProduct() {
           </div>
         </div>
 
-        <div className="relative overflow-x-auto px-20 pb-10 shadow-lg rounded-lg">
-          <table className="w-full border border-blue-400 rounded-lg overflow-hidden">
+        <div className="relative overflow-x-auto lg:px-20 max-lg:px-6 pb-10 shadow-lg rounded-lg">
+          <table className="w-full border border-blue-400 rounded-lg max-lg:px-6 overflow-hidden">
             <thead className="bg-white/10 text-white text-md">
               <tr className="border-b">
                 <th className="px-6 py-3 text-left">Image</th>

@@ -20,7 +20,7 @@ export default function Login() {
         className="absolute top-0 right-0"
       />
       <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-10 lg:bg-white/10 rounded-2xl max-lg:p-6 lg:p-12">
-        <div className="w-full lg:w-1/2 bg-blue-950/10 border_section rounded-lg shadow-lg max-lg:p-6 lg:p-8">
+        <div className="w-full lg:w-1/2 bg-blue-950/10 border-2 border-blue-400 rounded-lg shadow-lg max-lg:p-6 lg:p-8">
           <h1 className="text-xl font-bold mb-6 tracking-wide text-white lg:text-2xl">
             Register your account
           </h1>
@@ -36,7 +36,7 @@ export default function Login() {
                 type="text"
                 name="name"
                 id="name"
-                className="bg-white/20 border_section text-white rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                className="bg-white/20 text-white rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="username"
                 required
               />
@@ -52,7 +52,7 @@ export default function Login() {
                 type="email"
                 name="email"
                 id="email"
-                className="bg-white/20 border_section text-white rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                className="bg-white/20 text-white rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 placeholder="name@company.com"
                 required
               />

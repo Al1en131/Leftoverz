@@ -88,9 +88,8 @@ export default function Transaction() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] -z-0"
         />
-        <div className="bg-white/5 pt-28 pb-20 w-full px-20 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
-            {/* Hero Image */}
             <Image
               width={600}
               height={400}
@@ -98,11 +97,9 @@ export default function Transaction() {
               src="/images/hero-product.jpg"
               className="rounded-2xl w-full h-64"
             />
-
-            {/* Overlay */}
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center ps-10 md:ps-20 gap-2 text-white z-40">
-              <h1 className="text-6xl font-bold">Transaction</h1>
-              <p className="text-base md:text-lg max-w-3xl">
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 md:ps-20 gap-2 text-white z-40">
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Transaction</h1>
+              <p className="max-lg:text-base md:text-lg max-w-3xl">
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
                 45 BC, making it over 2000 years old.
@@ -111,8 +108,7 @@ export default function Transaction() {
           </div>
         </div>
 
-        <div className="py-10 px-20 flex justify-between items-center gap-4">
-          {/* Search Form */}
+        <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center gap-4">
           <form className="w-full">
             <label className="mb-2 text-sm font-medium text-white sr-only">
               Search
@@ -148,9 +144,8 @@ export default function Transaction() {
           </form>
         </div>
 
-        <div className="relative overflow-x-auto px-20 pb-10 shadow-lg rounded-lg">
+        <div className="relative overflow-x-auto lg:px-20 max-lg:px-6 pb-10 shadow-lg rounded-lg">
           <table className="w-full border border-blue-400 rounded-lg overflow-hidden">
-            {/* Header */}
             <thead className="bg-white/10 text-white text-md">
               <tr className="border-b">
                 <th className="px-6 py-3 text-left">Image</th>
@@ -163,7 +158,6 @@ export default function Transaction() {
               </tr>
             </thead>
 
-            {/* Body */}
             <tbody>
               {galleryData.map((item) => (
                 <tr key={item.id} className="border-b bg-white/10 transition">
