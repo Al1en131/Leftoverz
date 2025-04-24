@@ -221,13 +221,9 @@ export default function Products() {
           <thead className=" text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-6 py-3 text-center">No.</th>
-              <th className="px-6 py-3 text-center">Image</th>
-              <th className="px-6 py-3 text-center">Product Name</th>
-              <th className="px-6 py-3 text-center">Category</th>
-              <th className="px-6 py-3 text-center">Description</th>
-              <th className="px-6 py-3 text-center">Location</th>
-              <th className="px-6 py-3 text-center">Price</th>
-              <th className="px-6 py-3 text-center">Status</th>
+              <th className="px-6 py-3 text-center">Sender</th>
+              <th className="px-6 py-3 text-center">Receiver</th>
+              <th className="px-6 py-3 text-center">Chat</th>
               <th className="px-6 py-3 text-center">Action</th>
             </tr>
           </thead>

@@ -79,7 +79,7 @@ const Sidebar = () => {
               />
             </svg>
 
-            <Link href="#" className="hover:text-blue-400">
+            <Link href="/admin/products" className="hover:text-blue-400">
               Products
             </Link>
           </li>
@@ -101,7 +101,7 @@ const Sidebar = () => {
               />
             </svg>
 
-            <Link href="#" className="hover:text-blue-400">
+            <Link href="/admin/transactions" className="hover:text-blue-400">
               Transactions
             </Link>
           </li>
@@ -123,7 +123,7 @@ const Sidebar = () => {
               />
             </svg>
 
-            <Link href="#" className="hover:text-blue-400">
+            <Link href="/admin/chats" className="hover:text-blue-400">
               Chats
             </Link>
           </li>

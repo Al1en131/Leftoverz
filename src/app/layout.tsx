@@ -31,9 +31,7 @@ export default function RootLayout({
 
   let NavbarComponent = Navbar;
 
-  if (isSellerDashboardPage) {
-    NavbarComponent = NavbarDashboardSeller;
-  } else if (isSellerPage) {
+  if (isSellerPage) {
     NavbarComponent = NavbarSeller;
   } else if (isBuyerPage) {
     NavbarComponent = NavbarBuyer;

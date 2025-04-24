@@ -223,9 +223,8 @@ export default function Products() {
               <th className="px-6 py-3 text-center">No.</th>
               <th className="px-6 py-3 text-center">Image</th>
               <th className="px-6 py-3 text-center">Product Name</th>
-              <th className="px-6 py-3 text-center">Category</th>
-              <th className="px-6 py-3 text-center">Description</th>
-              <th className="px-6 py-3 text-center">Location</th>
+              <th className="px-6 py-3 text-center">Buyer</th>
+              <th className="px-6 py-3 text-center">Payment Method</th>
               <th className="px-6 py-3 text-center">Price</th>
               <th className="px-6 py-3 text-center">Status</th>
               <th className="px-6 py-3 text-center">Action</th>

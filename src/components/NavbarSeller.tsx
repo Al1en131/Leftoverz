@@ -12,8 +12,9 @@ export default function Navbar() {
 
   const navLinks = [
     { href: "/seller", label: "Home" },
-    { href: "/seller/about", label: "About" },
-    { href: "/seller/product", label: "Product" },
+    { href: "/seller/my-product", label: "My Product" },
+    { href: "/seller/transaction", label: "Transaction" },
+    { href: "/seller/chat", label: "Chat" },
   ];
 
   return (
