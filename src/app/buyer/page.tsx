@@ -54,16 +54,16 @@ export default function BuyerHome() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 lg:left-[550px] max-lg:hidden -z-0"
         />
-        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full items-center pt-28 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
-          <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1">
-            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 font-bold text-[#15BFFD]">
+        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center pt-28 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
+          <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
+            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 z-20 font-bold text-[#15BFFD]">
               Left
               <span className="text-white">overz</span>
             </h1>
-            <p className="lg:text-4xl max-lg:text-xl font-bold">
+            <p className="lg:text-4xl max-lg:text-xl font-bold z-20">
               Barang Bekas Kos dengan Harga Terjangkau dan Kualitas Terjamin
             </p>
-            <p className="text-lg max-lg:text-base leading-6">
+            <p className="text-lg max-lg:text-base leading-6 z-20">
               Jual beli barang bekas kos yang masih layak pakai dan berkualitas.
               Hemat uang, dapatkan barang yang kamu butuhkan, dan bantu kurangi
               sampah.
@@ -150,9 +150,9 @@ export default function BuyerHome() {
               survived not only five centuries, but also the leap into
               electronic typesetting, remaining essentially unchanged.
             </p>
-            <button className="bg-[#15BFFD] px-4 mt-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+            <Link href="/buyer/about" className="bg-[#15BFFD] px-4 mt-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
               About Us
-            </button>
+            </Link>
           </div>
           <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
             <Image
@@ -467,9 +467,9 @@ export default function BuyerHome() {
             </div>
           </div>
           <div className="flex justify-center mt-10">
-            <button className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+            <Link href="/buyer/product" className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
               Next
-            </button>
+            </Link>
           </div>
         </div>
       </main>

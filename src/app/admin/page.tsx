@@ -8,55 +8,41 @@ import { useState } from "react";
 export default function Dashboard() {
   const [profileOpen, setProfileOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-[#060B26] text-white p-6 relative">
+    <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image
         width={100}
         height={100}
         alt=""
-        src="/images/bubble.svg"
-        className="h-[356px] w-[356px] absolute top-0 left-0"
-      />
-      <Image
-        width={100}
-        height={100}
-        alt=""
-        src="/images/bubble-9.svg"
-        className="h-[856px] w-[856px] absolute top-0 right-1/2 -z-0"
-      />
-      <Image
-        width={100}
-        height={100}
-        alt=""
-        src="/images/bubble-9.svg"
-        className="h-[856px] w-[856px] absolute bottom-0 right-0 -z-0"
+        src="/images/admin.png"
+        className="w-full absolute right-0 top-0 min-h-fit mb-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-8 absolute top-28 right-26 -z-0"
+        className="w-8 absolute top-10 right-26 -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-28 right-96 -z-0"
+        className="w-4 absolute top-14 right-96 -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-44 left-56 -z-0"
+        className="w-4 absolute top-16 left-56 -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-36 left-[550px] -z-0"
+        className="w-4 absolute top-10 left-[550px] -z-0"
       />
       <div className="flex justify-between items-center mb-8 relative z-20">
         <h1 className="text-3xl font-bold">Dashboard</h1>
@@ -65,7 +51,7 @@ export default function Dashboard() {
             <input
               type="text"
               placeholder="Search..."
-              className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-gray-800 focus:outline-none"
+              className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
             />
             <Search
               className="absolute top-2.5 right-3 text-gray-400"
@@ -113,7 +99,7 @@ export default function Dashboard() {
           )}
         </div>
       </div>
-      <div className="grid grid-cols-4 gap-6 mb-6 z-40">
+      <div className="grid grid-cols-4 gap-6 mb-6 z-20">
         {[
           {
             label: "Buyer",
@@ -138,7 +124,7 @@ export default function Dashboard() {
         ].map((item, i) => (
           <div
             key={i}
-            className=" p-4 z-40 rounded-lg shadow"
+            className=" p-4 z-20 rounded-lg shadow"
             style={{
               background:
                 "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -150,7 +136,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-6 mb-6 z-40">
+      <div className="mb-6 z-20">
         <div
           className="relative rounded-lg flex justify-between items-center z-40 text-start shadow-lg"
           style={{
@@ -158,7 +144,7 @@ export default function Dashboard() {
               "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
           }}
         >
-          <div className="absolute inset-0 bg-blue-900 opacity-40 rounded-lg"></div>
+          <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white  p-6">
             <span className="text-sm font-normal">Welcome back,</span>
             <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
@@ -177,46 +163,6 @@ export default function Dashboard() {
               height={300}
               className="rounded-lg w-full h-full"
             />
-          </div>
-        </div>
-
-        <div
-          className="p-6 rounded-lg shadow z-40"
-          style={{
-            background:
-              "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
-          }}
-        >
-          <p className="text-sm text-gray-300">Satisfaction Rate</p>
-          <div className="flex flex-col justify-center items-center h-full">
-            <h1 className="text-4xl font-bold mb-2">95%</h1>
-            <div className="w-3/4 bg-gray-700 h-2 rounded-full">
-              <div
-                className="bg-blue-500 h-full rounded-full"
-                style={{ width: "95%" }}
-              />
-            </div>
-          </div>
-        </div>
-        <div
-          className="p-6 rounded-lg shadow z-40"
-          style={{
-            background:
-              "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
-          }}
-        >
-          <p className="text-sm text-gray-300">Referral Tracking</p>
-          <div className="mt-4 space-y-2">
-            <p>
-              Invited: <span className="font-semibold">145 people</span>
-            </p>
-            <p>
-              Bonus: <span className="font-semibold">1,465</span>
-            </p>
-            <p>
-              Safety Score:{" "}
-              <span className="font-semibold text-green-400">9.3</span>
-            </p>
           </div>
         </div>
       </div>

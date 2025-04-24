@@ -6,7 +6,7 @@ import Image from "next/image";
 const Sidebar = () => {
   return (
     <div className="flex min-h-screen">
-      <div className="w-64 bg-[#192341] text-white p-6">
+      <div className="w-64 bg-[#121b39] text-white p-6">
         <Link href="/" className="text-white text-lg font-semibold">
           <Image
             width={100}
@@ -35,9 +35,9 @@ const Sidebar = () => {
                 d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"
               />
             </svg>
-            <a href="#" className="hover:text-blue-400">
+            <Link href="/admin" className="hover:text-blue-400">
               Dashboard
-            </a>
+            </Link>
           </li>
           <li className=" flex items-center gap-3">
             <svg
@@ -56,9 +56,9 @@ const Sidebar = () => {
               />
             </svg>
 
-            <a href="#" className="hover:text-blue-400">
+            <Link href="/admin/users" className="hover:text-blue-400">
               Users
-            </a>
+            </Link>
           </li>
           <li className=" flex items-center gap-3">
             <svg
@@ -79,9 +79,9 @@ const Sidebar = () => {
               />
             </svg>
 
-            <a href="#" className="hover:text-blue-400">
+            <Link href="#" className="hover:text-blue-400">
               Products
-            </a>
+            </Link>
           </li>
           <li className=" flex items-center gap-3">
             <svg
@@ -101,9 +101,9 @@ const Sidebar = () => {
               />
             </svg>
 
-            <a href="#" className="hover:text-blue-400">
+            <Link href="#" className="hover:text-blue-400">
               Transactions
-            </a>
+            </Link>
           </li>
           <li className=" flex items-center gap-3">
             <svg
@@ -123,9 +123,9 @@ const Sidebar = () => {
               />
             </svg>
 
-            <a href="#" className="hover:text-blue-400">
+            <Link href="#" className="hover:text-blue-400">
               Chats
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

@@ -44,9 +44,12 @@ export default function RootLayout({
       <body className="bg-[#080B2A] relative">
         {isAdminPage ? (
           <div className="flex min-h-screen">
-            <Sidebar /> 
-            <main className="flex-1 bg-[#0f1535] text-white">
-              {children}
+            <Sidebar />
+            <main className="flex-1 bg-[#0f1535] text-white flex flex-col min-h-screen">
+              <div className="flex-1">{children}</div>
+              <div className="pt-4">
+                <Footer />
+              </div>
             </main>
           </div>
         ) : (
