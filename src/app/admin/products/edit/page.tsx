@@ -2,7 +2,6 @@
 
 import { Search } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function User() {
@@ -43,8 +42,8 @@ export default function User() {
         className="w-full absolute right-0 top-0 min-h-screen mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold flex justify-start text-nowrap">Add User</h1>
-        <div className="relative flex justify-end w-full">
+        <h1 className="text-3xl font-bold text-nowrap">Edit Product</h1>
+        <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
             <p>Wednesdey</p>
             <p>12 Jul 2025</p>

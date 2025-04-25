@@ -122,7 +122,7 @@ export default function Products() {
               />
             </div>
             <Link
-              href="/seller/my-product/add"
+              href="/admin/products/add"
               className="bg-blue-400 text-white font-medium rounded-lg p-2 w-2/5 flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
             >
               <svg
@@ -139,7 +139,7 @@ export default function Products() {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Add User
+              Add Product
             </Link>
           </div>
         </div>
