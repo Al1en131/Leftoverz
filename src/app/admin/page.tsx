@@ -1,12 +1,8 @@
 "use client";
 
-import { Search } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
 
 export default function Dashboard() {
-  const [profileOpen, setProfileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image

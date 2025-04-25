@@ -3,9 +3,8 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
-export default function Products() {
+export default function Chats() {
   const userData = [
     {
       id: 1,
@@ -48,7 +47,6 @@ export default function Products() {
       role: "Seller",
     },
   ];
-  const [profileOpen, setProfileOpen] = useState(false);
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image

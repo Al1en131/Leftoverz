@@ -1,10 +1,9 @@
 "use client";
 
-import { Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
-export default function User() {
+export default function AddProduct() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
