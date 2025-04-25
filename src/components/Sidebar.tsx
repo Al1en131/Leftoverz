@@ -13,10 +13,23 @@ const Sidebar = () => {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className="h-10 w-36"
+            className="h-12 w-36"
           />
         </Link>
-        <ul className="space-y-6 text-lg mt-8">
+        <ul className="space-y-6 text-lg mt-7">
+          <div className="flex gap-3 border-b py-3 border-white border-t items-center">
+            <Image
+              width={60}
+              height={60}
+              src="/images/profile.jpg"
+              alt="Profile"
+              className="w-16 h-16 rounded-full cursor-pointer"
+            />
+            <div>
+              <p>Admin</p>
+              <p className="text-base">Admin@gmail.com</p>
+            </div>
+          </div>
           <li className=" flex items-center gap-3">
             <svg
               className="w-6 text-gray-800 dark:text-white"
@@ -39,7 +52,7 @@ const Sidebar = () => {
               Dashboard
             </Link>
           </li>
-          <li className=" flex items-center gap-3">
+          <li className="flex items-center gap-3">
             <svg
               className="w-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -60,7 +73,7 @@ const Sidebar = () => {
               Users
             </Link>
           </li>
-          <li className=" flex items-center gap-3">
+          <li className="flex items-center gap-3">
             <svg
               className="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -83,7 +96,7 @@ const Sidebar = () => {
               Products
             </Link>
           </li>
-          <li className=" flex items-center gap-3">
+          <li className="flex items-center gap-3">
             <svg
               className="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"
@@ -105,7 +118,7 @@ const Sidebar = () => {
               Transactions
             </Link>
           </li>
-          <li className=" flex items-center gap-3">
+          <li className="flex items-center gap-3">
             <svg
               className="w-6 h-6 text-gray-800 dark:text-white"
               aria-hidden="true"

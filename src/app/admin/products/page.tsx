@@ -58,87 +58,13 @@ export default function Products() {
         src="/images/admin.png"
         className="w-full absolute right-0 top-0 min-h-screen mb-0"
       />
-      <Image
-        width={100}
-        height={100}
-        alt=""
-        src="/images/Star-1.svg"
-        className="w-8 absolute top-10 right-26 -z-0"
-      />
-      <Image
-        width={100}
-        height={100}
-        alt=""
-        src="/images/Star-1.svg"
-        className="w-4 absolute top-14 right-96 -z-0"
-      />
-      <Image
-        width={100}
-        height={100}
-        alt=""
-        src="/images/Star-1.svg"
-        className="w-4 absolute top-16 left-56 -z-0"
-      />
-      <Image
-        width={100}
-        height={100}
-        alt=""
-        src="/images/Star-1.svg"
-        className="w-4 absolute top-10 left-[550px] -z-0"
-      />
-      <div className="flex justify-between items-center mb-8 relative z-20">
-        <h1 className="text-3xl font-bold">Users</h1>
-        <div className="relative flex items-center gap-1 w-1/4">
-          <div className="relative w-full">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
-            />
-            <Search
-              className="absolute top-2.5 right-3 text-gray-400"
-              size={18}
-            />
+      <div className="flex justify-between items-center mb-7 relative z-20">
+        <h1 className="text-3xl font-bold">Products</h1>
+        <div className="relative flex justify-end gap-4 w-full">
+          <div className="block">
+            <p>Wednesdey</p>
+            <p>12 Jul 2025</p>
           </div>
-          <button
-            onClick={() => setProfileOpen(!profileOpen)}
-            className="w-1/4 flex justify-end"
-          >
-            <Image
-              width={40}
-              height={40}
-              src="/images/profile.jpg"
-              alt="Profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
-            />
-          </button>
-          {profileOpen && (
-            <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-              <div className="px-4 py-2 text-gray-800">
-                <p className="font-semibold">John Doe</p>
-                <p className="text-sm text-gray-500">john.doe@example.com</p>
-              </div>
-              <hr />
-              <Link
-                href="/buyer/detail-profile"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
-                Lihat Profil
-              </Link>
-              <Link
-                href="/buyer/favorite"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
-                Favorit
-              </Link>
-              <button
-                className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
-                onClick={() => console.log("Logout")}
-              >
-                Logout
-              </button>
-            </div>
-          )}
         </div>
       </div>
       <div className="mb-6 z-20">
@@ -160,13 +86,13 @@ export default function Products() {
               Tap to record →
             </button>
           </div>
-          <div className="relative z-10">
+          <div className="z-10">
             <Image
-              src="/images/dashboard.png"
+              src="/images/transaction.png"
               alt="Welcome"
               width={300}
               height={300}
-              className="rounded-lg w-full h-full"
+              className="rounded-lg absolute right-0 h-56 w-56 -top-10"
             />
           </div>
         </div>

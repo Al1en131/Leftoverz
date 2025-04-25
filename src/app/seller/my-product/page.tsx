@@ -177,22 +177,20 @@ export default function MyProduct() {
           <table className="w-full border border-blue-400 rounded-lg max-lg:px-6 overflow-hidden">
             <thead className="bg-white/10 text-white text-md">
               <tr className="border-b">
-                <th className="px-6 py-3 text-left">Image</th>
-                <th className="px-6 py-3 text-left">Product Name</th>
-                <th className="px-6 py-3 text-left">Category</th>
-                <th className="px-6 py-3 text-left">Description</th>
-                <th className="px-6 py-3 text-left">Location</th>
-                <th className="px-6 py-3 text-left">Price</th>
-                <th className="px-6 py-3 text-left">Status</th>
+                <th className="px-6 py-3 text-center">Image</th>
+                <th className="px-6 py-3 text-center">Product Name</th>
+                <th className="px-6 py-3 text-center">Category</th>
+                <th className="px-6 py-3 text-center">Description</th>
+                <th className="px-6 py-3 text-center">Location</th>
+                <th className="px-6 py-3 text-center">Price</th>
+                <th className="px-6 py-3 text-center">Status</th>
                 <th className="px-6 py-3 text-center">Action</th>
               </tr>
             </thead>
-
-            {/* Body */}
             <tbody>
               {galleryData.map((item) => (
                 <tr key={item.id} className="border-b bg-white/10 transition">
-                  <td className="px-6 py-4 justify-center">
+                  <td className="px-6 py-4 justify-center text-center">
                     <Image
                       src={item.image}
                       width={60}
@@ -201,12 +199,12 @@ export default function MyProduct() {
                       className="rounded-lg shadow-md"
                     />
                   </td>
-                  <td className="px-6 py-4 text-white">{item.name}</td>
-                  <td className="px-6 py-4 text-white">{item.category}</td>
-                  <td className="px-6 py-4 text-white">{item.description}</td>
-                  <td className="px-6 py-4 text-white">{item.location}</td>
-                  <td className="px-6 py-4 text-white">Rp. {item.price}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-white text-center">{item.name}</td>
+                  <td className="px-6 py-4 text-white text-center">{item.category}</td>
+                  <td className="px-6 py-4 text-white text-center">{item.description}</td>
+                  <td className="px-6 py-4 text-white text-center">{item.location}</td>
+                  <td className="px-6 py-4 text-white text-center">Rp. {item.price}</td>
+                  <td className="px-6 py-4 text-center">
                     <span
                       className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
                         item.status === "Available"
@@ -218,7 +216,7 @@ export default function MyProduct() {
                     </span>
                   </td>
 
-                  <td className="px-6 py-4 flex justify-center space-x-2">
+                  <td className="px-6 py-4 flex justify-center text-center space-x-2">
                     <Link
                       href="/seller/my-product/edit"
                       className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"

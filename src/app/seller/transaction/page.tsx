@@ -98,7 +98,9 @@ export default function Transaction() {
               className="rounded-2xl w-full h-64"
             />
             <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 md:ps-20 gap-2 text-white z-40">
-              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Transaction</h1>
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">
+                Transaction
+              </h1>
               <p className="max-lg:text-base md:text-lg max-w-3xl">
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
@@ -148,12 +150,12 @@ export default function Transaction() {
           <table className="w-full border border-blue-400 rounded-lg overflow-hidden">
             <thead className="bg-white/10 text-white text-md">
               <tr className="border-b">
-                <th className="px-6 py-3 text-left">Image</th>
-                <th className="px-6 py-3 text-left">Product Name</th>
-                <th className="px-6 py-3 text-left">Buyer</th>
-                <th className="px-6 py-3 text-left">Payment Method</th>
-                <th className="px-6 py-3 text-left">Price</th>
-                <th className="px-6 py-3 text-left">Status</th>
+                <th className="px-6 py-3 text-center">Image</th>
+                <th className="px-6 py-3 text-center">Product Name</th>
+                <th className="px-6 py-3 text-center">Buyer</th>
+                <th className="px-6 py-3 text-center">Payment Method</th>
+                <th className="px-6 py-3 text-center">Price</th>
+                <th className="px-6 py-3 text-center">Status</th>
                 <th className="px-6 py-3 text-center">Action</th>
               </tr>
             </thead>
@@ -161,7 +163,7 @@ export default function Transaction() {
             <tbody>
               {galleryData.map((item) => (
                 <tr key={item.id} className="border-b bg-white/10 transition">
-                  <td className="px-6 py-4 justify-center">
+                  <td className="px-6 py-4  text-center">
                     <Image
                       src={item.image}
                       width={60}
@@ -170,11 +172,19 @@ export default function Transaction() {
                       className="rounded-lg shadow-md"
                     />
                   </td>
-                  <td className="px-6 py-4 text-white">{item.name}</td>
-                  <td className="px-6 py-4 text-white">{item.buyer}</td>
-                  <td className="px-6 py-4 text-white">{item.payment}</td>
-                  <td className="px-6 py-4 text-white">Rp. {item.price}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 text-white  text-center">
+                    {item.name}
+                  </td>
+                  <td className="px-6 py-4 text-white  text-center">
+                    {item.buyer}
+                  </td>
+                  <td className="px-6 py-4 text-white  text-center">
+                    {item.payment}
+                  </td>
+                  <td className="px-6 py-4 text-white  text-center">
+                    Rp. {item.price}
+                  </td>
+                  <td className="px-6 py-4  text-center">
                     <span
                       className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
                         item.status === "Paid"
@@ -185,7 +195,7 @@ export default function Transaction() {
                       {item.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 flex justify-center space-x-2">
+                  <td className="px-6 py-4 flex  justify-center text-center space-x-2">
                     <Link
                       href={``}
                       className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
@@ -193,7 +203,6 @@ export default function Transaction() {
                       Edit
                     </Link>
 
-                    {/* Delete Button */}
                     <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
                       Delete
                     </button>
