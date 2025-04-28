@@ -33,23 +33,24 @@ export default function Products() {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!response.ok) {
-        // Menangani jika response tidak OK
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to fetch products");
       }
-  
+
       const data = await response.json();
-      setProducts(data.products); // Menyimpan data produk
-    } catch (error: any) {
-      // Cek jika error memiliki properti message
-      console.error("Error fetching products:", error.message || error);
+      setProducts(data.products);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error fetching products:", error.message);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
     } finally {
-      setLoading(false); // Set loading selesai setelah data diterima
+      setLoading(false);
     }
   };
-  
 
   // Mengambil data produk saat komponen pertama kali dimuat
   useEffect(() => {
@@ -180,9 +181,11 @@ export default function Products() {
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   {/* Asumsi ada gambar di produk */}
-                  <img
+                  <Image
                     src={product.image_url || "/images/default-product.png"}
                     alt={product.name}
+                    width={50}
+                    height={50}
                     className="w-12 h-12 object-cover rounded-full"
                   />
                 </td>
