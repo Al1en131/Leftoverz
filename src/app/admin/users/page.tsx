@@ -1,52 +1,57 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function User() {
-  const userData = [
-    {
-      id: 1,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 2,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 3,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 4,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 5,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-  ];
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);  // Halaman saat ini
+  const [itemsPerPage] = useState(5);  // Jumlah item per halaman
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("http://127.0.0.1:1031/api/v1/users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+
+        const data = await response.json();
+
+        if (data?.users) {
+          setUsers(data.users);
+        } else {
+          console.error("Data users tidak ditemukan dalam response.");
+        }
+
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  // Menghitung indeks pertama dan terakhir untuk setiap halaman
+  const indexOfLastUser = currentPage * itemsPerPage;
+  const indexOfFirstUser = indexOfLastUser - itemsPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Menghitung offset untuk nomor urut
+  const offset = (currentPage - 1) * itemsPerPage;
+
+  // Fungsi untuk berpindah halaman
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image
@@ -60,11 +65,12 @@ export default function User() {
         <h1 className="text-3xl font-bold">Users</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesdey</p>
+            <p>Wednesday</p>
             <p>12 Jul 2025</p>
           </div>
         </div>
       </div>
+
       <div className="mb-6 z-20">
         <div
           className="relative rounded-lg flex justify-between items-center z-40 text-start shadow-lg"
@@ -74,7 +80,7 @@ export default function User() {
           }}
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
-          <div className="relative z-10 text-white  p-6">
+          <div className="relative z-10 text-white p-6">
             <span className="text-sm font-normal">Welcome back,</span>
             <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
             <p className="text-sm text-gray-300">
@@ -95,6 +101,7 @@ export default function User() {
           </div>
         </div>
       </div>
+
       <div
         className="relative overflow-x-auto rounded-lg"
         style={{
@@ -104,8 +111,8 @@ export default function User() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">Lorem Ipsum</h3>
-            <p>Lorem Ipsum bla bla bla</p>
+            <h3 className="text-xl font-bold">User List</h3>
+            <p>List of all registered users</p>
           </div>
           <div className="flex gap-2 items-center">
             <div className="relative w-3/5">
@@ -141,64 +148,81 @@ export default function User() {
             </Link>
           </div>
         </div>
-        <table className="w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
-          <thead className=" text-white text-md">
-            <tr className="border-b-2 border-[#56577A]">
-              <th className="px-6 py-3 text-center">No.</th>
-              <th className="px-6 py-3 text-center">Name</th>
-              <th className="px-6 py-3 text-center">Email</th>
-              <th className="px-6 py-3 text-center">Password</th>
-              <th className="px-6 py-3 text-center">Phone Number</th>
-              <th className="px-6 py-3 text-center">Role</th>
-              <th className="px-6 py-3 text-center">Action</th>
-            </tr>
-          </thead>
 
-          <tbody>
-            {userData.map((item) => (
-              <tr
-                key={item.id}
-                className="transition border-b border-[#56577A]"
-              >
-                <td className="px-6 py-4 text-white text-center">{item.id}</td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.name}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.email}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.password}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.phone_number}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <span
-                    className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
-                      item.role === "Seller"
-                        ? "bg-green-700 text-white"
-                        : "bg-red-700 text-white"
-                    }`}
-                  >
-                    {item.role}
-                  </span>
-                </td>
-                <td className="px-6 py-4 flex justify-center space-x-2 text-center">
-                  <Link
-                    href="/seller/my-product/edit"
-                    className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
-                  >
-                    Edit
-                  </Link>
-                  <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
-                    Delete
-                  </button>
-                </td>
+        <div className="overflow-x-auto">
+          <table className="min-w-full rounded-lg my-4">
+            <thead className="text-white text-md">
+              <tr className="border-b-2 border-[#56577A]">
+                <th className="px-6 py-3 text-center">No.</th>
+                <th className="px-6 py-3 text-center">Name</th>
+                <th className="px-6 py-3 text-center">Email</th>
+                <th className="px-6 py-3 text-center">Phone Number</th>
+                <th className="px-6 py-3 text-center">Role</th>
+                <th className="px-6 py-3 text-center">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-10">
+                    Loading users...
+                  </td>
+                </tr>
+              ) : (
+                currentUsers.map((item, index) => (
+                  <tr key={item.id} className="border-b border-[#56577A]">
+                    <td className="px-6 py-4 text-center">{index + offset + 1}</td> {/* Update nomor urut */}
+                    <td className="px-6 py-4 text-center">{item.name}</td>
+                    <td className="px-6 py-4 text-center">{item.email}</td>
+                    <td className="px-6 py-4 text-center">{item.no_hp}</td>
+                    <td className="px-6 py-4 text-center">
+                      <span
+                        className={`px-4 py-2 text-sm font-semibold capitalize rounded-full ${
+                          item.role === "penjual"
+                            ? "bg-blue-700 text-white"
+                            : item.role === "pembeli"
+                            ? "bg-blue-500 text-white"
+                            : "bg-blue-300 text-white"
+                        }`}
+                      >
+                        {item.role}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 flex justify-center space-x-2">
+                      <Link
+                        href={`/admin/users/edit/${item.id}`}
+                        className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                      >
+                        Edit
+                      </Link>
+                      <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Pagination */}
+        <div className="flex justify-center my-6">
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-white bg-blue-400 rounded-md mx-2"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage * itemsPerPage >= users.length}
+            className="px-4 py-2 text-white bg-blue-400 rounded-md mx-2"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
