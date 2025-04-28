@@ -14,11 +14,19 @@ type User = {
 };
 
 export default function User() {
-  const [users, setUsers] = useState<User[]>([]); // Use User[] instead of an empty array
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);  // Halaman saat ini
-  const [itemsPerPage] = useState(5);  // Jumlah item per halaman
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(5);
+  const [currentDate, setCurrentDate] = useState<string>(''); // State untuk tanggal dinamis
 
+  // Mengambil waktu dinamis setelah komponen dipasang
+  useEffect(() => {
+    const today = new Date();
+    setCurrentDate(today.toLocaleDateString()); // Setel tanggal
+  }, []);
+
+  // Mengambil data user dari API
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -27,7 +35,7 @@ export default function User() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -73,8 +81,7 @@ export default function User() {
         <h1 className="text-3xl font-bold">Users</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesday</p>
-            <p>12 Jul 2025</p>
+            <p>{currentDate || "Loading..."}</p> {/* Menampilkan tanggal jika sudah tersedia */}
           </div>
         </div>
       </div>
@@ -179,7 +186,9 @@ export default function User() {
               ) : (
                 currentUsers.map((item, index) => (
                   <tr key={item.id} className="border-b border-[#56577A]">
-                    <td className="px-6 py-4 text-center">{index + offset + 1}</td> {/* Update nomor urut */}
+                    <td className="px-6 py-4 text-center">
+                      {index + offset + 1}
+                    </td>
                     <td className="px-6 py-4 text-center">{item.name}</td>
                     <td className="px-6 py-4 text-center">{item.email}</td>
                     <td className="px-6 py-4 text-center">{item.no_hp}</td>

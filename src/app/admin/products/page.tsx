@@ -3,50 +3,63 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react"; // Import hooks useEffect dan useState
+
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  no_hp: string;
+  role: string;
+  image_url: string; // Menambahkan image_url
+  category: string; // Menambahkan category
+  description: string; // Menambahkan description
+  location: string; // Menambahkan location
+  price: number; // Menambahkan price
+  status: string; // Menambahkan status
+};
 
 export default function Products() {
-  const userData = [
-    {
-      id: 1,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 2,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 3,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 4,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 5,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-  ];
+  const [products, setProducts] = useState<Product[]>([]); // State untuk menyimpan produk
+  const [loading, setLoading] = useState(true); // State untuk menandakan loading
+
+  const fetchProducts = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://127.0.0.1:1031/api/v1/products", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        // Menangani jika response tidak OK
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch products");
+      }
+  
+      const data = await response.json();
+      setProducts(data.products); // Menyimpan data produk
+    } catch (error: any) {
+      // Cek jika error memiliki properti message
+      console.error("Error fetching products:", error.message || error);
+    } finally {
+      setLoading(false); // Set loading selesai setelah data diterima
+    }
+  };
+  
+
+  // Mengambil data produk saat komponen pertama kali dimuat
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Menampilkan loading jika data masih diambil
+  }
+
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image
@@ -157,38 +170,51 @@ export default function Products() {
           </thead>
 
           <tbody>
-            {userData.map((item) => (
+            {products.map((product) => (
               <tr
-                key={item.id}
+                key={product.id}
                 className="transition border-b border-[#56577A]"
               >
-                <td className="px-6 py-4 text-white text-center">{item.id}</td>
                 <td className="px-6 py-4 text-white text-center">
-                  {item.name}
+                  {product.id}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  {item.email}
+                  {/* Asumsi ada gambar di produk */}
+                  <img
+                    src={product.image_url || "/images/default-product.png"}
+                    alt={product.name}
+                    className="w-12 h-12 object-cover rounded-full"
+                  />
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  {item.password}
+                  {product.name}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  {item.phone_number}
+                  {product.category}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {product.description}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {product.location}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {product.price}
                 </td>
                 <td className="px-6 py-4 text-center">
                   <span
-                    className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
-                      item.role === "Seller"
+                    className={`px-4 py-2 text-sm capitalize tracking-wide font-semibold rounded-full ${
+                      product.status === "available"
                         ? "bg-green-700 text-white"
                         : "bg-red-700 text-white"
                     }`}
                   >
-                    {item.role}
+                    {product.status}
                   </span>
                 </td>
                 <td className="px-6 py-4 flex justify-center space-x-2 text-center">
                   <Link
-                    href="/seller/my-product/edit"
+                    href={`/admin/products/edit/${product.id}`}
                     className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
                   >
                     Edit
