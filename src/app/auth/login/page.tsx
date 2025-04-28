@@ -47,7 +47,7 @@ export default function Login() {
         setUserRole(data.role);
         setShowSuccessPopup(true);
       }
-    } catch (error) {
+    } catch {
       setErrorMessage("An error occurred. Please try again.");
       setShowErrorPopup(true);
     } finally {

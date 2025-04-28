@@ -5,8 +5,16 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+type User = {
+  id: number;
+  name: string;
+  email: string;
+  no_hp: string;
+  role: string;
+};
+
 export default function User() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]); // Use User[] instead of an empty array
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);  // Halaman saat ini
   const [itemsPerPage] = useState(5);  // Jumlah item per halaman
@@ -50,7 +58,7 @@ export default function User() {
   const offset = (currentPage - 1) * itemsPerPage;
 
   // Fungsi untuk berpindah halaman
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">

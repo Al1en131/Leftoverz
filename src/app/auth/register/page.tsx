@@ -64,8 +64,12 @@ export default function Register() {
       }
       localStorage.setItem("role", formData.role);
       setShowSuccessPopup(true);
-    } catch (err: any) {
-      setError(err.message || "Something went wrong");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message || "Something went wrong");
+      } else {
+        setError("Something went wrong");
+      }
       setShowErrorPopup(true);
     } finally {
       setLoading(false);
