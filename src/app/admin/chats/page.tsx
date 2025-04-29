@@ -1,52 +1,69 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
+
+type User = {
+  id: number;
+  name: string;
+};
+
+type Product = {
+  id: number;
+  name: string;
+};
+
+type Chat = {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  item_id: number;
+  message: string;
+  read_status: 0 | 1;
+  created_at: string;
+  sender?: User;
+  receiver?: User;
+  Product?: Product;
+};
 
 export default function Chats() {
-  const userData = [
-    {
-      id: 1,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 2,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 3,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 4,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-    {
-      id: 5,
-      name: "Alif Essa",
-      email: "essa@gmail.com",
-      password: "password",
-      phone_number: "New York",
-      role: "Seller",
-    },
-  ];
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("http://127.0.0.1:1031/api/v1/chats", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch products");
+        }
+
+        const data = await response.json();
+        setChats(data.chats);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Error fetching products:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChats();
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image
@@ -60,7 +77,7 @@ export default function Chats() {
         <h1 className="text-3xl font-bold">Chats</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesdey</p>
+            <p>Wednesday</p>
             <p>12 Jul 2025</p>
           </div>
         </div>
@@ -74,7 +91,7 @@ export default function Chats() {
           }}
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
-          <div className="relative z-10 text-white  p-6">
+          <div className="relative z-10 text-white p-6">
             <span className="text-sm font-normal">Welcome back,</span>
             <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
             <p className="text-sm text-gray-300">
@@ -104,8 +121,8 @@ export default function Chats() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">Lorem Ipsum</h3>
-            <p>Lorem Ipsum bla bla bla</p>
+            <h3 className="text-xl font-bold">Chat List</h3>
+            <p>All user conversations</p>
           </div>
           <div className="flex gap-2 items-center">
             <div className="relative w-full">
@@ -127,54 +144,53 @@ export default function Chats() {
               <th className="px-6 py-3 text-center">No.</th>
               <th className="px-6 py-3 text-center">Sender</th>
               <th className="px-6 py-3 text-center">Receiver</th>
-              <th className="px-6 py-3 text-center">Chat</th>
-              <th className="px-6 py-3 text-center">Action</th>
+              <th className="px-6 py-3 text-center">Message</th>
+              <th className="px-6 py-3 text-center">Product</th>
+              <th className="px-6 py-3 text-center">Read Status</th>
             </tr>
           </thead>
 
           <tbody>
-            {userData.map((item) => (
-              <tr
-                key={item.id}
-                className="transition border-b border-[#56577A]"
-              >
-                <td className="px-6 py-4 text-white text-center">{item.id}</td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.name}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.email}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.password}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {item.phone_number}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  <span
-                    className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
-                      item.role === "Seller"
-                        ? "bg-green-700 text-white"
-                        : "bg-red-700 text-white"
-                    }`}
-                  >
-                    {item.role}
-                  </span>
-                </td>
-                <td className="px-6 py-4 flex justify-center space-x-2 text-center">
-                  <Link
-                    href="/seller/my-product/edit"
-                    className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
-                  >
-                    Edit
-                  </Link>
-                  <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
-                    Delete
-                  </button>
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="text-center py-6">
+                  Loading chats...
                 </td>
               </tr>
-            ))}
+            ) : chats.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="text-center py-6">
+                  No chats found
+                </td>
+              </tr>
+            ) : (
+              chats.map((chat, index) => (
+                <tr key={chat.id} className="border-b border-[#56577A]">
+                  <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4 text-center">
+                    {chat.sender?.name || "-"}
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    {chat.receiver?.name || "-"}
+                  </td>
+                  <td className="px-6 py-4 text-center">{chat.message}</td>
+                  <td className="px-6 py-4 text-center">
+                    {chat.Product?.name || "N/A"}
+                  </td>
+                  <td className="px-6 py-4 text-center">
+                    {chat.read_status == 0 ? (
+                      <button className="px-3 py-1 bg-red-500 text-white rounded-md text-sm">
+                        Belum Dibaca
+                      </button>
+                    ) : (
+                      <button className="px-3 py-1 bg-green-500 text-white rounded-md text-sm">
+                        Sudah Dibaca
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

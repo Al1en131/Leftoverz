@@ -4,7 +4,6 @@ import { Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-// Tipe data dari response backend
 type RawTransaction = {
   id: number;
   buyer_id: number;
