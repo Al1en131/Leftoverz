@@ -179,11 +179,11 @@ export default function Chats() {
                   </td>
                   <td className="px-6 py-4 text-center">
                     {chat.read_status == 0 ? (
-                      <button className="px-3 py-1 bg-red-500 text-white rounded-md text-sm">
+                      <button className="px-4 py-1 bg-red-500 text-white rounded-full text-sm">
                         Belum Dibaca
                       </button>
                     ) : (
-                      <button className="px-3 py-1 bg-green-500 text-white rounded-md text-sm">
+                      <button className="px-4 py-1 bg-blue-400 text-white rounded-full text-sm">
                         Sudah Dibaca
                       </button>
                     )}
