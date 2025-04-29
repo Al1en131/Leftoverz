@@ -27,6 +27,25 @@ type Transaction = RawTransaction & {
 export default function Products() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [dateString, setDateString] = useState({
+    day: "",
+    fullDate: "",
+  });
+
+  useEffect(() => {
+    const now = new Date();
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+
+    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+
+    setDateString({ day, fullDate });
+  }, []);
 
   const getStatusColor = (status: string | null) => {
     switch (status) {
@@ -46,13 +65,16 @@ export default function Products() {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("Token not found");
 
-      const response = await fetch("http://127.0.0.1:1031/api/v1/transactions", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "http://127.0.0.1:1031/api/v1/transactions",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -61,12 +83,14 @@ export default function Products() {
 
       const data: { transactions: RawTransaction[] } = await response.json();
 
-      const mappedTransactions: Transaction[] = data.transactions.map((transaction) => ({
-        ...transaction,
-        item_name: transaction.item?.name || "Unknown",
-        buyer_name: transaction.buyer?.name || "Unknown",
-        seller_name: transaction.seller?.name || "Unknown",
-      }));
+      const mappedTransactions: Transaction[] = data.transactions.map(
+        (transaction) => ({
+          ...transaction,
+          item_name: transaction.item?.name || "Unknown",
+          buyer_name: transaction.buyer?.name || "Unknown",
+          seller_name: transaction.seller?.name || "Unknown",
+        })
+      );
 
       setTransactions(mappedTransactions);
     } catch (error: unknown) {
@@ -99,14 +123,14 @@ export default function Products() {
         height={100}
         alt="Admin"
         src="/images/admin.png"
-        className="w-full absolute right-0 top-0 min-h-screen mb-0"
+        className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
         <h1 className="text-3xl font-bold">Transactions</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesday</p>
-            <p>12 Jul 2025</p>
+            <p>{dateString.day}</p>
+            <p>{dateString.fullDate}</p>
           </div>
         </div>
       </div>
@@ -161,7 +185,10 @@ export default function Products() {
                 placeholder="Search..."
                 className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
               />
-              <Search className="absolute top-2.5 right-3 text-gray-400" size={18} />
+              <Search
+                className="absolute top-2.5 right-3 text-gray-400"
+                size={18}
+              />
             </div>
           </div>
         </div>
@@ -181,8 +208,13 @@ export default function Products() {
           </thead>
           <tbody>
             {transactions.map((item, index) => (
-              <tr key={item.id} className="transition border-b border-[#56577A]">
-                <td className="px-6 py-4 text-white text-center">{index + 1}</td>
+              <tr
+                key={item.id}
+                className="transition border-b border-[#56577A]"
+              >
+                <td className="px-6 py-4 text-white text-center">
+                  {index + 1}
+                </td>
                 <td className="px-6 py-4 text-white text-center justify-center flex">
                   <Image
                     src={`/images/product_${item.item_id}.png`}
@@ -191,11 +223,21 @@ export default function Products() {
                     height={40}
                   />
                 </td>
-                <td className="px-6 py-4 text-white text-center">{item.item_name}</td>
-                <td className="px-6 py-4 text-white text-center">{item.buyer_name}</td>
-                <td className="px-6 py-4 text-white text-center">{item.seller_name}</td>
-                <td className="px-6 py-4 text-white text-center">{item.payment_method}</td>
-                <td className="px-6 py-4 text-white text-center">${item.total_price}</td>
+                <td className="px-6 py-4 text-white text-center">
+                  {item.item_name}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {item.buyer_name}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {item.seller_name}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {item.payment_method}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  ${item.total_price}
+                </td>
                 <td className="px-6 py-4 text-center">
                   <span
                     className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${getStatusColor(

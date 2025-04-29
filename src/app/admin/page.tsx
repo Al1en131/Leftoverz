@@ -10,7 +10,7 @@ export default function Dashboard() {
         height={100}
         alt=""
         src="/images/admin.png"
-        className="w-full absolute right-0 top-0 min-h-fit mb-0"
+        className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
         <h1 className="text-3xl font-bold">Dashboard</h1>

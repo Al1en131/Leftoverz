@@ -22,6 +22,25 @@ type Product = {
 export default function Products() {
   const [products, setProducts] = useState<Product[]>([]); // State untuk menyimpan produk
   const [loading, setLoading] = useState(true); // State untuk menandakan loading
+  const [dateString, setDateString] = useState({
+    day: "",
+    fullDate: "",
+  });
+
+  useEffect(() => {
+    const now = new Date();
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+
+    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+
+    setDateString({ day, fullDate });
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -68,14 +87,14 @@ export default function Products() {
         height={100}
         alt=""
         src="/images/admin.png"
-        className="w-full absolute right-0 top-0 min-h-screen mb-0"
+        className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
         <h1 className="text-3xl font-bold">Products</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesdey</p>
-            <p>12 Jul 2025</p>
+            <p>{dateString.day}</p>
+            <p>{dateString.fullDate}</p>
           </div>
         </div>
       </div>

@@ -18,15 +18,32 @@ export default function User() {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
-  const [currentDate, setCurrentDate] = useState<string>(''); // State untuk tanggal dinamis
+  const [currentDate, setCurrentDate] = useState<string>("");
+  const [dateString, setDateString] = useState({
+    day: "",
+    fullDate: "",
+  });
 
-  // Mengambil waktu dinamis setelah komponen dipasang
   useEffect(() => {
-    const today = new Date();
-    setCurrentDate(today.toLocaleDateString()); // Setel tanggal
+    const now = new Date();
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
+
+    setDateString({ day, fullDate });
   }, []);
 
-  // Mengambil data user dari API
+  useEffect(() => {
+    const today = new Date();
+    setCurrentDate(today.toLocaleDateString());
+  }, [currentDate]);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -57,15 +74,12 @@ export default function User() {
     fetchUsers();
   }, []);
 
-  // Menghitung indeks pertama dan terakhir untuk setiap halaman
   const indexOfLastUser = currentPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
 
-  // Menghitung offset untuk nomor urut
   const offset = (currentPage - 1) * itemsPerPage;
 
-  // Fungsi untuk berpindah halaman
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
@@ -75,13 +89,14 @@ export default function User() {
         height={100}
         alt=""
         src="/images/admin.png"
-        className="w-full absolute right-0 top-0 min-h-screen mb-0"
+        className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
         <h1 className="text-3xl font-bold">Users</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>{currentDate || "Loading..."}</p> {/* Menampilkan tanggal jika sudah tersedia */}
+            <p>{dateString.day}</p>
+            <p>{dateString.fullDate}</p>
           </div>
         </div>
       </div>
