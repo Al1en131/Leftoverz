@@ -135,7 +135,7 @@ export default function Products() {
             </div>
             <Link
               href="/admin/products/add"
-              className="bg-blue-400 text-white font-medium rounded-lg p-2 w-2/5 flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
+              className="bg-blue-400 text-white font-medium rounded-lg p-2 w-full flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
