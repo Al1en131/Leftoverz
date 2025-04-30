@@ -236,7 +236,7 @@ export default function Products() {
                   {item.payment_method}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  ${item.total_price}
+                  Rp {item.total_price.toLocaleString("id-ID")}
                 </td>
                 <td className="px-6 py-4 text-center">
                   <span

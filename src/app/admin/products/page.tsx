@@ -11,8 +11,7 @@ type Product = {
   email: string;
   no_hp: string;
   role: string;
-  image_url: string; // Menambahkan image_url
-  category: string; // Menambahkan category
+  image: string[]; // Ganti dari string jadi array of string
   description: string; // Menambahkan description
   location: string; // Menambahkan location
   price: number; // Menambahkan price
@@ -59,7 +58,31 @@ export default function Products() {
       }
 
       const data = await response.json();
-      setProducts(data.products);
+
+      const parsedProducts = data.products.map((product: Product) => {
+        let parsedImage: string[] = [];
+
+        if (typeof product.image === "string") {
+          try {
+            const parsed = JSON.parse(product.image);
+            if (Array.isArray(parsed)) {
+              parsedImage = parsed;
+            }
+          } catch {
+            parsedImage = [];
+          }
+        } else if (Array.isArray(product.image)) {
+          parsedImage = product.image;
+        }
+
+        return {
+          ...product,
+          image: parsedImage,
+        };
+      });
+
+      console.log("Parsed Products:", parsedProducts); // Untuk debug di console
+      setProducts(parsedProducts);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Error fetching products:", error.message);
@@ -71,13 +94,12 @@ export default function Products() {
     }
   };
 
-  // Mengambil data produk saat komponen pertama kali dimuat
   useEffect(() => {
     fetchProducts();
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // Menampilkan loading jika data masih diambil
+    return <div>Loading...</div>;
   }
 
   return (
@@ -180,7 +202,6 @@ export default function Products() {
               <th className="px-6 py-3 text-center">No.</th>
               <th className="px-6 py-3 text-center">Image</th>
               <th className="px-6 py-3 text-center">Product Name</th>
-              <th className="px-6 py-3 text-center">Category</th>
               <th className="px-6 py-3 text-center">Description</th>
               <th className="px-6 py-3 text-center">Location</th>
               <th className="px-6 py-3 text-center">Price</th>
@@ -190,29 +211,33 @@ export default function Products() {
           </thead>
 
           <tbody>
-            {products.map((product) => (
+            {products.map((product, index) => (
               <tr
                 key={product.id}
                 className="transition border-b border-[#56577A]"
               >
                 <td className="px-6 py-4 text-white text-center">
-                  {product.id}
+                  {index + 1}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  {/* Asumsi ada gambar di produk */}
                   <Image
-                    src={product.image_url || "/images/default-product.png"}
+                    src={
+                      product.image &&
+                      Array.isArray(product.image) &&
+                      product.image.length > 0 &&
+                      typeof product.image[0] === "string" &&
+                      product.image[0].startsWith("/")
+                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        : "/images/default-product.png"
+                    }
                     alt={product.name}
                     width={50}
                     height={50}
-                    className="w-12 h-12 object-cover rounded-full"
+                    className="w-12 h-12 object-cover rounded-2xl"
                   />
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   {product.name}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {product.category}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   {product.description}
@@ -221,7 +246,7 @@ export default function Products() {
                   {product.location}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  {product.price}
+                  Rp {product.price.toLocaleString("id-ID")}
                 </td>
                 <td className="px-6 py-4 text-center">
                   <span
