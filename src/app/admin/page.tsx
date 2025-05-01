@@ -1,8 +1,261 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+
+type RawTransaction = {
+  id: number;
+  buyer_id: number;
+  seller_id: number;
+  item_id: number;
+  total_price: number;
+  payment_method: "COD" | "e-wallet" | "bank transfer";
+  status: "pending" | "paid" | "cancelled" | null;
+  created_at: string;
+  item?: {
+    name: string;
+    image: string[]; // Tambahkan ini
+  };
+  buyer?: { name: string };
+  seller?: { name: string };
+};
+
+type Transaction = RawTransaction & {
+  item_name: string;
+  buyer_name: string;
+  seller_name: string;
+  image: string[];
+};
+
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  no_hp: string;
+  role: string;
+  image: string[];
+  description: string;
+  price: number;
+  status: string;
+  user_id: number;
+  seller?: { name: string };
+};
 
 export default function Dashboard() {
+  const [penjualCount, setPenjualCount] = useState(0);
+  const [pembeliCount, setPembeliCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [productCount, setProductCount] = useState(0);
+  const [transactionCount, setTransactionCount] = useState(0);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      if (!token) {
+        console.error("Token tidak ditemukan");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        };
+
+        const [penjualRes, pembeliRes] = await Promise.all([
+          fetch("http://127.0.0.1:1031/api/v1/count/seller", { headers }),
+          fetch("http://127.0.0.1:1031/api/v1/count/buyer", { headers }),
+        ]);
+
+        if (penjualRes.ok && pembeliRes.ok) {
+          const penjualData = await penjualRes.json();
+          const pembeliData = await pembeliRes.json();
+
+          setPenjualCount(penjualData.count);
+          setPembeliCount(pembeliData.count);
+        } else {
+          throw new Error("Gagal mengambil data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchDataProduct = async () => {
+      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      if (!token) {
+        console.error("Token tidak ditemukan");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        };
+
+        const [productRes] = await Promise.all([
+          fetch("http://127.0.0.1:1031/api/v1/count/product", { headers }),
+        ]);
+
+        if (productRes.ok) {
+          const productData = await productRes.json();
+
+          setProductCount(productData.count);
+        } else {
+          throw new Error("Gagal mengambil data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchDataTransaction = async () => {
+      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      if (!token) {
+        console.error("Token tidak ditemukan");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const headers = {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        };
+
+        const [transactionRes] = await Promise.all([
+          fetch("http://127.0.0.1:1031/api/v1/count/transaction", { headers }),
+        ]);
+
+        if (transactionRes.ok) {
+          const transactionData = await transactionRes.json();
+
+          setTransactionCount(transactionData.count);
+        } else {
+          throw new Error("Gagal mengambil data");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchTransactions = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) throw new Error("Token not found");
+
+        const response = await fetch(
+          "http://127.0.0.1:1031/api/v1/transactions",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch transactions");
+        }
+
+        const data: { transactions: RawTransaction[] } = await response.json();
+
+        const mappedTransactions: Transaction[] = data.transactions
+          .slice(0, 6)
+          .map((transaction) => ({
+            ...transaction,
+            item_name: transaction.item?.name || "Unknown",
+            buyer_name: transaction.buyer?.name || "Unknown",
+            seller_name: transaction.seller?.name || "Unknown",
+            image: transaction.item?.image || [],
+          }));
+
+        setTransactions(mappedTransactions);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Error fetching transactions:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("http://127.0.0.1:1031/api/v1/products", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch products");
+        }
+
+        const data = await response.json();
+
+        const parsedProducts = data.products
+          .slice(0, 4) // Mengambil hanya 5 produk terbaru
+          .map((product: Product) => {
+            let parsedImage: string[] = [];
+
+            if (typeof product.image === "string") {
+              try {
+                const parsed = JSON.parse(product.image);
+                if (Array.isArray(parsed)) {
+                  parsedImage = parsed;
+                }
+              } catch {
+                parsedImage = [];
+              }
+            } else if (Array.isArray(product.image)) {
+              parsedImage = product.image;
+            }
+
+            return {
+              ...product,
+              image: parsedImage,
+            };
+          });
+
+        setProducts(parsedProducts);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Error fetching products:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+    fetchDataProduct();
+    fetchDataTransaction();
+    fetchTransactions();
+    fetchProducts();
+  }, []);
+
+  // Tampilan jika masih loading
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
       <Image
@@ -25,22 +278,22 @@ export default function Dashboard() {
         {[
           {
             label: "Buyer",
-            value: "10k",
+            value: pembeliCount.toLocaleString(), // Menampilkan jumlah pembeli
             color: "text-green-400",
           },
           {
             label: "Seller",
-            value: "2,300",
+            value: penjualCount.toLocaleString(), // Menampilkan jumlah penjual
             color: "text-green-400",
           },
           {
             label: "Total Products",
-            value: "3,052",
+            value: productCount.toLocaleString(),
             color: "text-red-400",
           },
           {
             label: "Total purchase",
-            value: "Rp. 73,000",
+            value: transactionCount.toLocaleString(),
             color: "text-green-400",
           },
         ].map((item, i) => (
@@ -70,9 +323,7 @@ export default function Dashboard() {
           <div className="relative z-10 text-white  p-6">
             <span className="text-sm font-normal">Welcome back,</span>
             <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
-            <p className="text-sm text-gray-300">
-              Glad to see you again!
-            </p>
+            <p className="text-sm text-gray-300">Glad to see you again!</p>
             <button className="mt-4 text-white text-sm flex items-center gap-2">
               Tap to dashboard →
             </button>
@@ -106,12 +357,12 @@ export default function Dashboard() {
               </span>
             </div>
             <div className="flex-shrink-0">
-              <a
-                href="#"
+              <Link
+                href="/admin/transactions"
                 className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2"
               >
                 View all
-              </a>
+              </Link>
             </div>
           </div>
           <div className="flex flex-col mt-8">
@@ -125,107 +376,36 @@ export default function Dashboard() {
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Transaction
+                          Product Name
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Date & Time
+                          Buyer
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Amount
+                          Price
                         </th>
                       </tr>
                     </thead>
                     <tbody className="">
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment from{" "}
-                          <span className="font-semibold">Bonnie Green</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 23 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $2300
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white rounded-lg rounded-left">
-                          Payment refund to{" "}
-                          <span className="font-semibold">#00910</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 23 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          -$670
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment failed from{" "}
-                          <span className="font-semibold">#087651</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 18 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $234
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white rounded-lg rounded-left">
-                          Payment from{" "}
-                          <span className="font-semibold">Lana Byrd</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 15 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $5000
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment from{" "}
-                          <span className="font-semibold">Jese Leos</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 15 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $2300
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white rounded-lg rounded-left">
-                          Payment from{" "}
-                          <span className="font-semibold">THEMESBERG LLC</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 11 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $560
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment from{" "}
-                          <span className="font-semibold">Lana Lysle</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 6 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $1437
-                        </td>
-                      </tr>
+                      {transactions.map((tx, index) => (
+                        <tr key={index} className="border-b border-[#56577A]">
+                          <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
+                            {tx.item_name}
+                          </td>
+                          <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
+                            {tx.buyer_name}
+                          </td>
+                          <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
+                            Rp {tx.total_price.toLocaleString("id-ID")}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -249,12 +429,12 @@ export default function Dashboard() {
               </span>
             </div>
             <div className="flex-shrink-0">
-              <a
-                href="#"
+              <Link
+                href="/admin/products"
                 className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2"
               >
                 View all
-              </a>
+              </Link>
             </div>
           </div>
           <div className="flex flex-col mt-8">
@@ -268,107 +448,53 @@ export default function Dashboard() {
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Transaction
+                          Image
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Date & Time
+                          Product Name
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Amount
+                          Price
                         </th>
                       </tr>
                     </thead>
                     <tbody className="">
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment from{" "}
-                          <span className="font-semibold">Bonnie Green</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 23 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $2300
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white rounded-lg rounded-left">
-                          Payment refund to{" "}
-                          <span className="font-semibold">#00910</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 23 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          -$670
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment failed from{" "}
-                          <span className="font-semibold">#087651</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 18 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $234
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white rounded-lg rounded-left">
-                          Payment from{" "}
-                          <span className="font-semibold">Lana Byrd</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 15 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $5000
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment from{" "}
-                          <span className="font-semibold">Jese Leos</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 15 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $2300
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white rounded-lg rounded-left">
-                          Payment from{" "}
-                          <span className="font-semibold">THEMESBERG LLC</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 11 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $560
-                        </td>
-                      </tr>
-                      <tr className="border-b border-[#56577A]">
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Payment from{" "}
-                          <span className="font-semibold">Lana Lysle</span>
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
-                          Apr 6 ,2021
-                        </td>
-                        <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                          $1437
-                        </td>
-                      </tr>
+                      {products.map((product, index) => (
+                        <tr
+                          key={product.id}
+                          className="transition border-b border-[#56577A]"
+                        >
+                          <td className="px-4 py-4 text-white text-left">
+                            <Image
+                              src={
+                                product.image &&
+                                Array.isArray(product.image) &&
+                                product.image.length > 0 &&
+                                typeof product.image[0] === "string" &&
+                                product.image[0].startsWith("/")
+                                  ? `http://127.0.0.1:1031${product.image[0]}`
+                                  : "/images/default-product.png"
+                              }
+                              alt={product.name}
+                              width={50}
+                              height={50}
+                              className="w-12 h-12 object-cover rounded-2xl"
+                            />
+                          </td>
+                          <td className="px-4 py-4 text-white text-left">
+                            {product.name}
+                          </td>
+                          <td className="px-4 py-4 text-white text-left">
+                            Rp {product.price.toLocaleString("id-ID")}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
