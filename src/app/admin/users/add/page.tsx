@@ -6,12 +6,21 @@ import { useRouter } from "next/navigation";
 
 export default function User() {
   const router = useRouter();
+  const [provinces, setProvinces] = useState([]);
+  const [regency, setRegency] = useState([]);
+  const [subdistricts, setSubdistricts] = useState([]);
+  const [wards, setWards] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     role: "",
     no_hp: "",
+    address: "",
+    province: "",
+    regency: "",
+    subdistrict: "",
+    ward: "",
   });
 
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -29,13 +38,100 @@ export default function User() {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
+  };
+
+  useEffect(() => {
+    fetch(
+      "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.code === "200" && Array.isArray(data.value)) {
+          setProvinces(data.value);
+        } else {
+          console.error("Gagal mengambil data:", data);
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  }, []);
+
+  const handleChangeRegency = async (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (name === "province") {
+      // Cari ID dari provinsi yang dipilih
+      const selectedProvince = provinces.find((p: any) => p.name === value);
+      if (selectedProvince) {
+        try {
+          const res = await fetch(
+            `https://api.binderbyte.com/wilayah/kabupaten?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&id_provinsi=${selectedProvince.id}`
+          );
+          const data = await res.json();
+          if (data.code === "200") {
+            setRegency(data.value);
+          } else {
+            setRegency([]);
+          }
+        } catch (err) {
+          console.error("Error loading kabupaten", err);
+          setRegency([]);
+        }
+      }
+    }
+    if (name === "regency") {
+      const selectedRegency = regency.find((r: any) => r.name === value);
+      if (selectedRegency) {
+        try {
+          const res = await fetch(
+            `https://api.binderbyte.com/wilayah/kecamatan?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&id_kabupaten=${selectedRegency.id}`
+          );
+          const data = await res.json();
+          if (data.code === "200") {
+            setSubdistricts(data.value);
+          } else {
+            setSubdistricts([]);
+          }
+        } catch (err) {
+          console.error("Error loading kecamatan", err);
+          setSubdistricts([]);
+        }
+      }
+    }
+    if (name === "subdistrict") {
+      const selectedDistrict = subdistricts.find((d: any) => d.name === value);
+      if (selectedDistrict) {
+        try {
+          const res = await fetch(
+            `https://api.binderbyte.com/wilayah/kelurahan?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&id_kecamatan=${selectedDistrict.id}`
+          );
+          const data = await res.json();
+          if (data.code === "200") {
+            setWards(data.value);
+          } else {
+            setWards([]);
+          }
+        } catch (err) {
+          console.error("Error loading kelurahan", err);
+          setWards([]);
+        }
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,6 +160,11 @@ export default function User() {
         password: "",
         role: "",
         no_hp: "",
+        address: "",
+        province: "",
+        regency: "",
+        subdistrict: "",
+        ward: "",
       });
     } catch (error: any) {
       setErrorMessage(error.message || "Something went wrong!");
@@ -236,6 +337,123 @@ export default function User() {
               onChange={handleChange}
               value={formData.no_hp}
             />
+          </div>
+          {/* Province */}
+          <div>
+            {" "}
+            <label htmlFor="no_hp" className="block mb-1">
+              Provinsi
+            </label>
+            <select
+              name="province"
+              id="province"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              onChange={handleChangeRegency}
+              value={formData.province}
+            >
+              <option value="" disabled>
+                Select province
+              </option>
+              {provinces.map((data: { id: string; name: string }) => (
+                <option
+                  key={data.id}
+                  value={data.name}
+                  className="text-blue-400"
+                >
+                  {data.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="kabupaten" className="block mb-1">
+              Kabupaten
+            </label>
+            <select
+              name="regency"
+              id="regency"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              onChange={handleChangeRegency}
+              value={formData.regency}
+            >
+              <option value="" disabled>
+                Select kabupaten
+              </option>
+              {regency.map((data: { id: string; name: string }) => (
+                <option
+                  key={data.id}
+                  value={data.name}
+                  className="text-blue-400"
+                >
+                  {data.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="district" className="block mb-1">
+              Kecamatan
+            </label>
+            <select
+              name="subdistrict"
+              id="subdistrict"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              onChange={handleChangeRegency}
+              value={formData.subdistrict}
+            >
+              <option value="" disabled>
+                Select kecamatan
+              </option>
+              {subdistricts.map((data: { id: string; name: string }) => (
+                <option
+                  key={data.id}
+                  value={data.name}
+                  className="text-blue-400"
+                >
+                  {data.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="village" className="block mb-1">
+              Kelurahan
+            </label>
+            <select
+              name="ward"
+              id="ward"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              onChange={handleChange}
+              value={formData.ward}
+            >
+              <option value="" disabled>
+                Select kelurahan
+              </option>
+              {wards.map((data: { id: string; name: string }) => (
+                <option
+                  key={data.id}
+                  value={data.name}
+                  className="text-blue-400"
+                >
+                  {data.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          {/* Address */}
+          <div>
+            <label htmlFor="address" className="block mb-1">
+              Address
+            </label>
+            <textarea
+              name="address"
+              id="address"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              placeholder="Enter address"
+              onChange={handleChange}
+              value={formData.address}
+              rows={3}
+            ></textarea>
           </div>
 
           {/* Submit Button */}

@@ -13,7 +13,6 @@ type Product = {
   role: string;
   image: string[];
   description: string;
-  location: string;
   price: number;
   status: string;
   user_id: number;
@@ -347,7 +346,6 @@ export default function Products() {
               <th className="px-6 py-3 text-center">Image</th>
               <th className="px-6 py-3 text-center">Product Name</th>
               <th className="px-6 py-3 text-center">Description</th>
-              <th className="px-6 py-3 text-center">Location</th>
               <th className="px-6 py-3 text-center">Price</th>
               <th className="px-6 py-3 text-center">Status</th>
               <th className="px-6 py-3 text-center">Action</th>
@@ -363,7 +361,7 @@ export default function Products() {
                 <td className="px-6 py-4 text-white text-center">
                   {index + 1 + (currentPage - 1) * itemsPerPage}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-6 py-4 text-white text-center flex justify-center">
                   <Image
                     src={
                       product.image &&
@@ -387,9 +385,6 @@ export default function Products() {
                   {product.description}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  {product.location}
-                </td>
-                <td className="px-6 py-4 text-white text-center">
                   Rp {product.price.toLocaleString("id-ID")}
                 </td>
                 <td className="px-6 py-4 text-center">
@@ -403,10 +398,10 @@ export default function Products() {
                     {product.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 flex justify-center space-x-2 text-center">
+                <td className="px-6 py-4 space-x-2 text-center">
                   <Link
                     href={`/admin/products/edit/${product.id}`}
-                    className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                    className="px-4 py-2.5 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
                   >
                     Edit
                   </Link>

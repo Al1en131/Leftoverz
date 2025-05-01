@@ -41,7 +41,6 @@ export default function AddProduct() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    location: "",
     description: "",
     image: [] as File[],
     user_id: "",
@@ -135,7 +134,6 @@ export default function AddProduct() {
     const form = new FormData();
     form.append("name", formData.name);
     form.append("price", formData.price);
-    form.append("location", formData.location);
     form.append("description", formData.description);
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
@@ -146,7 +144,6 @@ export default function AddProduct() {
     if (
       !formData.name ||
       !formData.price ||
-      !formData.location ||
       !formData.description ||
       !formData.user_id
     ) {
@@ -388,23 +385,6 @@ export default function AddProduct() {
               value={displayPrice}
             />
           </div>
-
-          {/* Location */}
-          <div className="mb-4">
-            <label htmlFor="location" className="text-white block">
-              Location
-            </label>
-            <input
-              type="text"
-              name="location"
-              id="location"
-              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter location"
-              onChange={handleChange}
-              value={formData.location}
-            />
-          </div>
-
           {/* Seller */}
           <div className="mb-4">
             <label htmlFor="user_id" className="text-white block">

@@ -13,7 +13,10 @@ type RawTransaction = {
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "pending" | "paid" | "cancelled" | null;
   created_at: string;
-  item?: { name: string };
+  item?: {
+    name: string;
+    image: string[]; // Tambahkan ini
+  };
   buyer?: { name: string };
   seller?: { name: string };
 };
@@ -22,6 +25,7 @@ type Transaction = RawTransaction & {
   item_name: string;
   buyer_name: string;
   seller_name: string;
+  image: string[];
 };
 
 export default function Products() {
@@ -89,6 +93,7 @@ export default function Products() {
           item_name: transaction.item?.name || "Unknown",
           buyer_name: transaction.buyer?.name || "Unknown",
           seller_name: transaction.seller?.name || "Unknown",
+          image: transaction.item?.image || [], // Tambahkan ini
         })
       );
 
@@ -217,12 +222,22 @@ export default function Products() {
                 </td>
                 <td className="px-6 py-4 text-white text-center justify-center flex">
                   <Image
-                    src={`/images/product_${item.item_id}.png`}
-                    alt="product"
-                    width={40}
-                    height={40}
+                    src={
+                      item.image &&
+                      Array.isArray(item.image) &&
+                      item.image.length > 0 &&
+                      typeof item.image[0] === "string" &&
+                      item.image[0].startsWith("/")
+                        ? `http://127.0.0.1:1031${item.image[0]}`
+                        : "/images/default-item.png"
+                    }
+                    alt={item.item_name}
+                    width={50}
+                    height={50}
+                    className="w-12 h-12 object-cover rounded-2xl"
                   />
                 </td>
+
                 <td className="px-6 py-4 text-white text-center">
                   {item.item_name}
                 </td>

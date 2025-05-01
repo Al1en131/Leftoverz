@@ -13,7 +13,6 @@ export default function EditProduct() {
   const [formData, setFormData] = useState({
     name: "",
     price: "",
-    location: "",
     description: "",
     user_id: "",
     status: "",
@@ -73,7 +72,6 @@ export default function EditProduct() {
         setFormData({
           name: data.product.name || "",
           price: data.product.price || "",
-          location: data.product.location || "",
           user_id: data.product.user_id || "",
           status: data.product.status || "",
           description: data.product.description || "",
@@ -156,7 +154,6 @@ export default function EditProduct() {
     const form = new FormData();
     form.append("name", formData.name);
     form.append("price", formData.price);
-    form.append("location", formData.location);
     form.append("description", formData.description);
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
@@ -373,12 +370,13 @@ export default function EditProduct() {
               <div className="flex flex-wrap gap-4 mt-4">
                 {/* Gambar dari server */}
                 {initialImageUrls.map((src, index) => (
-                  <div key={`initial-${index}`} className="w-24 h-24 relative">
+                  <div key={`initial-${index}`} className="relative w-24 h-24">
                     <Image
                       src={src}
                       alt={`Existing Preview ${index + 1}`}
-                      layout="fill"
+                      fill // ganti layout="fill" dengan fill (Next.js 13+)
                       className="object-cover rounded-lg"
+                      sizes="96px"
                     />
                   </div>
                 ))}
@@ -432,21 +430,6 @@ export default function EditProduct() {
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
               placeholder="Enter product price"
               value={displayPrice}
-              onChange={handleInputChange}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="location" className="text-white block">
-              Location
-            </label>
-            <input
-              type="text"
-              name="location"
-              id="location"
-              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter location"
-              value={formData.location}
               onChange={handleInputChange}
             />
           </div>
