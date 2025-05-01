@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 
 export default function User() {
   const router = useRouter();
+  const params = useParams();
+  const userId = params?.id;
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -42,8 +45,14 @@ export default function User() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/user/create", {
-        method: "POST",
+      const endpoint = userId
+        ? `http://127.0.0.1:1031/api/v1/user/update/${userId}`
+        : "http://127.0.0.1:1031/api/v1/user/create";
+
+      const method = userId ? "PUT" : "POST";
+
+      const response = await fetch(endpoint, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -53,23 +62,27 @@ export default function User() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Failed to add user");
+        throw new Error(result.message || "Failed to submit user");
       }
 
-      setSuccessMessage("User created successfully!");
+      setSuccessMessage(userId ? "User updated successfully!" : "User created successfully!");
       setShowSuccessPopup(true);
-      setFormData({
-        name: "",
-        email: "",
-        password: "",
-        role: "",
-        no_hp: "",
-      });
+
+      if (!userId) {
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          role: "",
+          no_hp: "",
+        });
+      }
     } catch (error: any) {
       setErrorMessage(error.message || "Something went wrong!");
       setShowErrorPopup(true);
     }
   };
+
   const [dateString, setDateString] = useState({
     day: "",
     fullDate: "",
@@ -84,11 +97,35 @@ export default function User() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
-
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
     setDateString({ day, fullDate });
   }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+    const fetchUser = async () => {
+      try {
+        const res = await fetch(`http://127.0.0.1:1031/api/v1/user/${userId}`);
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        setFormData({
+          name: data.user.name,
+          email: data.user.email,
+          password: data.user.password,
+          role: data.user.role,
+          no_hp: data.user.no_hp,
+        });
+      } catch (err: any) {
+        setErrorMessage(err.message);
+        setShowErrorPopup(true);
+      }
+    };
+
+    fetchUser();
+  }, [userId]);
 
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
@@ -100,7 +137,7 @@ export default function User() {
         className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold whitespace-nowrap">Add User</h1>
+        <h1 className="text-3xl font-bold whitespace-nowrap">{userId ? "Edit User" : "Create User"}</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
             <p>{dateString.day}</p>
@@ -138,7 +175,9 @@ export default function User() {
           </div>
         </div>
       </div>
-      <div className=" text-white z-20 relative">
+
+      {/* Form */}
+      <div className="text-white z-20 relative">
         <form
           onSubmit={handleSubmit}
           className="space-y-4 p-6 rounded-lg shadow-lg"
@@ -147,11 +186,8 @@ export default function User() {
               "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
           }}
         >
-          {/* Name */}
           <div>
-            <label htmlFor="name" className="block mb-1">
-              Name
-            </label>
+            <label htmlFor="name" className="block mb-1">Name</label>
             <input
               type="text"
               name="name"
@@ -163,11 +199,8 @@ export default function User() {
             />
           </div>
 
-          {/* Email */}
           <div>
-            <label htmlFor="email" className="block mb-1">
-              Email
-            </label>
+            <label htmlFor="email" className="block mb-1">Email</label>
             <input
               type="email"
               name="email"
@@ -179,11 +212,8 @@ export default function User() {
             />
           </div>
 
-          {/* Password */}
           <div>
-            <label htmlFor="password" className="block mb-1">
-              Password
-            </label>
+            <label htmlFor="password" className="block mb-1">Password</label>
             <input
               type="password"
               name="password"
@@ -195,11 +225,8 @@ export default function User() {
             />
           </div>
 
-          {/* Role */}
           <div>
-            <label htmlFor="role" className="block mb-1">
-              Role
-            </label>
+            <label htmlFor="role" className="block mb-1">Role</label>
             <select
               name="role"
               id="role"
@@ -207,26 +234,15 @@ export default function User() {
               onChange={handleChange}
               value={formData.role}
             >
-              <option value="" disabled>
-                Select role
-              </option>
-              <option className="text-blue-400" value="admin">
-                Admin
-              </option>
-              <option className="text-blue-400" value="penjual">
-                Seller
-              </option>
-              <option className="text-blue-400" value="pembeli">
-                Buyer
-              </option>
+              <option value="" disabled>Select role</option>
+              <option className="text-blue-400" value="admin">Admin</option>
+              <option className="text-blue-400" value="penjual">Seller</option>
+              <option className="text-blue-400" value="pembeli">Buyer</option>
             </select>
           </div>
 
-          {/* No HP */}
           <div>
-            <label htmlFor="no_hp" className="block mb-1">
-              No HP
-            </label>
+            <label htmlFor="no_hp" className="block mb-1">No HP</label>
             <input
               type="text"
               name="no_hp"
@@ -238,12 +254,11 @@ export default function User() {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full py-2 bg-blue-500 hover:bg-blue-600 rounded text-white"
           >
-            Submit User
+            {userId ? "Update User" : "Submit User"}
           </button>
         </form>
 
@@ -260,9 +275,7 @@ export default function User() {
                   className="w-20 h-20"
                 />
               </div>
-              <h2 className="text-2xl font-bold mb-1 text-blue-400">
-                Success!
-              </h2>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
               <p className="mb-6 text-blue-400">{successMessage}</p>
               <button
                 onClick={handleClosePopup}

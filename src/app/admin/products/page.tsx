@@ -3,7 +3,7 @@
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react"; // Import hooks useEffect dan useState
+import { useEffect, useState } from "react";
 
 type Product = {
   id: number;
@@ -11,20 +11,51 @@ type Product = {
   email: string;
   no_hp: string;
   role: string;
-  image: string[]; // Ganti dari string jadi array of string
-  description: string; // Menambahkan description
-  location: string; // Menambahkan location
-  price: number; // Menambahkan price
-  status: string; // Menambahkan status
+  image: string[];
+  description: string;
+  location: string;
+  price: number;
+  status: string;
+  user_id: number;
+  seller?: { name: string };
 };
 
 export default function Products() {
-  const [products, setProducts] = useState<Product[]>([]); // State untuk menyimpan produk
-  const [loading, setLoading] = useState(true); // State untuk menandakan loading
-  const [dateString, setDateString] = useState({
-    day: "",
-    fullDate: "",
-  });
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [dateString, setDateString] = useState({ day: "", fullDate: "" });
+
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    setShowErrorPopup(false);
+    setShowConfirmPopup(false);
+  };
 
   useEffect(() => {
     const now = new Date();
@@ -35,11 +66,45 @@ export default function Products() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
+
+  const handleConfirmDelete = async () => {
+    if (!selectedProductId) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/products/${selectedProductId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to delete product");
+      }
+
+      setProducts((prev) =>
+        prev.filter((product) => product.id !== selectedProductId)
+      );
+      setSuccessMessage("Product deleted successfully.");
+      setShowSuccessPopup(true);
+    } catch (error: any) {
+      setErrorMessage(error.message || "Failed to delete product.");
+      setShowErrorPopup(true);
+    } finally {
+      setShowConfirmPopup(false);
+      setSelectedProductId(null);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -81,7 +146,6 @@ export default function Products() {
         };
       });
 
-      console.log("Parsed Products:", parsedProducts); // Untuk debug di console
       setProducts(parsedProducts);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -101,9 +165,89 @@ export default function Products() {
   if (loading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
+      {showConfirmPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Confirm Delete"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">
+              Are you sure?
+            </h2>
+            <p className="mb-6 text-blue-400">
+              Do you want to delete this product?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleClosePopup}
+                className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDelete}
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {showErrorPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/error.svg"
+                width={80}
+                height={80}
+                alt="Error"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-red-400">Error!</h2>
+            <p className="mb-6 text-red-400">{errorMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <Image
         width={100}
         height={100}
@@ -211,13 +355,13 @@ export default function Products() {
           </thead>
 
           <tbody>
-            {products.map((product, index) => (
+            {currentProducts.map((product, index) => (
               <tr
                 key={product.id}
                 className="transition border-b border-[#56577A]"
               >
                 <td className="px-6 py-4 text-white text-center">
-                  {index + 1}
+                  {index + 1 + (currentPage - 1) * itemsPerPage}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   <Image
@@ -266,7 +410,13 @@ export default function Products() {
                   >
                     Edit
                   </Link>
-                  <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
+                  <button
+                    onClick={() => {
+                      setSelectedProductId(product.id);
+                      setShowConfirmPopup(true);
+                    }}
+                    className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
+                  >
                     Delete
                   </button>
                 </td>
@@ -274,6 +424,25 @@ export default function Products() {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-center gap-4 my-4 items-center">
+          <button
+            onClick={handlePreviousPage}
+            className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <span className="text-white font-semibold">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

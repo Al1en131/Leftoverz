@@ -4,7 +4,6 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-// Define a type for User
 type User = {
   id: string;
   name: string;
@@ -19,6 +18,25 @@ export default function AddProduct() {
   );
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [dateString, setDateString] = useState({
+    day: "",
+    fullDate: "",
+  });
+
+  useEffect(() => {
+    const now = new Date();
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+
+    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+
+    setDateString({ day, fullDate });
+  }, []);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -236,11 +254,11 @@ export default function AddProduct() {
         className="w-full absolute right-0 top-0 min-h-screen mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold text-nowrap">Add Product</h1>
+        <h1 className="text-3xl font-bold whitespace-nowrap">Add Product</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesday</p>
-            <p>12 Jul 2025</p>
+            <p>{dateString.day}</p>
+            <p>{dateString.fullDate}</p>
           </div>
         </div>
       </div>

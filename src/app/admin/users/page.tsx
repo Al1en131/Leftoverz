@@ -23,6 +23,18 @@ export default function User() {
     day: "",
     fullDate: "",
   });
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<number | null>(null);
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    setShowErrorPopup(false);
+    setShowConfirmPopup(false);
+  };
 
   useEffect(() => {
     const now = new Date();
@@ -82,8 +94,129 @@ export default function User() {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  // Function to handle delete user
+  const handleDelete = async () => {
+    if (userToDelete === null) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/user/delete/${userToDelete}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+      if (data?.message === "User deleted successfully") {
+        // Remove deleted user from the list
+        setUsers(users.filter((user) => user.id !== userToDelete));
+        setShowSuccessPopup(true);
+        setSuccessMessage("User deleted successfully");
+      } else {
+        setShowErrorPopup(true);
+        setErrorMessage("Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+      setShowErrorPopup(true);
+      setErrorMessage("An error occurred while deleting the user");
+    }
+    setShowConfirmPopup(false); // Close confirm popup after action
+    setUserToDelete(null); // Clear the user to delete
+  };
+
+  const confirmDelete = (id: number) => {
+    setUserToDelete(id);
+    setShowConfirmPopup(true);
+  };
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
+      {showConfirmPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Confirm Delete"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">
+              Are you sure?
+            </h2>
+            <p className="mb-6 text-blue-400">
+              Do you want to delete this user?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleClosePopup}
+                className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {showErrorPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/error.svg"
+                width={80}
+                height={80}
+                alt="Error"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-red-400">Error!</h2>
+            <p className="mb-6 text-red-400">{errorMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <Image
         width={100}
         height={100}
@@ -227,7 +360,11 @@ export default function User() {
                       >
                         Edit
                       </Link>
-                      <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
+
+                      <button
+                        onClick={() => confirmDelete(item.id)} // Call confirmDelete to confirm the delete action
+                        className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
+                      >
                         Delete
                       </button>
                     </td>

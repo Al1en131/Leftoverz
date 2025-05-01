@@ -1,10 +1,518 @@
 "use client";
 
+import React, { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Image from "next/image";
+
 export default function EditProduct() {
+  const router = useRouter();
+  const params = useParams();
+  const productId = params?.id;
+  const [initialImageUrls, setInitialImageUrls] = useState<string[]>([]);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    price: "",
+    location: "",
+    description: "",
+    user_id: "",
+    status: "",
+    image: [] as File[],
+  });
+
+  const [users, setUsers] = useState<any[]>([]);
+  const [displayPrice, setDisplayPrice] = useState("");
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const formatPrice = (value: string) => {
+    const numberString = value.replace(/\D/g, "");
+    return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
+  // Fetching users for dropdown
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("http://127.0.0.1:1031/api/v1/users", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        if (data && Array.isArray(data.users)) {
+          setUsers(data.users);
+        } else {
+          console.error("Unexpected data format:", data);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    if (!productId) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/product/${productId}`
+        );
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        setFormData({
+          name: data.product.name || "",
+          price: data.product.price || "",
+          location: data.product.location || "",
+          user_id: data.product.user_id || "",
+          status: data.product.status || "",
+          description: data.product.description || "",
+          image: [] as File[], // Reset image array
+        });
+        setDisplayPrice(formatPrice(data.product.price?.toString() || ""));
+
+        // Handle image previews with validation
+        const urls = data.product.image;
+        if (Array.isArray(urls) && urls.length > 0) {
+          setInitialImageUrls(
+            urls.map((url: string) => `http://127.0.0.1:1031${url}`)
+          );
+        } else if (data.product.image_url) {
+          setInitialImageUrls([
+            `http://127.0.0.1:1031${data.product.image_url}`,
+          ]);
+        }
+      } catch (err: any) {
+        setErrorMessage(err.message);
+        setShowErrorPopup(true);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    if (name === "price") {
+      const raw = value.replace(/\D/g, "");
+      setDisplayPrice(formatPrice(value));
+      setFormData((prev) => ({
+        ...prev,
+        price: raw,
+      }));
+    }
+  };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    setFormData((prevData) => ({
+      ...prevData,
+      image: files,
+    }));
+
+    const previews = files.map((file) => URL.createObjectURL(file));
+    setImagePreviews(previews);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    const newImages = [...formData.image];
+    newImages.splice(index, 1);
+    setFormData((prevData) => ({
+      ...prevData,
+      image: newImages,
+    }));
+    const newPreviews = [...imagePreviews];
+    newPreviews.splice(index, 1);
+    setImagePreviews(newPreviews);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Please login.");
+      return;
+    }
+
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("price", formData.price);
+    form.append("location", formData.location);
+    form.append("description", formData.description);
+    form.append("user_id", formData.user_id);
+    form.append("status", formData.status);
+    formData.image.forEach((file) => form.append("image", file));
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/product/edit/${productId}`,
+        {
+          method: "PUT", // Edit request
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: form,
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok) {
+        setShowSuccessPopup(true);
+        setSuccessMessage("Product successfully updated!");
+      } else {
+        setShowErrorPopup(true);
+        setErrorMessage(data.message || "An error occurred.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setShowErrorPopup(true);
+      setErrorMessage("Server error, please try again.");
+    }
+  };
+
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    router.push("/admin/products");
+  };
+
+  const handleCloseErrorPopup = () => {
+    setShowErrorPopup(false);
+  };
+
+  const [dateString, setDateString] = useState({
+    day: "",
+    fullDate: "",
+  });
+
+  useEffect(() => {
+    const now = new Date();
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
+
+    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+
+    setDateString({ day, fullDate });
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
-      <div>
-        <p>Alif Essa</p>
+      <Image
+        width={100}
+        height={100}
+        alt=""
+        src="/images/admin.png"
+        className="w-full absolute right-0 top-0 h-full mb-0"
+      />
+      <div className="flex justify-between items-center mb-7 relative z-20">
+        <h1 className="text-3xl font-bold whitespace-nowrap">Edit Product</h1>
+        <div className="relative flex justify-end gap-4 w-full">
+          <div className="block">
+            <p>{dateString.day}</p>
+            <p>{dateString.fullDate}</p>
+          </div>
+        </div>
+      </div>
+      {showSuccessPopup && (
+        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">
+              Product Successfully Updated!
+            </h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+
+            <button
+              onClick={handleClosePopup} // Menutup popup
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {showErrorPopup && (
+        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/error.svg"
+                width={80}
+                height={80}
+                alt="Error"
+                className="w-20 h-20"
+              />
+            </div>
+
+            <h2 className="text-2xl font-bold mb-1 text-red-400">
+              Something went wrong!
+            </h2>
+            <p className="mb-6 text-red-400">{errorMessage}</p>
+
+            <button
+              onClick={handleCloseErrorPopup} // Menutup popup error
+              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      <div className="mb-6 z-20">
+        <div
+          className="relative rounded-lg flex justify-between items-center z-40 text-start shadow-lg"
+          style={{
+            background:
+              "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
+          }}
+        >
+          <div className="absolute inset-0 opacity-40 rounded-lg"></div>
+          <div className="relative z-10 text-white  p-6">
+            <span className="text-sm font-normal">Welcome back,</span>
+            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <p className="text-sm text-gray-300">
+              Glad to see you again! Ask me anything.
+            </p>
+            <button className="mt-4 text-white text-sm flex items-center gap-2">
+              Tap to record →
+            </button>
+          </div>
+          <div className="z-10">
+            <Image
+              src="/images/transaction.png"
+              alt="Welcome"
+              width={300}
+              height={300}
+              className="rounded-lg absolute right-0 h-56 w-56 -top-10"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="relative overflow-x-auto rounded-lg"
+        style={{
+          background:
+            "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
+        }}
+      >
+        <form
+          onSubmit={handleSubmit}
+          className="p-6"
+          encType="multipart/form-data"
+        >
+          {/* Upload Image */}
+          <div className="flex flex-col items-center mb-6">
+            <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <svg
+                  className="w-8 h-8 mb-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 16"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                  />
+                </svg>
+                <p className="mb-2 text-sm text-white">
+                  <span className="font-semibold">Click to upload</span> or drag
+                  and drop
+                </p>
+                <p className="text-xs text-white">
+                  SVG, PNG, JPG or GIF (MAX. 800x400px)
+                </p>
+              </div>
+              <input
+                id="dropzone-file"
+                type="file"
+                className="hidden"
+                name="image"
+                accept="image/*"
+                multiple
+                onChange={handleImageChange}
+              />
+            </label>
+            {(initialImageUrls.length > 0 || imagePreviews.length > 0) && (
+              <div className="flex flex-wrap gap-4 mt-4">
+                {/* Gambar dari server */}
+                {initialImageUrls.map((src, index) => (
+                  <div key={`initial-${index}`} className="w-24 h-24 relative">
+                    <Image
+                      src={src}
+                      alt={`Existing Preview ${index + 1}`}
+                      layout="fill"
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                ))}
+
+                {/* Gambar baru dari input */}
+                {imagePreviews.map((src, index) => (
+                  <div key={`new-${index}`} className="w-24 h-24 relative">
+                    <Image
+                      src={src}
+                      alt={`New Preview ${index + 1}`}
+                      layout="fill"
+                      className="object-cover rounded-lg"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      className="absolute top-0 right-0 text-white bg-black/50 p-1 rounded-full"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Form Fields */}
+          <div className="mb-4">
+            <label htmlFor="name" className="text-white block">
+              Product Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              placeholder="Enter product name"
+              value={formData.name}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="price" className="text-white block">
+              Price (Rp.)
+            </label>
+            <input
+              type="text"
+              name="price"
+              id="price"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              placeholder="Enter product price"
+              value={displayPrice}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="location" className="text-white block">
+              Location
+            </label>
+            <input
+              type="text"
+              name="location"
+              id="location"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              placeholder="Enter location"
+              value={formData.location}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="user_id" className="text-white block">
+              Seller
+            </label>
+            <select
+              name="user_id"
+              id="user_id"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              value={formData.user_id}
+              onChange={handleInputChange}
+            >
+              <option value="" disabled>
+                Select Seller
+              </option>
+              {(users || [])
+                .filter((user) => user.role === "penjual")
+                .map((user) => (
+                  <option key={user.id} value={user.id}>
+                    {user.name}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="status" className="text-white block">
+              Status
+            </label>
+            <select
+              name="status"
+              id="status"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              value={formData.status}
+              onChange={handleInputChange}
+            >
+              <option value="available">Available</option>
+              <option value="sold">Sold</option>
+            </select>
+          </div>
+
+          <div className="mb-6">
+            <label htmlFor="description" className="text-white block">
+              Product Description
+            </label>
+            <textarea
+              name="description"
+              id="description"
+              rows={5}
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              placeholder="Enter product description"
+              value={formData.description}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-3 px-6 rounded-full w-full"
+          >
+            Save Changes
+          </button>
+        </form>
       </div>
     </div>
   );
