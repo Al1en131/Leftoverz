@@ -13,57 +13,29 @@ const options = [
   { value: "high-price", label: "Harga Tertinggi" },
 ];
 
-const data = [
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "50.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "60.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-];
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  no_hp: string;
+  role: string;
+  image: string[];
+  description: string;
+  price: number;
+  status: string;
+  user_id: number;
+  seller?: { name: string };
+  user?: { subdistrict: string };
+};
 
 export default function Product() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
+  const [loading, setLoading] = useState(true);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -86,6 +58,110 @@ export default function Product() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:1031/api/v1/allproducts", {
+        method: "GET",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch products");
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      const parsedProducts = data.products.map((product: Product) => {
+        let parsedImage: string[] = [];
+
+        if (typeof product.image === "string") {
+          try {
+            const parsed = JSON.parse(product.image);
+            if (Array.isArray(parsed)) {
+              parsedImage = parsed;
+            }
+          } catch {
+            parsedImage = [];
+          }
+        } else if (Array.isArray(product.image)) {
+          parsedImage = product.image;
+        }
+
+        return {
+          ...product,
+          image: parsedImage,
+          seller_name: product.seller?.name || "Unknown",
+          subdistrict: product.user?.subdistrict || "Unknown",
+        };
+      });
+
+      setProducts(parsedProducts);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error fetching products:", error.message);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const handleAddFavorite = async (itemId: number) => {
+    const userId = localStorage.getItem("token"); // sesuaikan jika pakai cookies/context
+  
+    if (!userId) {
+      alert("Silakan login terlebih dahulu.");
+      return;
+    }
+  
+    try {
+      const res = await fetch("http://127.0.0.1:1031/api/v1/favorite/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: parseInt(userId, 10),
+          item_id: itemId,
+        }),
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        alert("Berhasil ditambahkan ke favorit!");
+      } else {
+        alert(data.message || "Gagal menambahkan ke favorit.");
+      }
+    } catch (err) {
+      console.error("Error menambahkan favorit:", err);
+      alert("Terjadi kesalahan saat menambahkan favorit.");
+    }
+  };
+  
 
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
@@ -312,74 +388,94 @@ export default function Product() {
         </div>
         <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-            {data.map((item, index) => (
+            {currentProducts.map((product, index) => (
               <div
-                key={index}
+                key={product.id}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
               >
                 <div className="mb-4 flex justify-between items-center">
                   <div className="block">
                     <h3 className="text-white text-lg mb-1 font-bold">
-                      {item.title}
+                      {product.name}
                     </h3>
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                      <p className="text-blue-400 font-semibold">{item.name}</p>
+                      <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                        {product.seller?.name
+                          ? product.seller.name
+                              .split(" ")
+                              .map((word) => word.charAt(0))
+                              .join("")
+                              .toUpperCase()
+                          : "?"}
+                      </span>
+                      <p className="text-blue-400 font-semibold">
+                        {product.seller?.name || "Unknown Seller"}
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="mb-5">
                   <Image
+                    src={
+                      product.image &&
+                      Array.isArray(product.image) &&
+                      product.image.length > 0 &&
+                      typeof product.image[0] === "string" &&
+                      product.image[0].startsWith("/")
+                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        : "/images/default-product.png"
+                    }
+                    alt={product.name}
                     width={100}
                     height={100}
-                    alt={item.title}
-                    src={item.image}
-                    className="w-full rounded-2xl"
+                    className="w-full h-96 object-cover rounded-2xl"
                   />
                 </div>
                 <div className="my-4 flex justify-between items-center">
-                  <p className="text-blue-400 text-lg">{item.location}</p>
-                  <p className="text-blue-400 text-base">Rp. {item.price}</p>
+                  <p className="text-blue-400 text-lg">
+                    {product.user?.subdistrict}
+                  </p>
+                  <p className="text-blue-400 text-base">Rp. {product.price}</p>
                 </div>
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link
-                    href="/product/detail"
+                    href={`/product/${product.id}`}
                     className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
                   >
-                    Lihat Detail
+                    Detail
                   </Link>
-                  <Image
-                    src="/images/heart-add.svg"
-                    width={100}
-                    height={100}
-                    alt=""
-                    className="w-8 h-8 text-white"
-                  />
+                  <button className="z-50" onClick={() => handleAddFavorite(product.id)}>
+                    <Image
+                      src="/images/heart-add.svg"
+                      width={100}
+                      height={100}
+                      alt=""
+                      className="w-8 h-8 text-white"
+                    />
+                  </button>
                 </div>
               </div>
             ))}
           </div>
-        </div>
-        <div className="fixed bottom-6 right-6 z-50">
-          <Link
-            href="/buyer/favorite"
-            className="flex items-center justify-center bg-blue-400 hover:bg-blue-500 text-white w-14 h-14 rounded-full shadow-xl transition-all duration-300 transform hover:scale-110 active:scale-95 focus:outline-none focus:ring-4 focus:ring-blue-300"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-7 h-7"
+          <div className="flex justify-center gap-4 my-4 items-center">
+            <button
+              onClick={handlePreviousPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              disabled={currentPage === 1}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-              />
-            </svg>
-          </Link>
+              Previous
+            </button>
+            <span className="text-white font-semibold">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </main>
     </div>

@@ -110,7 +110,7 @@ export default function Product() {
   };
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 12;
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
   const currentProducts = products.slice(
@@ -129,6 +129,39 @@ export default function Product() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  const handleAddFavorite = async (itemId: number) => {
+    const userId = localStorage.getItem("user_id"); // sesuaikan jika pakai cookies/context
+  
+    if (!userId) {
+      alert("Silakan login terlebih dahulu.");
+      return;
+    }
+  
+    try {
+      const res = await fetch("http://127.0.0.1:1031/api/v1/favorite/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: parseInt(userId, 10),
+          item_id: itemId,
+        }),
+      });
+  
+      const data = await res.json();
+      if (res.ok) {
+        alert("Berhasil ditambahkan ke favorit!");
+      } else {
+        alert(data.message || "Gagal menambahkan ke favorit.");
+      }
+    } catch (err) {
+      console.error("Error menambahkan favorit:", err);
+      alert("Terjadi kesalahan saat menambahkan favorit.");
+    }
+  };
+  
 
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
@@ -411,16 +444,38 @@ export default function Product() {
                   >
                     Detail
                   </Link>
-                  <Image
-                    src="/images/heart-add.svg"
-                    width={100}
-                    height={100}
-                    alt=""
-                    className="w-8 h-8 text-white"
-                  />
+                  <button onClick={() => handleAddFavorite(product.id)}>
+                    {" "}
+                    <Image
+                      src="/images/heart-add.svg"
+                      width={100}
+                      height={100}
+                      alt=""
+                      className="w-8 h-8 text-white"
+                    />
+                  </button>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex justify-center gap-4 my-4 items-center">
+            <button
+              onClick={handlePreviousPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="text-white font-semibold">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
       </main>
