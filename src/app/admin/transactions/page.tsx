@@ -35,6 +35,14 @@ export default function Products() {
     day: "",
     fullDate: "",
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+  const paginatedTransactions = transactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   useEffect(() => {
     const now = new Date();
@@ -212,13 +220,13 @@ export default function Products() {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((item, index) => (
+            {paginatedTransactions.map((item, index) => (
               <tr
                 key={item.id}
                 className="transition border-b border-[#56577A]"
               >
                 <td className="px-6 py-4 text-white text-center">
-                  {index + 1}
+                  {(currentPage - 1) * itemsPerPage + index + 1}
                 </td>
                 <td className="px-6 py-4 text-white text-center justify-center flex">
                   <Image
@@ -266,6 +274,47 @@ export default function Products() {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-center my-4 gap-2">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1
+                ? "bg-blue-400 text-gray-300 cursor-not-allowed"
+                : "bg-blue-700 hover:bg-blue-800"
+            } text-white`}
+          >
+            Prev
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-700 text-gray-300 hover:bg-blue-400"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPages
+                ? "bg-blue-400 text-gray-300 cursor-not-allowed"
+                : "bg-blue-700 hover:bg-blue-800"
+            } text-white`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );

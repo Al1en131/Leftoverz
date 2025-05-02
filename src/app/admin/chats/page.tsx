@@ -35,6 +35,15 @@ export default function Chats() {
     fullDate: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(chats.length / itemsPerPage);
+  const paginatedchats = chats.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   useEffect(() => {
     const now = new Date();
     const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
@@ -183,9 +192,12 @@ export default function Chats() {
                 </td>
               </tr>
             ) : (
-              chats.map((chat, index) => (
+              paginatedchats.map((chat, index) => (
                 <tr key={chat.id} className="border-b border-[#56577A]">
-                  <td className="px-6 py-4 text-center">{index + 1}</td>
+                  <td className="px-6 py-4 text-center">
+                    {" "}
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </td>
                   <td className="px-6 py-4 text-center">
                     {chat.sender?.name || "-"}
                   </td>
@@ -212,6 +224,47 @@ export default function Chats() {
             )}
           </tbody>
         </table>
+        <div className="flex justify-center my-4 gap-2">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className={`px-3 py-1 rounded ${
+              currentPage === 1
+                ? "bg-blue-400 text-gray-300 cursor-not-allowed"
+                : "bg-blue-700 hover:bg-blue-800"
+            } text-white`}
+          >
+            Prev
+          </button>
+
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i + 1)}
+              className={`px-3 py-1 rounded ${
+                currentPage === i + 1
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className={`px-3 py-1 rounded ${
+              currentPage === totalPages
+                ? "bg-blue-400 text-gray-300 cursor-not-allowed"
+                : "bg-blue-700 hover:bg-blue-800"
+            } text-white`}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
