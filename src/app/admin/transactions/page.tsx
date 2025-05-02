@@ -96,13 +96,29 @@ export default function Products() {
       const data: { transactions: RawTransaction[] } = await response.json();
 
       const mappedTransactions: Transaction[] = data.transactions.map(
-        (transaction) => ({
-          ...transaction,
-          item_name: transaction.item?.name || "Unknown",
-          buyer_name: transaction.buyer?.name || "Unknown",
-          seller_name: transaction.seller?.name || "Unknown",
-          image: transaction.item?.image || [], // Tambahkan ini
-        })
+        (transaction) => {
+          const imageData = transaction.item?.image;
+
+          let imageArray: string[] = [];
+
+          if (typeof imageData === "string") {
+            try {
+              imageArray = JSON.parse(imageData);
+            } catch {
+              imageArray = [imageData]; 
+            }
+          } else if (Array.isArray(imageData)) {
+            imageArray = imageData;
+          }
+
+          return {
+            ...transaction,
+            item_name: transaction.item?.name || "Unknown",
+            buyer_name: transaction.buyer?.name || "Unknown",
+            seller_name: transaction.seller?.name || "Unknown",
+            image: imageArray,
+          };
+        }
       );
 
       setTransactions(mappedTransactions);

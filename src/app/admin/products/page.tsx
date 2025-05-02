@@ -142,6 +142,7 @@ export default function Products() {
         return {
           ...product,
           image: parsedImage,
+          seller_name: product.seller?.name || "Unknown",
         };
       });
 
@@ -345,6 +346,7 @@ export default function Products() {
               <th className="px-6 py-3 text-center">No.</th>
               <th className="px-6 py-3 text-center">Image</th>
               <th className="px-6 py-3 text-center">Product Name</th>
+              <th className="px-6 py-3 text-center">Seller</th>
               <th className="px-6 py-3 text-center">Description</th>
               <th className="px-6 py-3 text-center">Price</th>
               <th className="px-6 py-3 text-center">Status</th>
@@ -380,6 +382,9 @@ export default function Products() {
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   {product.name}
+                </td>
+                <td className="px-6 py-4 text-white text-center">
+                  {product.seller?.name}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   {product.description}

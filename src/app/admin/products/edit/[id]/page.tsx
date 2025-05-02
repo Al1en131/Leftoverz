@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
@@ -29,6 +29,15 @@ export default function EditProduct() {
   const formatPrice = (value: string) => {
     const numberString = value.replace(/\D/g, "");
     return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+  const [removedImages, setRemovedImages] = useState<string[]>([]);
+
+  const handleRemoveInitialImage = (index: number) => {
+    const removed = initialImageUrls[index];
+    setRemovedImages((prev) => [...prev, removed]);
+    const updatedImages = [...initialImageUrls];
+    updatedImages.splice(index, 1);
+    setInitialImageUrls(updatedImages);
   };
 
   // Fetching users for dropdown
@@ -79,17 +88,34 @@ export default function EditProduct() {
         });
         setDisplayPrice(formatPrice(data.product.price?.toString() || ""));
 
-        // Handle image previews with validation
-        const urls = data.product.image;
-        if (Array.isArray(urls) && urls.length > 0) {
-          setInitialImageUrls(
-            urls.map((url: string) => `http://127.0.0.1:1031${url}`)
-          );
-        } else if (data.product.image_url) {
-          setInitialImageUrls([
-            `http://127.0.0.1:1031${data.product.image_url}`,
-          ]);
+        const image = data.product.image;
+
+        // Coba parsing jika image dalam format string JSON
+        let parsedImage = image;
+        try {
+          // Coba parse string JSON jika perlu
+          parsedImage = JSON.parse(image);
+        } catch (error) {
+          console.log("Image is not in valid JSON format, skipping parsing.");
         }
+
+        console.log("Parsed image data:", parsedImage);
+
+        if (Array.isArray(parsedImage) && parsedImage.length > 0) {
+          // Jika image adalah array dan memiliki gambar
+          setInitialImageUrls(
+            parsedImage.map(
+              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+            )
+          );
+        } else if (parsedImage && parsedImage.url) {
+          // Jika image adalah objek dan memiliki properti url
+          setInitialImageUrls([`http://127.0.0.1:1031${parsedImage.url}`]);
+        } else {
+          console.log("No valid image data found");
+        }
+
+        console.log("image:", parsedImage); // Periksa isi data yang diparsing
       } catch (err: any) {
         setErrorMessage(err.message);
         setShowErrorPopup(true);
@@ -119,15 +145,20 @@ export default function EditProduct() {
       }));
     }
   };
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setFormData((prevData) => ({
       ...prevData,
       image: files,
     }));
-
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews(previews);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleRemoveImage = (index: number) => {
@@ -158,6 +189,7 @@ export default function EditProduct() {
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
     formData.image.forEach((file) => form.append("image", file));
+    form.append("removed_images", JSON.stringify(removedImages));
 
     try {
       const response = await fetch(
@@ -361,46 +393,92 @@ export default function EditProduct() {
                 type="file"
                 className="hidden"
                 name="image"
-                accept="image/*"
+                accept="image/png, image/jpeg, image/jpg, image/gif"
                 multiple
                 onChange={handleImageChange}
               />
             </label>
-            {(initialImageUrls.length > 0 || imagePreviews.length > 0) && (
-              <div className="flex flex-wrap gap-4 mt-4">
-                {/* Gambar dari server */}
-                {initialImageUrls.map((src, index) => (
-                  <div key={`initial-${index}`} className="relative w-24 h-24">
-                    <Image
-                      src={src}
-                      alt={`Existing Preview ${index + 1}`}
-                      fill // ganti layout="fill" dengan fill (Next.js 13+)
-                      className="object-cover rounded-lg"
-                      sizes="96px"
-                    />
-                  </div>
-                ))}
+            <div className="mt-4 flex justify-center items-center gap-4">
+              {/* Gambar lama */}
+              {initialImageUrls.length > 0 && (
+                <div className="flex gap-4 flex-wrap mb-4">
+                  {initialImageUrls.map((url, index) => (
+                    <div key={index} className="relative w-32 h-32">
+                      <Image
+                        src={url}
+                        alt={`Initial Preview ${index}`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-lg border object-cover w-24 h-24  border-gray-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveInitialImage(index)}
+                        className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
+                      >
+                        <svg
+                          className="w-6 h-6 text-gray-800 dark:text-white"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18 17.94 6M18 18 6.06 6"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
 
-                {/* Gambar baru dari input */}
-                {imagePreviews.map((src, index) => (
-                  <div key={`new-${index}`} className="w-24 h-24 relative">
-                    <Image
-                      src={src}
-                      alt={`New Preview ${index + 1}`}
-                      layout="fill"
-                      className="object-cover rounded-lg"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveImage(index)}
-                      className="absolute top-0 right-0 text-white bg-black/50 p-1 rounded-full"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+              {/* Gambar baru */}
+              {imagePreviews.length > 0 && (
+                <div className="flex gap-4 flex-wrap mb-4">
+                  {imagePreviews.map((url, index) => (
+                    <div key={index} className="relative w-32 h-32">
+                      <Image
+                        src={url}
+                        alt={`New Preview ${index}`}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-lg border object-cover w-24 h-24  border-gray-300"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveImage(index)}
+                        className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
+                      >
+                        <svg
+                          className="w-6 h-6 text-gray-800 dark:text-white"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            stroke="currentColor"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18 17.94 6M18 18 6.06 6"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Form Fields */}
