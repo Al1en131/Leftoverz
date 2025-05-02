@@ -2,10 +2,31 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      router.push("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   const navItems = [
     {
@@ -123,52 +144,112 @@ const Sidebar = () => {
 
   return (
     <div className="flex min-h-screen">
-      <div className="w-64 bg-[#121b39] text-white p-6">
-        <Link href="/" className="text-white text-lg font-semibold">
-          <Image
-            width={100}
-            height={100}
-            src="/images/logo.png"
-            alt="Logo"
-            className="h-12 w-36"
-          />
-        </Link>
-
-        <ul className="space-y-6 text-lg mt-7">
-          <div className="flex gap-3 border-b py-3 border-white border-t items-center">
+      <div className="w-64 fixed top-0 left-0 h-screen bg-[#121b39] text-white p-6 flex flex-col justify-between z-50">
+        <div>
+          <Link href="/" className="text-white text-lg font-semibold">
             <Image
+              src="/images/logo.png"
+              width={100}
+              height={100}
+              alt="Logo"
+              className="h-12 w-36"
+            />
+          </Link>
+
+          <div className="flex gap-3 border-b py-3 border-white border-t items-center mt-7">
+            <Image
+              src="/images/profile.jpg"
               width={60}
               height={60}
-              src="/images/profile.jpg"
               alt="Profile"
               className="w-16 h-16 rounded-full cursor-pointer"
             />
             <div>
-              <p>Admin</p>
-              <p className="text-base">Admin@gmail.com</p>
+              <p className="leading-4">Admin</p>
+              <p className="text-sm">{email || "superadmin@gmail.com"}</p>
             </div>
           </div>
 
-          {navItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <li
-                key={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 cursor-pointer ${
-                  isActive
-                    ? "bg-blue-400 text-white font-semibold"
-                    : "hover:bg-blue-400"
-                }`}
-              >
-                <span>{item.icon}</span>
-                <Link href={item.href} className="flex-1 pt-1.5">
-                  {item.label}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+          <ul className="space-y-6 text-lg mt-7">
+            {navItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <li
+                  key={item.href}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors duration-200 cursor-pointer ${
+                    isActive
+                      ? "bg-blue-400 text-white font-semibold"
+                      : "hover:bg-blue-400"
+                  }`}
+                >
+                  <span>{item.icon}</span>
+                  <Link href={item.href} className="flex-1 pt-1.5">
+                    {item.label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+
+        <button
+          onClick={() => setShowLogoutPopup(true)}
+          className="text-left px-3 rounded-md text-xl text-red-400 flex gap-2 items-center transition-colors"
+        >
+          {" "}
+          <svg
+            className="w-6 h-6 text-red-400"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M20 12H8m12 0-4 4m4-4-4-4M9 4H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h2"
+            />
+          </svg>
+          Logout
+        </button>
       </div>
+      {showLogoutPopup && (
+        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-[100]">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Confirm"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Logout</h2>
+            <p className="mb-6 text-blue-400">
+              Apakah Anda yakin ingin logout?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleLogout}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Ya
+              </button>
+              <button
+                onClick={() => setShowLogoutPopup(false)}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

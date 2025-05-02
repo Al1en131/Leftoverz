@@ -257,7 +257,7 @@ export default function Dashboard() {
     return <div>Loading...</div>;
   }
   return (
-    <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
+    <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       <Image
         width={100}
         height={100}
@@ -339,7 +339,7 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-6">
         <div
           className="shadow rounded-lg p-4 sm:p-6 xl:p-8  z-50"
           style={{

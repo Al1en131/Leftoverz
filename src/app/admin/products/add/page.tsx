@@ -187,7 +187,7 @@ export default function AddProduct() {
     setShowErrorPopup(false);
   };
   return (
-    <div className="min-h-screen bg-[#060B26] text-white px-6 pt-6 relative">
+    <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       {showSuccessPopup && (
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
@@ -248,7 +248,7 @@ export default function AddProduct() {
         height={100}
         alt=""
         src="/images/admin.png"
-        className="w-full absolute right-0 top-0 min-h-screen mb-0"
+        className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
         <h1 className="text-3xl font-bold whitespace-nowrap">Add Product</h1>
