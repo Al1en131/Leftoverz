@@ -22,6 +22,8 @@ const Sidebar = () => {
       await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
       localStorage.removeItem("token");
       localStorage.removeItem("email");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
       router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);
