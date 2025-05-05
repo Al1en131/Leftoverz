@@ -4,6 +4,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 
+interface Region {
+  id: string;
+  name: string;
+}
+
 export default function User() {
   const router = useRouter();
   const params = useParams();
@@ -26,10 +31,10 @@ export default function User() {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [provinces, setProvinces] = useState([]);
-  const [regency, setRegency] = useState([]);
-  const [subdistricts, setSubdistricts] = useState([]);
-  const [wards, setWards] = useState([]);
+  const [provinces, setProvinces] = useState<Region[]>([]);
+  const [regency, setRegency] = useState<Region[]>([]);
+  const [subdistricts, setSubdistricts] = useState<Region[]>([]);
+  const [wards, setWards] = useState<Region[]>([]);
 
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
@@ -78,7 +83,7 @@ export default function User() {
 
     if (name === "province") {
       // Cari ID dari provinsi yang dipilih
-      const selectedProvince = provinces.find((p: any) => p.name === value);
+      const selectedProvince = provinces.find((p) => p.name === value);
       if (selectedProvince) {
         try {
           const res = await fetch(
@@ -97,7 +102,7 @@ export default function User() {
       }
     }
     if (name === "regency") {
-      const selectedRegency = regency.find((r: any) => r.name === value);
+      const selectedRegency = regency.find((p) => p.name === value);
       if (selectedRegency) {
         try {
           const res = await fetch(
@@ -116,7 +121,7 @@ export default function User() {
       }
     }
     if (name === "subdistrict") {
-      const selectedDistrict = subdistricts.find((d: any) => d.name === value);
+      const selectedDistrict = subdistricts.find((p) => p.name === value);
       if (selectedDistrict) {
         try {
           const res = await fetch(
@@ -179,8 +184,14 @@ export default function User() {
           ward: "",
         });
       }
-    } catch (error: any) {
-      setErrorMessage(error.message || "Something went wrong!");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message);
+      } else if (typeof error === "string") {
+        setErrorMessage(error);
+      } else {
+        setErrorMessage("Something went wrong!");
+      }
       setShowErrorPopup(true);
     }
   };
@@ -225,8 +236,14 @@ export default function User() {
           subdistrict: data.user.subdistrict,
           ward: data.user.ward,
         });
-      } catch (err: any) {
-        setErrorMessage(err.message);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else if (typeof error === "string") {
+          setErrorMessage(error);
+        } else {
+          setErrorMessage("Something went wrong!");
+        }
         setShowErrorPopup(true);
       }
     };
@@ -380,7 +397,7 @@ export default function User() {
               value={formData.no_hp}
             />
           </div>
-                    <div>
+          <div>
             {" "}
             <label htmlFor="no_hp" className="block mb-1">
               Provinsi

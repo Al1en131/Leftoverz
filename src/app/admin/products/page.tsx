@@ -96,8 +96,12 @@ export default function Products() {
       );
       setSuccessMessage("Product deleted successfully.");
       setShowSuccessPopup(true);
-    } catch (error: any) {
-      setErrorMessage(error.message || "Failed to delete product.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Failed to delete product.");
+      } else {
+        setErrorMessage("Failed to delete product.");
+      }
       setShowErrorPopup(true);
     } finally {
       setShowConfirmPopup(false);

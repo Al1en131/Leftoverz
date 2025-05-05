@@ -30,6 +30,10 @@ type Product = {
     name: string;
     price: number;
     image: string[];
+    user_id: number;
+    seller_name : string;
+    subdistrict : string;
+    seller: { name: string; subdistrict: string };
   };
 };
 
@@ -113,6 +117,9 @@ export default function Favorite() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
       <main>
@@ -353,7 +360,7 @@ export default function Favorite() {
                     <div className="flex items-center gap-2">
                       <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
                       <p className="text-blue-400 font-semibold">
-                        {item.user?.name || "Unknown Seller"}
+                        {item.product?.seller_name || "Unknown Seller"}
                       </p>
                     </div>
                   </div>
@@ -373,7 +380,7 @@ export default function Favorite() {
                 </div>
                 <div className="my-4 flex justify-between items-center">
                   <p className="text-blue-400 text-lg">
-                    {item.user?.subdistrict}
+                    {item.product?.subdistrict}
                   </p>
                   <p className="text-blue-400 text-base">
                     {" "}

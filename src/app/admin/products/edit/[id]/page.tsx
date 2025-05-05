@@ -4,6 +4,17 @@ import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Image from "next/image";
 
+type User = {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  user_id: string;
+  status: string;
+  image: string[];
+  role: string;
+  // tambahkan properti lain sesuai struktur `user` dari API
+};
 export default function EditProduct() {
   const router = useRouter();
   const params = useParams();
@@ -19,7 +30,7 @@ export default function EditProduct() {
     image: [] as File[],
   });
 
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [displayPrice, setDisplayPrice] = useState("");
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -95,9 +106,9 @@ export default function EditProduct() {
         try {
           // Coba parse string JSON jika perlu
           parsedImage = JSON.parse(image);
-        } catch (error) {
+        } catch {
           console.log("Image is not in valid JSON format, skipping parsing.");
-        }
+        }        
 
         console.log("Parsed image data:", parsedImage);
 
@@ -116,8 +127,10 @@ export default function EditProduct() {
         }
 
         console.log("image:", parsedImage); // Periksa isi data yang diparsing
-      } catch (err: any) {
-        setErrorMessage(err.message);
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : "Unknown error occurred";
+        setErrorMessage(errorMessage);
         setShowErrorPopup(true);
       }
     };

@@ -393,8 +393,8 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody className="">
-                      {transactions.map((tx, index) => (
-                        <tr key={index} className="border-b border-[#56577A]">
+                      {transactions.map((tx) => (
+                        <tr key={tx.id} className="border-b border-[#56577A]">
                           <td className="p-4 whitespace-nowrap text-sm font-normal text-white">
                             {tx.item_name}
                           </td>
@@ -465,7 +465,7 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody className="">
-                      {products.map((product, index) => (
+                      {products.map((product) => (
                         <tr
                           key={product.id}
                           className="transition border-b border-[#56577A]"
