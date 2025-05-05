@@ -12,13 +12,13 @@ type RawTransaction = {
   total_price: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "pending" | "paid" | "cancelled" | null;
-  created_at: string;
   item?: {
     name: string;
     image: string[]; // Tambahkan ini
   };
   buyer?: { name: string };
   seller?: { name: string };
+  created_at : string;
 };
 
 type Transaction = RawTransaction & {
@@ -40,6 +40,7 @@ type Product = {
   status: string;
   user_id: number;
   seller?: { name: string };
+  created_at: string;
 };
 
 export default function Dashboard() {
@@ -210,7 +211,12 @@ export default function Dashboard() {
         const data = await response.json();
 
         const parsedProducts = data.products
-          .slice(0, 4) // Mengambil hanya 5 produk terbaru
+          .sort(
+            (a: Product, b: Product) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+          )
+          .slice(0, 4)
           .map((product: Product) => {
             let parsedImage: string[] = [];
 
@@ -252,7 +258,6 @@ export default function Dashboard() {
     fetchProducts();
   }, []);
 
-  // Tampilan jika masih loading
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -278,12 +283,12 @@ export default function Dashboard() {
         {[
           {
             label: "Buyer",
-            value: pembeliCount.toLocaleString(), // Menampilkan jumlah pembeli
+            value: pembeliCount.toLocaleString(),
             color: "text-green-400",
           },
           {
             label: "Seller",
-            value: penjualCount.toLocaleString(), // Menampilkan jumlah penjual
+            value: penjualCount.toLocaleString(),
             color: "text-green-400",
           },
           {

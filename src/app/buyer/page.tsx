@@ -2,12 +2,95 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  no_hp: string;
+  role: string;
+  image: string[];
+  description: string;
+  price: number;
+  status: string;
+  user_id: number;
+  seller?: { name: string };
+  user?: { subdistrict: string };
+  created_at: string;
+};
 export default function BuyerHome() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          "http://127.0.0.1:1031/api/v1/allproducts",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || "Failed to fetch products");
+        }
+
+        const data = await response.json();
+
+        const parsedProducts = data.products
+          .sort(
+            (a: Product, b: Product) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+          )
+          .slice(0, 3)
+          .map((product: Product) => {
+            let parsedImage: string[] = [];
+
+            if (typeof product.image === "string") {
+              try {
+                const parsed = JSON.parse(product.image);
+                if (Array.isArray(parsed)) {
+                  parsedImage = parsed;
+                }
+              } catch {
+                parsedImage = [];
+              }
+            } else if (Array.isArray(product.image)) {
+              parsedImage = product.image;
+            }
+
+            return {
+              ...product,
+              image: parsedImage,
+              seller_name: product.seller?.name || "Unknown",
+              subdistrict: product.user?.subdistrict || "Unknown",
+            };
+          });
+
+        setProducts(parsedProducts);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Error fetching products:", error.message);
+        } else {
+          console.error("An unknown error occurred:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
-  const pathname = usePathname();
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -15,11 +98,11 @@ export default function BuyerHome() {
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     if (storedEmail) setEmail(storedEmail);
-  }, []);
+  }, [email]);
 
   const handleLogout = async () => {
     try {
-      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" });
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -30,10 +113,14 @@ export default function BuyerHome() {
       console.error("Logout failed:", err);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="bg-[#080B2A]  items-center justify-items-center min-h-screen ">
       {showLogoutPopup && (
-        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-[100]">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-[100]">
           <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
@@ -451,84 +538,60 @@ export default function BuyerHome() {
             </p>
           </div>
           <div className="md:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center">
-            <div className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
-              <div className="mb-4 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                  <p className="text-blue-400 font-semibold">James Watson</p>
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+              >
+                <div className="mb-4 flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <span className="w-9 h-9 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                      {product.seller?.name
+                        ? product.seller?.name
+                            .split(" ")
+                            .map((word) => word.charAt(0))
+                            .join("")
+                            .toUpperCase()
+                        : "?"}
+                    </span>
+                    <p className="text-blue-400 font-semibold">
+                      {product.seller?.name}
+                    </p>
+                  </div>
+                  <Link
+                    href={`/product/${product.id}`}
+                    className="bg-blue-400 px-4 py-1 text-center text-white rounded-lg hover:bg-transparent z-20 hover:text-blue-400 hover:border-2 hover:border-bluetext-blue-400"
+                  >
+                    Detail
+                  </Link>
                 </div>
-                <button className="bg-[#15BFFD] px-6 py-1 text-center text-white rounded-lg hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
-                  Beli
-                </button>
-              </div>
-              <div className="mb-5">
-                <Image
-                  width={100}
-                  height={100}
-                  alt=""
-                  src="/images/hero-2.jpg"
-                  className="w-full rounded-2xl "
-                />
-              </div>
-              <div className="mt-4">
-                <h3 className="text-white text-lg font-bold">
-                  Punk Art Collection
-                </h3>
-                <p className="text-blue-400 text-base">Jakarta</p>
-              </div>
-            </div>
-            <div className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
-              <div className="mb-4 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                  <p className="text-blue-400 font-semibold">James Watson</p>
+                <div className="mb-5">
+                  <Image
+                    src={
+                      product.image &&
+                      Array.isArray(product.image) &&
+                      product.image.length > 0 &&
+                      typeof product.image[0] === "string" &&
+                      product.image[0].startsWith("/")
+                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        : "/images/default-product.png"
+                    }
+                    alt={product.name}
+                    width={50}
+                    height={50}
+                    className="w-full h-64 object-cover rounded-2xl"
+                  />
                 </div>
-                <button className="bg-[#15BFFD] px-6 py-1 text-center text-white rounded-lg hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
-                  Beli
-                </button>
-              </div>
-              <div className="mb-5">
-                <Image
-                  width={100}
-                  height={100}
-                  alt=""
-                  src="/images/hero-2.jpg"
-                  className="w-full rounded-2xl "
-                />
-              </div>
-              <div className="mt-4">
-                <h3 className="text-white text-lg font-bold">
-                  Punk Art Collection
-                </h3>
-                <p className="text-blue-400 text-base">Jakarta</p>
-              </div>
-            </div>
-            <div className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative">
-              <div className="mb-4 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                  <p className="text-blue-400 font-semibold">James Watson</p>
+                <div className="mt-4">
+                  <h3 className="text-white text-lg font-bold">
+                    {product.name}
+                  </h3>
+                  <p className="text-blue-400 text-base">
+                    {product.user?.subdistrict}
+                  </p>
                 </div>
-                <button className="bg-[#15BFFD] px-6 py-1 text-center text-white rounded-lg hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
-                  Beli
-                </button>
               </div>
-              <div className="mb-5">
-                <Image
-                  width={100}
-                  height={100}
-                  alt=""
-                  src="/images/hero-2.jpg"
-                  className="w-full rounded-2xl "
-                />
-              </div>
-              <div className="mt-4">
-                <h3 className="text-white text-lg font-bold">
-                  Punk Art Collection
-                </h3>
-                <p className="text-blue-400 text-base">Jakarta</p>
-              </div>
-            </div>
+            ))}
           </div>
           <div className="flex justify-center mt-10">
             <Link

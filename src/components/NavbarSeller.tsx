@@ -18,7 +18,7 @@ export default function Navbar() {
   }, [email]);
   const handleLogout = async () => {
     try {
-      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); 
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" });
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -43,7 +43,7 @@ export default function Navbar() {
   return (
     <>
       {showLogoutPopup && (
-        <div className="fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm w-full h-full flex items-center justify-center">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-[100]">
           <div className="bg-white text-gray-800 w-full max-w-md mx-4 rounded-2xl shadow-xl p-6 border border-blue-300">
             <div className="flex justify-center mb-4">
               <Image
