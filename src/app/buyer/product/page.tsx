@@ -5,8 +5,7 @@ import { useState, useRef, useEffect } from "react";
 import "flowbite/dist/flowbite.css";
 import { Listbox } from "@headlessui/react";
 import Link from "next/link";
-import { Router } from "lucide-react";
-import { useRouter, useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const options = [
   { value: "", label: "Pilih" },
@@ -132,7 +131,7 @@ export default function Product() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const [favorites, setFavorites] = useState<number[]>([]); 
+  const [favorites, setFavorites] = useState<number[]>([]);
 
   const handleAddFavorite = async (productId: number) => {
     const userId = localStorage.getItem("id");
@@ -164,7 +163,6 @@ export default function Product() {
         setSuccessMessage("Produk berhasil ditambahkan ke favorit!");
         setShowSuccessPopup(true);
       } else {
-        const errorData = await response.json();
         setErrorMessage("Gagal menambahkan produk ke favorit.");
         setShowErrorPopup(true);
       }
@@ -176,7 +174,7 @@ export default function Product() {
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, []);
 
   const handleClosePopup = () => {
     setShowErrorPopup(false);
@@ -186,6 +184,9 @@ export default function Product() {
     router.push("/buyer/favorite");
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
       <main>
@@ -459,7 +460,7 @@ export default function Product() {
         </div>
         <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-            {currentProducts.map((product, index) => (
+            {currentProducts.map((product) => (
               <div
                 key={product.id}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"

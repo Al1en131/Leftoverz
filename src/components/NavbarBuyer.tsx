@@ -9,13 +9,12 @@ export default function NavbarBuyer() {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
   const [email, setEmail] = useState("");
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     if (storedEmail) setEmail(storedEmail);
-  }, []);
+  }, [email]);
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const handleLogout = async () => {

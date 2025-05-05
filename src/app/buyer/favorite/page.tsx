@@ -31,9 +31,15 @@ type Product = {
     price: number;
     image: string[];
     user_id: number;
-    seller_name : string;
-    subdistrict : string;
+    seller_name: string;
+    subdistrict: string;
     seller: { name: string; subdistrict: string };
+  };
+};
+
+type RawFavorite = Omit<Product, "product"> & {
+  product: Omit<NonNullable<Product["product"]>, "image"> & {
+    image: string; // ini masih dalam bentuk string JSON
   };
 };
 
@@ -70,14 +76,16 @@ export default function Favorite() {
       const data = await response.json();
       console.log(data); // Cek data yang diterima
 
-      const parsedFavorites = data.data.map((fav: any) => ({
-        ...fav,
-        user: fav.user,
-        product: {
-          ...fav.product,
-          image: JSON.parse(fav.product.image), // ubah string jadi array
-        },
-      }));
+      const parsedFavorites = data.data.map(
+        (fav: RawFavorite): Product => ({
+          ...fav,
+          user: fav.user,
+          product: {
+            ...fav.product,
+            image: JSON.parse(fav.product.image),
+          },
+        })
+      );
 
       setProducts(parsedFavorites); // Menyimpan data favorit ke dalam state
     } catch (error: unknown) {
@@ -358,7 +366,15 @@ export default function Favorite() {
                       {item.product?.name}
                     </h3>
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
+                      <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                        {item.product?.seller_name
+                          ? item.product?.seller_name
+                              .split(" ")
+                              .map((word) => word.charAt(0))
+                              .join("")
+                              .toUpperCase()
+                          : "?"}
+                      </span>
                       <p className="text-blue-400 font-semibold">
                         {item.product?.seller_name || "Unknown Seller"}
                       </p>

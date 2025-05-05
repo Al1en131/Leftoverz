@@ -15,10 +15,10 @@ export default function Navbar() {
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
     if (storedEmail) setEmail(storedEmail);
-  }, []);
+  }, [email]);
   const handleLogout = async () => {
     try {
-      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); 
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -42,7 +42,6 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Pindahkan popup ke luar nav agar bisa full screen */}
       {showLogoutPopup && (
         <div className="fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm w-full h-full flex items-center justify-center">
           <div className="bg-white text-gray-800 w-full max-w-md mx-4 rounded-2xl shadow-xl p-6 border border-blue-300">

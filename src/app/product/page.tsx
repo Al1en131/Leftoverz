@@ -132,12 +132,12 @@ export default function Product() {
 
   const handleAddFavorite = async (itemId: number) => {
     const userId = localStorage.getItem("user_id"); // sesuaikan jika pakai cookies/context
-  
+
     if (!userId) {
       alert("Silakan login terlebih dahulu.");
       return;
     }
-  
+
     try {
       const res = await fetch("http://127.0.0.1:1031/api/v1/favorite/create", {
         method: "POST",
@@ -149,7 +149,7 @@ export default function Product() {
           item_id: itemId,
         }),
       });
-  
+
       const data = await res.json();
       if (res.ok) {
         alert("Berhasil ditambahkan ke favorit!");
@@ -161,8 +161,10 @@ export default function Product() {
       alert("Terjadi kesalahan saat menambahkan favorit.");
     }
   };
-  
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
       <main>
@@ -388,7 +390,7 @@ export default function Product() {
         </div>
         <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-            {currentProducts.map((product, index) => (
+            {currentProducts.map((product) => (
               <div
                 key={product.id}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
@@ -435,7 +437,10 @@ export default function Product() {
                   <p className="text-blue-400 text-lg">
                     {product.user?.subdistrict}
                   </p>
-                  <p className="text-blue-400 text-base"> Rp {product.price.toLocaleString("id-ID")}</p>
+                  <p className="text-blue-400 text-base">
+                    {" "}
+                    Rp {product.price.toLocaleString("id-ID")}
+                  </p>
                 </div>
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link

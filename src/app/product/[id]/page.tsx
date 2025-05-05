@@ -2,23 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
-
-const products = [
-  {
-    id: 1,
-    name: "Smart Watch",
-    description: "High-quality smart watch with multiple features.",
-    price: 199.99,
-    images: [
-      "/images/hero-1.jpg",
-      "/images/hero-3.jpg",
-      "/images/hero-1.jpg",
-      "/images/hero-2.jpg",
-      "/images/hero-1.jpg",
-    ],
-  },
-];
+import { useParams } from "next/navigation";
 
 const data = [
   {
@@ -86,7 +70,6 @@ type Product = {
 };
 
 export default function ProductDetail() {
-  const router = useRouter();
   const params = useParams();
   const productId = params?.id;
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -109,7 +92,7 @@ export default function ProductDetail() {
 
         try {
           parsedImage = JSON.parse(parsedImage);
-        } catch (error) {
+        } catch {
           console.log("Image is not in valid JSON format, skipping parsing.");
         }
 
@@ -130,14 +113,21 @@ export default function ProductDetail() {
 
         setSelectedImage(formattedImages[0] || null);
         setLoading(false);
-      } catch (err: any) {
-        console.error(err);
-        // set error states if needed
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error("An unknown error occurred");
+        }
       }
     };
 
     fetchProduct();
   }, [productId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="bg-[#080B2A] min-h-screen flex flex-col items-center">
