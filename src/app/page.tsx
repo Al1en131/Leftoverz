@@ -56,7 +56,7 @@ export default function Home() {
         />
         <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center pt-28 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
-            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 font-bold text-[#15BFFD]">
+            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 mb-6 font-bold text-[#15BFFD]">
               Left
               <span className="text-white">overz</span>
             </h1>
@@ -148,7 +148,7 @@ export default function Home() {
             <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
               Why Choose Us?
             </h4>
-            <p className="text-lg max-lg:text-justify">
+            <p className="text-lg max-lg:text-justify mb-6">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry&apos;s standard dummy
               text ever since the 1500s, when an unknown printer took a galley

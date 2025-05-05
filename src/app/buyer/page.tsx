@@ -1,9 +1,70 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function BuyerHome() {
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
+      localStorage.removeItem("id");
+      router.push("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   return (
     <div className="bg-[#080B2A]  items-center justify-items-center min-h-screen ">
+      {showLogoutPopup && (
+        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-[100]">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Confirm"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Logout</h2>
+            <p className="mb-6 text-blue-400">
+              Apakah Anda yakin ingin logout?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleLogout}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Ya
+              </button>
+              <button
+                onClick={() => setShowLogoutPopup(false)}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           width={100}
@@ -56,7 +117,7 @@ export default function BuyerHome() {
         />
         <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center pt-28 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
-            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 z-20 font-bold text-[#15BFFD]">
+            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 z-20 mb-6 font-bold text-[#15BFFD]">
               Left
               <span className="text-white">overz</span>
             </h1>
@@ -69,12 +130,12 @@ export default function BuyerHome() {
               sampah.
             </p>
             <div className="flex gap-4 pt-4">
-              <Link
-                href="/auth/register"
+              <button
+                onClick={() => setShowLogoutPopup(true)}
                 className="bg-[#15BFFD] px-4 py-3 max-lg:py-1 max-lg:px-3 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
               >
                 Logout
-              </Link>
+              </button>
             </div>
           </div>
           <div className="z-50 w-1/2 max-lg:hidden flex">
@@ -142,7 +203,7 @@ export default function BuyerHome() {
             <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
               Why Choose Us?
             </h4>
-            <p className="text-lg max-lg:text-justify">
+            <p className="text-lg max-lg:text-justify mb-6">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry&apos;s standard dummy
               text ever since the 1500s, when an unknown printer took a galley
@@ -150,7 +211,10 @@ export default function BuyerHome() {
               survived not only five centuries, but also the leap into
               electronic typesetting, remaining essentially unchanged.
             </p>
-            <Link href="/buyer/about" className="bg-[#15BFFD] px-4 mt-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+            <Link
+              href="/buyer/about"
+              className="bg-[#15BFFD] px-4 mt-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+            >
               About Us
             </Link>
           </div>
@@ -467,7 +531,10 @@ export default function BuyerHome() {
             </div>
           </div>
           <div className="flex justify-center mt-10">
-            <Link href="/buyer/product" className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]">
+            <Link
+              href="/buyer/product"
+              className="bg-[#15BFFD] px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+            >
               Next
             </Link>
           </div>
