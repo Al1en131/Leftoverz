@@ -125,6 +125,24 @@ export default function Favorite() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -240,8 +258,6 @@ export default function Favorite() {
                   </ul>
                 </div>
               )}
-
-              {/* Input Search */}
               <div className="relative w-full">
                 <input
                   type="search"
@@ -355,9 +371,9 @@ export default function Favorite() {
         </div>
         <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-            {products.map((item) => (
+            {currentProducts.map((item) => (
               <div
-                key={item.id} // Pastikan key unik berdasarkan produk
+                key={item.id}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
               >
                 <div className="mb-4 flex justify-between items-center">
@@ -420,6 +436,25 @@ export default function Favorite() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex justify-center gap-4 mt-10 items-center">
+            <button
+              onClick={handlePreviousPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="text-white font-semibold">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
       </main>

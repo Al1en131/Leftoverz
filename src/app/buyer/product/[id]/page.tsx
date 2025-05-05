@@ -4,51 +4,6 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
-const data = [
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "50.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "60.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-];
-
 type Product = {
   id: number;
   name: string;
@@ -241,61 +196,6 @@ export default function ProductDetail() {
               Beli
             </Link>
           </div>
-        </div>
-      </div>
-      <div className="md:pb-20 max-lg:pb-10 md:pt-10 max-lg:pt-0 w-full max-lg:px-6 md:px-20">
-        <h1 className="text-5xl font-bold text-white mb-8 text-center">
-          Similar Product
-        </h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-          {data.map((item, index) => (
-            <div
-              key={index}
-              className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
-            >
-              <div className="mb-4 flex justify-between items-center">
-                <div className="block">
-                  <h3 className="text-white text-lg mb-1 font-bold">
-                    {item.title}
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                    <p className="text-blue-400 font-semibold">{item.name}</p>
-                  </div>
-                </div>
-              </div>
-              <div className="mb-5">
-                <Image
-                  width={100}
-                  height={100}
-                  alt={item.title}
-                  src={item.image}
-                  className="w-full rounded-2xl"
-                />
-              </div>
-
-              <div className="my-4 flex justify-between items-center">
-                <p className="text-blue-400 text-lg">{item.location}</p>
-                <p className="text-blue-400 text-base">{item.price}</p>
-              </div>
-
-              <div className="w-full flex justify-between items-center gap-2 text-white">
-                <Link
-                  href="/buyer/buy-product"
-                  className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
-                >
-                  Beli
-                </Link>
-                <Image
-                  src="/images/heart-add.svg"
-                  width={100}
-                  height={100}
-                  alt=""
-                  className="w-8 h-8 text-white"
-                />
-              </div>
-            </div>
-          ))}
         </div>
       </div>
       <div className="fixed bottom-6 right-6 z-50">

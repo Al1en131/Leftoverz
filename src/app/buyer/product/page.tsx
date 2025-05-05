@@ -139,7 +139,6 @@ export default function Product() {
 
     if (!userId) return alert("User belum login.");
 
-    // Ensure userId is a number
     const userIdNumber = parseInt(userId, 10);
     if (isNaN(userIdNumber)) {
       return alert("User ID tidak valid.");
@@ -159,7 +158,7 @@ export default function Product() {
       );
 
       if (response.ok) {
-        setFavorites([...favorites, productId]); // Add product to favorites list
+        setFavorites([...favorites, productId]);
         setSuccessMessage("Produk berhasil ditambahkan ke favorit!");
         setShowSuccessPopup(true);
       } else {
@@ -535,7 +534,7 @@ export default function Product() {
               </div>
             ))}
           </div>
-          <div className="flex justify-center gap-4 my-4 items-center">
+          <div className="flex justify-center gap-4 mt-10 items-center">
             <button
               onClick={handlePreviousPage}
               className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
