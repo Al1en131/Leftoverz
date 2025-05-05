@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import "flowbite/dist/flowbite.css";
 import { Listbox } from "@headlessui/react";
 import Link from "next/link";
+import { Router } from "lucide-react";
+import { useRouter, useParams } from "next/navigation";
 
 const options = [
   { value: "", label: "Pilih" },
@@ -29,7 +31,12 @@ type Product = {
 };
 
 export default function Product() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [priceFrom, setPriceFrom] = useState("");
@@ -71,8 +78,6 @@ export default function Product() {
       }
 
       const data = await response.json();
-      console.log(data);
-
       const parsedProducts = data.products.map((product: Product) => {
         let parsedImage: string[] = [];
 
@@ -126,46 +131,112 @@ export default function Product() {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
-  const handleAddFavorite = async (itemId: number) => {
-    const userId = localStorage.getItem("token"); // sesuaikan jika pakai cookies/context
-  
-    if (!userId) {
-      alert("Silakan login terlebih dahulu.");
-      return;
+  const [favorites, setFavorites] = useState<number[]>([]); 
+
+  const handleAddFavorite = async (productId: number) => {
+    const userId = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+
+    if (!userId) return alert("User belum login.");
+
+    // Ensure userId is a number
+    const userIdNumber = parseInt(userId, 10);
+    if (isNaN(userIdNumber)) {
+      return alert("User ID tidak valid.");
     }
-  
+
     try {
-      const res = await fetch("http://127.0.0.1:1031/api/v1/favorite/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: parseInt(userId, 10),
-          item_id: itemId,
-        }),
-      });
-  
-      const data = await res.json();
-      if (res.ok) {
-        alert("Berhasil ditambahkan ke favorit!");
+      const response = await fetch(
+        "http://127.0.0.1:1031/api/v1/favorite/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ user_id: userIdNumber, item_id: productId }),
+        }
+      );
+
+      if (response.ok) {
+        setFavorites([...favorites, productId]); // Add product to favorites list
+        setSuccessMessage("Produk berhasil ditambahkan ke favorit!");
+        setShowSuccessPopup(true);
       } else {
-        alert(data.message || "Gagal menambahkan ke favorit.");
+        const errorData = await response.json();
+        setErrorMessage("Gagal menambahkan produk ke favorit.");
+        setShowErrorPopup(true);
       }
-    } catch (err) {
-      console.error("Error menambahkan favorit:", err);
-      alert("Terjadi kesalahan saat menambahkan favorit.");
+    } catch (error) {
+      console.error("Gagal menambahkan favorit:", error);
+      alert("Gagal menambahkan favorit.");
     }
   };
-  
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  const handleClosePopup = () => {
+    setShowErrorPopup(false);
+  };
+  const handleCloseSuccessPopup = () => {
+    setShowSuccessPopup(false);
+    router.push("/buyer/favorite");
+  };
 
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
       <main>
+        {showSuccessPopup && (
+          <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+            <div className="bg-[#2c2f48] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+              <div className="flex justify-center mb-4">
+                <Image
+                  src="/images/succes.svg"
+                  width={80}
+                  height={80}
+                  alt="Success"
+                  className="w-20 h-20"
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">
+                Success!
+              </h2>
+              <p className="mb-6 text-blue-400">{successMessage}</p>
+              <button
+                onClick={handleCloseSuccessPopup}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
+        {showErrorPopup && (
+          <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+            <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+              <div className="flex justify-center mb-4">
+                <Image
+                  src="/images/error.svg"
+                  width={80}
+                  height={80}
+                  alt="Error"
+                  className="w-20 h-20"
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-1 text-red-400">Error!</h2>
+              <p className="mb-6 text-red-400">{errorMessage}</p>
+              <button
+                onClick={handleClosePopup}
+                className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
         <Image
           width={100}
           height={100}
@@ -435,16 +506,22 @@ export default function Product() {
                   <p className="text-blue-400 text-lg">
                     {product.user?.subdistrict}
                   </p>
-                  <p className="text-blue-400 text-base">Rp. {product.price}</p>
+                  <p className="text-blue-400 text-base">
+                    {" "}
+                    Rp {product.price.toLocaleString("id-ID")}
+                  </p>
                 </div>
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link
                     href={`/product/${product.id}`}
-                    className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+                    className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-40 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
                   >
                     Detail
                   </Link>
-                  <button className="z-50" onClick={() => handleAddFavorite(product.id)}>
+                  <button
+                    className="z-50"
+                    onClick={() => handleAddFavorite(product.id)}
+                  >
                     <Image
                       src="/images/heart-add.svg"
                       width={100}

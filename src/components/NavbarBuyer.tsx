@@ -1,15 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavbarBuyer() {
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-
+  const handleLogout = async () => {
+    try {
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
+      localStorage.removeItem("id");
+      router.push("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   const navLinks = [
     { href: "/buyer", label: "Home" },
     { href: "/buyer/about", label: "About" },
@@ -19,6 +40,39 @@ export default function NavbarBuyer() {
 
   return (
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
+      {showLogoutPopup && (
+        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-[100]">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Confirm"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Logout</h2>
+            <p className="mb-6 text-blue-400">
+              Apakah Anda yakin ingin logout?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleLogout}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Ya
+              </button>
+              <button
+                onClick={() => setShowLogoutPopup(false)}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="text-white text-lg font-semibold">
           <Image
@@ -69,7 +123,7 @@ export default function NavbarBuyer() {
                 </Link>
                 <button
                   className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
-                  onClick={() => console.log("Logout")}
+                  onClick={() => setShowLogoutPopup(true)}
                 >
                   Logout
                 </button>
@@ -104,7 +158,7 @@ export default function NavbarBuyer() {
               </Link>
               <button
                 className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
-                onClick={() => console.log("Logout")}
+                onClick={() => setShowLogoutPopup(true)}
               >
                 Logout
               </button>

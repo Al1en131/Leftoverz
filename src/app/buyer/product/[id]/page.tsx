@@ -1,23 +1,8 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-
-const products = [
-  {
-    id: 1,
-    name: "Smart Watch",
-    description: "High-quality smart watch with multiple features.",
-    price: 199.99,
-    images: [
-      "/images/hero-1.jpg",
-      "/images/hero-3.jpg",
-      "/images/hero-1.jpg",
-      "/images/hero-2.jpg",
-      "/images/hero-1.jpg",
-    ],
-  },
-];
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
 
 const data = [
   {
@@ -64,10 +49,79 @@ const data = [
   },
 ];
 
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  no_hp: string;
+  role: string;
+  image: string[];
+  description: string;
+  price: number;
+  status: string;
+  user_id: number;
+  seller?: { name: string };
+  user?: {
+    subdistrict: string;
+    ward: string;
+    regency: string;
+    province: string;
+  };
+};
+
 export default function ProductDetail() {
+  const router = useRouter();
+  const params = useParams();
+  const productId = params?.id;
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const product = products[0];
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!productId) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/product/detail/${productId}`
+        );
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        let parsedImage = data.product.image;
+
+        try {
+          parsedImage = JSON.parse(parsedImage);
+        } catch (error) {
+          console.log("Image is not in valid JSON format, skipping parsing.");
+        }
+
+        console.log("Parsed image data:", parsedImage);
+
+        const formattedImages = Array.isArray(parsedImage)
+          ? parsedImage.map(
+              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+            )
+          : parsedImage?.url
+          ? [`http://127.0.0.1:1031${parsedImage.url}`]
+          : [];
+
+        setProduct({
+          ...data.product,
+          image: formattedImages,
+        });
+
+        setSelectedImage(formattedImages[0] || null);
+        setLoading(false);
+      } catch (err: any) {
+        console.error(err);
+        // set error states if needed
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
 
   return (
     <div className="bg-[#080B2A] min-h-screen flex flex-col items-center">
@@ -113,26 +167,22 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-[700px] max-lg:hidden right-[300px] -z-0"
       />
-      <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 max-lg:py-14 mt-10 h-auto">
+      <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 w-full max-lg:py-14 mt-10 h-auto">
         <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
           <div className="h-96 rounded-lg overflow-hidden">
-            <Image
-              src={selectedImage}
-              alt={product.name}
-              width={600}
-              height={600}
-              className="w-full h-auto rounded-lg"
-            />
+            {product && (
+              <Image
+                src={selectedImage ?? "/placeholder.jpg"}
+                alt={product.name}
+                width={600}
+                height={600}
+                className="w-full h-96 object-cover rounded-lg"
+              />
+            )}
           </div>
           <div className="grid grid-cols-5 gap-4 md:mt-6 max-lg:mt-0">
-            {product.images.map((img, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(img)}
-                className={`border ${
-                  selectedImage === img ? "border-blue-500" : "border-gray-300"
-                } rounded-lg overflow-hidden`}
-              >
+            {product?.image.map((img, index) => (
+              <button key={index} onClick={() => setSelectedImage(img)}>
                 <Image
                   src={img}
                   alt={`Thumbnail ${index}`}
@@ -146,21 +196,29 @@ export default function ProductDetail() {
         </div>
         <div className="mb-4 md:w-8/12 max-lg:w-full block items-center relative">
           <div className="block">
-            <h3 className="text-white text-xl mb-4 font-bold tracking-wide">
-              Product Name
+            <h3 className="text-white text-xl mb-2 font-bold tracking-wide">
+              {product?.name}
             </h3>
+            <p className="mb-2 !capitalize">
+              {product?.user?.ward}, {product?.user?.subdistrict},{" "}
+              {product?.user?.regency}, {product?.user?.province}
+            </p>
             <div className="flex items-center mb-8 gap-2">
-              <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-              <p className="text-blue-400 font-semibold">Alien</p>
+              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
+                {product?.seller?.name
+                  ? product?.seller.name
+                      .split(" ")
+                      .map((word) => word.charAt(0))
+                      .join("")
+                      .toUpperCase()
+                  : "?"}
+              </span>
+              <p className="text-blue-400 font-semibold">
+                {product?.seller?.name}
+              </p>
             </div>
             <p className="text-base max-lg:text-justify">
-              Contrary to popular belief, Lorem Ipsum is not simply random text.
-              It has roots in a piece of classical Latin literature from 45 BC,
-              making it over 2000 years old. Richard McClintock, a Latin
-              professor at Hampden-Sydney College in Virginia, looked up one of
-              the more obscure Latin words, consectetur, from a Lorem Ipsum
-              passage, and going through the cites of the word in classical
-              literature, discovered the undoubtable source.
+              {product?.description}
             </p>
           </div>
           <div className="flex items-center gap-4 md:absolute max-lg:mt-4 max-lg:justify-end md:bottom-0 md:right-0">

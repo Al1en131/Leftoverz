@@ -13,57 +13,83 @@ const options = [
   { value: "high-price", label: "Harga Tertinggi" },
 ];
 
-const data = [
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "50.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "60.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-];
+type Product = {
+  id: number;
+  item_id: number;
+  user_id: number;
+  seller?: { name: string };
+  user?: {
+    name: string;
+    subdistrict: string;
+    ward: string;
+    regency: string;
+    province: string;
+  };
+  product?: {
+    id: number;
+    name: string;
+    price: number;
+    image: string[];
+  };
+};
 
 export default function Favorite() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
   const [priceFrom, setPriceFrom] = useState("");
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchFavorites = async () => {
+    const user_id = localStorage.getItem("id"); // Mengambil user_id dari localStorage
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/favorite/user/${user_id}`, // Menggunakan user_id dalam URL
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to fetch favorites");
+      }
+
+      const data = await response.json();
+      console.log(data); // Cek data yang diterima
+
+      const parsedFavorites = data.data.map((fav: any) => ({
+        ...fav,
+        user: fav.user,
+        product: {
+          ...fav.product,
+          image: JSON.parse(fav.product.image), // ubah string jadi array
+        },
+      }));
+
+      setProducts(parsedFavorites); // Menyimpan data favorit ke dalam state
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error fetching favorites:", error.message);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFavorites(); // Mengambil data favorit ketika komponen dimuat
+  }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -314,38 +340,49 @@ export default function Favorite() {
         </div>
         <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-            {data.map((item, index) => (
+            {products.map((item) => (
               <div
-                key={index}
+                key={item.id} // Pastikan key unik berdasarkan produk
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
               >
                 <div className="mb-4 flex justify-between items-center">
                   <div className="block">
                     <h3 className="text-white text-lg mb-1 font-bold">
-                      {item.title}
+                      {item.product?.name}
                     </h3>
                     <div className="flex items-center gap-2">
                       <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                      <p className="text-blue-400 font-semibold">{item.name}</p>
+                      <p className="text-blue-400 font-semibold">
+                        {item.user?.name || "Unknown Seller"}
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="mb-5">
                   <Image
+                    src={
+                      item.product?.image[0]
+                        ? `http://127.0.0.1:1031${item.product.image[0]}`
+                        : "/images/default-item.png"
+                    }
+                    alt="product"
                     width={100}
                     height={100}
-                    alt={item.title}
-                    src={item.image}
-                    className="w-full rounded-2xl"
+                    className="w-full h-96 object-cover rounded-2xl"
                   />
                 </div>
                 <div className="my-4 flex justify-between items-center">
-                  <p className="text-blue-400 text-lg">{item.location}</p>
-                  <p className="text-blue-400 text-base">Rp. {item.price}</p>
+                  <p className="text-blue-400 text-lg">
+                    {item.user?.subdistrict}
+                  </p>
+                  <p className="text-blue-400 text-base">
+                    {" "}
+                    Rp {item.product?.price.toLocaleString("id-ID")}
+                  </p>
                 </div>
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link
-                    href="/product/detail"
+                    href={`/buyer/product/${item.product?.id}`}
                     className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
                   >
                     Lihat Detail

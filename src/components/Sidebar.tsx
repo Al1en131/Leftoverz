@@ -24,6 +24,7 @@ const Sidebar = () => {
       localStorage.removeItem("email");
       localStorage.removeItem("role");
       localStorage.removeItem("name");
+      localStorage.removeItem("id");
       router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);

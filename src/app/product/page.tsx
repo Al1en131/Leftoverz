@@ -435,7 +435,7 @@ export default function Product() {
                   <p className="text-blue-400 text-lg">
                     {product.user?.subdistrict}
                   </p>
-                  <p className="text-blue-400 text-base">Rp. {product.price}</p>
+                  <p className="text-blue-400 text-base"> Rp {product.price.toLocaleString("id-ID")}</p>
                 </div>
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link

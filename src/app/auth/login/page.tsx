@@ -35,6 +35,9 @@ export default function Login() {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
+        localStorage.setItem("id", data.id);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("email", data.email);
         if (data.role === "penjual") {
           router.push("/seller");
         } else if (data.role === "pembeli") {

@@ -1,12 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) setEmail(storedEmail);
+  }, []);
+  const handleLogout = async () => {
+    try {
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); // Opsional kalau kamu pakai endpoint backend
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      localStorage.removeItem("role");
+      localStorage.removeItem("name");
+      localStorage.removeItem("id");
+      router.push("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
@@ -19,34 +41,109 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-lg font-semibold">
-          <Image
-            width={100}
-            height={100}
-            src="/images/logo.png"
-            alt="Logo"
-            className="h-12 w-36"
-          />
-        </Link>
+    <>
+      {/* Pindahkan popup ke luar nav agar bisa full screen */}
+      {showLogoutPopup && (
+        <div className="fixed inset-0 z-[1000] bg-black/50 backdrop-blur-sm w-full h-full flex items-center justify-center">
+          <div className="bg-white text-gray-800 w-full max-w-md mx-4 rounded-2xl shadow-xl p-6 border border-blue-300">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Confirm"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-2 text-center text-blue-600">
+              Logout
+            </h2>
+            <p className="text-center text-gray-600 mb-6">
+              Apakah Anda yakin ingin logout?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={handleLogout}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Ya
+              </button>
+              <button
+                onClick={() => setShowLogoutPopup(false)}
+                className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Batal
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
+        {" "}
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/" className="text-white text-lg font-semibold">
+            <Image
+              width={100}
+              height={100}
+              src="/images/logo.png"
+              alt="Logo"
+              className="h-12 w-36"
+            />
+          </Link>
 
-        <div className="hidden md:flex items-center space-x-12 text-lg">
-          {navLinks.map(({ href, label }, index) => (
-            <Link
-              key={index}
-              href={href}
-              className={`${
-                pathname === href
-                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                  : "text-white"
-              } capitalize`}
-            >
-              {label}
-            </Link>
-          ))}
+          <div className="hidden md:flex items-center space-x-12 text-lg">
+            {navLinks.map(({ href, label }, index) => (
+              <Link
+                key={index}
+                href={href}
+                className={`${
+                  pathname === href
+                    ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+                    : "text-white"
+                } capitalize`}
+              >
+                {label}
+              </Link>
+            ))}
 
-          <div className="relative">
+            <div className="relative">
+              <button onClick={() => setProfileOpen(!profileOpen)}>
+                <Image
+                  width={40}
+                  height={40}
+                  src="/images/profile.jpg"
+                  alt="Profile"
+                  className="w-10 h-10 rounded-full cursor-pointer"
+                />
+              </button>
+
+              {profileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
+                  <div className="px-4 py-2 text-gray-800">
+                    <p className="font-semibold">John Doe</p>
+                    <p className="text-sm text-gray-500">
+                      john.doe@example.com
+                    </p>
+                  </div>
+                  <hr />
+                  <Link
+                    href="/seller/detail-profile"
+                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                  >
+                    Lihat Profil
+                  </Link>
+                  <button
+                    className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
+                    onClick={() => setShowLogoutPopup(true)}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 md:hidden relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <Image
                 width={40}
@@ -58,109 +155,74 @@ export default function Navbar() {
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
+              <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
                 <div className="px-4 py-2 text-gray-800">
                   <p className="font-semibold">John Doe</p>
                   <p className="text-sm text-gray-500">john.doe@example.com</p>
                 </div>
                 <hr />
                 <Link
-                  href="/seller/detail-profile"
+                  href="/profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
                   Lihat Profil
                 </Link>
                 <button
                   className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
-                  onClick={() => console.log("Logout")}
+                  onClick={() => setShowLogoutPopup(true)}
                 >
                   Logout
                 </button>
               </div>
             )}
+            <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+              )}
+            </button>
           </div>
         </div>
-
-        <div className="flex items-center gap-2 md:hidden relative">
-          <button onClick={() => setProfileOpen(!profileOpen)}>
-            <Image
-              width={40}
-              height={40}
-              src="/images/profile.jpg"
-              alt="Profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
-            />
-          </button>
-
-          {profileOpen && (
-            <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-              <div className="px-4 py-2 text-gray-800">
-                <p className="font-semibold">John Doe</p>
-                <p className="text-sm text-gray-500">john.doe@example.com</p>
-              </div>
-              <hr />
+        {/* Mobile Menu Dropdown */}
+        {isOpen && (
+          <div className="block md:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
+            {navLinks.map(({ href, label }, index) => (
               <Link
-                href="/profile"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                key={index}
+                href={href}
+                className={`block text-lg capitalize ${
+                  pathname === href
+                    ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+                    : "text-white"
+                }`}
+                onClick={() => setIsOpen(false)}
               >
-                Lihat Profil
+                {label}
               </Link>
-              <button
-                className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
-                onClick={() => console.log("Logout")}
-              >
-                Logout
-              </button>
-            </div>
-          )}
-          <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-8 h-8"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </svg>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu Dropdown */}
-      {isOpen && (
-        <div className="block md:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
-          {navLinks.map(({ href, label }, index) => (
-            <Link
-              key={index}
-              href={href}
-              className={`block text-lg capitalize ${
-                pathname === href
-                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                  : "text-white"
-              }`}
-              onClick={() => setIsOpen(false)}
-            >
-              {label}
-            </Link>
-          ))}
-        </div>
-      )}
-    </nav>
+            ))}
+          </div>
+        )}
+      </nav>
+    </>
   );
 }
