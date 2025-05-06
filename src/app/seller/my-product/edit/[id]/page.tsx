@@ -7,7 +7,7 @@ export default function AddProduct() {
     name: "",
     price: "",
     location: "",
-    category: "",
+    status: "",
     description: "",
     productImage: null,
   });
@@ -158,37 +158,21 @@ export default function AddProduct() {
                 />
               </div>
               <div className="mb-4">
-                <label htmlFor="location" className="text-white block">
-                  Location
-                </label>
-                <input
-                  type="text"
-                  name="location"
-                  id="location"
-                  className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-                  placeholder="Enter location"
-                  onChange={handleChange}
-                  value={formData.location}
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="category" className="text-white block">
-                  Category
+                <label htmlFor="status" className="text-white block">
+                  Status
                 </label>
                 <select
-                  name="category"
-                  id="category"
+                  name="status"
+                  id="status"
                   className="w-full border bg-white/30 text-white border-blue-400 p-2 rounded-lg"
                   onChange={handleChange}
-                  value={formData.category}
+                  value={formData.status}
                 >
                   <option value="" disabled>
-                    Select Category
+                    Select Status
                   </option>
-                  <option value="Electronics">Electronics</option>
-                  <option value="Fashion">Fashion</option>
-                  <option value="Home Appliances">Home Appliances</option>
-                  <option value="Health & Beauty">Health & Beauty</option>
+                  <option value="available">Available</option>
+                  <option value="sold">Sold</option>
                 </select>
               </div>
               <div className="mb-6">
