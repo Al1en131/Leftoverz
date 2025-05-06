@@ -11,6 +11,7 @@ const Sidebar = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
+  const name = localStorage.getItem("name"); 
 
   useEffect(() => {
     const storedEmail = localStorage.getItem("email");
@@ -168,8 +169,8 @@ const Sidebar = () => {
               className="w-16 h-16 rounded-full cursor-pointer"
             />
             <div>
-              <p className="leading-4">Admin</p>
-              <p className="text-sm">{email || "superadmin@gmail.com"}</p>
+              <p className="leading-4">{name}</p>
+              <p className="text-sm">{email}</p>
             </div>
           </div>
 

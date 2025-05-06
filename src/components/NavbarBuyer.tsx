@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function NavbarBuyer() {
+  const name = localStorage.getItem("name");
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -19,7 +20,7 @@ export default function NavbarBuyer() {
   const [profileOpen, setProfileOpen] = useState(false);
   const handleLogout = async () => {
     try {
-      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" }); 
+      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" });
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -110,8 +111,8 @@ export default function NavbarBuyer() {
             {profileOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
                 <div className="px-4 py-2 text-gray-800">
-                  <p className="font-semibold">John Doe</p>
-                  <p className="text-sm text-gray-500">john.doe@example.com</p>
+                  <p className="font-semibold">{name}</p>
+                  <p className="text-sm text-gray-500">{email}</p>
                 </div>
                 <hr />
                 <Link
@@ -145,8 +146,8 @@ export default function NavbarBuyer() {
           {profileOpen && (
             <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
               <div className="px-4 py-2 text-gray-800">
-                <p className="font-semibold">John Doe</p>
-                <p className="text-sm text-gray-500">john.doe@example.com</p>
+                <p className="font-semibold">{name}</p>
+                <p className="text-sm text-gray-500">{email}</p>
               </div>
               <hr />
               <Link

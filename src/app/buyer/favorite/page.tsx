@@ -53,12 +53,12 @@ export default function Favorite() {
   const [loading, setLoading] = useState(true);
 
   const fetchFavorites = async () => {
-    const user_id = localStorage.getItem("id"); // Mengambil user_id dari localStorage
+    const user_id = localStorage.getItem("id"); 
     const token = localStorage.getItem("token");
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/favorite/user/${user_id}`, // Menggunakan user_id dalam URL
+        `http://127.0.0.1:1031/api/v1/favorite/user/${user_id}`, 
         {
           method: "GET",
           headers: {
@@ -74,7 +74,7 @@ export default function Favorite() {
       }
 
       const data = await response.json();
-      console.log(data); // Cek data yang diterima
+      console.log(data); 
 
       const parsedFavorites = data.data.map(
         (fav: RawFavorite): Product => ({
@@ -87,7 +87,7 @@ export default function Favorite() {
         })
       );
 
-      setProducts(parsedFavorites); // Menyimpan data favorit ke dalam state
+      setProducts(parsedFavorites);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Error fetching favorites:", error.message);
@@ -100,7 +100,7 @@ export default function Favorite() {
   };
 
   useEffect(() => {
-    fetchFavorites(); // Mengambil data favorit ketika komponen dimuat
+    fetchFavorites(); 
   }, []);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
