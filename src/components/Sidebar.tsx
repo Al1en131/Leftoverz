@@ -11,10 +11,12 @@ const Sidebar = () => {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
-  const name = localStorage.getItem("name"); 
+  const [name, setName] = useState("");
 
   useEffect(() => {
+    const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
+    if (storedName) setName(storedName);
     if (storedEmail) setEmail(storedEmail);
   }, []);
 

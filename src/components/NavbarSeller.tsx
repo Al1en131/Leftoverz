@@ -6,17 +6,19 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const name = localStorage.getItem("name");
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
   useEffect(() => {
+    const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
+    if (storedName) setName(storedName);
     if (storedEmail) setEmail(storedEmail);
-  }, [email]);
+  }, []);
+
   const handleLogout = async () => {
     try {
       await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" });

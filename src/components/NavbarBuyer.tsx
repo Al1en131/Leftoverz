@@ -6,16 +6,18 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function NavbarBuyer() {
-  const name = localStorage.getItem("name");
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [email, setEmail] = useState("");
-
+  const [name, setName] = useState("");
   useEffect(() => {
+    const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
+    if (storedName) setName(storedName);
     if (storedEmail) setEmail(storedEmail);
-  }, [email]);
+  }, []);
+
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const handleLogout = async () => {
