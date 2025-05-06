@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 export default function Navbar() {
-  const name = localStorage.getItem("name"); 
+  const name = localStorage.getItem("name");
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function Navbar() {
     <>
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-[100]">
-          <div className="bg-white text-gray-800 w-full max-w-md mx-4 rounded-2xl shadow-xl p-6 border border-blue-300">
+          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/warning.svg"
@@ -55,16 +55,14 @@ export default function Navbar() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-2 text-center text-blue-600">
-              Logout
-            </h2>
-            <p className="text-center text-gray-600 mb-6">
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Logout</h2>
+            <p className="mb-6 text-blue-400">
               Apakah Anda yakin ingin logout?
             </p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleLogout}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-full"
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
               >
                 Ya
               </button>
