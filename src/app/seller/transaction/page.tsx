@@ -2,46 +2,93 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
+type RawTransaction = {
+  id: number;
+  buyer_id: number;
+  seller_id: number;
+  item_id: number;
+  total_price: number;
+  payment_method: "COD" | "e-wallet" | "bank transfer";
+  status: "pending" | "paid" | "cancelled" | null;
+  created_at: string;
+  item?: {
+    name: string;
+    image: string[]; // Tambahkan ini
+    price: number;
+  };
+  buyer?: { name: string };
+  seller?: { name: string };
+};
+
+type Transaction = RawTransaction & {
+  item_name: string;
+  buyer_name: string;
+  seller_name: string;
+  image: string[];
+};
 export default function Transaction() {
-  const galleryData = [
-    {
-      id: 1,
-      image: "/images/hero-1.jpg",
-      name: "Apple Watch Series 4",
-      buyer: "John",
-      payment: "COD",
-      price: "20.000",
-      status: "Paid",
-    },
-    {
-      id: 1,
-      image: "/images/hero-1.jpg",
-      name: "Apple Watch Series 4",
-      buyer: "John",
-      payment: "Gopay",
-      price: "20.000",
-      status: "Paid",
-    },
-    {
-      id: 1,
-      image: "/images/hero-1.jpg",
-      name: "Apple Watch Series 4",
-      buyer: "John",
-      payment: "Bri",
-      price: "20.000",
-      status: "Paid",
-    },
-    {
-      id: 1,
-      image: "/images/hero-1.jpg",
-      name: "Apple Watch Series 4",
-      buyer: "John",
-      payment: "COD",
-      price: "20.000",
-      status: "Unpaid",
-    },
-  ];
+  const [userId, setUserId] = useState<string | null>(null);
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId) {
+      setUserId(storedUserId);
+    }
+  }, []);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        if (!userId) return;
+
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/transactions/user/${userId}`
+        );
+        const response: { transactions: RawTransaction[]; message: string } =
+          await res.json();
+
+        if (res.ok) {
+          const mappedTransactions: Transaction[] = response.transactions.map(
+            (transaction) => {
+              const imageData = transaction.item?.image;
+              let imageArray: string[] = [];
+
+              if (typeof imageData === "string") {
+                try {
+                  imageArray = JSON.parse(imageData);
+                } catch {
+                  imageArray = [imageData];
+                }
+              } else if (Array.isArray(imageData)) {
+                imageArray = imageData;
+              }
+
+              return {
+                ...transaction,
+                item_name: transaction.item?.name || "Unknown",
+                buyer_name: transaction.buyer?.name || "Unknown",
+                seller_name: transaction.seller?.name || "Unknown",
+                image: imageArray,
+              };
+            }
+          );
+
+          setTransactions(mappedTransactions);
+        } else {
+          console.error("Fetch error:", response.message);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
+  }, [userId]);
 
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
@@ -161,54 +208,75 @@ export default function Transaction() {
             </thead>
 
             <tbody>
-              {galleryData.map((item) => (
-                <tr key={item.id} className="border-b bg-white/10 transition">
-                  <td className="px-6 py-4  text-center">
-                    <Image
-                      src={item.image}
-                      width={60}
-                      height={60}
-                      alt="Gallery Image"
-                      className="rounded-lg shadow-md"
-                    />
-                  </td>
-                  <td className="px-6 py-4 text-white  text-center">
-                    {item.name}
-                  </td>
-                  <td className="px-6 py-4 text-white  text-center">
-                    {item.buyer}
-                  </td>
-                  <td className="px-6 py-4 text-white  text-center">
-                    {item.payment}
-                  </td>
-                  <td className="px-6 py-4 text-white  text-center">
-                    Rp. {item.price}
-                  </td>
-                  <td className="px-6 py-4  text-center">
-                    <span
-                      className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${
-                        item.status === "Paid"
-                          ? "bg-green-700 text-white"
-                          : "bg-red-700 text-white"
-                      }`}
-                    >
-                      {item.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 flex  justify-center text-center space-x-2">
-                    <Link
-                      href={``}
-                      className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
-                    >
-                      Edit
-                    </Link>
-
-                    <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
-                      Delete
-                    </button>
+              {loading ? (
+                <tr>
+                  <td colSpan={7} className="text-center text-white py-8">
+                    Loading...
                   </td>
                 </tr>
-              ))}
+              ) : transactions.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="text-center text-white py-8">
+                    No transactions found.
+                  </td>
+                </tr>
+              ) : (
+                transactions.map((item) => (
+                  <tr key={item.id} className="border-b bg-white/10 transition">
+                    <td className="px-6 py-4 text-center flex justify-center">
+                      <Image
+                        src={
+                          item.image &&
+                          Array.isArray(item.image) &&
+                          item.image.length > 0 &&
+                          typeof item.image[0] === "string" &&
+                          item.image[0].startsWith("/")
+                            ? `http://127.0.0.1:1031${item.image[0]}`
+                            : "/images/default-item.png"
+                        }
+                        alt={item.item_name}
+                        width={100}
+                        height={100}
+                        className="w-16 h-16 object-cover rounded-2xl"
+                      />
+                    </td>
+                    <td className="px-6 py-4 text-white text-center">
+                      {item.item?.name}
+                    </td>
+                    <td className="px-6 py-4 text-white text-center">
+                      {item.buyer?.name}
+                    </td>
+                    <td className="px-6 py-4 text-white text-center">
+                      {item.payment_method || "N/A"}
+                    </td>
+                    <td className="px-6 py-4 text-white text-center">
+                      Rp. {item.item?.price.toLocaleString("id-ID")}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <span
+                        className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
+                          item.status == "paid"
+                            ? "bg-green-700 text-white"
+                            : "bg-red-700 text-white"
+                        }`}
+                      >
+                        {item.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-center space-x-2">
+                      <Link
+                        href={`/transaction/edit/${item.id}`}
+                        className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                      >
+                        Edit
+                      </Link>
+                      <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>

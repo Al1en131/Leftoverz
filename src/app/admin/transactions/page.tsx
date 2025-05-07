@@ -15,7 +15,8 @@ type RawTransaction = {
   created_at: string;
   item?: {
     name: string;
-    image: string[]; // Tambahkan ini
+    image: string[];
+    price: number;
   };
   buyer?: { name: string };
   seller?: { name: string };
@@ -105,7 +106,7 @@ export default function Products() {
             try {
               imageArray = JSON.parse(imageData);
             } catch {
-              imageArray = [imageData]; 
+              imageArray = [imageData];
             }
           } else if (Array.isArray(imageData)) {
             imageArray = imageData;
@@ -114,6 +115,7 @@ export default function Products() {
           return {
             ...transaction,
             item_name: transaction.item?.name || "Unknown",
+            price : transaction.item?.price,
             buyer_name: transaction.buyer?.name || "Unknown",
             seller_name: transaction.seller?.name || "Unknown",
             image: imageArray,
@@ -275,7 +277,7 @@ export default function Products() {
                   {item.payment_method}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
-                  Rp {item.total_price.toLocaleString("id-ID")}
+                  Rp {item.item?.price.toLocaleString("id-ID")}
                 </td>
                 <td className="px-6 py-4 text-center">
                   <span
