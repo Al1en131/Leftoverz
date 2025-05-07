@@ -216,12 +216,6 @@ export default function SellerHome() {
               sampah.
             </p>
             <div className="flex gap-4 pt-4">
-              <Link
-                href="/seller/my-product"
-                className="border-[#15BFFD] text-[#15BFFD] max-lg:py-1 max-lg:px-3 border-2 lg:w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-[#15BFFD] hover:text-white"
-              >
-                Dashboard
-              </Link>
               <button
                 onClick={() => setShowLogoutPopup(true)}
                 className="bg-[#15BFFD] px-4 py-3 max-lg:py-1 max-lg:px-3 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
