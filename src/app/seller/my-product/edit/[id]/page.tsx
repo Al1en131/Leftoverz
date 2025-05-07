@@ -90,9 +90,10 @@ export default function EditProduct() {
         }
 
         console.log("image:", parsedImage); // Periksa isi data yang diparsing
-      } catch (err) {
-        const errorMessage =
-          err instanceof Error ? err.message : "Unknown error occurred";
+      } catch (error) {
+        console.error("Error:", error);
+        setShowErrorPopup(true);
+        setErrorMessage("Unknown error occurred");
       }
     };
 
