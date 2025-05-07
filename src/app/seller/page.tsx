@@ -49,8 +49,9 @@ export default function SellerHome() {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("token");
+        const user_id = localStorage.getItem("id");
         const response = await fetch(
-          "http://127.0.0.1:1031/api/v1/allproducts",
+          `http://127.0.0.1:1031/api/v1/products/user/${user_id}`,
           {
             method: "GET",
             headers: {
@@ -547,22 +548,6 @@ export default function SellerHome() {
                 key={product.id}
                 className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
               >
-                <div className="mb-4 flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="w-9 h-9 bg-blue-400 rounded-full flex items-center justify-center text-white">
-                      {product.seller?.name
-                        ? product.seller?.name
-                            .split(" ")
-                            .map((word) => word.charAt(0))
-                            .join("")
-                            .toUpperCase()
-                        : "?"}
-                    </span>
-                    <p className="text-blue-400 font-semibold">
-                      {product.seller?.name}
-                    </p>
-                  </div>
-                </div>
                 <div className="mb-5">
                   <Image
                     src={
@@ -575,8 +560,8 @@ export default function SellerHome() {
                         : "/images/default-product.png"
                     }
                     alt={product.name}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                     className="w-full h-64 object-cover rounded-2xl"
                   />
                 </div>

@@ -125,12 +125,25 @@ export default function EditProduct() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+
+    // Gabungkan gambar lama dengan gambar baru yang dipilih
+    const newImages = [...formData.image, ...files];
+
+    // Batasi agar hanya 5 gambar yang diunggah
+    if (newImages.length > 5) {
+      alert("You can only upload a maximum of 5 images.");
+      return;
+    }
+
+    // Update state dengan gambar baru dan lama
     setFormData((prevData) => ({
       ...prevData,
-      image: files,
+      image: newImages,
     }));
+
+    // Buat preview untuk gambar yang baru
     const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews(previews);
+    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
 
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -139,13 +152,14 @@ export default function EditProduct() {
 
   const handleRemoveImage = (index: number) => {
     const newImages = [...formData.image];
-    newImages.splice(index, 1);
+    newImages.splice(index, 1); // Hapus dari gambar baru
     setFormData((prevData) => ({
       ...prevData,
       image: newImages,
     }));
+
     const newPreviews = [...imagePreviews];
-    newPreviews.splice(index, 1);
+    newPreviews.splice(index, 1); // Hapus preview gambar
     setImagePreviews(newPreviews);
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -309,81 +323,52 @@ export default function EditProduct() {
                   </label>
                 </div>
                 <div className="mt-6">
-                  {initialImageUrls.length > 0 && (
+                  {initialImageUrls.length > 0 || imagePreviews.length > 0 ? (
                     <div className="flex gap-4 flex-wrap mb-4">
-                      {initialImageUrls.map((url, index) => (
-                        <div key={index} className="relative w-32 h-32">
-                          <Image
-                            src={url}
-                            alt={`Initial Preview ${index}`}
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-lg border object-cover w-24 h-24  border-gray-300"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveInitialImage(index)}
-                            className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
-                          >
-                            <svg
-                              className="w-6 h-6 text-gray-800 dark:text-white"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              viewBox="0 0 24 24"
+                      {[...initialImageUrls, ...imagePreviews]
+                        .slice(0, 5)
+                        .map((url, index) => (
+                          <div key={index} className="relative w-32 h-32">
+                            <Image
+                              src={url}
+                              alt={`Preview ${index}`}
+                              layout="fill"
+                              objectFit="cover"
+                              className="rounded-lg border object-cover w-24 h-24 border-gray-300"
+                            />
+                            <button
+                              type="button"
+                              onClick={
+                                () =>
+                                  initialImageUrls.includes(url)
+                                    ? handleRemoveInitialImage(index) 
+                                    : handleRemoveImage(index) 
+                              }
+                              className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
                             >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M6 18 17.94 6M18 18 6.06 6"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      ))}
+                              <svg
+                                className="w-6 h-6 text-gray-800 dark:text-white"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M6 18 17.94 6M18 18 6.06 6"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        ))}
                     </div>
-                  )}
-                  {imagePreviews.length > 0 && (
-                    <div className="flex gap-4 flex-wrap mb-4">
-                      {imagePreviews.map((url, index) => (
-                        <div key={index} className="relative w-32 h-32">
-                          <Image
-                            src={url}
-                            alt={`New Preview ${index}`}
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-lg border object-cover w-24 h-24  border-gray-300"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveImage(index)}
-                            className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
-                          >
-                            <svg
-                              className="w-6 h-6 text-gray-800 dark:text-white"
-                              aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M6 18 17.94 6M18 18 6.06 6"
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      ))}
-                    </div>
+                  ) : (
+                    <p>No images to display</p>
                   )}
                 </div>
               </div>
