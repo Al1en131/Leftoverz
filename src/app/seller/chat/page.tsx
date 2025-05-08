@@ -23,27 +23,28 @@ type Chat = {
   sender?: User;
   receiver?: User;
   Product?: Product;
+  opponent_id?: number; // untuk mempermudah pengiriman pesan
 };
 
 export default function RoomChat() {
   const [chats, setChats] = useState<Chat[]>([]);
   const [userId, setUserId] = useState<number | null>(null);
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null); // Menyimpan chat yang dipilih
-  const [messages, setMessages] = useState<Chat[]>([]); // Menyimpan pesan berdasarkan chat yang dipilih
-  const [newMessage, setNewMessage] = useState<string>(""); // State untuk pesan yang diketik
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState<Chat[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [userName, setUserName] = useState("");
 
-  // Mengambil userId dari localStorage saat komponen dimuat
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
-    if (storedUserId) {
-      setUserId(Number(storedUserId)); // Parsing ID menjadi angka
-    }
+    const storedUserName = localStorage.getItem("name");
+
+    if (storedUserId) setUserId(Number(storedUserId));
+    if (storedUserName) setUserName(storedUserName);
   }, []);
 
-  // Fetch chats ketika userId berubah
   useEffect(() => {
     const fetchChats = async () => {
-      if (!userId) return; // Tidak fetch jika userId belum ada
+      if (!userId) return;
 
       try {
         const res = await fetch(
@@ -52,15 +53,15 @@ export default function RoomChat() {
         const data = await res.json();
 
         if (res.ok) {
-          // Proses hanya menampilkan pesan terakhir dari setiap sender
           const lastMessages = data.chats.reduce(
             (acc: { [key: number]: Chat }, chat: Chat) => {
+              const opponentId =
+                chat.sender_id === userId ? chat.receiver_id : chat.sender_id;
               if (
-                !acc[chat.sender_id] ||
-                new Date(chat.created_at) >
-                  new Date(acc[chat.sender_id].created_at)
+                !acc[opponentId] ||
+                new Date(chat.created_at) > new Date(acc[opponentId].created_at)
               ) {
-                acc[chat.sender_id] = chat;
+                acc[opponentId] = { ...chat, opponent_id: opponentId };
               }
               return acc;
             },
@@ -79,100 +80,101 @@ export default function RoomChat() {
     fetchChats();
   }, [userId]);
 
-  // Handle chat selection (update read_status)
   const handleChatSelect = async (chat: Chat) => {
-    setSelectedChat(chat);
+    const opponentId =
+      userId === chat.sender_id ? chat.receiver_id : chat.sender_id;
 
-    // Update read_status ke 1 saat chat dipilih
+    setSelectedChat({ ...chat, opponent_id: opponentId });
+
     try {
-      const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`,
-        {
-          method: "PUT",
-        }
+      await fetch(`http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`, {
+        method: "PUT",
+      });
+      setChats((prevChats) =>
+        prevChats.map((prevChat) =>
+          prevChat.id === chat.id ? { ...prevChat, read_status: "1" } : prevChat
+        )
       );
-      if (res.ok) {
-        // Update chats state lokal untuk mengganti read_status ke 1
-        setChats((prevChats) =>
-          prevChats.map((prevChat) =>
-            prevChat.id === chat.id
-              ? { ...prevChat, read_status: "1" }
-              : prevChat
-          )
-        );
-      }
     } catch (error) {
       console.error("Error updating read_status:", error);
     }
 
-    // Fetch messages dari chat yang dipilih
     try {
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/messages/${chat.sender_id}/${chat.receiver_id}`
+        `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
       );
       const data = await res.json();
+
       if (res.ok) {
         const selectedMessages = data.filter(
-          (chatData: Chat) => chatData.item_id === chat.item_id
+          (msg: Chat) => msg.item_id === chat.item_id
         );
         setMessages(selectedMessages);
+        localStorage.setItem("messages", JSON.stringify(selectedMessages));
       } else {
-        console.error("Gagal fetch messages:", data.message);
         setMessages([]);
+        console.error("Gagal fetch messages:", data.message);
       }
     } catch (error) {
       console.error("Error fetching messages:", error);
       setMessages([]);
     }
   };
-  const handleSendMessage = async () => {
-    if (!newMessage || !selectedChat) return; // Pastikan ada pesan dan chat yang dipilih
 
-    const sender_id = userId; // ID user yang sedang login
-    const receiver_id = selectedChat.receiver_id; // ID penerima dari chat yang dipilih
-    const item_id = selectedChat.item_id; // ID item terkait
-    const message = newMessage; // Pesan yang diketik
+  useEffect(() => {
+    const storedMessages = localStorage.getItem("messages");
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, []);
+
+  const handleSendMessage = async () => {
+    if (!newMessage || !selectedChat || !userId) return;
+
+    const receiver_id = selectedChat.opponent_id!;
+    const item_id = selectedChat.item_id;
 
     try {
-      // Kirim pesan ke API
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/messages/send/${userId}`, // Gantilah dengan URL API yang benar
+        `http://127.0.0.1:1031/api/v1/send/messages/${userId}/${receiver_id}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`, // Jika menggunakan token JWT
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({
-            receiver_id,
-            item_id,
-            message,
-          }),
+          body: JSON.stringify({ message: newMessage }),
         }
       );
 
       const data = await response.json();
 
       if (response.ok) {
-        // Menambahkan pesan baru ke daftar messages
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            id: data.chat?.id, // ID dari pesan baru yang dikirim dari API
-            sender_id,
-            receiver_id,
-            item_id,
-            message,
-            read_status: "0",
-            created_at: new Date().toISOString(),
-            sender: { id: sender_id, name: "You" },
-            receiver: data.chat?.receiver || {
-              id: receiver_id,
-              name: "Receiver",
-            }, // Fallback receiver if not in data
+        const newMessageData: Chat = {
+          id: data.chat?.id,
+          sender_id: userId,
+          receiver_id,
+          item_id,
+          message: newMessage,
+          read_status: "0",
+          created_at: new Date().toISOString(),
+          sender: { id: userId, name: userName },
+          receiver: data.chat?.receiver || {
+            id: receiver_id,
+            name: "Receiver",
           },
-        ]);
-        setNewMessage(""); // Reset input message setelah dikirim
+        };
+
+        setMessages((prevMessages) => [...prevMessages, newMessageData]);
+
+        // Perbarui selectedChat hanya jika sesuai
+        setSelectedChat((prevChat) =>
+          prevChat ? { ...prevChat, message: newMessage } : prevChat
+        );
+
+        setNewMessage("");
+        const updatedMessages = [...messages, newMessageData];
+        localStorage.setItem("messages", JSON.stringify(updatedMessages));
       } else {
         console.error("Gagal mengirim pesan:", data.message);
       }
@@ -267,13 +269,17 @@ export default function RoomChat() {
                       onClick={() => handleChatSelect(chat)} // Menambahkan event onClick
                     >
                       <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                        {chat.sender?.name
-                          ? chat.sender?.name
-                              .split(" ")
-                              .map((word) => word.charAt(0))
+                        {userId === chat.sender_id
+                          ? chat.receiver?.name
+                              ?.split(" ")
+                              .map((w) => w.charAt(0))
                               .join("")
                               .toUpperCase()
-                          : "?"}
+                          : chat.sender?.name
+                              ?.split(" ")
+                              .map((w) => w.charAt(0))
+                              .join("")
+                              .toUpperCase()}
                       </span>
                       <div className="flex-1 overflow-hidden">
                         <div className="text-lg font-semibold truncate">
@@ -369,21 +375,32 @@ export default function RoomChat() {
                 </div>
 
                 {/* Message input section */}
-                <div className="py-5">
-                  <div className="py-5">
-                    <input
-                      className="w-full bg-gray-300 text-black z-50 py-3 px-3 rounded-xl"
-                      type="text"
-                      placeholder="type your message here..."
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                    />
-                  </div>
+                <div className="pt-5 flex items-center gap-2">
+                  <input
+                    className="w-full bg-gray-300 text-black py-2.5 px-4 rounded-xl"
+                    type="text"
+                    placeholder="Type your message here..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                  />
                   <button
-                    className="py-2 px-4 bg-blue-400 text-white rounded-xl mt-4"
+                    className="p-3 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={handleSendMessage}
                   >
-                    Send Message
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                      className="w-5 h-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                      />
+                    </svg>
                   </button>
                 </div>
               </div>
