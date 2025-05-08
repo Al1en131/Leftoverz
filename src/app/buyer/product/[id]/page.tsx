@@ -4,6 +4,24 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
+type User = {
+  id: number;
+  name: string;
+};
+
+type Chat = {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  item_id: number;
+  message: string;
+  read_status: "0" | "1";
+  created_at: string;
+  sender?: User;
+  receiver?: User;
+  Product?: Product;
+  opponent_id?: number;
+};
 type Product = {
   id: number;
   name: string;
@@ -25,12 +43,27 @@ type Product = {
 };
 
 export default function ProductDetail() {
+  const [chats, setChats] = useState<Chat[]>([]);
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState<Chat[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [userId, setUserId] = useState<number | null>(null);
+  const [userName, setUserName] = useState("");
   const params = useParams();
   const productId = params?.id;
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("id");
+    const storedUserName = localStorage.getItem("name");
+
+    if (storedUserId) setUserId(Number(storedUserId));
+    if (storedUserName) setUserName(storedUserName);
+  }, []);
   useEffect(() => {
     if (!productId) return;
 
@@ -79,6 +112,130 @@ export default function ProductDetail() {
 
     fetchProduct();
   }, [productId]);
+
+  const openChat = async () => {
+    setIsChatOpen(true);
+
+    const opponentId = product?.user_id;
+    console.log("Opponent ID:", opponentId); // Log the opponentId
+
+    if (!userId || !opponentId) return;
+
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+      );
+      const data = await res.json();
+      console.log("Fetched messages:", data); // Log the fetched messages
+
+      if (res.ok) {
+        const filteredMessages = product?.id
+          ? data.filter((msg: Chat) => msg.item_id === product.id)
+          : data;
+
+        console.log("Filtered messages:", filteredMessages); // Log the filtered messages
+
+        const unreadChat = filteredMessages.find(
+          (msg: Chat) => msg.receiver_id === userId && msg.read_status === "0"
+        );
+
+        if (unreadChat) {
+          await fetch(
+            `http://127.0.0.1:1031/api/v1/chats/${unreadChat.id}/read`,
+            {
+              method: "PUT",
+            }
+          );
+
+          setChats((prevChats) =>
+            prevChats.map((chat) =>
+              chat.id === unreadChat.id ? { ...chat, read_status: "1" } : chat
+            )
+          );
+          setHasUnreadMessages(false);
+        }
+
+        setMessages(filteredMessages);
+        localStorage.setItem("messages", JSON.stringify(filteredMessages));
+
+        // Here, we ensure that selectedChat is set correctly
+        const firstChat = filteredMessages[0]; // or any logic to select the correct chat
+        setSelectedChat(firstChat);
+      } else {
+        setMessages([]);
+        console.error("Failed to fetch messages:", data.message);
+      }
+    } catch (error) {
+      console.error("Error opening chat:", error);
+      setMessages([]);
+    }
+  };
+
+  const handleSendMessage = async () => {
+    console.log("newMessage:", newMessage);
+    console.log("selectedChat:", selectedChat);
+    console.log("userId:", userId);
+
+    if (!newMessage || !selectedChat || !userId) {
+      console.log("Missing data to send the message");
+      return;
+    }
+
+    const receiver_id = product?.user_id ?? selectedChat?.receiver_id;
+    if (!receiver_id) {
+      console.error("Receiver ID is missing.");
+      return;
+    }
+
+    const item_id = selectedChat.item_id;
+
+    console.log("Sending message to", receiver_id, "for item", item_id);
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/send/messages/${userId}/${receiver_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ message: newMessage }),
+        }
+      );
+      const data = await response.json();
+
+      if (response.ok) {
+        // Add the new message to the chat
+        const newMessageData: Chat = {
+          id: data.chat?.id,
+          sender_id: userId,
+          receiver_id,
+          item_id : selectedChat.item_id,
+          message: newMessage,
+          read_status: "0",
+          created_at: new Date().toISOString(),
+          sender: { id: userId, name: userName },
+          receiver: data.chat?.receiver || {
+            id: receiver_id,
+            name: "Receiver",
+          },
+        };
+
+        setMessages((prevMessages) => [...prevMessages, newMessageData]);
+        setSelectedChat((prevChat) =>
+          prevChat ? { ...prevChat, message: newMessage } : prevChat
+        );
+        setNewMessage("");
+        const updatedMessages = [...messages, newMessageData];
+        localStorage.setItem("messages", JSON.stringify(updatedMessages));
+      } else {
+        console.error("Failed to send message:", data.message);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -200,8 +357,8 @@ export default function ProductDetail() {
       </div>
       <div className="fixed bottom-6 right-6 z-50">
         <button
-          onClick={() => setIsChatOpen(!isChatOpen)}
-          className="bg-[#15BFFD] hover:bg-blue-400 text-white p-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+          onClick={openChat}
+          className="relative bg-[#15BFFD] hover:bg-blue-400 text-white p-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           <Image
             width={100}
@@ -210,14 +367,17 @@ export default function ProductDetail() {
             src="/images/chat.svg"
             className="w-8 h-8"
           />
+          {hasUnreadMessages && (
+            <span className="absolute top-1 right-1 bg-red-500 w-3 h-3 rounded-full border border-white" />
+          )}
         </button>
 
         {isChatOpen && (
-          <div className="mt-4 w-80 bg-white border_section rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+          <div className="mt-4 w-80 bg-white border border-blue-400 rounded-2xl shadow-xl overflow-hidden animate-fade-in">
             <div className="bg-[#15BFFD] text-white px-4 py-3 font-semibold flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                <p className="text-white font-semibold">Alien</p>
+                <p className="text-white font-semibold">{}</p>
               </div>
               <button onClick={() => setIsChatOpen(false)}>
                 <svg
@@ -240,24 +400,34 @@ export default function ProductDetail() {
               </button>
             </div>
             <div className="p-4 max-h-60 overflow-y-auto space-y-3 text-sm">
-              <div className="text-gray-700 bg-gray-300 w-fit p-2 rounded-lg">
-                Halo! Ada yang bisa kami bantu?
-              </div>
-              <div className="text-white bg-[#15BFFD] p-2 rounded-lg self-end text-right ml-auto w-fit">
-                Ya, saya ingin tanya tentang produk.
-              </div>
+              {messages.map((msg, index) => (
+                <div
+                  key={index}
+                  className={`p-2 rounded-lg w-fit ${
+                    msg.sender_id === userId
+                      ? "text-white bg-[#15BFFD] self-end ml-auto text-right"
+                      : "text-gray-700 bg-gray-300"
+                  }`}
+                >
+                  {msg.message}
+                </div>
+              ))}
             </div>
+
             <div className="border-t px-4 py-2 bg-gray-50">
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
+                  handleSendMessage();
                 }}
                 className="flex items-center gap-2"
               >
                 <input
                   type="text"
+                  value={newMessage}
+                  onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Tulis pesan..."
-                  className="flex-grow px-3 py-2 text-sm border rounded-lg focus:outline-none"
+                  className="flex-grow px-3 py-2 text-sm text-blue-400 border rounded-lg focus:outline-none"
                 />
                 <button
                   type="submit"
