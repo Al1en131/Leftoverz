@@ -76,7 +76,7 @@ export default function NavbarBuyer() {
         </div>
       )}
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-lg font-semibold">
+        <Link href="/buyer/" className="text-white text-lg font-semibold">
           <Image
             width={100}
             height={100}
@@ -101,13 +101,15 @@ export default function NavbarBuyer() {
           ))}
           <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
-              <Image
-                width={40}
-                height={40}
-                src="/images/profile.jpg"
-                alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer"
-              />
+              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                {name
+                  ? name
+                      .split(" ")
+                      .map((word) => word.charAt(0))
+                      .join("")
+                      .toUpperCase()
+                  : "?"}
+              </span>
             </button>
 
             {profileOpen && (
@@ -136,13 +138,15 @@ export default function NavbarBuyer() {
 
         <div className="flex items-center gap-2 md:hidden relative">
           <button onClick={() => setProfileOpen(!profileOpen)}>
-            <Image
-              width={40}
-              height={40}
-              src="/images/profile.jpg"
-              alt="Profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
-            />
+            <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+              {name
+                ? name
+                    .split(" ")
+                    .map((word) => word.charAt(0))
+                    .join("")
+                    .toUpperCase()
+                : "?"}
+            </span>
           </button>
 
           {profileOpen && (

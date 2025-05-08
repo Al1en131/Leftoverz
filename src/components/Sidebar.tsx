@@ -152,7 +152,7 @@ const Sidebar = () => {
     <div className="flex min-h-screen">
       <div className="w-64 fixed top-0 left-0 h-screen bg-[#121b39] text-white p-6 flex flex-col justify-between z-50">
         <div>
-          <Link href="/" className="text-white text-lg font-semibold">
+          <Link href="/admin/" className="text-white text-lg font-semibold">
             <Image
               src="/images/logo.png"
               width={100}
@@ -163,13 +163,15 @@ const Sidebar = () => {
           </Link>
 
           <div className="flex gap-3 border-b py-3 border-white border-t items-center mt-7">
-            <Image
-              src="/images/profile.jpg"
-              width={60}
-              height={60}
-              alt="Profile"
-              className="w-16 h-16 rounded-full cursor-pointer"
-            />
+            <span className="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center text-white">
+              {name
+                ? name
+                    .split(" ")
+                    .map((word) => word.charAt(0))
+                    .join("")
+                    .toUpperCase()
+                : "?"}
+            </span>
             <div>
               <p className="leading-4">{name}</p>
               <p className="text-sm">{email}</p>

@@ -130,38 +130,6 @@ export default function Product() {
     fetchProducts();
   }, []);
 
-  const handleAddFavorite = async (itemId: number) => {
-    const userId = localStorage.getItem("user_id"); // sesuaikan jika pakai cookies/context
-
-    if (!userId) {
-      alert("Silakan login terlebih dahulu.");
-      return;
-    }
-
-    try {
-      const res = await fetch("http://127.0.0.1:1031/api/v1/favorite/create", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: parseInt(userId, 10),
-          item_id: itemId,
-        }),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        alert("Berhasil ditambahkan ke favorit!");
-      } else {
-        alert(data.message || "Gagal menambahkan ke favorit.");
-      }
-    } catch (err) {
-      console.error("Error menambahkan favorit:", err);
-      alert("Terjadi kesalahan saat menambahkan favorit.");
-    }
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -449,16 +417,6 @@ export default function Product() {
                   >
                     Detail
                   </Link>
-                  <button onClick={() => handleAddFavorite(product.id)}>
-                    {" "}
-                    <Image
-                      src="/images/heart-add.svg"
-                      width={100}
-                      height={100}
-                      alt=""
-                      className="w-8 h-8 text-white"
-                    />
-                  </button>
                 </div>
               </div>
             ))}

@@ -499,7 +499,7 @@ export default function Product() {
                     alt={product.name}
                     width={100}
                     height={100}
-                    className="w-full h-96 object-cover rounded-2xl"
+                    className="w-full md:h-80 max-lg:h-72 object-cover rounded-2xl"
                   />
                 </div>
                 <div className="my-4 flex justify-between items-center">

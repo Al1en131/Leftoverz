@@ -81,7 +81,7 @@ export default function Navbar() {
       <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
         {" "}
         <div className="container mx-auto flex justify-between items-center">
-          <Link href="/" className="text-white text-lg font-semibold">
+          <Link href="/seller/" className="text-white text-lg font-semibold">
             <Image
               width={100}
               height={100}
@@ -108,13 +108,15 @@ export default function Navbar() {
 
             <div className="relative">
               <button onClick={() => setProfileOpen(!profileOpen)}>
-                <Image
-                  width={40}
-                  height={40}
-                  src="/images/profile.jpg"
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full cursor-pointer"
-                />
+                <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                  {name
+                    ? name
+                        .split(" ")
+                        .map((word) => word.charAt(0))
+                        .join("")
+                        .toUpperCase()
+                    : "?"}
+                </span>
               </button>
 
               {profileOpen && (
@@ -143,13 +145,15 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2 md:hidden relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
-              <Image
-                width={40}
-                height={40}
-                src="/images/profile.jpg"
-                alt="Profile"
-                className="w-10 h-10 rounded-full cursor-pointer"
-              />
+              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                {name
+                  ? name
+                      .split(" ")
+                      .map((word) => word.charAt(0))
+                      .join("")
+                      .toUpperCase()
+                  : "?"}
+              </span>
             </button>
 
             {profileOpen && (

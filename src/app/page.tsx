@@ -524,8 +524,8 @@ export default function Home() {
                         : "/images/default-product.png"
                     }
                     alt={product.name}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                     className="w-full h-64 object-cover rounded-2xl"
                   />
                 </div>
