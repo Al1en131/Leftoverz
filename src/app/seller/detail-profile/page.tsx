@@ -15,6 +15,26 @@ type User = {
   regency: string;
 };
 
+type Province = {
+  id: string;
+  name: string;
+};
+
+type Regency = {
+  id: string;
+  name: string;
+};
+
+type Subdistrict = {
+  id: string;
+  name: string;
+};
+
+type Ward = {
+  id: string;
+  name: string;
+};
+
 export default function DetailProfile() {
   const [role, setRole] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
@@ -37,10 +57,10 @@ export default function DetailProfile() {
     ward: "",
     regency: "",
   });
-  const [provinces, setProvinces] = useState<any[]>([]);
-  const [regency, setRegency] = useState<any[]>([]);
-  const [subdistricts, setSubdistricts] = useState<any[]>([]);
-  const [wards, setWards] = useState<any[]>([]);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [regency, setRegency] = useState<Regency[]>([]);
+  const [subdistricts, setSubdistricts] = useState<Subdistrict[]>([]);
+  const [wards, setWards] = useState<Ward[]>([]);
   useEffect(() => {
     fetch(
       "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
