@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 
@@ -27,7 +26,6 @@ type Product = {
 export default function ProductDetail() {
   const params = useParams();
   const productId = params?.id;
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
