@@ -90,6 +90,7 @@ export default function RoomChat() {
       await fetch(`http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`, {
         method: "PUT",
       });
+
       setChats((prevChats) =>
         prevChats.map((prevChat) =>
           prevChat.id === chat.id ? { ...prevChat, read_status: "1" } : prevChat
@@ -106,9 +107,18 @@ export default function RoomChat() {
       const data = await res.json();
 
       if (res.ok) {
-        const selectedMessages = data.filter(
-          (msg: Chat) => msg.item_id === chat.item_id
-        );
+        let selectedMessages: Chat[];
+
+        if (chat.item_id) {
+          // Filter berdasarkan item_id jika tersedia
+          selectedMessages = data.filter(
+            (msg: Chat) => msg.item_id === chat.item_id
+          );
+        } else {
+          // Jika tidak ada item_id, tampilkan semua pesan dengan lawan bicara
+          selectedMessages = data;
+        }
+
         setMessages(selectedMessages);
         localStorage.setItem("messages", JSON.stringify(selectedMessages));
       } else {
@@ -251,7 +261,7 @@ export default function RoomChat() {
         <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
           <div className="bg-white/5 p-10 rounded-2xl border-2 border-blue-400">
             <div className="lg:flex lg:flex-row lg:justify-between max-lg:block z-50">
-              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 overflow-y-auto h-[calc(100vh-64px)]">
+              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 overflow-y-auto min-h-[500px]">
                 <div className="border-b-2 py-4 px-2">
                   <input
                     type="text"
@@ -266,7 +276,7 @@ export default function RoomChat() {
                     <div
                       key={chat.id}
                       className="flex items-center gap-4 py-4 px-2 border-b border-white/10 hover:bg-white/5 transition-colors"
-                      onClick={() => handleChatSelect(chat)} // Menambahkan event onClick
+                      onClick={() => handleChatSelect(chat)}
                     >
                       <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
                         {userId === chat.sender_id
@@ -292,21 +302,20 @@ export default function RoomChat() {
 
                       {/* Menambahkan ikon khusus jika chat belum dibaca */}
                       {chat.read_status === "0" && (
-                        <span className="ml-2">
+                        <span className="ml-2 p-1.5 bg-blue-400 rounded-full">
                           {/* Ikon untuk chat belum dibaca */}
                           <svg
-                            className="w-6 h-6 text-blue-400"
-                            aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="currentColor"
+                            fill="none"
                             viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="size-6"
                           >
                             <path
-                              fillRule="evenodd"
-                              d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v5a1 1 0 1 0 2 0V8Zm-1 7a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2H12Z"
-                              clipRule="evenodd"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
                             />
                           </svg>
                         </span>
@@ -316,7 +325,7 @@ export default function RoomChat() {
               </div>
 
               <div className="w-full lg:px-5 flex flex-col justify-between">
-                <div className="flex flex-col mt-5 overflow-y-auto grow px-1">
+                <div className="flex flex-col mt-5 overflow-y-auto min-h-[500px] grow px-1">
                   {messages.map((message, index) => {
                     const isSender = message.sender_id === userId; // Periksa apakah user yang sedang login adalah pengirim
                     const isReceiver = message.receiver_id === userId; // Periksa apakah user yang sedang login adalah penerima
