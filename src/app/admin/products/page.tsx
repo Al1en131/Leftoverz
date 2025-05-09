@@ -173,12 +173,12 @@ export default function Products() {
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       {showConfirmPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/warning.svg"
-                width={80}
-                height={80}
+                width={100}
+                height={100}
                 alt="Confirm Delete"
                 className="w-20 h-20"
               />
@@ -208,7 +208,7 @@ export default function Products() {
       )}
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/succes.svg"
@@ -231,7 +231,7 @@ export default function Products() {
       )}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"

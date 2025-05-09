@@ -44,7 +44,7 @@ export default function NavbarBuyer() {
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-[100]">
-          <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/warning.svg"

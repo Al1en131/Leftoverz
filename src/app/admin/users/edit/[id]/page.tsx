@@ -35,6 +35,7 @@ export default function User() {
   const [regency, setRegency] = useState<Region[]>([]);
   const [subdistricts, setSubdistricts] = useState<Region[]>([]);
   const [wards, setWards] = useState<Region[]>([]);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
@@ -81,58 +82,102 @@ export default function User() {
   }, []);
 
   useEffect(() => {
-    const fetchAllWilayah = async () => {
-      const selectedProvince = provinces.find(
-        (p) => p.name.toLowerCase() === formData.province.toLowerCase()
-      );
-      if (!selectedProvince) return;
+    const selectedProvince = provinces.find(
+      (p) => p.name.toLowerCase() === formData.province.toLowerCase()
+    );
+    if (!selectedProvince) return;
 
-      const regencyRes = await fetch(
+    const fetchRegency = async () => {
+      const res = await fetch(
         `https://api.binderbyte.com/wilayah/kabupaten?api_key=${apiKey}&id_provinsi=${selectedProvince.id}`
       );
-      const regencyData = await regencyRes.json();
-      if (regencyData.code === "200") {
-        setRegency(regencyData.value);
+      const data = await res.json();
+      if (data.code === "200") {
+        setRegency(data.value);
+      }
 
-        const selectedRegency = regencyData.value.find(
-          (r: Region) => r.name.toLowerCase() === formData.regency.toLowerCase()
-        );
-        if (!selectedRegency) return;
-
-        const subdistrictRes = await fetch(
-          `https://api.binderbyte.com/wilayah/kecamatan?api_key=${apiKey}&id_kabupaten=${selectedRegency.id}`
-        );
-        const subdistrictData = await subdistrictRes.json();
-        if (subdistrictData.code === "200") {
-          setSubdistricts(subdistrictData.value);
-
-          const selectedSubdistrict = subdistrictData.value.find(
-            (s: Region) =>
-              s.name.toLowerCase() === formData.subdistrict.toLowerCase()
-          );
-          if (!selectedSubdistrict) return;
-
-          const wardRes = await fetch(
-            `https://api.binderbyte.com/wilayah/kelurahan?api_key=${apiKey}&id_kecamatan=${selectedSubdistrict.id}`
-          );
-          const wardData = await wardRes.json();
-          if (wardData.code === "200") {
-            setWards(wardData.value);
-          }
-        }
+      if (!isInitialLoad) {
+        setFormData((prev) => ({
+          ...prev,
+          regency: "",
+          subdistrict: "",
+          ward: "",
+        }));
+        setSubdistricts([]);
+        setWards([]);
       }
     };
 
+    fetchRegency();
+  }, [formData.province, provinces]);
+
+  useEffect(() => {
+    const selectedRegency = regency.find(
+      (r) => r.name.toLowerCase() === formData.regency.toLowerCase()
+    );
+    if (!selectedRegency) return;
+
+    const fetchSubdistrict = async () => {
+      const res = await fetch(
+        `https://api.binderbyte.com/wilayah/kecamatan?api_key=${apiKey}&id_kabupaten=${selectedRegency.id}`
+      );
+      const data = await res.json();
+      if (data.code === "200") {
+        setSubdistricts(data.value);
+      }
+
+      if (!isInitialLoad) {
+        setFormData((prev) => ({
+          ...prev,
+          subdistrict: "",
+          ward: "",
+        }));
+        setWards([]);
+      }
+    };
+
+    fetchSubdistrict();
+  }, [formData.regency, regency]);
+
+  useEffect(() => {
+    const selectedSubdistrict = subdistricts.find(
+      (s) => s.name.toLowerCase() === formData.subdistrict.toLowerCase()
+    );
+    if (!selectedSubdistrict) return;
+
+    const fetchWard = async () => {
+      const res = await fetch(
+        `https://api.binderbyte.com/wilayah/kelurahan?api_key=${apiKey}&id_kecamatan=${selectedSubdistrict.id}`
+      );
+      const data = await res.json();
+      if (data.code === "200") {
+        setWards(data.value);
+      }
+
+      if (!isInitialLoad) {
+        setFormData((prev) => ({
+          ...prev,
+          ward: "",
+        }));
+      }
+    };
+
+    fetchWard();
+  }, [formData.subdistrict, subdistricts]);
+
+  useEffect(() => {
     if (
       formData.province &&
       formData.regency &&
       formData.subdistrict &&
       formData.ward &&
-      provinces.length > 0
+      regency.length > 0 &&
+      subdistricts.length > 0 &&
+      wards.length > 0
     ) {
-      fetchAllWilayah();
+      setIsInitialLoad(false); // load selesai
     }
-  }, [formData, provinces]);
+  }, [formData, regency, subdistricts, wards]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -530,7 +575,7 @@ export default function User() {
         {/* Success Popup */}
         {showSuccessPopup && (
           <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-            <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
               <div className="flex justify-center mb-4">
                 <Image
                   src="/images/succes.svg"
@@ -557,7 +602,7 @@ export default function User() {
         {/* Error Popup */}
         {showErrorPopup && (
           <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-            <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
               <div className="flex justify-center mb-4">
                 <Image
                   src="/images/error.svg"

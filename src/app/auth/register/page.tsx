@@ -259,7 +259,7 @@ export default function Register() {
       )}
       {showErrorPopup && (
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"
