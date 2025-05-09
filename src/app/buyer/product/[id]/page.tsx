@@ -55,7 +55,6 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
@@ -117,27 +116,21 @@ export default function ProductDetail() {
     setIsChatOpen(true);
 
     const opponentId = product?.user_id;
-    console.log("Opponent ID:", opponentId); // Log the opponentId
-
-    if (!userId || !opponentId) return;
+    if (!userId || !opponentId || !productId) return;
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+        `http://127.0.0.1:1031/api/v1/chats/product/${productId}/${userId}/${opponentId}`
       );
       const data = await res.json();
-      console.log("Fetched messages:", data); // Log the fetched messages
 
       if (res.ok) {
-        const filteredMessages = product?.id
-          ? data.filter((msg: Chat) => msg.item_id === product.id)
-          : data;
-
-        console.log("Filtered messages:", filteredMessages); // Log the filtered messages
-
-        const unreadChat = filteredMessages.find(
+        const chatMessages = Array.isArray(data.chats) ? data.chats : []; // atau sesuaikan dengan struktur yang benar
+        const unreadChat = chatMessages.find(
           (msg: Chat) => msg.receiver_id === userId && msg.read_status === "0"
         );
+
+        console.log("Fetched chat messages:", chatMessages);
 
         if (unreadChat) {
           await fetch(
@@ -152,15 +145,11 @@ export default function ProductDetail() {
               chat.id === unreadChat.id ? { ...chat, read_status: "1" } : chat
             )
           );
-          setHasUnreadMessages(false);
         }
 
-        setMessages(filteredMessages);
-        localStorage.setItem("messages", JSON.stringify(filteredMessages));
-
-        // Here, we ensure that selectedChat is set correctly
-        const firstChat = filteredMessages[0]; // or any logic to select the correct chat
-        setSelectedChat(firstChat);
+        setMessages(chatMessages);
+        localStorage.setItem("messages", JSON.stringify(chatMessages));
+        setSelectedChat(chatMessages[0] || null);
       } else {
         setMessages([]);
         console.error("Failed to fetch messages:", data.message);
@@ -172,28 +161,13 @@ export default function ProductDetail() {
   };
 
   const handleSendMessage = async () => {
-    console.log("newMessage:", newMessage);
-    console.log("selectedChat:", selectedChat);
-    console.log("userId:", userId);
+    if (!newMessage || !productId || !userId || !product?.user_id) return;
 
-    if (!newMessage || !selectedChat || !userId) {
-      console.log("Missing data to send the message");
-      return;
-    }
-
-    const receiver_id = product?.user_id ?? selectedChat?.receiver_id;
-    if (!receiver_id) {
-      console.error("Receiver ID is missing.");
-      return;
-    }
-
-    const item_id = selectedChat.item_id;
-
-    console.log("Sending message to", receiver_id, "for item", item_id);
+    const receiver_id = product.user_id;
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/send/messages/${userId}/${receiver_id}`,
+        `http://127.0.0.1:1031/api/v1/send/${productId}/${userId}/${receiver_id}`,
         {
           method: "POST",
           headers: {
@@ -203,15 +177,15 @@ export default function ProductDetail() {
           body: JSON.stringify({ message: newMessage }),
         }
       );
+
       const data = await response.json();
 
       if (response.ok) {
-        // Add the new message to the chat
         const newMessageData: Chat = {
           id: data.chat?.id,
           sender_id: userId,
           receiver_id,
-          item_id : selectedChat.item_id,
+          item_id: Number(productId),
           message: newMessage,
           read_status: "0",
           created_at: new Date().toISOString(),
@@ -222,12 +196,12 @@ export default function ProductDetail() {
           },
         };
 
-        setMessages((prevMessages) => [...prevMessages, newMessageData]);
-        setSelectedChat((prevChat) =>
-          prevChat ? { ...prevChat, message: newMessage } : prevChat
+        const updatedMessages = [...messages, newMessageData];
+        setMessages(updatedMessages);
+        setSelectedChat((prev) =>
+          prev ? { ...prev, message: newMessage } : prev
         );
         setNewMessage("");
-        const updatedMessages = [...messages, newMessageData];
         localStorage.setItem("messages", JSON.stringify(updatedMessages));
       } else {
         console.error("Failed to send message:", data.message);
@@ -275,14 +249,14 @@ export default function ProductDetail() {
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-[750px] left-56 max-lg:hidden -z-0"
+        className="w-4 absolute top-20 left-56 max-lg:hidden -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-[700px] max-lg:hidden right-[300px] -z-0"
+        className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
       <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 w-full max-lg:py-14 mt-10 h-auto">
         <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
@@ -312,7 +286,7 @@ export default function ProductDetail() {
           </div>
         </div>
         <div className="mb-4 md:w-8/12 max-lg:w-full block items-center relative">
-          <div className="block">
+          <div className="block relative h-full">
             <h3 className="text-white text-xl mb-2 font-bold tracking-wide">
               {product?.name}
             </h3>
@@ -334,31 +308,16 @@ export default function ProductDetail() {
                 {product?.seller?.name}
               </p>
             </div>
-            <p className="text-base max-lg:text-justify">
+            <p className="text-base mb-5 max-lg:text-justify">
               {product?.description}
             </p>
           </div>
-          <div className="flex items-center gap-4 md:absolute max-lg:mt-4 max-lg:justify-end md:bottom-0 md:right-0">
-            <Image
-              src="/images/heart-remove.svg"
-              width={100}
-              height={100}
-              alt=""
-              className="w-8 h-8 text-white"
-            />
-            <Link
-              href=""
-              className="bg-[#15BFFD] px-6 py-3 text-center w-40 text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
-            >
-              Beli
-            </Link>
-          </div>
         </div>
       </div>
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-24 right-6 z-50">
         <button
           onClick={openChat}
-          className="relative bg-[#15BFFD] hover:bg-blue-400 text-white p-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="relative bg-blue-400 hover:bg-blue-400 text-white p-4 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           <Image
             width={100}
@@ -367,17 +326,31 @@ export default function ProductDetail() {
             src="/images/chat.svg"
             className="w-8 h-8"
           />
-          {hasUnreadMessages && (
-            <span className="absolute top-1 right-1 bg-red-500 w-3 h-3 rounded-full border border-white" />
+          {messages.some(
+            (msg) => msg.read_status === "0" && msg.receiver_id === userId
+          ) && (
+            <span className="absolute top-0 right-0 -mt-1 -mr-1 w-5 h-5 text-xs text-white bg-red-600 rounded-full flex items-center justify-center animate-ping">
+              !
+            </span>
           )}
         </button>
 
         {isChatOpen && (
           <div className="mt-4 w-80 bg-white border border-blue-400 rounded-2xl shadow-xl overflow-hidden animate-fade-in">
-            <div className="bg-[#15BFFD] text-white px-4 py-3 font-semibold flex justify-between items-center">
+            <div className="bg-blue-400 text-white px-4 py-3 font-semibold flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                <p className="text-white font-semibold">{}</p>
+                <span className="w-8 h-8 text-xs text-blue-400 bg-white rounded-full flex items-center justify-center">
+                  {product?.seller?.name
+                    ? product?.seller.name
+                        .split(" ")
+                        .map((word) => word.charAt(0))
+                        .join("")
+                        .toUpperCase()
+                    : "?"}
+                </span>
+                <p className="text-white font-semibold">
+                  {product?.seller?.name}
+                </p>
               </div>
               <button onClick={() => setIsChatOpen(false)}>
                 <svg
@@ -399,19 +372,45 @@ export default function ProductDetail() {
                 </svg>
               </button>
             </div>
-            <div className="p-4 max-h-60 overflow-y-auto space-y-3 text-sm">
-              {messages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`p-2 rounded-lg w-fit ${
-                    msg.sender_id === userId
-                      ? "text-white bg-[#15BFFD] self-end ml-auto text-right"
-                      : "text-gray-700 bg-gray-300"
-                  }`}
-                >
-                  {msg.message}
+            <div className="p-4 space-y-3 text-sm">
+              {/* Gambar produk (tidak ikut scroll) */}
+              <div className="items-center gap-3 mb-2 border-[1.5px] p-2 flex border-blue-400 rounded-2xl">
+                <Image
+                  src={
+                    product?.image?.[0]
+                      ? product.image[0]
+                      : "/images/default-product.png"
+                  }
+                  alt="product?.id"
+                  width={100}
+                  height={100}
+                  className="h-16 w-16 object-cover rounded-2xl"
+                />
+                <div className="">
+                  <p className="text-blue-400 text-base font-semibold">
+                    {product?.name}
+                  </p>
+                  <p className="text-blue-400 text-sm">
+                    Rp {product?.price.toLocaleString("id-ID")}
+                  </p>
                 </div>
-              ))}
+              </div>
+
+              {/* Chat messages (scrollable) */}
+              <div className="max-h-60 overflow-y-auto space-y-2">
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 rounded-lg w-fit ${
+                      msg.sender_id === userId
+                        ? "text-white bg-blue-400 self-end ml-auto text-right"
+                        : "text-gray-700 bg-gray-300"
+                    }`}
+                  >
+                    {msg.message}
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="border-t px-4 py-2 bg-gray-50">
@@ -431,7 +430,7 @@ export default function ProductDetail() {
                 />
                 <button
                   type="submit"
-                  className="text-white bg-[#15BFFD] px-3 py-2 rounded-lg text-sm hover:bg-blue-400"
+                  className="text-white bg-blue-400 px-3 py-2 rounded-lg text-sm hover:bg-blue-400"
                 >
                   Kirim
                 </button>
@@ -439,6 +438,26 @@ export default function ProductDetail() {
             </div>
           </div>
         )}
+      </div>
+      <div className="bg-blue-400 h-20 w-full fixed bottom-0 flex justify-between items-center md:px-20 py-4 max-lg:px-6">
+        <p className="text-base font-bold">
+          Rp {product?.price.toLocaleString("id-ID")}
+        </p>
+        <div className="flex items-center gap-4">
+          <Image
+            src="/images/heart-remove.svg"
+            width={100}
+            height={100}
+            alt=""
+            className="w-8 h-8 text-white"
+          />
+          <Link
+            href=""
+            className="bg-blue-400 border-2 border-white rounded-full max-lg:px-8 md: px-14 max-lg:py-2 md:py-3 text-center text-white hover:bg-transparent z-50"
+          >
+            Beli
+          </Link>
+        </div>
       </div>
     </div>
   );
