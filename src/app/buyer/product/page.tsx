@@ -77,29 +77,33 @@ export default function Product() {
       }
 
       const data = await response.json();
-      const parsedProducts = data.products.map((product: Product) => {
-        let parsedImage: string[] = [];
+      console.log(data);
 
-        if (typeof product.image === "string") {
-          try {
-            const parsed = JSON.parse(product.image);
-            if (Array.isArray(parsed)) {
-              parsedImage = parsed;
+      const parsedProducts = data.products
+        .filter((product: Product) => product.status === "available") // filter di sini
+        .map((product: Product) => {
+          let parsedImage: string[] = [];
+
+          if (typeof product.image === "string") {
+            try {
+              const parsed = JSON.parse(product.image);
+              if (Array.isArray(parsed)) {
+                parsedImage = parsed;
+              }
+            } catch {
+              parsedImage = [];
             }
-          } catch {
-            parsedImage = [];
+          } else if (Array.isArray(product.image)) {
+            parsedImage = product.image;
           }
-        } else if (Array.isArray(product.image)) {
-          parsedImage = product.image;
-        }
 
-        return {
-          ...product,
-          image: parsedImage,
-          seller_name: product.seller?.name || "Unknown",
-          subdistrict: product.user?.subdistrict || "Unknown",
-        };
-      });
+          return {
+            ...product,
+            image: parsedImage,
+            seller_name: product.seller?.name || "Unknown",
+            subdistrict: product.user?.subdistrict || "Unknown",
+          };
+        });
 
       setProducts(parsedProducts);
     } catch (error: unknown) {
