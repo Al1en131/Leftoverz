@@ -2,6 +2,7 @@
 
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type RawTransaction = {
@@ -177,13 +178,13 @@ export default function Products() {
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
             <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to record →
-            </button>
+            <Link href="/admin/" className="mt-4 text-white text-sm flex items-center gap-2">
+              Tap to dashboard →
+            </Link>
           </div>
           <div className="z-10">
             <Image
@@ -206,8 +207,8 @@ export default function Products() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">Lorem Ipsum</h3>
-            <p>Lorem Ipsum bla bla bla</p>
+            <h3 className="text-xl font-bold">Transaction List</h3>
+            <p>List of all transactions</p>
           </div>
           <div className="flex gap-2 items-center">
             <div className="relative w-full">
@@ -229,9 +230,9 @@ export default function Products() {
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-6 py-3 text-center">No.</th>
               <th className="px-6 py-3 text-center">Image</th>
-              <th className="px-6 py-3 text-center">Product Name</th>
-              <th className="px-6 py-3 text-center">Buyer</th>
-              <th className="px-6 py-3 text-center">Seller</th>
+              <th className="px-6 py-3 text-left">Product Name</th>
+              <th className="px-6 py-3 text-left">Buyer</th>
+              <th className="px-6 py-3 text-left">Seller</th>
               <th className="px-6 py-3 text-center">Payment Method</th>
               <th className="px-6 py-3 text-center">Price</th>
               <th className="px-6 py-3 text-center">Status</th>
@@ -258,22 +259,22 @@ export default function Products() {
                         : "/images/default-item.png"
                     }
                     alt={item.item_name}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                     className="w-12 h-12 object-cover rounded-2xl"
                   />
                 </td>
 
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-6 py-4 text-white text-left">
                   {item.item_name}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-6 py-4 text-white text-left">
                   {item.buyer_name}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-6 py-4 text-white text-left">
                   {item.seller_name}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-6 py-4 text-white capitalize text-center">
                   {item.payment_method}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
@@ -281,7 +282,7 @@ export default function Products() {
                 </td>
                 <td className="px-6 py-4 text-center">
                   <span
-                    className={`px-4 py-2 text-sm tracking-wide font-semibold rounded-full ${getStatusColor(
+                    className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${getStatusColor(
                       item.status
                     )} text-white`}
                   >

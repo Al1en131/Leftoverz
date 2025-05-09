@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface Region {
   id: string;
@@ -196,8 +197,8 @@ export default function User() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
@@ -231,13 +232,32 @@ export default function User() {
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
             <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to record →
-            </button>
+            <Link
+              href="/admin/users/"
+              className="mt-4 text-white text-sm flex items-center gap-2"
+            >
+              <div className="w-8 h-8 rounded-full p-2 bg-blue-400 flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
+                  />
+                </svg>
+              </div>
+              Back to Data Users
+            </Link>
           </div>
           <div className="z-10">
             <Image
@@ -259,7 +279,6 @@ export default function User() {
               "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
           }}
         >
-          {/* Name */}
           <div>
             <label htmlFor="name" className="block mb-1">
               Name
@@ -274,8 +293,6 @@ export default function User() {
               value={formData.name}
             />
           </div>
-
-          {/* Email */}
           <div>
             <label htmlFor="email" className="block mb-1">
               Email
@@ -290,8 +307,6 @@ export default function User() {
               value={formData.email}
             />
           </div>
-
-          {/* Password */}
           <div>
             <label htmlFor="password" className="block mb-1">
               Password
@@ -306,8 +321,6 @@ export default function User() {
               value={formData.password}
             />
           </div>
-
-          {/* Role */}
           <div>
             <label htmlFor="role" className="block mb-1">
               Role
@@ -333,8 +346,6 @@ export default function User() {
               </option>
             </select>
           </div>
-
-          {/* No HP */}
           <div>
             <label htmlFor="no_hp" className="block mb-1">
               No HP
@@ -349,7 +360,6 @@ export default function User() {
               value={formData.no_hp}
             />
           </div>
-          {/* Province */}
           <div>
             {" "}
             <label htmlFor="no_hp" className="block mb-1">
@@ -451,7 +461,6 @@ export default function User() {
               ))}
             </select>
           </div>
-          {/* Address */}
           <div>
             <label htmlFor="address" className="block mb-1">
               Address
@@ -466,17 +475,13 @@ export default function User() {
               rows={3}
             ></textarea>
           </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-2 bg-blue-500 hover:bg-blue-600 rounded text-white"
+            className="w-full py-2 bg-blue-400 hover:bg-blue-500 rounded text-white"
           >
             Submit User
           </button>
         </form>
-
-        {/* Success Popup */}
         {showSuccessPopup && (
           <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
             <div className="bg-[#2c2f48] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
@@ -502,8 +507,6 @@ export default function User() {
             </div>
           </div>
         )}
-
-        {/* Error Popup */}
         {showErrorPopup && (
           <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
             <div className="bg-[#2c2f48] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">

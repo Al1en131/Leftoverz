@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 type User = {
   id: number;
@@ -121,13 +122,16 @@ export default function Chats() {
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
             <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to record →
-            </button>
+            <Link
+              href="/admin/"
+              className="mt-4 text-white text-sm flex items-center gap-2"
+            >
+              Tap to dashboard →
+            </Link>
           </div>
           <div className="z-10">
             <Image
@@ -170,9 +174,9 @@ export default function Chats() {
           <thead className="text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-6 py-3 text-center">No.</th>
-              <th className="px-6 py-3 text-center">Sender</th>
-              <th className="px-6 py-3 text-center">Receiver</th>
-              <th className="px-6 py-3 text-center">Message</th>
+              <th className="px-6 py-3 text-left">Sender</th>
+              <th className="px-6 py-3 text-left">Receiver</th>
+              <th className="px-6 py-3 text-left">Message</th>
               <th className="px-6 py-3 text-center">Product</th>
               <th className="px-6 py-3 text-center">Read Status</th>
             </tr>
@@ -198,15 +202,21 @@ export default function Chats() {
                     {" "}
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                  <td className="px-6 py-4 text-center">
-                    {chat.sender?.name || "-"}
+                  <td className="px-6 py-4 text-left">
+                    {chat.sender?.name && chat.sender.name.length > 25
+                      ? chat.sender.name.slice(0, 25) + "..."
+                      : chat.sender?.name}
                   </td>
-                  <td className="px-6 py-4 text-center">
-                    {chat.receiver?.name || "-"}
+                  <td className="px-6 py-4 text-left">
+                    {chat.receiver?.name && chat.receiver.name.length > 25
+                      ? chat.receiver.name.slice(0, 25) + "..."
+                      : chat.receiver?.name}
                   </td>
-                  <td className="px-6 py-4 text-center">{chat.message}</td>
+                  <td className="px-6 py-4 text-left">{chat.message}</td>
                   <td className="px-6 py-4 text-center">
-                    {chat.Product?.name || "N/A"}
+                    {chat.Product?.name && chat.Product.name.length > 25
+                      ? chat.Product.name.slice(0, 25) + "..."
+                      : chat.Product?.name}
                   </td>
                   <td className="px-6 py-4 text-center">
                     {chat.read_status == 0 ? (

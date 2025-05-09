@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type User = {
   id: string;
@@ -270,13 +271,32 @@ export default function AddProduct() {
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white  p-6">
             <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to record →
-            </button>
+            <Link
+              href="/admin/products/"
+              className="mt-4 text-white text-sm flex items-center gap-2"
+            >
+              <div className="w-8 h-8 rounded-full p-2 bg-blue-400 flex items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
+                  />
+                </svg>
+              </div>
+              Back to Data Products
+            </Link>
           </div>
           <div className="z-10">
             <Image

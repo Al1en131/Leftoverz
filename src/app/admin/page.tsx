@@ -364,7 +364,7 @@ export default function Dashboard() {
             <div className="flex-shrink-0">
               <Link
                 href="/admin/transactions"
-                className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2"
+                className="text-sm font-medium text-cyan-600 hover:bg-blue-400 hover:text-white rounded-lg p-2"
               >
                 View all
               </Link>
@@ -436,7 +436,7 @@ export default function Dashboard() {
             <div className="flex-shrink-0">
               <Link
                 href="/admin/products"
-                className="text-sm font-medium text-cyan-600 hover:bg-gray-100 rounded-lg p-2"
+                className="text-sm font-medium text-cyan-600 hover:bg-blue-400 hover:text-white rounded-lg p-2"
               >
                 View all
               </Link>
@@ -487,8 +487,8 @@ export default function Dashboard() {
                                   : "/images/default-product.png"
                               }
                               alt={product.name}
-                              width={50}
-                              height={50}
+                              width={100}
+                              height={100}
                               className="w-12 h-12 object-cover rounded-2xl"
                             />
                           </td>

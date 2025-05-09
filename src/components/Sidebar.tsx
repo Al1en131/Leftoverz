@@ -163,7 +163,7 @@ const Sidebar = () => {
           </Link>
 
           <div className="flex gap-3 border-b py-3 border-white border-t items-center mt-7">
-            <span className="w-16 h-16 bg-blue-400 rounded-full flex items-center justify-center text-white">
+            <span className="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center text-white">
               {name
                 ? name
                     .split(" ")

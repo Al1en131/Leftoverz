@@ -245,13 +245,16 @@ export default function User() {
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
             <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to record →
-            </button>
+            <Link
+              href="/admin/"
+              className="mt-4 text-white text-sm flex items-center gap-2"
+            >
+              Tap to dashboard →
+            </Link>
           </div>
           <div className="z-10">
             <Image
@@ -299,7 +302,7 @@ export default function User() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-4 h-4"
               >
                 <path
                   strokeLinecap="round"
@@ -317,8 +320,8 @@ export default function User() {
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-6 py-3 text-center">No.</th>
-                <th className="px-6 py-3 text-center">Name</th>
-                <th className="px-6 py-3 text-center">Email</th>
+                <th className="px-6 py-3 text-left">Name</th>
+                <th className="px-6 py-3 text-left">Email</th>
                 <th className="px-6 py-3 text-center">Phone Number</th>
                 <th className="px-6 py-3 text-center">Role</th>
                 <th className="px-6 py-3 text-center">Action</th>
@@ -337,8 +340,12 @@ export default function User() {
                     <td className="px-6 py-4 text-center">
                       {index + offset + 1}
                     </td>
-                    <td className="px-6 py-4 text-center">{item.name}</td>
-                    <td className="px-6 py-4 text-center">{item.email}</td>
+                    <td className="px-6 py-4 text-left">
+                      {item.name.length > 25
+                        ? item.name.slice(0, 25) + "..."
+                        : item.name}
+                    </td>
+                    <td className="px-6 py-4 text-left">{item.email}</td>
                     <td className="px-6 py-4 text-center">{item.no_hp}</td>
                     <td className="px-6 py-4 text-center">
                       <span

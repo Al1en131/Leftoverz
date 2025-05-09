@@ -279,13 +279,16 @@ export default function Products() {
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white  p-6">
             <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Mark Johnson</h2>
+            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to record →
-            </button>
+            <Link
+              href="/admin/"
+              className="mt-4 text-white text-sm flex items-center gap-2"
+            >
+              Tap to dashboard →
+            </Link>
           </div>
           <div className="z-10">
             <Image
@@ -307,8 +310,8 @@ export default function Products() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">Lorem Ipsum</h3>
-            <p>Lorem Ipsum bla bla bla</p>
+            <h3 className="text-xl font-bold">Product List</h3>
+            <p>List of all products</p>
           </div>
           <div className="flex gap-2 items-center">
             <div className="relative w-3/5">
@@ -332,7 +335,7 @@ export default function Products() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="w-4 h-4"
               >
                 <path
                   strokeLinecap="round"
@@ -349,15 +352,14 @@ export default function Products() {
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-6 py-3 text-center">No.</th>
               <th className="px-6 py-3 text-center">Image</th>
-              <th className="px-6 py-3 text-center">Product Name</th>
-              <th className="px-6 py-3 text-center">Seller</th>
-              <th className="px-6 py-3 text-center">Description</th>
+              <th className="px-6 py-3 text-left">Product Name</th>
+              <th className="px-6 py-3 text-left">Seller</th>
+              <th className="px-6 py-3 text-left">Description</th>
               <th className="px-6 py-3 text-center">Price</th>
               <th className="px-6 py-3 text-center">Status</th>
               <th className="px-6 py-3 text-center">Action</th>
             </tr>
           </thead>
-
           <tbody>
             {currentProducts.map((product, index) => (
               <tr
@@ -379,19 +381,25 @@ export default function Products() {
                         : "/images/default-product.png"
                     }
                     alt={product.name}
-                    width={50}
-                    height={50}
+                    width={100}
+                    height={100}
                     className="w-12 h-12 object-cover rounded-2xl"
                   />
                 </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {product.name}
+                <td className="px-6 py-4 text-white text-left">
+                  {product.name && product.name.length > 25
+                    ? product.name.slice(0, 25) + "..."
+                    : product.name}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {product.seller?.name}
+                <td className="px-6 py-4 text-white text-left">
+                  {product.seller?.name && product.seller?.name.length > 25
+                    ? product.seller?.name.slice(0, 25) + "..."
+                    : product.seller?.name}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
-                  {product.description}
+                <td className="px-6 py-4 text-white text-left">
+                  {product.description && product.description.length > 25
+                    ? product.description.slice(0, 25) + "..."
+                    : product.description}
                 </td>
                 <td className="px-6 py-4 text-white text-center">
                   Rp {product.price.toLocaleString("id-ID")}
