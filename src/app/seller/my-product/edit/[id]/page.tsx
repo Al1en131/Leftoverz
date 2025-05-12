@@ -16,6 +16,8 @@ export default function EditProduct() {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [keptInitialImages, setKeptInitialImages] = useState<string[]>([]);
+  const [removedImages, setRemovedImages] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
     router.push("/seller/my-product/");
@@ -33,7 +35,7 @@ export default function EditProduct() {
     price: "",
     description: "",
     status: "",
-    image: [] as File[], // Menyimpan gambar dalam bentuk array file
+    image: [] as File[],
   });
 
   useEffect(() => {
@@ -58,8 +60,17 @@ export default function EditProduct() {
 
         const image = data.product.image;
 
-        // Coba parsing jika image dalam format string JSON
-        let parsedImage = image;
+         let parsedImage = data.product.image;
+        try {
+          parsedImage = JSON.parse(parsedImage);
+        } catch {}
+
+        if (Array.isArray(parsedImage)) {
+          setInitialImageUrls(
+            parsedImage.map((url: string) => `http://127.0.0.1:1031${url}`)
+          );
+          setKeptInitialImages(parsedImage); // ✅ ini yang benar
+        }
         try {
           // Coba parse string JSON jika perlu
           parsedImage = JSON.parse(image);
@@ -94,8 +105,6 @@ export default function EditProduct() {
     fetchProductData();
   }, [userId, productId]);
 
-  const [removedImages, setRemovedImages] = useState<string[]>([]);
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -116,7 +125,6 @@ export default function EditProduct() {
       }));
     }
   };
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
@@ -207,6 +215,12 @@ export default function EditProduct() {
       setErrorMessage("Server error, please try again.");
     }
   };
+
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imagePreviews]);
   return (
     <div className="bg-[#080B2A] items-center min-h-screen">
       {showSuccessPopup && (
@@ -285,7 +299,7 @@ export default function EditProduct() {
             <h2 className="text-white text-2xl font-semibold text-center mb-6">
               Product Details
             </h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} encType="multipart/form-data">
               <div className="flex flex-col items-center mb-6">
                 <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
