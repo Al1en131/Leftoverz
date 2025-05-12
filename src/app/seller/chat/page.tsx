@@ -34,6 +34,9 @@ export default function RoomChat() {
   const [messages, setMessages] = useState<Chat[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [userName, setUserName] = useState("");
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
@@ -42,6 +45,30 @@ export default function RoomChat() {
     if (storedUserId) setUserId(Number(storedUserId));
     if (storedUserName) setUserName(storedUserName);
   }, []);
+
+  const [userProducts, setUserProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    if (userId) {
+      // Fetch produk berdasarkan userId
+      const fetchProducts = async () => {
+        try {
+          const res = await fetch(
+            `http://127.0.0.1:1031/api/v1/products/user/${userId}`
+          );
+          const data = await res.json();
+          if (res.ok) {
+            setUserProducts(data.products);
+          } else {
+            console.error("Gagal fetch produk:", data.message);
+          }
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+
+      fetchProducts();
+    }
+  }, [userId]);
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -179,12 +206,19 @@ export default function RoomChat() {
       setMessages(JSON.parse(storedMessages));
     }
   }, []);
-
   const handleSendMessage = async () => {
-    if (!newMessage || !selectedChat || !userId) return;
+    if (!newMessage || !selectedChat || !userId || !selectedProductId) {
+      console.warn("Gagal kirim pesan: Ada data yang belum lengkap", {
+        newMessage,
+        selectedChat,
+        userId,
+        selectedProductId,
+      });
+      return;
+    }
 
-    const receiver_id = selectedChat.opponent_id!;
-    const item_id = selectedChat.item_id;
+    const receiver_id = selectedChat.opponent_id!; // Pengirim adalah userId
+    const item_id = selectedProductId; // Menggunakan item_id yang dipilih
 
     try {
       const response = await fetch(
@@ -195,7 +229,7 @@ export default function RoomChat() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({ message: newMessage }),
+          body: JSON.stringify({ message: newMessage, item_id: item_id }),
         }
       );
 
@@ -213,20 +247,11 @@ export default function RoomChat() {
           sender: { id: userId, name: userName },
           receiver: data.chat?.receiver || {
             id: receiver_id,
-            name: "Receiver",
           },
         };
 
         setMessages((prevMessages) => [...prevMessages, newMessageData]);
-
-        // Perbarui selectedChat hanya jika sesuai
-        setSelectedChat((prevChat) =>
-          prevChat ? { ...prevChat, message: newMessage } : prevChat
-        );
-
         setNewMessage("");
-        const updatedMessages = [...messages, newMessageData];
-        localStorage.setItem("messages", JSON.stringify(updatedMessages));
       } else {
         console.error("Gagal mengirim pesan:", data.message);
       }
@@ -424,6 +449,25 @@ export default function RoomChat() {
 
                 {/* Message input section */}
                 <div className="pt-5 flex items-center gap-2">
+                  <div className="w-3/12 text-black">
+                    <select
+                      value={selectedProductId ?? ""}
+                      onChange={(e) =>
+                        setSelectedProductId(Number(e.target.value))
+                      }
+                      className="py-2.5 px-4 border rounded-xl"
+                    >
+                      <option value="" disabled>
+                        Pilih produk
+                      </option>
+                      {userProducts.map((product) => (
+                        <option key={product.id} value={product.id}>
+                          {product.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
                   <input
                     className="w-full bg-gray-300 text-black py-2.5 px-4 rounded-xl"
                     type="text"
@@ -431,6 +475,7 @@ export default function RoomChat() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                   />
+
                   <button
                     className="p-3 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={handleSendMessage}
