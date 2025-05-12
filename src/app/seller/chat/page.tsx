@@ -23,7 +23,8 @@ type Chat = {
   sender?: User;
   receiver?: User;
   Product?: Product;
-  opponent_id?: number; // untuk mempermudah pengiriman pesan
+  opponent_id?: number;
+  opponent_name?: string;
 };
 
 export default function RoomChat() {
@@ -47,27 +48,68 @@ export default function RoomChat() {
       if (!userId) return;
 
       try {
+        // Ambil daftar chat
         const res = await fetch(
           `http://127.0.0.1:1031/api/v1/chats/user/${userId}`
         );
         const data = await res.json();
 
         if (res.ok) {
-          const lastMessages = data.chats.reduce(
-            (acc: { [key: number]: Chat }, chat: Chat) => {
-              const opponentId =
-                chat.sender_id === userId ? chat.receiver_id : chat.sender_id;
-              if (
-                !acc[opponentId] ||
-                new Date(chat.created_at) > new Date(acc[opponentId].created_at)
-              ) {
-                acc[opponentId] = { ...chat, opponent_id: opponentId };
-              }
-              return acc;
-            },
-            {}
-          );
+          const lastMessages: { [key: number]: Chat } = {};
 
+          // Menggunakan for...of untuk iterasi setiap chat
+          for (const chat of data.chats) {
+            const opponentId =
+              chat.sender_id === userId ? chat.receiver_id : chat.sender_id;
+
+            // Ambil pesan terakhir antara user dan opponent
+            const messagesRes = await fetch(
+              `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+            );
+            const messagesData = await messagesRes.json();
+
+            // Ambil pesan terakhir dari data messages
+            const lastMessage = messagesData[messagesData.length - 1];
+
+            if (!lastMessage) continue; // Jika tidak ada pesan, skip
+
+            console.log("Last Message:", lastMessage);
+
+            // Pengecekan format created_at dan logika perbandingan
+            const lastMessageDate = new Date(lastMessage.created_at);
+            const existingMessageDate = lastMessages[opponentId]
+              ? new Date(lastMessages[opponentId].created_at)
+              : null;
+
+            // Cek apakah existingMessageDate valid dan lakukan perbandingan
+            const lastMessageTime = lastMessageDate.getTime();
+            const existingMessageTime = existingMessageDate
+              ? existingMessageDate.getTime()
+              : 0;
+
+            console.log(
+              `Comparing dates: ${
+                lastMessage.created_at
+              } vs ${existingMessageDate?.toISOString()}`
+            );
+
+            // Jika belum ada pesan atau jika pesan yang baru lebih baru
+            if (
+              !lastMessages[opponentId] ||
+              lastMessageTime > existingMessageTime
+            ) {
+              lastMessages[opponentId] = {
+                ...lastMessage,
+                opponent_id: opponentId,
+                opponent_name:
+                  chat.sender_id === userId
+                    ? chat.receiver?.name
+                    : chat.sender?.name,
+              };
+            }
+          }
+
+          // Set chats dengan pesan terakhir dan nama lawan
           setChats(Object.values(lastMessages));
         } else {
           console.error("Gagal fetch chats:", data.message);
@@ -274,52 +316,49 @@ export default function RoomChat() {
                   .reverse()
                   .map((chat) => (
                     <div
-                      key={chat.id}
+                      key={chat.opponent_id} // Gunakan opponent_id sebagai key
                       className="flex items-center gap-4 py-4 px-2 border-b border-white/10 hover:bg-white/5 transition-colors"
                       onClick={() => handleChatSelect(chat)}
                     >
                       <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                        {userId === chat.sender_id
-                          ? chat.receiver?.name
-                              ?.split(" ")
+                        {chat.opponent_name
+                          ? chat.opponent_name
+                              .split(" ")
                               .map((w) => w.charAt(0))
                               .join("")
                               .toUpperCase()
-                          : chat.sender?.name
-                              ?.split(" ")
-                              .map((w) => w.charAt(0))
-                              .join("")
-                              .toUpperCase()}
+                          : "NN"}{" "}
+                        {/* Menampilkan "NN" jika opponent_name kosong */}
                       </span>
                       <div className="flex-1 overflow-hidden">
                         <div className="text-lg font-semibold truncate">
-                          {chat.sender?.name}
+                          {chat.opponent_name || "Nama Tidak Diketahui"}
                         </div>
                         <div className="text-sm text-gray-400 truncate">
-                          {chat.message}
+                          {chat.message || "Pesan tidak ada"}
                         </div>
                       </div>
 
-                      {/* Menambahkan ikon khusus jika chat belum dibaca */}
-                      {chat.read_status === "0" && (
-                        <span className="ml-2 p-1.5 bg-blue-400 rounded-full">
-                          {/* Ikon untuk chat belum dibaca */}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="size-6"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-                            />
-                          </svg>
-                        </span>
-                      )}
+                      {/* Menambahkan ikon unread hanya jika pesan dikirim oleh orang lain dan belum dibaca */}
+                      {chat.sender_id !== userId &&
+                        chat.read_status === "0" && (
+                          <span className="ml-2 p-1.5 bg-blue-400 rounded-full">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                              />
+                            </svg>
+                          </span>
+                        )}
                     </div>
                   ))}
               </div>
