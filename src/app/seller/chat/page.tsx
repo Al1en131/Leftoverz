@@ -408,7 +408,7 @@ export default function RoomChat() {
                       >
                         {/* Avatar untuk penerima */}
                         {isReceiver && (
-                          <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
+                          <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full flex items-center justify-center text-white font-bold">
                             {message.sender?.name
                               ? message.sender.name
                                   .split(" ")
@@ -424,9 +424,14 @@ export default function RoomChat() {
                           className={`py-3 px-4 rounded-xl ${
                             isSender
                               ? "bg-blue-400 text-white rounded-bl-3xl rounded-tl-3xl"
-                              : "bg-blue-100 text-blue-400 rounded-br-3xl rounded-tr-3xl"
+                              : "bg-blue-300 text-white rounded-br-3xl rounded-tr-3xl"
                           }`}
                         >
+                          {message.Product?.name && (
+                            <div className="text-xs bg-white border border-blue-400 text-blue-400 flex rounded-lg p-2 font-semibold mb-2 w-fit">
+                              Produk : {message.Product.name}
+                            </div>
+                          )}
                           {message.message}
                         </div>
 
@@ -455,7 +460,7 @@ export default function RoomChat() {
                       onChange={(e) =>
                         setSelectedProductId(Number(e.target.value))
                       }
-                      className="py-2.5 px-4 border rounded-xl"
+                      className="py-2.5 px-4 w-full border rounded-xl"
                     >
                       <option value="" disabled>
                         Pilih produk
