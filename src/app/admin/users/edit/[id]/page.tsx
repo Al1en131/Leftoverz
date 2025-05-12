@@ -70,7 +70,6 @@ export default function User() {
   const apiKey =
     "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
 
-  // 1. Get provinces
   useEffect(() => {
     fetch(`https://api.binderbyte.com/wilayah/provinsi?api_key=${apiKey}`)
       .then((res) => res.json())
@@ -109,7 +108,7 @@ export default function User() {
     };
 
     fetchRegency();
-  }, [formData.province, provinces]);
+  }, [formData.province, provinces, isInitialLoad]);
 
   useEffect(() => {
     const selectedRegency = regency.find(
@@ -137,7 +136,7 @@ export default function User() {
     };
 
     fetchSubdistrict();
-  }, [formData.regency, regency]);
+  }, [formData.regency, regency, isInitialLoad]);
 
   useEffect(() => {
     const selectedSubdistrict = subdistricts.find(
@@ -163,7 +162,7 @@ export default function User() {
     };
 
     fetchWard();
-  }, [formData.subdistrict, subdistricts]);
+  }, [formData.subdistrict, subdistricts, isInitialLoad]);
 
   useEffect(() => {
     if (
@@ -177,7 +176,7 @@ export default function User() {
     ) {
       setIsInitialLoad(false); // load selesai
     }
-  }, [formData, regency, subdistricts, wards]);
+  }, [formData, regency, subdistricts, wards, isInitialLoad]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

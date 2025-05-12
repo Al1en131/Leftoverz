@@ -43,7 +43,6 @@ type Product = {
 };
 
 export default function ProductDetail() {
-  const [chats, setChats] = useState<Chat[]>([]);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Chat[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
@@ -140,7 +139,7 @@ export default function ProductDetail() {
             }
           );
 
-          setChats((prevChats) =>
+          setMessages((prevChats) =>
             prevChats.map((chat) =>
               chat.id === unreadChat.id ? { ...chat, read_status: "1" } : chat
             )

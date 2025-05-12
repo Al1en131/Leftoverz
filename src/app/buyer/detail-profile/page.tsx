@@ -36,15 +36,11 @@ type Ward = {
 };
 
 export default function DetailProfile() {
-  const [role, setRole] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
-    const storedUserRole = localStorage.getItem("role");
     const storedUserName = localStorage.getItem("name");
-
-    if (storedUserRole) setRole(storedUserRole);
     if (storedUserName) setName(storedUserName);
   }, []);
   const [formData, setFormData] = useState<User>({
@@ -266,7 +262,7 @@ export default function DetailProfile() {
       subdistricts.length > 0 &&
       wards.length > 0
     ) {
-      setIsInitialLoad(false); // load selesai
+      setIsInitialLoad(false); 
     }
   }, [formData, regency, subdistricts, wards]);
   const handleClosePopup = () => setShowSuccessPopup(false);

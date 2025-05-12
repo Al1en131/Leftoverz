@@ -36,13 +36,11 @@ type Ward = {
 };
 
 export default function DetailProfile() {
-  const [role, setRole] = useState<string | null>(null);
   const [name, setName] = useState<string | null>(null);
-  useEffect(() => {
-    const storedUserRole = localStorage.getItem("role");
-    const storedUserName = localStorage.getItem("name");
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-    if (storedUserRole) setRole(storedUserRole);
+  useEffect(() => {
+    const storedUserName = localStorage.getItem("name");
     if (storedUserName) setName(storedUserName);
   }, []);
   const [formData, setFormData] = useState<User>({
@@ -61,21 +59,10 @@ export default function DetailProfile() {
   const [regency, setRegency] = useState<Regency[]>([]);
   const [subdistricts, setSubdistricts] = useState<Subdistrict[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
-  useEffect(() => {
-    fetch(
-      "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.code === "200" && Array.isArray(data.value)) {
-          setProvinces(data.value);
-        } else {
-          console.error("Gagal mengambil data provinsi:", data);
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  }, []);
-
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const handleChangeRegency = async (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -85,69 +72,6 @@ export default function DetailProfile() {
       ...prev,
       [name]: value,
     }));
-
-    // Ambil data kabupaten ketika provinsi dipilih
-    if (name === "province") {
-      const selectedProvince = provinces.find((p) => p.name === value);
-      if (selectedProvince) {
-        try {
-          const res = await fetch(
-            `https://api.binderbyte.com/wilayah/kabupaten?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&id_provinsi=${selectedProvince.id}`
-          );
-          const data = await res.json();
-          if (data.code === "200") {
-            setRegency(data.value);
-          } else {
-            setRegency([]);
-          }
-        } catch (err) {
-          console.error("Error loading kabupaten", err);
-          setRegency([]);
-        }
-      }
-    }
-
-    // Ambil data kecamatan ketika kabupaten dipilih
-    if (name === "regency") {
-      const selectedRegency = regency.find((p) => p.name === value);
-      if (selectedRegency) {
-        try {
-          const res = await fetch(
-            `https://api.binderbyte.com/wilayah/kecamatan?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&id_kabupaten=${selectedRegency.id}`
-          );
-          const data = await res.json();
-          if (data.code === "200") {
-            setSubdistricts(data.value);
-          } else {
-            setSubdistricts([]);
-          }
-        } catch (err) {
-          console.error("Error loading kecamatan", err);
-          setSubdistricts([]);
-        }
-      }
-    }
-
-    // Ambil data kelurahan ketika kecamatan dipilih
-    if (name === "subdistrict") {
-      const selectedDistrict = subdistricts.find((p) => p.name === value);
-      if (selectedDistrict) {
-        try {
-          const res = await fetch(
-            `https://api.binderbyte.com/wilayah/kelurahan?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&id_kecamatan=${selectedDistrict.id}`
-          );
-          const data = await res.json();
-          if (data.code === "200") {
-            setWards(data.value);
-          } else {
-            setWards([]);
-          }
-        } catch (err) {
-          console.error("Error loading kelurahan", err);
-          setWards([]);
-        }
-      }
-    }
   };
 
   const [userId, setUserId] = useState<number | null>(null);
@@ -218,17 +142,183 @@ export default function DetailProfile() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Profil berhasil diperbarui.");
+        setSuccessMessage("Profil berhasil diperbarui.");
+        setShowSuccessPopup(true);
       } else {
-        alert(`Gagal memperbarui profil: ${data.message}`);
+        setErrorMessage(`Gagal memperbarui profil: ${data.message}`);
+        setShowErrorPopup(true);
       }
     } catch (error) {
       console.error("Update error:", error);
+      setErrorMessage("Something went wrong, please try again.");
+      setShowErrorPopup(true);
     }
   };
+  const apiKey =
+    "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
 
+  // 1. Get provinces
+  useEffect(() => {
+    fetch(`https://api.binderbyte.com/wilayah/provinsi?api_key=${apiKey}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.code === "200") {
+          setProvinces(data.value);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    const selectedProvince = provinces.find(
+      (p) => p.name.toLowerCase() === formData.province.toLowerCase()
+    );
+    if (!selectedProvince) return;
+
+    const fetchRegency = async () => {
+      const res = await fetch(
+        `https://api.binderbyte.com/wilayah/kabupaten?api_key=${apiKey}&id_provinsi=${selectedProvince.id}`
+      );
+      const data = await res.json();
+      if (data.code === "200") {
+        setRegency(data.value);
+      }
+
+      if (!isInitialLoad) {
+        setFormData((prev) => ({
+          ...prev,
+          regency: "",
+          subdistrict: "",
+          ward: "",
+        }));
+        setSubdistricts([]);
+        setWards([]);
+      }
+    };
+
+    fetchRegency();
+  }, [formData.province, provinces]);
+
+  useEffect(() => {
+    const selectedRegency = regency.find(
+      (r) => r.name.toLowerCase() === formData.regency.toLowerCase()
+    );
+    if (!selectedRegency) return;
+
+    const fetchSubdistrict = async () => {
+      const res = await fetch(
+        `https://api.binderbyte.com/wilayah/kecamatan?api_key=${apiKey}&id_kabupaten=${selectedRegency.id}`
+      );
+      const data = await res.json();
+      if (data.code === "200") {
+        setSubdistricts(data.value);
+      }
+
+      if (!isInitialLoad) {
+        setFormData((prev) => ({
+          ...prev,
+          subdistrict: "",
+          ward: "",
+        }));
+        setWards([]);
+      }
+    };
+
+    fetchSubdistrict();
+  }, [formData.regency, regency]);
+
+  useEffect(() => {
+    const selectedSubdistrict = subdistricts.find(
+      (s) => s.name.toLowerCase() === formData.subdistrict.toLowerCase()
+    );
+    if (!selectedSubdistrict) return;
+
+    const fetchWard = async () => {
+      const res = await fetch(
+        `https://api.binderbyte.com/wilayah/kelurahan?api_key=${apiKey}&id_kecamatan=${selectedSubdistrict.id}`
+      );
+      const data = await res.json();
+      if (data.code === "200") {
+        setWards(data.value);
+      }
+
+      if (!isInitialLoad) {
+        setFormData((prev) => ({
+          ...prev,
+          ward: "",
+        }));
+      }
+    };
+
+    fetchWard();
+  }, [formData.subdistrict, subdistricts]);
+
+  useEffect(() => {
+    if (
+      formData.province &&
+      formData.regency &&
+      formData.subdistrict &&
+      formData.ward &&
+      regency.length > 0 &&
+      subdistricts.length > 0 &&
+      wards.length > 0
+    ) {
+      setIsInitialLoad(false); // load selesai
+    }
+  }, [formData, regency, subdistricts, wards, isInitialLoad]);
+  const handleClosePopup = () => setShowSuccessPopup(false);
+  const handleCloseErrorPopup = () => setShowErrorPopup(false);
   return (
     <div className="bg-[#080B2A] items-center min-h-screen">
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Error Popup */}
+      {showErrorPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/error.svg"
+                width={80}
+                height={80}
+                alt="Error"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-red-400">
+              Something went wrong!
+            </h2>
+            <p className="mb-6 text-red-400">{errorMessage}</p>
+            <button
+              onClick={handleCloseErrorPopup}
+              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <main>
         <Image
           width={100}
@@ -292,9 +382,6 @@ export default function DetailProfile() {
           <section className="lg:p-10 max-lg:p-6 w-full my-auto bg-white/10 rounded-2xl border border-blue-400">
             <div className="w-full flex gap-4 ">
               <div className="w-full h-fit self-center">
-                <h2 className="text-white text-xl mb-3 font-semibold text-center">
-                  Edit Profile
-                </h2>
                 <div className="flex justify-center">
                   <span className="w-20 h-20 shrink-0 mb-3 text-3xl bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
                     {name
@@ -306,7 +393,7 @@ export default function DetailProfile() {
                       : "?"}
                   </span>
                 </div>
-                <p className="capitalize text-center mb-7">{role}</p>
+                <p className="capitalize text-center mb-7">{name}</p>
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -343,16 +430,6 @@ export default function DetailProfile() {
                       />
                     </div>
                     <div>
-                      <label className="text-white">Password</label>
-                      <input
-                        type="password"
-                        name="password"
-                        onChange={handleChange}
-                        className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-                        placeholder="Isi jika ingin mengganti"
-                      />
-                    </div>
-                    {/* <div>
                       <label className="text-white">Role</label>
                       <input
                         type="role"
@@ -361,8 +438,9 @@ export default function DetailProfile() {
                         value={formData.role}
                         className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
                         placeholder="Isi jika ingin mengganti"
+                        disabled
                       />
-                    </div> */}
+                    </div>
                     <div>
                       <label className="text-white">Province</label>
                       <select
