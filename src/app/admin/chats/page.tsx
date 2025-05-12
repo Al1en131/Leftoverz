@@ -30,20 +30,29 @@ type Chat = {
 
 export default function Chats() {
   const [chats, setChats] = useState<Chat[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
   const [dateString, setDateString] = useState({
     day: "",
     fullDate: "",
   });
+  const filteredChats = chats.filter((chat) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      chat.sender?.name?.toLowerCase().includes(search) ||
+      chat.receiver?.name?.toLowerCase().includes(search) ||
+      chat.message.toLowerCase().includes(search)
+    );
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const totalPages = Math.ceil(chats.length / itemsPerPage);
-  const paginatedchats = chats.slice(
+  const paginatedchats = filteredChats.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const totalPages = Math.ceil(filteredChats.length / itemsPerPage);
 
   useEffect(() => {
     const now = new Date();
@@ -156,11 +165,13 @@ export default function Chats() {
             <h3 className="text-xl font-bold">Chat List</h3>
             <p>All user conversations</p>
           </div>
-          <div className="flex gap-2 items-center">
-            <div className="relative w-full">
+          <div className="flex flex-wrap gap-2 items-center">
+            <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
                 placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
               />
               <Search

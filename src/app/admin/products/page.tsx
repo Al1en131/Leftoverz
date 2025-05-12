@@ -34,13 +34,22 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [dateString, setDateString] = useState({ day: "", fullDate: "" });
 
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.seller?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.status?.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -313,21 +322,23 @@ export default function Products() {
             <h3 className="text-xl font-bold">Product List</h3>
             <p>List of all products</p>
           </div>
-          <div className="flex gap-2 items-center">
-            <div className="relative w-3/5">
+          <div className="flex flex-wrap gap-2 items-center">
+            <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 pr-10 rounded text-white placeholder-gray-400 bg-transparent border border-gray-600 focus:outline-none"
               />
               <Search
-                className="absolute top-2.5 right-3 text-gray-400"
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 pointer-events-none"
                 size={18}
               />
             </div>
             <Link
               href="/admin/products/add"
-              className="bg-blue-400 text-white font-medium rounded-lg p-2 w-full flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
+              className="bg-blue-400 text-white font-medium rounded-lg px-4 py-2 flex items-center gap-2 shadow hover:bg-blue-500 transition"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

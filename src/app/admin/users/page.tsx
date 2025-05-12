@@ -14,6 +14,7 @@ type User = {
 };
 
 export default function User() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,6 +36,13 @@ export default function User() {
     setShowErrorPopup(false);
     setShowConfirmPopup(false);
   };
+  const filteredUsers = users.filter(
+    (user) =>
+      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.no_hp?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.role?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   useEffect(() => {
     const now = new Date();
@@ -88,7 +96,7 @@ export default function User() {
 
   const indexOfLastUser = currentPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
-  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
   const offset = (currentPage - 1) * itemsPerPage;
 
@@ -280,21 +288,23 @@ export default function User() {
             <h3 className="text-xl font-bold">User List</h3>
             <p>List of all registered users</p>
           </div>
-          <div className="flex gap-2 items-center">
-            <div className="relative w-3/5">
+          <div className="flex flex-wrap gap-2 items-center">
+            <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 pr-10 rounded text-white placeholder-gray-400 bg-transparent border border-gray-600 focus:outline-none"
               />
               <Search
-                className="absolute top-2.5 right-3 text-gray-400"
+                className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-400 pointer-events-none"
                 size={18}
               />
             </div>
             <Link
               href="/admin/users/add"
-              className="bg-blue-400 text-white font-medium rounded-lg p-2 w-2/5 flex items-center justify-center gap-2 shadow-md hover:bg-blue-500 transition-all"
+              className="bg-blue-400 text-white font-medium rounded-lg px-4 py-2 flex items-center gap-2 shadow hover:bg-blue-500 transition"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -310,7 +320,7 @@ export default function User() {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Add User
+              Add Product
             </Link>
           </div>
         </div>
@@ -393,7 +403,7 @@ export default function User() {
           </button>
           <button
             onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage * itemsPerPage >= users.length}
+            disabled={currentPage * itemsPerPage >= filteredUsers.length}
             className="px-4 py-2 text-white bg-blue-400 rounded-md mx-2"
           >
             Next

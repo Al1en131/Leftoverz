@@ -31,6 +31,7 @@ type Transaction = RawTransaction & {
 };
 
 export default function Products() {
+  const [searchQuery, setSearchQuery] = useState("");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [dateString, setDateString] = useState({
@@ -39,9 +40,16 @@ export default function Products() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  const filteredTransactions = transactions.filter(
+    (item) =>
+      item.item_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.buyer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.seller_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const totalPages = Math.ceil(transactions.length / itemsPerPage);
-  const paginatedTransactions = transactions.slice(
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+
+  const paginatedTransactions = filteredTransactions.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -116,7 +124,7 @@ export default function Products() {
           return {
             ...transaction,
             item_name: transaction.item?.name || "Unknown",
-            price : transaction.item?.price,
+            price: transaction.item?.price,
             buyer_name: transaction.buyer?.name || "Unknown",
             seller_name: transaction.seller?.name || "Unknown",
             image: imageArray,
@@ -182,7 +190,10 @@ export default function Products() {
             <p className="text-sm text-gray-300">
               Glad to see you again! Ask me anything.
             </p>
-            <Link href="/admin/" className="mt-4 text-white text-sm flex items-center gap-2">
+            <Link
+              href="/admin/"
+              className="mt-4 text-white text-sm flex items-center gap-2"
+            >
               Tap to dashboard →
             </Link>
           </div>
@@ -210,11 +221,16 @@ export default function Products() {
             <h3 className="text-xl font-bold">Transaction List</h3>
             <p>List of all transactions</p>
           </div>
-          <div className="flex gap-2 items-center">
-            <div className="relative w-full">
+          <div className="flex flex-wrap gap-2 items-center">
+            <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
                 placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="w-full px-4 py-2 rounded text-white placeholder-gray-400 bg-transparent focus:outline-none"
               />
               <Search
