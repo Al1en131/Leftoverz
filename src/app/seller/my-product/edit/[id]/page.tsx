@@ -15,18 +15,12 @@ export default function EditProduct() {
   const [successMessage, setSuccessMessage] = useState("");
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [keptInitialImages, setKeptInitialImages] = useState<string[]>([]);
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
     router.push("/seller/my-product/");
   };
   const handleCloseErrorPopup = () => setShowErrorPopup(false);
-  const handleRemoveInitialImage = (index: number) => {
-    const removed = initialImageUrls[index];
-    setRemovedImages((prev) => [...prev, removed]);
-    const updatedImages = [...initialImageUrls];
-    updatedImages.splice(index, 1);
-    setInitialImageUrls(updatedImages);
-  };
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
     if (storedUserId) {
@@ -123,44 +117,49 @@ export default function EditProduct() {
     }
   };
   const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+    const newFiles = Array.from(e.target.files || []);
 
-    // Gabungkan gambar lama dengan gambar baru yang dipilih
-    const newImages = [...formData.image, ...files];
+    // Hitung total gambar: yang lama masih disimpan + yang baru diunggah
+    const totalImages =
+      keptInitialImages.length + formData.image.length + newFiles.length;
 
-    // Batasi agar hanya 5 gambar yang diunggah
-    if (newImages.length > 5) {
-      alert("You can only upload a maximum of 5 images.");
+    if (totalImages > 5) {
+      setShowErrorPopup(true);
+      setErrorMessage("Maximum 5 images allowed including existing ones.");
+      if (fileInputRef.current) fileInputRef.current.value = ""; // reset input
       return;
     }
 
-    // Update state dengan gambar baru dan lama
-    setFormData((prevData) => ({
-      ...prevData,
-      image: newImages,
-    }));
+    // Gabungkan file lama dengan file baru
+    const updatedFiles = [...formData.image, ...newFiles];
+    const updatedPreviews = [
+      ...imagePreviews,
+      ...newFiles.map((file) => URL.createObjectURL(file)),
+    ];
 
-    // Buat preview untuk gambar yang baru
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews((prevPreviews) => [...prevPreviews, ...previews]);
+    setFormData((prev) => ({ ...prev, image: updatedFiles }));
+    setImagePreviews(updatedPreviews);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleRemoveImage = (index: number) => {
     const newImages = [...formData.image];
-    newImages.splice(index, 1); // Hapus dari gambar baru
-    setFormData((prevData) => ({
-      ...prevData,
-      image: newImages,
-    }));
+    newImages.splice(index, 1);
+    setFormData((prev) => ({ ...prev, image: newImages }));
 
     const newPreviews = [...imagePreviews];
-    newPreviews.splice(index, 1); // Hapus preview gambar
+    newPreviews.splice(index, 1);
     setImagePreviews(newPreviews);
+  };
+
+  const handleRemoveInitialImage = (index: number) => {
+    const removed = initialImageUrls[index];
+    setRemovedImages((prev) => [...prev, removed]);
+    setInitialImageUrls((prev) => prev.filter((_, i) => i !== index));
+    setKeptInitialImages((prev) => prev.filter((_, i) => i !== index));
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -179,7 +178,8 @@ export default function EditProduct() {
     data.append("status", formData.status);
     data.append("description", formData.description);
     formData.image.forEach((file) => data.append("image", file));
-    data.append("removed_images", JSON.stringify(removedImages));
+    data.append("removedImages", JSON.stringify(removedImages));
+    data.append("keptImages", JSON.stringify(keptInitialImages));
 
     try {
       const res = await fetch(
@@ -287,88 +287,114 @@ export default function EditProduct() {
             </h2>
             <form onSubmit={handleSubmit}>
               <div className="flex flex-col items-center mb-6">
-                <div className="flex items-center justify-center w-full">
-                  <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
-                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                      <svg
-                        className="w-8 h-8 mb-4 text-white"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 20 16"
-                      >
-                        <path
-                          stroke="currentColor"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                        />
-                      </svg>
-                      <p className="mb-2 text-sm text-white">
-                        <span className="font-semibold">Click to upload</span>{" "}
-                        or drag and drop
-                      </p>
-                      <p className="text-xs text-white">
-                        SVG, PNG, JPG or GIF (MAX. 800x400px)
-                      </p>
-                    </div>
-                    <input
-                      id="dropzone-file"
-                      type="file"
-                      name="image"
-                      className="hidden"
-                      multiple
-                      onChange={handleImageChange} // GANTI INI
-                    />
-                  </label>
-                </div>
-                <div className="mt-6">
-                  {initialImageUrls.length > 0 || imagePreviews.length > 0 ? (
+                <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg
+                      className="w-8 h-8 mb-4 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 20 16"
+                    >
+                      <path
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                      />
+                    </svg>
+                    <p className="mb-2 text-sm text-white">
+                      <span className="font-semibold">Click to upload</span> or
+                      drag and drop
+                    </p>
+                    <p className="text-xs text-white">
+                      SVG, PNG, JPG or GIF (MAX. 800x400px)
+                    </p>
+                  </div>
+                  <input
+                    id="dropzone-file"
+                    type="file"
+                    className="hidden"
+                    name="image"
+                    accept="image/png, image/jpeg, image/jpg, image/gif"
+                    multiple
+                    onChange={handleImageChange}
+                  />
+                </label>
+
+                <div className="mt-4 flex justify-center items-center gap-4">
+                  {/* Gambar lama */}
+                  {initialImageUrls.length > 0 && (
                     <div className="flex gap-4 flex-wrap mb-4">
-                      {[...initialImageUrls, ...imagePreviews]
-                        .slice(0, 5)
-                        .map((url, index) => (
-                          <div key={index} className="relative w-32 h-32">
-                            <Image
-                              src={url}
-                              alt={`Preview ${index}`}
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-lg border object-cover w-24 h-24 border-gray-300"
-                            />
-                            <button
-                              type="button"
-                              onClick={
-                                () =>
-                                  initialImageUrls.includes(url)
-                                    ? handleRemoveInitialImage(index) 
-                                    : handleRemoveImage(index) 
-                              }
-                              className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
+                      {initialImageUrls.map((url, index) => (
+                        <div key={index} className="relative w-32 h-32">
+                          <Image
+                            src={url}
+                            alt={`Initial Preview ${index}`}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-lg border object-cover border-gray-300"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveInitialImage(index)}
+                            className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
+                          >
+                            <svg
+                              className="w-4 h-4 text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
                             >
-                              <svg
-                                className="w-6 h-6 text-gray-800 dark:text-white"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  stroke="currentColor"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M6 18 17.94 6M18 18 6.06 6"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                        ))}
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  ) : (
-                    <p>No images to display</p>
+                  )}
+
+                  {/* Gambar baru */}
+                  {imagePreviews.length > 0 && (
+                    <div className="flex gap-4 flex-wrap mb-4">
+                      {imagePreviews.map((url, index) => (
+                        <div key={index} className="relative w-32 h-32">
+                          <Image
+                            src={url}
+                            alt={`New Preview ${index}`}
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-lg border object-cover border-gray-300"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
+                          >
+                            <svg
+                              className="w-4 h-4 text-white"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>

@@ -14,13 +14,13 @@ type User = {
   status: string;
   image: string[];
   role: string;
-  // tambahkan properti lain sesuai struktur `user` dari API
 };
+
 export default function EditProduct() {
   const router = useRouter();
   const params = useParams();
   const productId = params?.id;
-  const [initialImageUrls, setInitialImageUrls] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -34,44 +34,33 @@ export default function EditProduct() {
   const [users, setUsers] = useState<User[]>([]);
   const [displayPrice, setDisplayPrice] = useState("");
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [initialImageUrls, setInitialImageUrls] = useState<string[]>([]);
+  const [keptInitialImages, setKeptInitialImages] = useState<string[]>([]);
+  const [removedImages, setRemovedImages] = useState<string[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const formatPrice = (value: string) => {
     const numberString = value.replace(/\D/g, "");
     return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
-  const [removedImages, setRemovedImages] = useState<string[]>([]);
 
-  const handleRemoveInitialImage = (index: number) => {
-    const removed = initialImageUrls[index];
-    setRemovedImages((prev) => [...prev, removed]);
-    const updatedImages = [...initialImageUrls];
-    updatedImages.splice(index, 1);
-    setInitialImageUrls(updatedImages);
-  };
-
-  // Fetching users for dropdown
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch("http://127.0.0.1:1031/api/v1/users", {
-          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
         const data = await response.json();
-        if (data && Array.isArray(data.users)) {
-          setUsers(data.users);
-        } else {
-          console.error("Unexpected data format:", data);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
+        if (Array.isArray(data.users)) setUsers(data.users);
+      } catch (err) {
+        console.error("Error fetching users:", err);
       }
     };
 
@@ -87,51 +76,36 @@ export default function EditProduct() {
           `http://127.0.0.1:1031/api/v1/product/${productId}`
         );
         const data = await res.json();
-
         if (!res.ok) throw new Error(data.message);
+
+        setRemovedImages([]);
+        setKeptInitialImages([]);
 
         setFormData({
           name: data.product.name || "",
           price: data.product.price || "",
+          description: data.product.description || "",
           user_id: data.product.user_id || "",
           status: data.product.status || "",
-          description: data.product.description || "",
-          image: [] as File[], // Reset image array
+          image: [],
         });
         setDisplayPrice(formatPrice(data.product.price?.toString() || ""));
 
-        const image = data.product.image;
-
-        // Coba parsing jika image dalam format string JSON
-        let parsedImage = image;
+        let parsedImage = data.product.image;
         try {
-          // Coba parse string JSON jika perlu
-          parsedImage = JSON.parse(image);
-        } catch {
-          console.log("Image is not in valid JSON format, skipping parsing.");
-        }
+          parsedImage = JSON.parse(parsedImage);
+        } catch {}
 
-        console.log("Parsed image data:", parsedImage);
-
-        if (Array.isArray(parsedImage) && parsedImage.length > 0) {
-          // Jika image adalah array dan memiliki gambar
+        if (Array.isArray(parsedImage)) {
           setInitialImageUrls(
-            parsedImage.map(
-              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
-            )
+            parsedImage.map((url: string) => `http://127.0.0.1:1031${url}`)
           );
-        } else if (parsedImage && parsedImage.url) {
-          // Jika image adalah objek dan memiliki properti url
-          setInitialImageUrls([`http://127.0.0.1:1031${parsedImage.url}`]);
-        } else {
-          console.log("No valid image data found");
+          setKeptInitialImages(parsedImage); // ✅ ini yang benar
         }
-
-        console.log("image:", parsedImage); // Periksa isi data yang diparsing
       } catch (err) {
-        const errorMessage =
+        const msg =
           err instanceof Error ? err.message : "Unknown error occurred";
-        setErrorMessage(errorMessage);
+        setErrorMessage(msg);
         setShowErrorPopup(true);
       }
     };
@@ -141,58 +115,77 @@ export default function EditProduct() {
 
   const handleInputChange = (
     e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
 
     if (name === "price") {
       const raw = value.replace(/\D/g, "");
       setDisplayPrice(formatPrice(value));
-      setFormData((prev) => ({
-        ...prev,
-        price: raw,
-      }));
+      setFormData((prev) => ({ ...prev, price: raw }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setFormData((prevData) => ({
-      ...prevData,
-      image: files,
-    }));
-    const previews = files.map((file) => URL.createObjectURL(file));
-    setImagePreviews(previews);
+    const newFiles = Array.from(e.target.files || []);
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    // Hitung total gambar: yang lama masih disimpan + yang baru diunggah
+    const totalImages =
+      keptInitialImages.length + formData.image.length + newFiles.length;
+
+    if (totalImages > 5) {
+      setShowErrorPopup(true);
+      setErrorMessage("Maximum 5 images allowed including existing ones.");
+      if (fileInputRef.current) fileInputRef.current.value = ""; // reset input
+      return;
     }
+
+    // Gabungkan file lama dengan file baru
+    const updatedFiles = [...formData.image, ...newFiles];
+    const updatedPreviews = [
+      ...imagePreviews,
+      ...newFiles.map((file) => URL.createObjectURL(file)),
+    ];
+
+    setFormData((prev) => ({ ...prev, image: updatedFiles }));
+    setImagePreviews(updatedPreviews);
+
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleRemoveImage = (index: number) => {
     const newImages = [...formData.image];
     newImages.splice(index, 1);
-    setFormData((prevData) => ({
-      ...prevData,
-      image: newImages,
-    }));
+    setFormData((prev) => ({ ...prev, image: newImages }));
+
     const newPreviews = [...imagePreviews];
     newPreviews.splice(index, 1);
     setImagePreviews(newPreviews);
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleRemoveInitialImage = (index: number) => {
+    const removed = initialImageUrls[index];
+    setRemovedImages((prev) => [...prev, removed]);
+    setInitialImageUrls((prev) => prev.filter((_, i) => i !== index));
+    setKeptInitialImages((prev) => prev.filter((_, i) => i !== index));
+  };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const token = localStorage.getItem("token");
+
     if (!token) {
-      alert("Please login.");
+      setShowErrorPopup(true);
+      setErrorMessage("Please login.");
+      return;
+    }
+
+    if (!formData.name || !formData.price || !formData.user_id) {
+      setShowErrorPopup(true);
+      setErrorMessage("Please fill out all required fields.");
       return;
     }
 
@@ -203,32 +196,30 @@ export default function EditProduct() {
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
     formData.image.forEach((file) => form.append("image", file));
-    form.append("removed_images", JSON.stringify(removedImages));
+    form.append("removedImages", JSON.stringify(removedImages));
+    form.append("keptImages", JSON.stringify(keptInitialImages));
 
     try {
-      const response = await fetch(
+      const res = await fetch(
         `http://127.0.0.1:1031/api/v1/product/edit/${productId}`,
         {
-          method: "PUT", // Edit request
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` },
           body: form,
         }
       );
 
-      const data = await response.json();
-      if (response.ok) {
-        setShowSuccessPopup(true);
+      const data = await res.json();
+      if (res.ok) {
         setSuccessMessage("Product successfully updated!");
+        setShowSuccessPopup(true);
       } else {
-        setShowErrorPopup(true);
         setErrorMessage(data.message || "An error occurred.");
+        setShowErrorPopup(true);
       }
-    } catch (error) {
-      console.error("Error:", error);
-      setShowErrorPopup(true);
+    } catch (err) {
       setErrorMessage("Server error, please try again.");
+      setShowErrorPopup(true);
     }
   };
 
@@ -237,9 +228,13 @@ export default function EditProduct() {
     router.push("/admin/products");
   };
 
-  const handleCloseErrorPopup = () => {
-    setShowErrorPopup(false);
-  };
+  const handleCloseErrorPopup = () => setShowErrorPopup(false);
+
+  useEffect(() => {
+    return () => {
+      imagePreviews.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [imagePreviews]);
 
   const [dateString, setDateString] = useState({
     day: "",
@@ -280,7 +275,7 @@ export default function EditProduct() {
         </div>
       </div>
       {showSuccessPopup && (
-        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
@@ -307,7 +302,7 @@ export default function EditProduct() {
         </div>
       )}
       {showErrorPopup && (
-        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
@@ -431,6 +426,7 @@ export default function EditProduct() {
                 onChange={handleImageChange}
               />
             </label>
+
             <div className="mt-4 flex justify-center items-center gap-4">
               {/* Gambar lama */}
               {initialImageUrls.length > 0 && (
@@ -442,7 +438,7 @@ export default function EditProduct() {
                         alt={`Initial Preview ${index}`}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-lg border object-cover w-24 h-24  border-gray-300"
+                        className="rounded-lg border object-cover border-gray-300"
                       />
                       <button
                         type="button"
@@ -450,11 +446,8 @@ export default function EditProduct() {
                         className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
                       >
                         <svg
-                          className="w-6 h-6 text-gray-800 dark:text-white"
-                          aria-hidden="true"
+                          className="w-4 h-4 text-white"
                           xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
                           fill="none"
                           viewBox="0 0 24 24"
                         >
@@ -463,7 +456,7 @@ export default function EditProduct() {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth="2"
-                            d="M6 18 17.94 6M18 18 6.06 6"
+                            d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
                       </button>
@@ -482,7 +475,7 @@ export default function EditProduct() {
                         alt={`New Preview ${index}`}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-lg border object-cover w-24 h-24  border-gray-300"
+                        className="rounded-lg border object-cover border-gray-300"
                       />
                       <button
                         type="button"
@@ -490,11 +483,8 @@ export default function EditProduct() {
                         className="absolute top-[-6px] right-[-6px] bg-red-600 p-1 text-white rounded-full w-6 h-6 text-3xl flex items-center justify-center shadow-md hover:bg-red-700"
                       >
                         <svg
-                          className="w-6 h-6 text-gray-800 dark:text-white"
-                          aria-hidden="true"
+                          className="w-4 h-4 text-white"
                           xmlns="http://www.w3.org/2000/svg"
-                          width="24"
-                          height="24"
                           fill="none"
                           viewBox="0 0 24 24"
                         >
@@ -503,7 +493,7 @@ export default function EditProduct() {
                             strokeLinecap="round"
                             strokeLinejoin="round"
                             strokeWidth="2"
-                            d="M6 18 17.94 6M18 18 6.06 6"
+                            d="M6 18L18 6M6 6l12 12"
                           />
                         </svg>
                       </button>
@@ -602,7 +592,7 @@ export default function EditProduct() {
 
           <button
             type="submit"
-            className="bg-blue-500 text-white py-3 px-6 rounded-full w-full"
+            className="bg-blue-400 text-white py-3 px-6 rounded-xl w-full"
           >
             Save Changes
           </button>
