@@ -51,6 +51,18 @@ export default function Favorite() {
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Product | null>(null);
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId) setUserId(storedUserId);
+  }, []);
 
   const fetchFavorites = async () => {
     const user_id = localStorage.getItem("id");
@@ -102,6 +114,53 @@ export default function Favorite() {
   useEffect(() => {
     fetchFavorites();
   }, []);
+  const handleDeleteFavorite = async (userId: string, itemId: number) => {
+    if (!userId || !itemId) {
+      console.error("User ID or Item ID is missing");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:1031/api/v1/favorite/delete",
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            user_id: userId,
+            item_id: itemId,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Gagal menghapus favorit");
+      }
+
+      // Setelah penghapusan berhasil, langsung update state products
+      setProducts(
+        (prev) => prev.filter((item) => item.product?.id !== itemId) // Menyaring produk yang tidak ada dalam favorit
+      );
+      setShowConfirmPopup(false); // Tutup popup setelah berhasil
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Error deleting favorite:", error.message);
+      } else {
+        console.error("An unknown error occurred:", error);
+      }
+      setShowConfirmPopup(false); // Tutup popup jika error
+    }
+  };
+
+  const handleClosePopup = () => {
+    setShowErrorPopup(false);
+    setShowSuccessPopup(false);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -148,6 +207,97 @@ export default function Favorite() {
   }
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
+      {showConfirmPopup && itemToDelete && itemToDelete.product && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/warning.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">
+              Konfirmasi Hapus
+            </h2>
+            <p className="mb-6 text-blue-400">
+              Apakah Anda yakin ingin menghapus {itemToDelete.product.name} dari
+              favorit?
+            </p>
+            <div className="flex justify-center gap-4">
+              <button
+                onClick={() => {
+                  // Pastikan itemToDelete dan product ada sebelum diproses
+                  if (itemToDelete.product?.id) {
+                    handleDeleteFavorite(userId, itemToDelete.product.id);
+                    setShowConfirmPopup(false);
+                  } else {
+                    console.error("Product ID is missing");
+                  }
+                }}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Ya
+              </button>
+              <button
+                onClick={() => setShowConfirmPopup(false)}
+                className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                Tidak
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {showErrorPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/error.svg"
+                width={80}
+                height={80}
+                alt="Error"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-red-400">Error!</h2>
+            <p className="mb-6 text-red-400">{errorMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <main>
         <Image
           width={100}
@@ -371,71 +521,99 @@ export default function Favorite() {
         </div>
         <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
-            {currentProducts.map((item) => (
-              <div
-                key={item.id}
-                className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
-              >
-                <div className="mb-4 flex justify-between items-center">
-                  <div className="block">
-                    <h3 className="text-white text-lg mb-1 font-bold">
-                      {item.product?.name}
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
-                        {item.product?.seller_name
-                          ? item.product?.seller_name
-                              .split(" ")
-                              .map((word) => word.charAt(0))
-                              .join("")
-                              .toUpperCase()
-                          : "?"}
-                      </span>
-                      <p className="text-blue-400 font-semibold">
-                        {item.product?.seller_name || "Unknown Seller"}
-                      </p>
+            {/* Validasi jika tidak ada produk favorit */}
+            {currentProducts.length === 0 ? (
+              <div className="col-span-full text-center text-white text-lg">
+                Belum ada data favorit yang anda masukkan.
+              </div>
+            ) : (
+              // Jika ada produk favorit
+              currentProducts.map((item) => (
+                <div
+                  key={item.id}
+                  className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                >
+                  <div className="mb-4 flex justify-between items-center">
+                    <div className="block">
+                      <h3 className="text-white text-lg mb-1 font-bold">
+                        {item.product?.name}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                          {item.product?.seller_name
+                            ? item.product?.seller_name
+                                .split(" ")
+                                .map((word) => word.charAt(0))
+                                .join("")
+                                .toUpperCase()
+                            : "?"}
+                        </span>
+                        <p className="text-blue-400 font-semibold">
+                          {item.product?.seller_name || "Unknown Seller"}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <div className="mb-5">
+                    <Image
+                      src={
+                        item.product?.image[0]
+                          ? `http://127.0.0.1:1031${item.product.image[0]}`
+                          : "/images/default-item.png"
+                      }
+                      alt="product"
+                      width={100}
+                      height={100}
+                      className="w-full md:h-80 max-lg:h-72 object-cover rounded-2xl"
+                    />
+                  </div>
+                  <div className="my-4 flex justify-between items-center">
+                    <p className="text-blue-400 text-lg">
+                      {item.product?.subdistrict}
+                    </p>
+                    <p className="text-blue-400 text-base">
+                      {" "}
+                      Rp {item.product?.price.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+                  <div className="w-full flex justify-between items-center gap-2 text-white">
+                    <Link
+                      href={`/buyer/product/${item.product?.id}`}
+                      className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+                    >
+                      Lihat Detail
+                    </Link>
+                    <button
+                      className="z-50"
+                      onClick={() => {
+                        const userId = localStorage.getItem("id");
+                        if (!userId) {
+                          console.error("User ID is missing");
+                          return;
+                        }
+                        if (!item.product?.id) {
+                          console.error("Item ID is missing");
+                          return;
+                        }
+
+                        // Menyimpan item yang akan dihapus
+                        setItemToDelete(item);
+                        setShowConfirmPopup(true);
+                      }}
+                      title="Hapus dari Favorit"
+                    >
+                      <Image
+                        src="/images/heart-remove.svg"
+                        width={100}
+                        height={100}
+                        alt="Remove from favorites"
+                        className="w-8 h-8 text-white hover:scale-110 transition"
+                      />
+                    </button>
+                  </div>
                 </div>
-                <div className="mb-5">
-                  <Image
-                    src={
-                      item.product?.image[0]
-                        ? `http://127.0.0.1:1031${item.product.image[0]}`
-                        : "/images/default-item.png"
-                    }
-                    alt="product"
-                    width={100}
-                    height={100}
-                    className="w-full h-96 object-cover rounded-2xl"
-                  />
-                </div>
-                <div className="my-4 flex justify-between items-center">
-                  <p className="text-blue-400 text-lg">
-                    {item.product?.subdistrict}
-                  </p>
-                  <p className="text-blue-400 text-base">
-                    {" "}
-                    Rp {item.product?.price.toLocaleString("id-ID")}
-                  </p>
-                </div>
-                <div className="w-full flex justify-between items-center gap-2 text-white">
-                  <Link
-                    href={`/buyer/product/${item.product?.id}`}
-                    className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
-                  >
-                    Lihat Detail
-                  </Link>
-                  <Image
-                    src="/images/heart-remove.svg"
-                    width={100}
-                    height={100}
-                    alt=""
-                    className="w-8 h-8 text-white"
-                  />
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           <div className="flex justify-center gap-4 mt-10 items-center">
             <button
