@@ -651,7 +651,7 @@ export default function Product() {
           <div className="flex justify-center gap-4 mt-10 items-center">
             <button
               onClick={handlePreviousPage}
-              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
               disabled={currentPage === 1}
             >
               Previous
@@ -661,7 +661,7 @@ export default function Product() {
             </span>
             <button
               onClick={handleNextPage}
-              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
               disabled={currentPage === totalPages}
             >
               Next
