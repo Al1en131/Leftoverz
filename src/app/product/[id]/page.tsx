@@ -117,14 +117,14 @@ export default function ProductDetail() {
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-[750px] left-56 max-lg:hidden -z-0"
+        className="w-4 absolute top-20 left-56 max-lg:hidden -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-[700px] max-lg:hidden right-[300px] -z-0"
+        className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
       <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 w-full max-lg:py-14 mt-10 h-auto">
         <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
@@ -180,6 +180,9 @@ export default function ProductDetail() {
               {product?.description}
             </p>
           </div>
+          <p className="text-blue-400 absolute right-0 bottom-0 text-sm">
+            Rp {product?.price.toLocaleString("id-ID")}
+          </p>
         </div>
       </div>
     </div>

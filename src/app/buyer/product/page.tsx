@@ -80,7 +80,7 @@ export default function Product() {
       console.log(data);
 
       const parsedProducts = data.products
-        .filter((product: Product) => product.status === "available") // filter di sini
+        .filter((product: Product) => product.status === "available")
         .map((product: Product) => {
           let parsedImage: string[] = [];
 
@@ -136,60 +136,157 @@ export default function Product() {
   };
 
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [favoritesLoading, setFavoritesLoading] = useState(true);
+
+  const fetchFavorites = async () => {
+    const userId = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+
+    if (!userId || isNaN(Number(userId))) return;
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/favorite/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (response.ok && data && data.data) {
+        console.log("Data favorit diterima:", data.data);
+
+        // Ambil ID produk dari objek product di dalam masing-masing item
+        const favoriteIds = data.data
+          .map((item: any) => Number(item.product?.id)) // pastikan number
+          .filter(Boolean);
+
+        console.log("Favorite IDs:", favoriteIds);
+        setFavorites(favoriteIds);
+        localStorage.setItem("favorites", JSON.stringify(favoriteIds));
+      } else {
+        console.error("Gagal mengambil data favorit atau data tidak valid.");
+        setFavorites([]);
+      }
+    } catch (error) {
+      console.error("Fetch favorite error:", error);
+      setFavorites([]);
+    } finally {
+      setFavoritesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const savedFavorites = JSON.parse(
+      localStorage.getItem("favorites") || "[]"
+    );
+    const validFavorites = savedFavorites
+      .filter(Boolean)
+      .map((id: any) => Number(id)); // pastikan number
+    setFavorites(validFavorites);
+  }, []);
 
   const handleAddFavorite = async (productId: number) => {
     const userId = localStorage.getItem("id");
     const token = localStorage.getItem("token");
 
-    if (!userId) return alert("User belum login.");
+    if (!userId || isNaN(Number(userId)))
+      return alert("User belum login atau ID tidak valid.");
 
     const userIdNumber = parseInt(userId, 10);
-    if (isNaN(userIdNumber)) {
-      return alert("User ID tidak valid.");
-    }
+    const isFavorited = favorites.includes(productId);
 
     try {
-      const response = await fetch(
-        "http://127.0.0.1:1031/api/v1/favorite/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ user_id: userIdNumber, item_id: productId }),
-        }
-      );
+      if (isFavorited) {
+        const response = await fetch(
+          "http://127.0.0.1:1031/api/v1/favorite/delete",
+          {
+            method: "DELETE", // ⚠️ gunakan POST bukan DELETE
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ user_id: userIdNumber, item_id: productId }),
+          }
+        );
 
-      if (response.ok) {
-        setFavorites([...favorites, productId]);
-        setSuccessMessage("Produk berhasil ditambahkan ke favorit!");
-        setShowSuccessPopup(true);
+        if (response.ok) {
+          const updatedFavorites = favorites.filter((id) => id !== productId);
+          setFavorites(updatedFavorites);
+          localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+          setSuccessMessage("Produk berhasil dihapus dari favorit!");
+          setShowSuccessPopup(true);
+        } else {
+          setErrorMessage("Gagal menghapus produk dari favorit.");
+          setShowErrorPopup(true);
+        }
       } else {
-        setErrorMessage("Gagal menambahkan produk ke favorit.");
-        setShowErrorPopup(true);
+        const response = await fetch(
+          "http://127.0.0.1:1031/api/v1/favorite/create",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ user_id: userIdNumber, item_id: productId }),
+          }
+        );
+
+        if (response.ok) {
+          const updatedFavorites = [...favorites, productId];
+          setFavorites(updatedFavorites);
+          localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+          setSuccessMessage("Produk berhasil ditambahkan ke favorit!");
+          setShowSuccessPopup(true);
+        } else {
+          setErrorMessage("Gagal menambahkan produk ke favorit.");
+          setShowErrorPopup(true);
+        }
       }
     } catch (error) {
-      console.error("Gagal menambahkan favorit:", error);
-      alert("Gagal menambahkan favorit.");
+      console.error("Favorit error:", error);
+      setErrorMessage("Terjadi kesalahan saat mengubah status favorit.");
+      setShowErrorPopup(true);
     }
   };
 
   useEffect(() => {
     fetchProducts();
+    fetchFavorites();
   }, []);
 
   const handleClosePopup = () => {
     setShowErrorPopup(false);
   };
-  const handleCloseSuccessPopup = () => {
+  const handleCloseSuccessPopup = async () => {
     setShowSuccessPopup(false);
+    await fetchFavorites(); // Perbarui data favorit
     router.push("/buyer/favorite");
   };
 
-  if (loading) {
+  useEffect(() => {
+    const refreshFavorites = () => {
+      fetchFavorites();
+    };
+
+    window.addEventListener("focus", refreshFavorites); // <-- ini penting
+
+    return () => {
+      window.removeEventListener("focus", refreshFavorites);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("Favorites updated:", favorites);
+  }, [favorites]);
+
+  if (loading || favoritesLoading) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
       <main>
@@ -525,13 +622,26 @@ export default function Product() {
                   <button
                     className="z-50"
                     onClick={() => handleAddFavorite(product.id)}
+                    aria-label={
+                      favorites.includes(Number(product.id))
+                        ? "Hapus dari favorit"
+                        : "Tambahkan ke favorit"
+                    }
                   >
                     <Image
-                      src="/images/heart-add.svg"
-                      width={100}
-                      height={100}
-                      alt=""
-                      className="w-8 h-8 text-white"
+                      src={
+                        favorites.includes(Number(product.id))
+                          ? "/images/heart-remove.svg"
+                          : "/images/heart-add.svg"
+                      }
+                      width={32}
+                      height={32}
+                      alt={
+                        favorites.includes(Number(product.id))
+                          ? "Produk difavoritkan"
+                          : "Produk belum difavoritkan"
+                      }
+                      className="w-8 h-8"
                     />
                   </button>
                 </div>
