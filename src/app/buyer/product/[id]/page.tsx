@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 type User = {
   id: number;
@@ -43,6 +43,11 @@ type Product = {
 };
 
 export default function ProductDetail() {
+  const router = useRouter();
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Chat[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
@@ -210,11 +215,201 @@ export default function ProductDetail() {
     }
   };
 
+  const [favorites, setFavorites] = useState<number[]>([]);
+  const [favoritesLoading, setFavoritesLoading] = useState(true);
+
+  const fetchFavorites = async () => {
+    const userId = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+
+    if (!userId || isNaN(Number(userId))) return;
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/favorite/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await response.json();
+
+      if (response.ok && data && data.data) {
+        console.log("Data favorit diterima:", data.data);
+
+        // Ambil ID produk dari objek product di dalam masing-masing item
+        const favoriteIds = data.data
+          .map((item: any) => Number(item.product?.id)) // pastikan number
+          .filter(Boolean);
+
+        console.log("Favorite IDs:", favoriteIds);
+        setFavorites(favoriteIds);
+        localStorage.setItem("favorites", JSON.stringify(favoriteIds));
+      } else {
+        console.error("Gagal mengambil data favorit atau data tidak valid.");
+        setFavorites([]);
+      }
+    } catch (error) {
+      console.error("Fetch favorite error:", error);
+      setFavorites([]);
+    } finally {
+      setFavoritesLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const savedFavorites = JSON.parse(
+      localStorage.getItem("favorites") || "[]"
+    );
+    const validFavorites = savedFavorites
+      .filter(Boolean)
+      .map((id: any) => Number(id)); // pastikan number
+    setFavorites(validFavorites);
+  }, []);
+
+  const handleAddFavorite = async (productId: number) => {
+    const userId = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+
+    if (!userId || isNaN(Number(userId)))
+      return alert("User belum login atau ID tidak valid.");
+
+    const userIdNumber = parseInt(userId, 10);
+    const isFavorited = favorites.includes(productId);
+
+    try {
+      if (isFavorited) {
+        const response = await fetch(
+          "http://127.0.0.1:1031/api/v1/favorite/delete",
+          {
+            method: "DELETE", // ⚠️ gunakan POST bukan DELETE
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ user_id: userIdNumber, item_id: productId }),
+          }
+        );
+
+        if (response.ok) {
+          const updatedFavorites = favorites.filter((id) => id !== productId);
+          setFavorites(updatedFavorites);
+          localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+          setSuccessMessage("Produk berhasil dihapus dari favorit!");
+          setShowSuccessPopup(true);
+        } else {
+          setErrorMessage("Gagal menghapus produk dari favorit.");
+          setShowErrorPopup(true);
+        }
+      } else {
+        const response = await fetch(
+          "http://127.0.0.1:1031/api/v1/favorite/create",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ user_id: userIdNumber, item_id: productId }),
+          }
+        );
+
+        if (response.ok) {
+          const updatedFavorites = [...favorites, productId];
+          setFavorites(updatedFavorites);
+          localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+          setSuccessMessage("Produk berhasil ditambahkan ke favorit!");
+          setShowSuccessPopup(true);
+        } else {
+          setErrorMessage("Gagal menambahkan produk ke favorit.");
+          setShowErrorPopup(true);
+        }
+      }
+    } catch (error) {
+      console.error("Favorit error:", error);
+      setErrorMessage("Terjadi kesalahan saat mengubah status favorit.");
+      setShowErrorPopup(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchFavorites();
+  }, []);
+  const handleClosePopup = () => {
+    setShowErrorPopup(false);
+  };
+  const handleCloseSuccessPopup = async () => {
+    setShowSuccessPopup(false);
+    await fetchFavorites(); // Perbarui data favorit
+    router.push("/buyer/favorite");
+  };
+  useEffect(() => {
+    const refreshFavorites = () => {
+      fetchFavorites();
+    };
+
+    window.addEventListener("focus", refreshFavorites); // <-- ini penting
+
+    return () => {
+      window.removeEventListener("focus", refreshFavorites);
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log("Favorites updated:", favorites);
+  }, [favorites]);
   if (loading) {
     return <div>Loading...</div>;
   }
   return (
     <div className="bg-[#080B2A] min-h-screen flex flex-col items-center">
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <button
+              onClick={handleCloseSuccessPopup}
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+      {showErrorPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/error.svg"
+                width={80}
+                height={80}
+                alt="Error"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-red-400">Error!</h2>
+            <p className="mb-6 text-red-400">{errorMessage}</p>
+            <button
+              onClick={handleClosePopup}
+              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
       <Image
         width={100}
         height={100}
@@ -443,13 +638,38 @@ export default function ProductDetail() {
           Rp {product?.price.toLocaleString("id-ID")}
         </p>
         <div className="flex items-center gap-4">
-          <Image
-            src="/images/heart-remove.svg"
-            width={100}
-            height={100}
-            alt=""
-            className="w-8 h-8 text-white"
-          />
+          <button
+            className="z-50"
+            onClick={() => {
+              if (product?.id) {
+                handleAddFavorite(product.id);
+              } else {
+                console.error("Product ID is missing");
+              }
+            }}
+            aria-label={
+              favorites.includes(Number(product?.id))
+                ? "Hapus dari favorit"
+                : "Tambahkan ke favorit"
+            }
+          >
+            <Image
+              src={
+                favorites.includes(Number(product?.id))
+                  ? "/images/heart-remove.svg"
+                  : "/images/heart-add.svg"
+              }
+              width={32}
+              height={32}
+              alt={
+                favorites.includes(Number(product?.id))
+                  ? "Produk difavoritkan"
+                  : "Produk belum difavoritkan"
+              }
+              className="w-8 h-8"
+            />
+          </button>
+
           <Link
             href=""
             className="bg-blue-400 border-2 border-white rounded-full max-lg:px-8 md: px-14 max-lg:py-2 md:py-3 text-center text-white hover:bg-transparent z-50"
