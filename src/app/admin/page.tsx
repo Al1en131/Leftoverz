@@ -14,7 +14,7 @@ type RawTransaction = {
   status: "pending" | "paid" | "cancelled" | null;
   item?: {
     name: string;
-    image: string[]; // Tambahkan ini
+    image: string[];
   };
   buyer?: { name: string };
   seller?: { name: string };

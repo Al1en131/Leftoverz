@@ -63,8 +63,8 @@ export default function Products() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+    const day = now.toLocaleDateString("en-US", optionsDay); 
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
 
     setDateString({ day, fullDate });
   }, []);

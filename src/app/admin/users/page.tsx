@@ -102,7 +102,6 @@ export default function User() {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  // Function to handle delete user
   const handleDelete = async () => {
     if (userToDelete === null) return;
 
@@ -121,7 +120,6 @@ export default function User() {
 
       const data = await response.json();
       if (data?.message === "User deleted successfully") {
-        // Remove deleted user from the list
         setUsers(users.filter((user) => user.id !== userToDelete));
         setShowSuccessPopup(true);
         setSuccessMessage("User deleted successfully");
@@ -134,8 +132,8 @@ export default function User() {
       setShowErrorPopup(true);
       setErrorMessage("An error occurred while deleting the user");
     }
-    setShowConfirmPopup(false); // Close confirm popup after action
-    setUserToDelete(null); // Clear the user to delete
+    setShowConfirmPopup(false); 
+    setUserToDelete(null); 
   };
 
   const confirmDelete = (id: number) => {
@@ -379,7 +377,7 @@ export default function User() {
                       </Link>
 
                       <button
-                        onClick={() => confirmDelete(item.id)} // Call confirmDelete to confirm the delete action
+                        onClick={() => confirmDelete(item.id)} 
                         className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
                       >
                         Delete
@@ -392,7 +390,6 @@ export default function User() {
           </table>
         </div>
 
-        {/* Pagination */}
         <div className="flex justify-center my-6">
           <button
             onClick={() => paginate(currentPage - 1)}

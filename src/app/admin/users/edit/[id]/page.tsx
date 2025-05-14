@@ -367,7 +367,6 @@ export default function User() {
         </div>
       </div>
 
-      {/* Form */}
       <div className="text-white z-20 relative">
         <form
           onSubmit={handleSubmit}
@@ -547,7 +546,7 @@ export default function User() {
               ))}
             </select>
           </div>
-          {/* Address */}
+
           <div>
             <label htmlFor="address" className="block mb-1">
               Address
@@ -571,7 +570,6 @@ export default function User() {
           </button>
         </form>
 
-        {/* Success Popup */}
         {showSuccessPopup && (
           <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
             <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
@@ -598,7 +596,6 @@ export default function User() {
           </div>
         )}
 
-        {/* Error Popup */}
         {showErrorPopup && (
           <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
             <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">

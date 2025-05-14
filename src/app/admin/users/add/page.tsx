@@ -81,7 +81,6 @@ export default function User() {
     }));
 
     if (name === "province") {
-      // Cari ID dari provinsi yang dipilih
       const selectedProvince = provinces.find((p) => p.name === value);
       if (selectedProvince) {
         try {
