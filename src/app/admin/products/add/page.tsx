@@ -33,8 +33,8 @@ export default function AddProduct() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+    const day = now.toLocaleDateString("en-US", optionsDay); 
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
 
     setDateString({ day, fullDate });
   }, []);
@@ -48,8 +48,8 @@ export default function AddProduct() {
     status: "available",
   });
 
-  const [displayPrice, setDisplayPrice] = useState(""); // untuk ditampilkan
-  const [users, setUsers] = useState<User[]>([]); // Change from any[] to User[]
+  const [displayPrice, setDisplayPrice] = useState(""); 
+  const [users, setUsers] = useState<User[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   useEffect(() => {
@@ -139,7 +139,6 @@ export default function AddProduct() {
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
 
-    // Mengirimkan gambar
     formData.image.forEach((file) => form.append("image", file));
 
     if (
@@ -166,15 +165,15 @@ export default function AddProduct() {
 
       const data = await response.json();
       if (response.ok) {
-        setShowSuccessPopup(true); // Menampilkan popup sukses
-        setSuccessMessage("Product successfully created!"); // Menambahkan pesan sukses
+        setShowSuccessPopup(true); 
+        setSuccessMessage("Product successfully created!"); 
       } else {
-        setShowErrorPopup(true); // Menampilkan popup error
+        setShowErrorPopup(true); 
         setErrorMessage(data.message || "An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error creating product:", error);
-      setShowErrorPopup(true); // Menampilkan popup error
+      setShowErrorPopup(true); 
       setErrorMessage("Error creating product, please try again.");
     }
   };
@@ -208,7 +207,7 @@ export default function AddProduct() {
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
-              onClick={handleClosePopup} // Menutup popup
+              onClick={handleClosePopup} 
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -235,7 +234,7 @@ export default function AddProduct() {
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
             <button
-              onClick={handleCloseErrorPopup} // Menutup popup error
+              onClick={handleCloseErrorPopup} 
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -322,7 +321,6 @@ export default function AddProduct() {
           className="p-6"
           encType="multipart/form-data"
         >
-          {/* Upload Image */}
           <div className="flex flex-col items-center mb-6">
             <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -374,7 +372,6 @@ export default function AddProduct() {
             )}
           </div>
 
-          {/* Product Name */}
           <div className="mb-4">
             <label htmlFor="name" className="text-white block">
               Product Name
@@ -390,7 +387,6 @@ export default function AddProduct() {
             />
           </div>
 
-          {/* Price */}
           <div className="mb-4">
             <label htmlFor="price" className="text-white block">
               Price (Rp.)
@@ -405,7 +401,7 @@ export default function AddProduct() {
               value={displayPrice}
             />
           </div>
-          {/* Seller */}
+
           <div className="mb-4">
             <label htmlFor="user_id" className="text-white block">
               Seller
@@ -449,7 +445,6 @@ export default function AddProduct() {
             </select>
           </div>
 
-          {/* Description */}
           <div className="mb-6">
             <label htmlFor="description" className="text-white block">
               Description
@@ -465,7 +460,6 @@ export default function AddProduct() {
             />
           </div>
 
-          {/* Submit */}
           <button
             type="submit"
             className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500"

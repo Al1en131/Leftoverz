@@ -100,7 +100,7 @@ export default function EditProduct() {
           setInitialImageUrls(
             parsedImage.map((url: string) => `http://127.0.0.1:1031${url}`)
           );
-          setKeptInitialImages(parsedImage); // ✅ ini yang benar
+          setKeptInitialImages(parsedImage); 
         }
       } catch (err) {
         const msg =
@@ -132,18 +132,16 @@ export default function EditProduct() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
 
-    // Hitung total gambar: yang lama masih disimpan + yang baru diunggah
     const totalImages =
       keptInitialImages.length + formData.image.length + newFiles.length;
 
     if (totalImages > 5) {
       setShowErrorPopup(true);
       setErrorMessage("Maximum 5 images allowed including existing ones.");
-      if (fileInputRef.current) fileInputRef.current.value = ""; // reset input
+      if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
 
-    // Gabungkan file lama dengan file baru
     const updatedFiles = [...formData.image, ...newFiles];
     const updatedPreviews = [
       ...imagePreviews,
@@ -250,8 +248,8 @@ export default function EditProduct() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); // "Wednesday"
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); // "12 Jul 2025"
+    const day = now.toLocaleDateString("en-US", optionsDay); 
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
 
     setDateString({ day, fullDate });
   }, []);
@@ -293,7 +291,7 @@ export default function EditProduct() {
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
-              onClick={handleClosePopup} // Menutup popup
+              onClick={handleClosePopup} 
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -320,7 +318,7 @@ export default function EditProduct() {
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
             <button
-              onClick={handleCloseErrorPopup} // Menutup popup error
+              onClick={handleCloseErrorPopup} 
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -390,7 +388,6 @@ export default function EditProduct() {
           className="p-6"
           encType="multipart/form-data"
         >
-          {/* Upload Image */}
           <div className="flex flex-col items-center mb-6">
             <label className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-white/40">
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -504,7 +501,6 @@ export default function EditProduct() {
             </div>
           </div>
 
-          {/* Form Fields */}
           <div className="mb-4">
             <label htmlFor="name" className="text-white block">
               Product Name
