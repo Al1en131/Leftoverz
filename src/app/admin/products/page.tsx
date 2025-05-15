@@ -398,18 +398,18 @@ export default function Products() {
                   />
                 </td>
                 <td className="px-6 py-4 text-white text-left">
-                  {product.name && product.name.length > 25
-                    ? product.name.slice(0, 25) + "..."
+                  {product.name && product.name.length > 17
+                    ? product.name.slice(0, 17) + "..."
                     : product.name}
                 </td>
                 <td className="px-6 py-4 text-white text-left">
-                  {product.seller?.name && product.seller?.name.length > 25
-                    ? product.seller?.name.slice(0, 25) + "..."
+                  {product.seller?.name && product.seller?.name.length > 20
+                    ? product.seller?.name.slice(0, 20) + "..."
                     : product.seller?.name}
                 </td>
                 <td className="px-6 py-4 text-white text-left">
-                  {product.description && product.description.length > 25
-                    ? product.description.slice(0, 25) + "..."
+                  {product.description && product.description.length > 20
+                    ? product.description.slice(0, 20) + "..."
                     : product.description}
                 </td>
                 <td className="px-6 py-4 text-white text-center">

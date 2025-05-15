@@ -14,6 +14,7 @@ type User = {
 export default function AddProduct() {
   const router = useRouter();
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [displayOriginalPrice, setDisplayOriginalPrice] = useState("");
   const [successMessage, setSuccessMessage] = useState(
     "Product successfully created!"
   );
@@ -33,8 +34,8 @@ export default function AddProduct() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); 
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
@@ -45,10 +46,12 @@ export default function AddProduct() {
     description: "",
     image: [] as File[],
     user_id: "",
-    status: "available",
+    status: "",
+    used_duration: "",
+    original_price: "",
   });
 
-  const [displayPrice, setDisplayPrice] = useState(""); 
+  const [displayPrice, setDisplayPrice] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
@@ -115,6 +118,13 @@ export default function AddProduct() {
         ...prev,
         price: raw,
       }));
+    } else if (name === "original_price") {
+      const raw = value.replace(/\D/g, "");
+      setDisplayOriginalPrice(formatPrice(value));
+      setFormData((prev) => ({
+        ...prev,
+        original_price: raw,
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -138,6 +148,8 @@ export default function AddProduct() {
     form.append("description", formData.description);
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
+    form.append("used_duration", formData.used_duration);
+    form.append("original_price", formData.original_price);
 
     formData.image.forEach((file) => form.append("image", file));
 
@@ -165,15 +177,15 @@ export default function AddProduct() {
 
       const data = await response.json();
       if (response.ok) {
-        setShowSuccessPopup(true); 
-        setSuccessMessage("Product successfully created!"); 
+        setShowSuccessPopup(true);
+        setSuccessMessage("Product successfully created!");
       } else {
-        setShowErrorPopup(true); 
+        setShowErrorPopup(true);
         setErrorMessage(data.message || "An error occurred. Please try again.");
       }
     } catch (error) {
       console.error("Error creating product:", error);
-      setShowErrorPopup(true); 
+      setShowErrorPopup(true);
       setErrorMessage("Error creating product, please try again.");
     }
   };
@@ -189,7 +201,7 @@ export default function AddProduct() {
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       {showSuccessPopup && (
-        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
@@ -207,7 +219,7 @@ export default function AddProduct() {
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
-              onClick={handleClosePopup} 
+              onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -216,7 +228,7 @@ export default function AddProduct() {
         </div>
       )}
       {showErrorPopup && (
-        <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
@@ -234,7 +246,7 @@ export default function AddProduct() {
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
             <button
-              onClick={handleCloseErrorPopup} 
+              onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -401,6 +413,57 @@ export default function AddProduct() {
               value={displayPrice}
             />
           </div>
+          <div className="mb-4">
+            <label htmlFor="original_price" className="text-white block">
+              Original Price (Rp.)
+            </label>
+            <input
+              type="text"
+              name="original_price"
+              id="original_price"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              placeholder="Enter product original price"
+              onChange={handleChange}
+              value={displayOriginalPrice}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="used_duration" className="text-white block">
+              Used Duration
+            </label>
+            <select
+              name="used_duration"
+              id="used_duration"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              onChange={handleChange}
+              value={formData.used_duration}
+            >
+              <option value="" disabled>
+                Select Used Duration
+              </option>
+              <option className="text-blue-400" value="New">
+                New
+              </option>
+              <option className="text-blue-400" value="1-3 months">
+                1–3 months
+              </option>
+              <option className="text-blue-400" value="4-6 months">
+                4–6 months
+              </option>
+              <option className="text-blue-400" value="7-12 months">
+                7–12 months
+              </option>
+              <option className="text-blue-400" value="1-2 years">
+                1–2 years
+              </option>
+              <option className="text-blue-400" value="3-4 years">
+                3–4 years
+              </option>
+              <option className="text-blue-400" value="5+ years">
+                Over 5 years
+              </option>
+            </select>
+          </div>
 
           <div className="mb-4">
             <label htmlFor="user_id" className="text-white block">
@@ -440,8 +503,15 @@ export default function AddProduct() {
               onChange={handleChange}
               value={formData.status}
             >
-              <option value="available">Available</option>
-              <option value="sold">Sold</option>
+              <option value="" disabled>
+                Select Status
+              </option>
+              <option className="text-blue-400" value="available">
+                Available
+              </option>
+              <option className="text-blue-400" value="sold">
+                Sold
+              </option>
             </select>
           </div>
 

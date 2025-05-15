@@ -9,6 +9,8 @@ type User = {
   id: number;
   name: string;
   price: number;
+  original_price: number;
+  used_duration: string;
   description: string;
   user_id: string;
   status: string;
@@ -29,6 +31,8 @@ export default function EditProduct() {
     user_id: "",
     status: "",
     image: [] as File[],
+    used_duration: "",
+    original_price: "",
   });
 
   const [users, setUsers] = useState<User[]>([]);
@@ -41,6 +45,7 @@ export default function EditProduct() {
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [displayOriginalPrice, setDisplayOriginalPrice] = useState("");
 
   const formatPrice = (value: string) => {
     const numberString = value.replace(/\D/g, "");
@@ -84,12 +89,15 @@ export default function EditProduct() {
         setFormData({
           name: data.product.name || "",
           price: data.product.price || "",
+          original_price: data.product.original_price || "",
+          used_duration: data.product.used_duration || "",
           description: data.product.description || "",
           user_id: data.product.user_id || "",
           status: data.product.status || "",
           image: [],
         });
         setDisplayPrice(formatPrice(data.product.price?.toString() || ""));
+        setDisplayOriginalPrice(formatPrice(data.product.original_price?.toString() || ""));
 
         let parsedImage = data.product.image;
         try {
@@ -100,7 +108,7 @@ export default function EditProduct() {
           setInitialImageUrls(
             parsedImage.map((url: string) => `http://127.0.0.1:1031${url}`)
           );
-          setKeptInitialImages(parsedImage); 
+          setKeptInitialImages(parsedImage);
         }
       } catch (err) {
         const msg =
@@ -123,7 +131,17 @@ export default function EditProduct() {
     if (name === "price") {
       const raw = value.replace(/\D/g, "");
       setDisplayPrice(formatPrice(value));
-      setFormData((prev) => ({ ...prev, price: raw }));
+      setFormData((prev) => ({
+        ...prev,
+        price: raw,
+      }));
+    } else if (name === "original_price") {
+      const raw = value.replace(/\D/g, "");
+      setDisplayOriginalPrice(formatPrice(value));
+      setFormData((prev) => ({
+        ...prev,
+        original_price: raw,
+      }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -190,6 +208,8 @@ export default function EditProduct() {
     const form = new FormData();
     form.append("name", formData.name);
     form.append("price", formData.price);
+    form.append("original_price", formData.original_price);
+    form.append("used_duration", formData.used_duration);
     form.append("description", formData.description);
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
@@ -248,8 +268,8 @@ export default function EditProduct() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); 
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
@@ -291,7 +311,7 @@ export default function EditProduct() {
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
-              onClick={handleClosePopup} 
+              onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -318,7 +338,7 @@ export default function EditProduct() {
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
             <button
-              onClick={handleCloseErrorPopup} 
+              onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
               OK
@@ -529,6 +549,57 @@ export default function EditProduct() {
               value={displayPrice}
               onChange={handleInputChange}
             />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="original_price" className="text-white block">
+              Original Price (Rp.)
+            </label>
+            <input
+              type="text"
+              name="original_price"
+              id="original_price"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              placeholder="Enter product original price"
+              onChange={handleInputChange}
+              value={displayOriginalPrice}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="used_duration" className="text-white block">
+              Used Duration
+            </label>
+            <select
+              name="used_duration"
+              id="used_duration"
+              className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+              onChange={handleInputChange}
+              value={formData.used_duration}
+            >
+              <option value="" disabled>
+                Select Used Duration
+              </option>
+              <option className="text-blue-400" value="New">
+                New
+              </option>
+              <option className="text-blue-400" value="1-3 months">
+                1–3 months
+              </option>
+              <option className="text-blue-400" value="4-6 months">
+                4–6 months
+              </option>
+              <option className="text-blue-400" value="7-12 months">
+                7–12 months
+              </option>
+              <option className="text-blue-400" value="1-2 years">
+                1–2 years
+              </option>
+              <option className="text-blue-400" value="3-4 years">
+                3–4 years
+              </option>
+              <option className="text-blue-400" value="5+ years">
+                Over 5 years
+              </option>
+            </select>
           </div>
 
           <div className="mb-4">
