@@ -70,90 +70,94 @@ export default function RoomChat() {
     }
   }, [userId]);
 
-  useEffect(() => {
-    const fetchChats = async () => {
-      if (!userId) return;
+  const fetchChats = async () => {
+    if (!userId) return;
 
-      try {
-        // Ambil daftar chat
-        const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/chats/user/${userId}`
-        );
-        const data = await res.json();
+    try {
+      // Ambil daftar chat
+      const res = await fetch(
+        `http://127.0.0.1:1031/api/v1/chats/user/${userId}`
+      );
+      const data = await res.json();
 
-        if (res.ok) {
-          const lastMessages: { [key: number]: Chat } = {};
+      if (res.ok) {
+        const lastMessages: { [key: number]: Chat } = {};
 
-          // Menggunakan for...of untuk iterasi setiap chat
-          for (const chat of data.chats) {
-            const opponentId =
-              chat.sender_id === userId ? chat.receiver_id : chat.sender_id;
+        // Menggunakan for...of untuk iterasi setiap chat
+        for (const chat of data.chats) {
+          const opponentId =
+            chat.sender_id === userId ? chat.receiver_id : chat.sender_id;
 
-            // Ambil pesan terakhir antara user dan opponent
-            const messagesRes = await fetch(
-              `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
-            );
-            const messagesData = await messagesRes.json();
+          // Ambil pesan terakhir antara user dan opponent
+          const messagesRes = await fetch(
+            `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+          );
+          const messagesData = await messagesRes.json();
 
-            // Ambil pesan terakhir dari data messages
-            const lastMessage = messagesData[messagesData.length - 1];
+          // Ambil pesan terakhir dari data messages
+          const lastMessage = messagesData[messagesData.length - 1];
 
-            if (!lastMessage) continue; // Jika tidak ada pesan, skip
+          if (!lastMessage) continue; // Jika tidak ada pesan, skip
 
-            console.log("Last Message:", lastMessage);
+          console.log("Last Message:", lastMessage);
 
-            // Pengecekan format created_at dan logika perbandingan
-            const lastMessageDate = new Date(lastMessage.created_at);
-            const existingMessageDate = lastMessages[opponentId]
-              ? new Date(lastMessages[opponentId].created_at)
-              : null;
+          // Pengecekan format created_at dan logika perbandingan
+          const lastMessageDate = new Date(lastMessage.created_at);
+          const existingMessageDate = lastMessages[opponentId]
+            ? new Date(lastMessages[opponentId].created_at)
+            : null;
 
-            // Cek apakah existingMessageDate valid dan lakukan perbandingan
-            const lastMessageTime = lastMessageDate.getTime();
-            const existingMessageTime = existingMessageDate
-              ? existingMessageDate.getTime()
-              : 0;
+          // Cek apakah existingMessageDate valid dan lakukan perbandingan
+          const lastMessageTime = lastMessageDate.getTime();
+          const existingMessageTime = existingMessageDate
+            ? existingMessageDate.getTime()
+            : 0;
 
-            console.log(
-              `Comparing dates: ${
-                lastMessage.created_at
-              } vs ${existingMessageDate?.toISOString()}`
-            );
+          console.log(
+            `Comparing dates: ${
+              lastMessage.created_at
+            } vs ${existingMessageDate?.toISOString()}`
+          );
 
-            // Jika belum ada pesan atau jika pesan yang baru lebih baru
-            if (
-              !lastMessages[opponentId] ||
-              lastMessageTime > existingMessageTime
-            ) {
-              lastMessages[opponentId] = {
-                ...lastMessage,
-                opponent_id: opponentId,
-                opponent_name:
-                  chat.sender_id === userId
-                    ? chat.receiver?.name
-                    : chat.sender?.name,
-              };
-            }
+          // Jika belum ada pesan atau jika pesan yang baru lebih baru
+          if (
+            !lastMessages[opponentId] ||
+            lastMessageTime > existingMessageTime
+          ) {
+            lastMessages[opponentId] = {
+              ...lastMessage,
+              opponent_id: opponentId,
+              opponent_name:
+                chat.sender_id === userId
+                  ? chat.receiver?.name
+                  : chat.sender?.name,
+            };
           }
-
-          // Set chats dengan pesan terakhir dan nama lawan
-          setChats(Object.values(lastMessages));
-        } else {
-          console.error("Gagal fetch chats:", data.message);
         }
-      } catch (error) {
-        console.error("Error fetching chats:", error);
+
+        // Set chats dengan pesan terakhir dan nama lawan
+        setChats(Object.values(lastMessages));
+      } else {
+        console.error("Gagal fetch chats:", data.message);
       }
-    };
-
-    fetchChats();
+    } catch (error) {
+      console.error("Error fetching chats:", error);
+    }
+  };
+  useEffect(() => {
+    if (userId) {
+      fetchChats();
+    }
   }, [userId]);
-
   const handleChatSelect = async (chat: Chat) => {
     const opponentId =
       userId === chat.sender_id ? chat.receiver_id : chat.sender_id;
 
-    setSelectedChat({ ...chat, opponent_id: opponentId });
+    const updatedChat = { ...chat, opponent_id: opponentId };
+    setSelectedChat(updatedChat);
+
+    localStorage.setItem("selectedChat", JSON.stringify(updatedChat));
+    localStorage.setItem("selectedProductId", String(chat.item_id || ""));
 
     try {
       await fetch(`http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`, {
@@ -259,6 +263,35 @@ export default function RoomChat() {
       console.error("Error sending message:", error);
     }
   };
+  useEffect(() => {
+    const storedSelectedChat = localStorage.getItem("selectedChat");
+    const storedProductId = localStorage.getItem("selectedProductId");
+
+    if (storedSelectedChat) {
+      const parsedChat = JSON.parse(storedSelectedChat);
+      setSelectedChat(parsedChat);
+    }
+
+    if (storedProductId) {
+      setSelectedProductId(Number(storedProductId));
+    }
+
+    const storedMessages = localStorage.getItem("messages");
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userId || !selectedChat) return;
+
+    const interval = setInterval(() => {
+      fetchChats(); // Ambil ulang daftar chat
+      handleChatSelect(selectedChat); // Ambil ulang pesan untuk chat yang dipilih
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [userId, selectedChat]);
 
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
@@ -327,7 +360,7 @@ export default function RoomChat() {
         </div>
         <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
           <div className="bg-white/5 p-10 rounded-2xl border-2 border-blue-400">
-            <div className="lg:flex lg:flex-row lg:justify-between max-lg:block z-50">
+            <div className="lg:flex lg:flex-row lg:justify-between h-screen max-lg:block z-50">
               <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 overflow-y-auto min-h-[500px]">
                 <div className="border-b-2 py-4 px-2">
                   <input
@@ -437,7 +470,7 @@ export default function RoomChat() {
 
                         {/* Avatar untuk pengirim, hanya tampilkan di pesan yang dikirim oleh user yang sedang login */}
                         {isSender && (
-                          <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
+                          <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center mr-4 text-white font-bold">
                             {message.sender?.name
                               ? message.sender.name
                                   .split(" ")

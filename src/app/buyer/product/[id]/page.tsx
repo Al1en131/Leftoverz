@@ -165,6 +165,21 @@ export default function ProductDetail() {
       setMessages([]);
     }
   };
+  useEffect(() => {
+    let intervalId: NodeJS.Timeout;
+
+    if (isChatOpen) {
+      openChat(); // fetch pertama kali saat chat dibuka
+
+      intervalId = setInterval(() => {
+        openChat(); // polling tiap 5 detik
+      }, 5000);
+    }
+
+    return () => {
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [isChatOpen, userId, productId, product]);
 
   const handleSendMessage = async () => {
     if (!newMessage || !productId || !userId || !product?.user_id) return;
@@ -361,9 +376,11 @@ export default function ProductDetail() {
   useEffect(() => {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="bg-[#080B2A] min-h-screen flex items-center justify-center md:px-20 max-lg:p-6">
       {showSuccessPopup && (
