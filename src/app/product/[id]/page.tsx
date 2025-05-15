@@ -86,7 +86,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="bg-[#080B2A] min-h-screen flex items-center justify-center md:px-20 max-lg:p-6">
+    <div className="bg-[#080B2A] min-h-screen flex items-center justify-center lg:px-20 max-lg:px-6 max-lg:pt-24 max-lg:pb-8">
       <Image
         width={100}
         height={100}
@@ -129,8 +129,8 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-16 max-lg:hidden left-80 -z-0"
       />
-      <div className="md:flex md:gap-10 max-lg:gap-4">
-        <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
+      <div className="lg:flex lg:gap-10 max-lg:gap-4">
+        <div className="lg:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
           <div className="h-96 rounded-lg overflow-hidden">
             {product && (
               <Image
@@ -142,21 +142,86 @@ export default function ProductDetail() {
               />
             )}
           </div>
-          <div className="grid grid-cols-5 md:gap-4 max-lg:gap-2 md:mt-6 max-lg:mt-4">
-            {product?.image.map((img, index) => (
-              <button key={index} onClick={() => setSelectedImage(img)}>
-                <Image
-                  src={img}
-                  alt={`Thumbnail ${index}`}
-                  width={100}
-                  height={100}
-                  className="md:w-24 md:h-24 max-lg:h-16 object-cover rounded-lg"
-                />
-              </button>
-            ))}
+          <div className="lg:flex lg:gap-10 max-lg:gap-4">
+            <div className="lg:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
+              <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
+                {product && (
+                  <Image
+                    src={selectedImage ?? "/placeholder.jpg"}
+                    alt={product.name}
+                    width={600}
+                    height={600}
+                    className="w-full lg:h-96 max-lg:h-72 object-cover rounded-lg"
+                  />
+                )}
+              </div>
+              <div className="grid grid-cols-5 lg:gap-4 max-lg:gap-3 lg:mt-6 max-lg:mt-4">
+                {product?.image.map((img, index) => (
+                  <button key={index} onClick={() => setSelectedImage(img)}>
+                    <Image
+                      src={img}
+                      alt={`Thumbnail ${index}`}
+                      width={100}
+                      height={100}
+                      className="lg:w-24 lg:h-24 max-lg:h-20 max-lg:w-full object-cover rounded-lg"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
+              <div className="block relative h-full">
+                <h3 className="text-white text-xl mb-2 font-bold tracking-wide">
+                  {product?.name}
+                </h3>
+                <p className="mb-2">
+                  {product?.user?.ward
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {product?.user?.subdistrict
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {product?.user?.regency
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {product?.user?.province
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                </p>
+
+                <div className="flex items-center mb-8 gap-2">
+                  <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
+                    {product?.seller?.name
+                      ? product?.seller.name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                          .toUpperCase()
+                      : "?"}
+                  </span>
+                  <p className="text-blue-400 font-semibold">
+                    {product?.seller?.name}
+                  </p>
+                </div>
+                <p className="text-base mb-5 max-lg:text-justify">
+                  {product?.description}
+                </p>
+                <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
+                  <p>Lama Penggunaan :</p>
+                  <p> {product?.used_duration}</p>
+                </div>
+                <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0">
+                  <p>Harga Asli :</p>
+                  <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="mb-4 md:w-8/12 max-lg:w-full block items-center relative">
+        <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
           <div className="block">
             <h3 className="text-white text-xl mb-2 font-bold tracking-wide">
               {product?.name}
@@ -197,11 +262,11 @@ export default function ProductDetail() {
               {product?.description}
             </p>
           </div>
-          <div className="text-lg text-blue-400 max-lg:mb-4 md:absolute md:bottom-0 md:left-0">
+          <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
             <p>Lama Penggunaan :</p>
             <p> {product?.used_duration}</p>
           </div>
-          <div className="text-lg text-blue-400 md:absolute md:bottom-0 md:right-0 md:flex md:items-center md:gap-10">
+          <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0 lg:flex lg:items-center lg:gap-10">
             <div className="max-lg:mb-4">
               <p>Harga Asli :</p>
               <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>

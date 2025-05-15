@@ -180,7 +180,7 @@ export default function Product() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
-        <div className="bg-white/5 pt-28 md:pb-20 max-lg:pb-10 w-full md:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
+        <div className="bg-white/5 pt-28 lg:pb-20 max-lg:pb-10 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative">
           <div className="relative w-full">
             <Image
               width={600}
@@ -190,12 +190,12 @@ export default function Product() {
               className="rounded-2xl w-full h-64"
             />
             <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-20"></div>
-            <h1 className="max-lg:text-5xl md:text-6xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
+            <h1 className="max-lg:text-5xl lg:text-6xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
               Product
             </h1>
           </div>
         </div>
-        <div className="py-10 md:px-20 max-lg:px-6 flex justify-between items-center">
+        <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center">
           <form className="w-full mx-auto relative">
             <div className="flex">
               <button
@@ -203,7 +203,7 @@ export default function Product() {
                   e.preventDefault();
                   setDropdownOpen(!dropdownOpen);
                 }}
-                className="shrink-0 z-10 md:inline-flex hidden items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
+                className="shrink-0 z-10 lg:inline-flex hidden items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
                 type="button"
               >
                 {selectedCategory}
@@ -250,7 +250,7 @@ export default function Product() {
               <div className="relative w-full">
                 <input
                   type="search"
-                  className="block p-2.5 w-full z-20 text-base text-white bg-white/10 md:rounded-e-lg max-lg:rounded-lg border border-blue-400"
+                  className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-e-lg max-lg:rounded-lg border border-blue-400"
                   placeholder={`Search ${selectedCategory}...`}
                   required
                 />
@@ -358,8 +358,8 @@ export default function Product() {
             )}
           </div>
         </div>
-        <div className="md:py-10 max-lg:pt-0 max-lg:pb-10 md:px-20 max-lg:px-6 w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 md:gap-10 max-lg:gap-4 z-50">
+        <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
             {currentProducts.map((product) => (
               <div
                 key={product.id}

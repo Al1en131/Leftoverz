@@ -91,7 +91,7 @@ export default function Navbar() {
             />
           </Link>
 
-          <div className="hidden md:flex items-center space-x-12 text-lg">
+          <div className="hidden lg:flex items-center space-x-12 text-lg">
             {navLinks.map(({ href, label }, index) => (
               <Link
                 key={index}
@@ -143,7 +143,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 md:hidden relative">
+          <div className="flex items-center gap-2 lg:hidden relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
                 {name
@@ -207,7 +207,7 @@ export default function Navbar() {
         </div>
         {/* Mobile Menu Dropdown */}
         {isOpen && (
-          <div className="block md:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
+          <div className="block lg:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
             {navLinks.map(({ href, label }, index) => (
               <Link
                 key={index}

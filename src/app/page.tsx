@@ -382,7 +382,7 @@ export default function Home() {
             </div>
             <div className="relative w-full">
               <div className="lg:px-20 max-lg:px-6 space-y-10">
-                <div className="relative md:flex max-lg:justify-center max-lg:w-full md:justify-end">
+                <div className="relative lg:flex max-lg:justify-center max-lg:w-full lg:justify-end">
                   <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       1. Login atau Registrasi
@@ -394,7 +394,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-start">
+                <div className="relative lg:flex max-lg:block max-lg:justify-center lg:justify-start">
                   <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       2. Mencari Barang
@@ -405,7 +405,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-end">
+                <div className="relative lg:flex max-lg:block max-lg:justify-center lg:justify-end">
                   <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       3. Memesan Barang
@@ -417,7 +417,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-start">
+                <div className="relative lg:flex max-lg:block max-lg:justify-center lg:justify-start">
                   <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       4. Mengisi Detail Pemesanan
@@ -428,7 +428,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-end">
+                <div className="relative lg:flex max-lg:block max-lg:justify-center lg:justify-end">
                   <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       5. Pembayaran & Verifikasi Otomatis
@@ -439,7 +439,7 @@ export default function Home() {
                     </p>
                   </div>
                 </div>
-                <div className="relative md:flex max-lg:block max-lg:justify-center md:justify-start">
+                <div className="relative lg:flex max-lg:block max-lg:justify-center lg:justify-start">
                   <div className="relative lg:w-[580px] max-lg:-w-full p-5 text-black rounded-2xl border_style shadow-md bg-white/5">
                     <p className="text-xl font-bold mb-1 text-blue-400">
                       6. Mengambil atau Menerima Barang
@@ -486,11 +486,11 @@ export default function Home() {
               industry
             </p>
           </div>
-          <div className="md:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center">
+          <div className="lg:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="md:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                className="lg:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
               >
                 <div className="mb-4 flex justify-between items-center">
                   <div className="flex items-center gap-2">

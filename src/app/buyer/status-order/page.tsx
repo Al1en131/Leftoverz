@@ -47,11 +47,11 @@ export default function StatusOrder() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-[700px] right-[300px] opacity-35 -z-0"
       />
-      <div className="md:p-20 max-lg:px-6 max-lg:py-14 mt-10 w-full">
-        <div className="bg-white/20 md:p-10 p-7 border_section rounded-2xl">
-          <div className="md:flex md:gap-2 relative max-lg:space-y-6 items-center h-auto">
-            <div className="md:w-1/3 max-lg:w-full">
-              <div className="max-lg:flex items-center mb-4 gap-2 md:hidden">
+      <div className="lg:p-20 max-lg:px-6 max-lg:py-14 mt-10 w-full">
+        <div className="bg-white/20 lg:p-10 p-7 border_section rounded-2xl">
+          <div className="lg:flex lg:gap-2 relative max-lg:space-y-6 items-center h-auto">
+            <div className="lg:w-1/3 max-lg:w-full">
+              <div className="max-lg:flex items-center mb-4 gap-2 lg:hidden">
                 <span className="w-8 h-8 bg-gray-300 rounded-full"></span>
                 <p className="text-blue-400 text-xl tracking-wide font-semibold">
                   Alien
@@ -62,21 +62,21 @@ export default function StatusOrder() {
                 alt=""
                 width={100}
                 height={100}
-                className="md:w-60 h-60 max-lg:w-full object-cover rounded-lg"
+                className="lg:w-60 h-60 max-lg:w-full object-cover rounded-lg"
               />
             </div>
             <div className="w-full">
-              <div className="max-lg:hidden items-center mb-4 gap-2 md:block">
+              <div className="max-lg:hidden items-center mb-4 gap-2 lg:block">
                 <span className="w-8 h-8 bg-gray-300 rounded-full"></span>
                 <p className="text-blue-400 text-xl tracking-wide font-semibold">
                   Alien
                 </p>
               </div>
-              <h3 className="text-blue-400 text-xl md:mb-4 mb-2 font-bold tracking-wide">
+              <h3 className="text-blue-400 text-xl lg:mb-4 mb-2 font-bold tracking-wide">
                 Product Name
               </h3>
               <p className="text-base">Rp. 20.000</p>
-              <div className="flex items-center gap-4 md:absolute md:bottom-0 md:right-0 mt-4">
+              <div className="flex items-center gap-4 lg:absolute lg:bottom-0 lg:right-0 mt-4">
                 <Link
                   href=""
                   className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"

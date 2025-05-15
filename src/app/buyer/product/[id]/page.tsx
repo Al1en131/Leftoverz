@@ -61,6 +61,7 @@ export default function ProductDetail() {
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
@@ -166,13 +167,44 @@ export default function ProductDetail() {
     }
   };
   useEffect(() => {
+    const checkUnreadMessages = async () => {
+      if (!userId || !productId || !product?.user_id) return;
+
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/chats/product/${productId}/${userId}/${product.user_id}`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          const chatMessages = Array.isArray(data.chats) ? data.chats : [];
+          const hasUnread = chatMessages.some(
+            (msg: Chat) => msg.receiver_id === userId && msg.read_status === "0"
+          );
+          setHasUnreadMessages(hasUnread);
+        }
+      } catch (error) {
+        console.error("Failed to check unread messages:", error);
+      }
+    };
+
+    checkUnreadMessages(); // initial check
+
+    const interval = setInterval(() => {
+      checkUnreadMessages();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [userId, productId, product]);
+
+  useEffect(() => {
     let intervalId: NodeJS.Timeout;
 
     if (isChatOpen) {
-      openChat(); // fetch pertama kali saat chat dibuka
+      openChat();
 
       intervalId = setInterval(() => {
-        openChat(); // polling tiap 5 detik
+        openChat();
       }, 5000);
     }
 
@@ -382,7 +414,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="bg-[#080B2A] min-h-screen flex items-center justify-center md:px-20 max-lg:p-6">
+    <div className="bg-[#080B2A] min-h-screen flex items-center justify-center lg:px-20 max-lg:px-6 max-lg:pt-24 max-lg:pb-8">
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
@@ -471,20 +503,20 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
-      <div className="md:flex md:gap-10 max-lg:gap-4">
-        <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
-          <div className="h-96 rounded-lg overflow-hidden">
+      <div className="lg:flex lg:gap-10 max-lg:gap-4">
+        <div className="lg:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
+          <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
             {product && (
               <Image
                 src={selectedImage ?? "/placeholder.jpg"}
                 alt={product.name}
                 width={600}
                 height={600}
-                className="w-full h-96 object-cover rounded-lg"
+                className="w-full lg:h-96 max-lg:h-72 object-cover rounded-lg"
               />
             )}
           </div>
-          <div className="grid grid-cols-5 gap-4 md:mt-6 max-lg:mt-4">
+          <div className="grid grid-cols-5 lg:gap-4 max-lg:gap-3 lg:mt-6 max-lg:mt-4">
             {product?.image.map((img, index) => (
               <button key={index} onClick={() => setSelectedImage(img)}>
                 <Image
@@ -492,13 +524,13 @@ export default function ProductDetail() {
                   alt={`Thumbnail ${index}`}
                   width={100}
                   height={100}
-                  className="md:w-24 md:h-24 max-lg:h-16 object-cover rounded-lg"
+                  className="lg:w-24 lg:h-24 max-lg:h-20 max-lg:w-full object-cover rounded-lg"
                 />
               </button>
             ))}
           </div>
         </div>
-        <div className="mb-4 md:w-8/12 max-lg:w-full block items-center relative">
+        <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
           <div className="block relative h-full">
             <h3 className="text-white text-xl mb-2 font-bold tracking-wide">
               {product?.name}
@@ -538,11 +570,11 @@ export default function ProductDetail() {
             <p className="text-base mb-5 max-lg:text-justify">
               {product?.description}
             </p>
-            <div className="text-lg text-blue-400 max-lg:mb-4 md:absolute md:bottom-0 md:left-0">
+            <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
               <p>Lama Penggunaan :</p>
               <p> {product?.used_duration}</p>
             </div>
-            <div className="text-lg text-blue-400 md:absolute md:bottom-0 md:right-0">
+            <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0">
               <p>Harga Asli :</p>
               <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
             </div>
@@ -561,12 +593,8 @@ export default function ProductDetail() {
             src="/images/chat.svg"
             className="w-8 h-8"
           />
-          {messages.some(
-            (msg) => msg.read_status === "0" && msg.receiver_id === userId
-          ) && (
-            <span className="absolute top-0 right-0 -mt-1 -mr-1 w-5 h-5 text-xs text-white bg-red-600 rounded-full flex items-center justify-center animate-ping">
-              !
-            </span>
+          {!isChatOpen && hasUnreadMessages && (
+            <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-white border border-white rounded-full animate-ping"></span>
           )}
         </button>
 
@@ -674,7 +702,7 @@ export default function ProductDetail() {
           </div>
         )}
       </div>
-      <div className="bg-blue-400 h-20 w-full fixed bottom-0 flex justify-between items-center md:px-20 py-4 max-lg:px-6">
+      <div className="bg-blue-400 h-20 w-full fixed bottom-0 flex justify-between items-center lg:px-20 py-4 max-lg:px-6">
         <p className="text-base font-bold">
           Rp {product?.price.toLocaleString("id-ID")}
         </p>
@@ -713,7 +741,7 @@ export default function ProductDetail() {
 
           <Link
             href=""
-            className="bg-blue-400 border-2 border-white rounded-full max-lg:px-8 md: px-14 max-lg:py-2 md:py-3 text-center text-white hover:bg-transparent z-50"
+            className="bg-blue-400 border-2 border-white rounded-full max-lg:px-8 lg: px-14 max-lg:py-2 lg:py-3 text-center text-white hover:bg-transparent z-50"
           >
             Beli
           </Link>

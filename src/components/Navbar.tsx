@@ -22,7 +22,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <div className="hidden md:flex space-x-12 text-lg z-50">
+        <div className="hidden lg:flex space-x-12 text-lg z-50">
           {["/", "/about", "/product"].map((route, index) => (
             <Link
               key={index}
@@ -41,7 +41,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="md:hidden text-white"
+          className="lg:hidden text-white"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (
@@ -78,7 +78,7 @@ export default function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="md:hidden bg-[#080B2A] absolute top-full left-0 capitalize w-full py-4 px-6 z-50 space-y-4">
+        <div className="lg:hidden bg-[#080B2A] absolute top-full left-0 capitalize w-full py-4 px-6 z-50 space-y-4">
           {["/", "/about", "/product"].map((route, index) => (
             <Link
               key={index}

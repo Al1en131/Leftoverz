@@ -348,9 +348,9 @@ export default function RoomChat() {
               className="rounded-2xl w-full h-64"
             />
 
-            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 md:ps-20 gap-2 text-white z-40">
+            <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 text-white z-40">
               <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Chat</h1>
-              <p className="max-lg:text-base md:text-lg max-w-3xl">
+              <p className="max-lg:text-base lg:text-lg max-w-3xl">
                 Contrary to popular belief, Lorem Ipsum is not simply random
                 text. It has roots in a piece of classical Latin literature from
                 45 BC, making it over 2000 years old.

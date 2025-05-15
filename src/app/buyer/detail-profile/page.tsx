@@ -372,7 +372,7 @@ export default function DetailProfile() {
               className="rounded-2xl w-full h-64"
             />
             <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl"></div>
-            <h1 className="text-5xl md:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
+            <h1 className="text-5xl lg:text-8xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
               Detail Profile
             </h1>
           </div>
@@ -395,7 +395,7 @@ export default function DetailProfile() {
                 </div>
                 <p className="capitalize text-center mb-7">{name}</p>
                 <form onSubmit={handleSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div>
                       <label className="text-white">Name</label>
                       <input
