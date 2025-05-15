@@ -486,10 +486,24 @@ export default function ProductDetail() {
             <h3 className="text-white text-xl mb-2 font-bold tracking-wide">
               {product?.name}
             </h3>
-            <p className="mb-2 !capitalize">
-              {product?.user?.ward}, {product?.user?.subdistrict},{" "}
-              {product?.user?.regency}, {product?.user?.province}
+            <p className="mb-2">
+              {product?.user?.ward
+                ?.toLowerCase()
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+              ,{" "}
+              {product?.user?.subdistrict
+                ?.toLowerCase()
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+              ,{" "}
+              {product?.user?.regency
+                ?.toLowerCase()
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+              ,{" "}
+              {product?.user?.province
+                ?.toLowerCase()
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
             </p>
+
             <div className="flex items-center mb-8 gap-2">
               <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
                 {product?.seller?.name
