@@ -23,7 +23,7 @@ type Product = {
 export default function BuyerHome() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -47,6 +47,7 @@ export default function BuyerHome() {
         const data = await response.json();
 
         const parsedProducts = data.products
+          .filter((product: Product) => product.status === "available")
           .sort(
             (a: Product, b: Product) =>
               new Date(b.created_at).getTime() -

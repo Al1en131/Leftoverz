@@ -415,7 +415,7 @@ export default function Product() {
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link
                     href={`/product/${product.id}`}
-                    className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+                    className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                   >
                     Detail
                   </Link>

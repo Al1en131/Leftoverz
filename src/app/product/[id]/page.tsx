@@ -15,6 +15,8 @@ type Product = {
   status: string;
   user_id: number;
   seller?: { name: string };
+  used_duration: string;
+  original_price: number;
   user?: {
     subdistrict: string;
     ward: string;
@@ -117,14 +119,14 @@ export default function ProductDetail() {
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-20 left-56 max-lg:hidden -z-0"
+        className="w-4 absolute top-24 left-56 max-lg:hidden -z-0"
       />
       <Image
         width={100}
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
+        className="w-4 absolute top-16 max-lg:hidden left-80 -z-0"
       />
       <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 w-full max-lg:py-14 mt-10 h-auto">
         <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
@@ -139,7 +141,7 @@ export default function ProductDetail() {
               />
             )}
           </div>
-          <div className="grid grid-cols-5 gap-4 md:mt-6 max-lg:mt-0">
+          <div className="grid grid-cols-5 md:gap-4 max-lg:gap-2 md:mt-6 max-lg:mt-4">
             {product?.image.map((img, index) => (
               <button key={index} onClick={() => setSelectedImage(img)}>
                 <Image
@@ -176,13 +178,24 @@ export default function ProductDetail() {
                 {product?.seller?.name}
               </p>
             </div>
-            <p className="text-base max-lg:text-justify">
+            <p className="text-base mb-5 max-lg:text-justify">
               {product?.description}
             </p>
           </div>
-          <p className="text-blue-400 absolute right-0 bottom-0 text-sm">
-            Rp {product?.price.toLocaleString("id-ID")}
-          </p>
+          <div className="text-lg text-blue-400 max-lg:mb-4 md:absolute md:bottom-0 md:left-0">
+            <p>Lama Penggunaan :</p>
+            <p> {product?.used_duration}</p>
+          </div>
+          <div className="text-lg text-blue-400 md:absolute md:bottom-0 md:right-0 md:flex md:items-center md:gap-10">
+            <div className="max-lg:mb-4">
+              <p>Harga Asli :</p>
+              <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+            </div>
+             <div>
+              <p>Harga Jual :</p>
+              <p> Rp {product?.price.toLocaleString("id-ID")}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

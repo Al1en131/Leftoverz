@@ -33,6 +33,8 @@ type Product = {
   price: number;
   status: string;
   user_id: number;
+  used_duration: string;
+  original_price: number;
   seller?: { name: string };
   user?: {
     subdistrict: string;
@@ -465,7 +467,7 @@ export default function ProductDetail() {
               />
             )}
           </div>
-          <div className="grid grid-cols-5 gap-4 md:mt-6 max-lg:mt-0">
+          <div className="grid grid-cols-5 gap-4 md:mt-6 max-lg:mt-4">
             {product?.image.map((img, index) => (
               <button key={index} onClick={() => setSelectedImage(img)}>
                 <Image
@@ -505,6 +507,14 @@ export default function ProductDetail() {
             <p className="text-base mb-5 max-lg:text-justify">
               {product?.description}
             </p>
+            <div className="text-lg text-blue-400 max-lg:mb-4 md:absolute md:bottom-0 md:left-0">
+              <p>Lama Penggunaan :</p>
+              <p> {product?.used_duration}</p>
+            </div>
+            <div className="text-lg text-blue-400 md:absolute md:bottom-0 md:right-0">
+              <p>Harga Asli :</p>
+              <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+            </div>
           </div>
         </div>
       </div>

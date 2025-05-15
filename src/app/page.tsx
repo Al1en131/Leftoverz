@@ -45,9 +45,11 @@ export default function Home() {
         const data = await response.json();
 
         const parsedProducts = data.products
+          .filter((product: Product) => product.status === "available")
           .sort(
             (a: Product, b: Product) =>
-              new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
           )
           .slice(0, 3)
           .map((product: Product) => {
