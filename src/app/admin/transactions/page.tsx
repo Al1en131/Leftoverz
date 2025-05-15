@@ -10,7 +10,6 @@ type RawTransaction = {
   buyer_id: number;
   seller_id: number;
   item_id: number;
-  total_price: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "pending" | "paid" | "cancelled" | null;
   created_at: string;

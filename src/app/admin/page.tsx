@@ -9,12 +9,12 @@ type RawTransaction = {
   buyer_id: number;
   seller_id: number;
   item_id: number;
-  total_price: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "pending" | "paid" | "cancelled" | null;
   item?: {
     name: string;
     image: string[];
+    price : number;
   };
   buyer?: { name: string };
   seller?: { name: string };
@@ -407,7 +407,7 @@ export default function Dashboard() {
                             {tx.buyer_name}
                           </td>
                           <td className="p-4 whitespace-nowrap text-sm font-semibold text-white">
-                            Rp {tx.total_price.toLocaleString("id-ID")}
+                            Rp {tx.item?.price.toLocaleString("id-ID")}
                           </td>
                         </tr>
                       ))}

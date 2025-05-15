@@ -9,7 +9,6 @@ type RawTransaction = {
   buyer_id: number;
   seller_id: number;
   item_id: number;
-  total_price: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "pending" | "paid" | "cancelled" | null;
   created_at: string;
@@ -69,6 +68,7 @@ export default function Transaction() {
               return {
                 ...transaction,
                 item_name: transaction.item?.name || "Unknown",
+                price : transaction.item?.price || 0,
                 buyer_name: transaction.buyer?.name || "Unknown",
                 seller_name: transaction.seller?.name || "Unknown",
                 image: imageArray,
