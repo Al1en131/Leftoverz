@@ -21,7 +21,7 @@ export default function User() {
     email: "",
     password: "",
     role: "",
-    no_hp: "",
+    phone_number: "",
     address: "",
     province: "",
     regency: "",
@@ -164,7 +164,7 @@ export default function User() {
         email: "",
         password: "",
         role: "",
-        no_hp: "",
+        phone_number: "",
         address: "",
         province: "",
         regency: "",
@@ -346,22 +346,22 @@ export default function User() {
             </select>
           </div>
           <div>
-            <label htmlFor="no_hp" className="block mb-1">
+            <label htmlFor="phone_number" className="block mb-1">
               No HP
             </label>
             <input
               type="text"
-              name="no_hp"
-              id="no_hp"
+              name="phone_number"
+              id="phone_number"
               className="w-full p-2 bg-white/20 text-white rounded"
               placeholder="Enter phone number"
               onChange={handleChange}
-              value={formData.no_hp}
+              value={formData.phone_number}
             />
           </div>
           <div>
             {" "}
-            <label htmlFor="no_hp" className="block mb-1">
+            <label htmlFor="phone_number" className="block mb-1">
               Provinsi
             </label>
             <select

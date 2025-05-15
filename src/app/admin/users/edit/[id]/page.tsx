@@ -19,7 +19,7 @@ export default function User() {
     name: "",
     email: "",
     role: "",
-    no_hp: "",
+    phone_number: "",
     address: "",
     province: "",
     regency: "",
@@ -212,7 +212,7 @@ export default function User() {
           name: "",
           email: "",
           role: "",
-          no_hp: "",
+          phone_number: "",
           address: "",
           province: "",
           regency: "",
@@ -264,7 +264,7 @@ export default function User() {
           name: data.user.name,
           email: data.user.email,
           role: data.user.role,
-          no_hp: data.user.no_hp,
+          phone_number: data.user.phone_number,
           address: data.user.address,
           province: data.user.province,
           regency: data.user.regency,
@@ -275,7 +275,7 @@ export default function User() {
           name: data.user.name,
           email: data.user.email,
           role: data.user.role,
-          no_hp: data.user.no_hp,
+          phone_number: data.user.phone_number,
           address: data.user.address,
           province: data.user.province,
           regency: data.user.regency,
@@ -432,22 +432,22 @@ export default function User() {
           </div>
 
           <div>
-            <label htmlFor="no_hp" className="block mb-1">
+            <label htmlFor="phone_number" className="block mb-1">
               No HP
             </label>
             <input
               type="text"
-              name="no_hp"
-              id="no_hp"
+              name="phone_number"
+              id="phone_number"
               className="w-full p-2 bg-white/20 text-white rounded"
               placeholder="Enter phone number"
               onChange={handleChange}
-              value={formData.no_hp}
+              value={formData.phone_number}
             />
           </div>
           <div>
             {" "}
-            <label htmlFor="no_hp" className="block mb-1">
+            <label htmlFor="phone_number" className="block mb-1">
               Provinsi
             </label>
             <select

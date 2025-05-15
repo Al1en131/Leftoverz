@@ -52,7 +52,7 @@ export default function Register() {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-          no_hp: formData.phone_number,
+          phone_number: formData.phone_number,
           role: formData.role,
         }),
       });
@@ -220,7 +220,6 @@ export default function Register() {
           </form>
         </div>
 
-        {/* Image Section */}
         <div className="w-full lg:w-1/2 hidden lg:flex justify-center">
           <Image
             width={600}

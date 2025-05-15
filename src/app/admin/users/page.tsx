@@ -9,7 +9,7 @@ type User = {
   id: number;
   name: string;
   email: string;
-  no_hp: string;
+  phone_number: string;
   role: string;
 };
 
@@ -40,7 +40,7 @@ export default function User() {
     (user) =>
       user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.no_hp?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.phone_number?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.role?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -354,7 +354,7 @@ export default function User() {
                         : item.name}
                     </td>
                     <td className="px-6 py-4 text-left">{item.email}</td>
-                    <td className="px-6 py-4 text-center">{item.no_hp}</td>
+                    <td className="px-6 py-4 text-center">{item.phone_number}</td>
                     <td className="px-6 py-4 text-center">
                       <span
                         className={`px-4 py-2 text-sm font-semibold capitalize rounded-full ${

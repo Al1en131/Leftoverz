@@ -6,7 +6,7 @@ type User = {
   id: number;
   name: string;
   email: string;
-  no_hp: string;
+  phone_number: string;
   role: string;
   address: string;
   subdistrict: string;
@@ -47,7 +47,7 @@ export default function DetailProfile() {
     id: 0,
     name: "",
     email: "",
-    no_hp: "",
+    phone_number: "",
     role: "",
     address: "",
     subdistrict: "",
@@ -422,8 +422,8 @@ export default function DetailProfile() {
                       <label className="text-white">Phone Number</label>
                       <input
                         type="tel"
-                        name="no_hp"
-                        value={formData.no_hp}
+                        name="phone_number"
+                        value={formData.phone_number}
                         onChange={handleChange}
                         className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
                         placeholder="No HP"
