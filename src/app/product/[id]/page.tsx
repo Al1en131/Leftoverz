@@ -86,7 +86,7 @@ export default function ProductDetail() {
   }
 
   return (
-    <div className="bg-[#080B2A] min-h-screen flex flex-col items-center">
+    <div className="bg-[#080B2A] min-h-screen flex items-center justify-center md:px-20 max-lg:p-6">
       <Image
         width={100}
         height={100}
@@ -129,7 +129,7 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-16 max-lg:hidden left-80 -z-0"
       />
-      <div className="md:flex md:gap-10 max-lg:gap-4 md:p-20 max-lg:px-6 w-full max-lg:py-14 mt-10 h-auto">
+      <div className="md:flex md:gap-10 max-lg:gap-4">
         <div className="md:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
           <div className="h-96 rounded-lg overflow-hidden">
             {product && (
