@@ -15,6 +15,8 @@ type Product = {
   price: number;
   status: string;
   user_id: number;
+  used_duration: string;
+  original_price : number;
   seller?: { name: string };
   user?: {
     subdistrict: string;
@@ -265,9 +267,11 @@ export default function MyProduct() {
             <thead className="bg-white/10 text-white text-md">
               <tr className="border-b">
                 <th className="px-6 py-3 text-center">Image</th>
-                <th className="px-6 py-3 text-center">Product Name</th>
-                <th className="px-6 py-3 text-center">Description</th>
-                <th className="px-6 py-3 text-center">Price</th>
+                <th className="px-2 py-3 text-left">Product Name</th>
+                <th className="px-2 py-3 text-left">Description</th>
+                <th className="px-6 py-3 text-left">Price</th>
+                <th className="px-6 py-3 text-left">Original Price</th>
+                <th className="px-6 py-3 text-left">Use Duration</th>
                 <th className="px-6 py-3 text-center">Status</th>
                 <th className="px-6 py-3 text-center">Action</th>
               </tr>
@@ -292,14 +296,24 @@ export default function MyProduct() {
                       className="w-16 h-16 object-cover rounded-2xl"
                     />
                   </td>
-                  <td className="px-6 py-4 text-white text-center">
-                    {item.name}
+                  <td className="px-2 py-4 text-white text-left">
+                    {item.name && item.name.length > 20
+                      ? item.name.slice(0, 20) + "..."
+                      : item.name}
                   </td>
-                  <td className="px-6 py-4 text-white text-center">
-                    {item.description}
+                  <td className="px-2 py-4 text-white text-left">
+                    {item.description && item.description.length > 35
+                      ? item.description.slice(0, 35) + "..."
+                      : item.description}
                   </td>
-                  <td className="px-6 py-4 text-white text-center">
+                  <td className="px-6 py-4 text-white text-left">
                     Rp {item.price.toLocaleString("id-ID")}
+                  </td>
+                   <td className="px-6 py-4 text-white text-left">
+                    Rp {item.original_price.toLocaleString("id-ID")}
+                  </td>
+                  <td className="px-6 py-4 text-white text-left">
+                    {item.used_duration}
                   </td>
                   <td className="px-6 py-4 text-center">
                     <span

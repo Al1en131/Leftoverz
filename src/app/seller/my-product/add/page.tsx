@@ -18,10 +18,13 @@ export default function AddProduct() {
     description: "",
     image: [] as File[],
     status: "available",
+    used_duration: "",
+    original_price: "",
   });
 
-  const [displayPrice, setDisplayPrice] = useState(""); // untuk ditampilkan
+  const [displayPrice, setDisplayPrice] = useState("");
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [displayOriginalPrice, setDisplayOriginalPrice] = useState("");
 
   const formatPrice = (value: string) => {
     const numberString = value.replace(/\D/g, "");
@@ -61,6 +64,13 @@ export default function AddProduct() {
         ...prev,
         price: raw,
       }));
+    } else if (name === "original_price") {
+      const raw = value.replace(/\D/g, "");
+      setDisplayOriginalPrice(formatPrice(value));
+      setFormData((prev) => ({
+        ...prev,
+        original_price: raw,
+      }));
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -83,6 +93,8 @@ export default function AddProduct() {
     form.append("price", formData.price);
     form.append("description", formData.description);
     form.append("status", formData.status);
+    form.append("used_duration", formData.used_duration);
+    form.append("original_price", formData.original_price);
 
     // Mengirimkan gambar
     formData.image.forEach((file) => form.append("image", file));
@@ -330,6 +342,57 @@ export default function AddProduct() {
                   onChange={handleChange}
                   value={displayPrice}
                 />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="original_price" className="text-white block">
+                  Original Price (Rp.)
+                </label>
+                <input
+                  type="text"
+                  name="original_price"
+                  id="original_price"
+                  className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                  placeholder="Enter product original price"
+                  onChange={handleChange}
+                  value={displayOriginalPrice}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="used_duration" className="text-white block">
+                  Used Duration
+                </label>
+                <select
+                  name="used_duration"
+                  id="used_duration"
+                  className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                  onChange={handleChange}
+                  value={formData.used_duration}
+                >
+                  <option value="" disabled>
+                    Select Used Duration
+                  </option>
+                  <option className="text-blue-400" value="New">
+                    New
+                  </option>
+                  <option className="text-blue-400" value="1-3 months">
+                    1–3 months
+                  </option>
+                  <option className="text-blue-400" value="4-6 months">
+                    4–6 months
+                  </option>
+                  <option className="text-blue-400" value="7-12 months">
+                    7–12 months
+                  </option>
+                  <option className="text-blue-400" value="1-2 years">
+                    1–2 years
+                  </option>
+                  <option className="text-blue-400" value="3-4 years">
+                    3–4 years
+                  </option>
+                  <option className="text-blue-400" value="5+ years">
+                    Over 5 years
+                  </option>
+                </select>
               </div>
 
               <div className="mb-4">

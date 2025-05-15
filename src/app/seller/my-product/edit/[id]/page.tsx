@@ -18,6 +18,12 @@ export default function EditProduct() {
   const [keptInitialImages, setKeptInitialImages] = useState<string[]>([]);
   const [removedImages, setRemovedImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [displayOriginalPrice, setDisplayOriginalPrice] = useState("");
+  const [displayPrice, setDisplayPrice] = useState("");
+  const formatPrice = (value: string) => {
+    const numberString = value.replace(/\D/g, "");
+    return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
   const handleClosePopup = () => {
     setShowSuccessPopup(false);
     router.push("/seller/my-product/");
@@ -36,6 +42,8 @@ export default function EditProduct() {
     description: "",
     status: "",
     image: [] as File[],
+    used_duration: "",
+    original_price: "",
   });
 
   useEffect(() => {
@@ -53,14 +61,20 @@ export default function EditProduct() {
         setFormData({
           name: data.product.name || "",
           price: data.product.price || "",
+          original_price: data.product.original_price || "",
+          used_duration: data.product.used_duration || "",
           status: data.product.status || "",
           description: data.product.description || "",
           image: [] as File[], // Reset image array
         });
+        setDisplayPrice(formatPrice(data.product.price?.toString() || ""));
+        setDisplayOriginalPrice(
+          formatPrice(data.product.original_price?.toString() || "")
+        );
 
         const image = data.product.image;
 
-         let parsedImage = data.product.image;
+        let parsedImage = data.product.image;
         try {
           parsedImage = JSON.parse(parsedImage);
         } catch {}
@@ -117,6 +131,20 @@ export default function EditProduct() {
       setFormData((prev) => ({
         ...prev,
         [name]: Array.from(files), // Menyimpan file yang diupload dalam array
+      }));
+    } else if (name === "price") {
+      const raw = value.replace(/\D/g, "");
+      setDisplayPrice(formatPrice(value));
+      setFormData((prev) => ({
+        ...prev,
+        price: raw,
+      }));
+    } else if (name === "original_price") {
+      const raw = value.replace(/\D/g, "");
+      setDisplayOriginalPrice(formatPrice(value));
+      setFormData((prev) => ({
+        ...prev,
+        original_price: raw,
       }));
     } else {
       setFormData((prev) => ({
@@ -188,6 +216,8 @@ export default function EditProduct() {
     formData.image.forEach((file) => data.append("image", file));
     data.append("removedImages", JSON.stringify(removedImages));
     data.append("keptImages", JSON.stringify(keptInitialImages));
+    data.append("used_duration", formData.used_duration);
+    data.append("original_price", formData.original_price);
 
     try {
       const res = await fetch(
@@ -440,6 +470,57 @@ export default function EditProduct() {
                   value={formData.price}
                   onChange={handleChange}
                 />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="original_price" className="text-white block">
+                  Original Price (Rp.)
+                </label>
+                <input
+                  type="text"
+                  name="original_price"
+                  id="original_price"
+                  className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                  placeholder="Enter product original price"
+                  onChange={handleChange}
+                  value={displayOriginalPrice}
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="used_duration" className="text-white block">
+                  Used Duration
+                </label>
+                <select
+                  name="used_duration"
+                  id="used_duration"
+                  className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
+                  onChange={handleChange}
+                  value={formData.used_duration}
+                >
+                  <option value="" disabled>
+                    Select Used Duration
+                  </option>
+                  <option className="text-blue-400" value="New">
+                    New
+                  </option>
+                  <option className="text-blue-400" value="1-3 months">
+                    1–3 months
+                  </option>
+                  <option className="text-blue-400" value="4-6 months">
+                    4–6 months
+                  </option>
+                  <option className="text-blue-400" value="7-12 months">
+                    7–12 months
+                  </option>
+                  <option className="text-blue-400" value="1-2 years">
+                    1–2 years
+                  </option>
+                  <option className="text-blue-400" value="3-4 years">
+                    3–4 years
+                  </option>
+                  <option className="text-blue-400" value="5+ years">
+                    Over 5 years
+                  </option>
+                </select>
               </div>
               <div className="mb-4">
                 <label htmlFor="status" className="text-white block">
