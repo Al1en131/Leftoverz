@@ -29,6 +29,7 @@ type Chat = {
 
 export default function RoomChat() {
   const [chats, setChats] = useState<Chat[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<number | null>(null);
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [messages, setMessages] = useState<Chat[]>([]);
@@ -366,10 +367,17 @@ export default function RoomChat() {
                   <input
                     type="text"
                     placeholder="search chatting"
-                    className="py-2 px-2 border-2 border-gray-200 rounded-2xl w-full"
+                    className="py-2 px-2 border-2 border-gray-200 text-blue-400 rounded-xl w-full"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 {chats
+                  .filter((chat) =>
+                    chat.opponent_name
+                      ?.toLowerCase()
+                      .includes(searchQuery.toLowerCase())
+                  )
                   .slice()
                   .reverse()
                   .map((chat) => (
