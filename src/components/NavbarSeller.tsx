@@ -27,6 +27,7 @@ export default function Navbar() {
       localStorage.removeItem("role");
       localStorage.removeItem("name");
       localStorage.removeItem("id");
+      localStorage.removeItem("no_hp");
       router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);

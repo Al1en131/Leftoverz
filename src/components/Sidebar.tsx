@@ -9,7 +9,6 @@ const Sidebar = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
 
@@ -28,6 +27,7 @@ const Sidebar = () => {
       localStorage.removeItem("role");
       localStorage.removeItem("name");
       localStorage.removeItem("id");
+      localStorage.removeItem("no_hp");
       router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);

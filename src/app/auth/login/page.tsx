@@ -38,6 +38,7 @@ export default function Login() {
         localStorage.setItem("id", data.id);
         localStorage.setItem("name", data.name);
         localStorage.setItem("email", data.email);
+        localStorage.setItem("no_hp", data.phone_number);
         if (data.role === "penjual") {
           router.push("/seller");
         } else if (data.role === "pembeli") {

@@ -28,6 +28,7 @@ export default function NavbarBuyer() {
       localStorage.removeItem("role");
       localStorage.removeItem("name");
       localStorage.removeItem("id");
+      localStorage.removeItem("no_hp");
       router.push("/");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -119,12 +120,12 @@ export default function NavbarBuyer() {
                   <p className="text-sm text-gray-500">{email}</p>
                 </div>
                 <hr />
-                 <Link
-                    href="/buyer/detail-profile"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                  >
-                    Lihat Profil
-                  </Link>
+                <Link
+                  href="/buyer/detail-profile"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
+                  Lihat Profil
+                </Link>
                 <Link
                   href="/buyer/favorite"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
