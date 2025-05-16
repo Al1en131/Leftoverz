@@ -13,50 +13,29 @@ const options = [
   { value: "high-price", label: "Harga Tertinggi" },
 ];
 
-const data = [
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "50.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-  {
-    name: "James Watson",
-    title: "Punk Art Collection",
-    location: "Jakarta",
-    image: "/images/hero-2.jpg",
-    price: "60.000",
-  },
-  {
-    name: "Anna Smith",
-    title: "Modern Art Series",
-    location: "Bali",
-    image: "/images/hero-3.jpg",
-    price: "60.000",
-  },
-  {
-    name: "John Doe",
-    title: "Abstract Art Pieces",
-    location: "Surabaya",
-    image: "/images/hero-4.jpg",
-    price: "60.000",
-  },
-];
+type RawTransaction = {
+  id: number;
+  buyer_id: number;
+  seller_id: number;
+  item_id: number;
+  payment_method: "COD" | "e-wallet" | "bank transfer";
+  status: "pending" | "paid" | "cancelled" | null;
+  created_at: string;
+  item?: {
+    name: string;
+    image: string[]; // Tambahkan ini
+    price: number;
+  };
+  buyer?: { name: string };
+  seller?: { name: string };
+};
+
+type Transaction = RawTransaction & {
+  item_name: string;
+  buyer_name: string;
+  seller_name: string;
+  image: string[];
+};
 
 export default function MyOrder() {
   const [open, setOpen] = useState(false);
@@ -86,6 +65,68 @@ export default function MyOrder() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [userId, setuserId] = useState("");
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("id");
+    if (storedUserId) setuserId(storedUserId);
+  }, []);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        if (!userId) return;
+
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/transactions/user/${userId}`
+        );
+        const response: { transactions: RawTransaction[]; message: string } =
+          await res.json();
+
+        if (res.ok) {
+          const mappedTransactions: Transaction[] = response.transactions.map(
+            (transaction) => {
+              const imageData = transaction.item?.image;
+              let imageArray: string[] = [];
+
+              if (typeof imageData === "string") {
+                try {
+                  imageArray = JSON.parse(imageData);
+                } catch {
+                  imageArray = [imageData];
+                }
+              } else if (Array.isArray(imageData)) {
+                imageArray = imageData;
+              }
+
+              return {
+                ...transaction,
+                item_name: transaction.item?.name || "Unknown",
+                price: transaction.item?.price || 0,
+                buyer_name: transaction.buyer?.name || "Unknown",
+                seller_name: transaction.seller?.name || "Unknown",
+                image: imageArray,
+              };
+            }
+          );
+
+          setTransactions(mappedTransactions);
+        } else {
+          console.error("Fetch error:", response.message);
+        }
+      } catch (error) {
+        console.error("Network error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransactions();
+  }, [userId]);
+
+  if (loading) return <p className="text-white">Loading...</p>;
 
   return (
     <div className="items-center bg-[#080B2A] min-h-screen">
@@ -313,7 +354,7 @@ export default function MyOrder() {
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-            {data.map((item, index) => (
+            {transactions.map((item, index) => (
               <div
                 key={index}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
@@ -321,41 +362,62 @@ export default function MyOrder() {
                 <div className="mb-4 flex justify-between items-center">
                   <div className="block">
                     <h3 className="text-white text-lg mb-1 font-bold">
-                      {item.title}
+                      {item.item?.name}
                     </h3>
                     <div className="flex items-center gap-2">
-                      <span className="w-6 h-6 bg-gray-300 rounded-full"></span>
-                      <p className="text-blue-400 font-semibold">{item.name}</p>
+                      <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                        {item.seller?.name
+                          ? item.seller?.name
+                              .split(" ")
+                              .map((word) => word.charAt(0))
+                              .join("")
+                              .toUpperCase()
+                          : "?"}
+                      </span>
+                      <p className="text-blue-400 font-semibold">
+                        {item.seller?.name}
+                      </p>
                     </div>
                   </div>
                 </div>
                 <div className="mb-5">
                   <Image
+                    src={
+                      item.image &&
+                      Array.isArray(item.image) &&
+                      item.image.length > 0 &&
+                      typeof item.image[0] === "string" &&
+                      item.image[0].startsWith("/")
+                        ? `http://127.0.0.1:1031${item.image[0]}`
+                        : "/images/default-item.png"
+                    }
+                    alt={item.item_name}
                     width={100}
                     height={100}
-                    alt={item.title}
-                    src={item.image}
-                    className="w-full rounded-2xl"
+                    className="w-full h-72 object-cover rounded-2xl"
                   />
                 </div>
                 <div className="my-4 flex justify-between items-center">
-                  <p className="text-blue-400 text-lg">{item.location}</p>
-                  <p className="text-blue-400 text-base">Rp. {item.price}</p>
+                  <span
+                    className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-xl ${
+                      item.status == "paid"
+                        ? "bg-green-700 text-white"
+                        : "bg-red-700 text-white"
+                    }`}
+                  >
+                    {item.status}
+                  </span>
+                  <p className="text-blue-400 text-base">
+                    Rp. {item.item?.price.toLocaleString()}
+                  </p>
                 </div>
-                <div className="w-full flex justify-between items-center gap-2 text-white">
+                <div className="w-full flex justify-between items-center text-white">
                   <Link
-                    href="/product/detail"
+                    href={`/product/detail/${item.id}`}
                     className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
                   >
                     Lihat Status Pesanan
                   </Link>
-                  <Image
-                    src="/images/heart-add.svg"
-                    width={100}
-                    height={100}
-                    alt=""
-                    className="w-8 h-8 text-white"
-                  />
                 </div>
               </div>
             ))}

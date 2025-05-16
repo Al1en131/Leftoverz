@@ -740,7 +740,7 @@ export default function ProductDetail() {
           </button>
 
           <Link
-            href=""
+            href={`/buyer/product/buy-product/${product?.id}`}
             className="bg-blue-400 border-2 border-white rounded-full max-lg:px-8 lg: px-14 max-lg:py-2 lg:py-3 text-center text-white hover:bg-transparent z-50"
           >
             Beli

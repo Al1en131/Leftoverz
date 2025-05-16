@@ -265,8 +265,8 @@ export default function Transaction() {
                     <td className="px-6 py-4 text-white text-center">
                       {item.buyer?.name}
                     </td>
-                    <td className="px-6 py-4 text-white text-center">
-                      {item.payment_method || "N/A"}
+                    <td className="px-6 py-4 text-white capitalize text-center">
+                      {item.payment_method || "-"}
                     </td>
                     <td className="px-6 py-4 text-white text-center">
                       Rp. {item.item?.price.toLocaleString("id-ID")}
