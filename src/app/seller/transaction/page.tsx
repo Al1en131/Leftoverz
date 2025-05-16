@@ -28,6 +28,7 @@ type Transaction = RawTransaction & {
   image: string[];
 };
 export default function Transaction() {
+  const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
@@ -37,6 +38,20 @@ export default function Transaction() {
   }, []);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+  const filteredTransactions = transactions.filter(
+    (item) =>
+      item.item_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.buyer_name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+
+  const paginatedTransactions = filteredTransactions.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -68,7 +83,7 @@ export default function Transaction() {
               return {
                 ...transaction,
                 item_name: transaction.item?.name || "Unknown",
-                price : transaction.item?.price || 0,
+                price: transaction.item?.price || 0,
                 buyer_name: transaction.buyer?.name || "Unknown",
                 seller_name: transaction.seller?.name || "Unknown",
                 image: imageArray,
@@ -187,7 +202,11 @@ export default function Transaction() {
                 id="default-search"
                 className="block w-full p-4 ps-10 text-sm text-white border border-blue-400 rounded-lg bg-white/10"
                 placeholder="Search Mockups, Logos..."
-                required
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
               />
             </div>
           </form>
@@ -214,14 +233,14 @@ export default function Transaction() {
                     Loading...
                   </td>
                 </tr>
-              ) : transactions.length === 0 ? (
+              ) : paginatedTransactions.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="text-center text-white py-8">
                     No transactions found.
                   </td>
                 </tr>
               ) : (
-                transactions.map((item) => (
+                paginatedTransactions.map((item) => (
                   <tr key={item.id} className="border-b bg-white/10 transition">
                     <td className="px-6 py-4 text-center flex justify-center">
                       <Image
@@ -279,6 +298,47 @@ export default function Transaction() {
               )}
             </tbody>
           </table>
+          <div className="flex justify-center my-4 gap-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-3 py-1 rounded ${
+                currentPage === 1
+                  ? "bg-blue-400 text-gray-300 cursor-not-allowed"
+                  : "bg-blue-700 hover:bg-blue-800"
+              } text-white`}
+            >
+              Prev
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`px-3 py-1 rounded ${
+                  currentPage === i + 1
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-700 text-gray-300 hover:bg-blue-400"
+                }`}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className={`px-3 py-1 rounded ${
+                currentPage === totalPages
+                  ? "bg-blue-400 text-gray-300 cursor-not-allowed"
+                  : "bg-blue-400 hover:bg-blue-500"
+              } text-white`}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </main>
     </div>

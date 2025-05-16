@@ -16,7 +16,7 @@ type Product = {
   status: string;
   user_id: number;
   used_duration: string;
-  original_price : number;
+  original_price: number;
   seller?: { name: string };
   user?: {
     subdistrict: string;
@@ -26,6 +26,7 @@ type Product = {
   };
 };
 export default function MyProduct() {
+  const [searchTerm, setSearchTerm] = useState("");
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,6 +37,30 @@ export default function MyProduct() {
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.status?.toLocaleLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentProducts = filteredProducts.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
   const handleConfirmDelete = async () => {
     if (!selectedProductId) return;
 
@@ -136,6 +161,7 @@ export default function MyProduct() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -231,9 +257,10 @@ export default function MyProduct() {
               <input
                 type="search"
                 id="default-search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="block w-full p-3 ps-10 text-sm text-white border border-blue-400 rounded-lg bg-white/10"
-                placeholder="Search Mockups, Logos..."
-                required
+                placeholder="Search your products ..."
               />
             </div>
           </form>
@@ -277,7 +304,7 @@ export default function MyProduct() {
               </tr>
             </thead>
             <tbody>
-              {products.map((item) => (
+              {currentProducts.map((item) => (
                 <tr key={item.id} className="border-b bg-white/10 transition">
                   <td className="px-6 py-4 justify-center flex text-center">
                     <Image
@@ -309,7 +336,7 @@ export default function MyProduct() {
                   <td className="px-6 py-4 text-white text-left">
                     Rp {item.price.toLocaleString("id-ID")}
                   </td>
-                   <td className="px-6 py-4 text-white text-left">
+                  <td className="px-6 py-4 text-white text-left">
                     Rp {item.original_price.toLocaleString("id-ID")}
                   </td>
                   <td className="px-6 py-4 text-white text-left">
@@ -348,6 +375,25 @@ export default function MyProduct() {
               ))}
             </tbody>
           </table>
+          <div className="flex justify-center gap-4 my-4 items-center">
+            <button
+              onClick={handlePreviousPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="text-white font-semibold">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              onClick={handleNextPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
         </div>
       </main>
       {showSuccessPopup && (
