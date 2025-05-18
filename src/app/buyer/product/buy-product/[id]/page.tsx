@@ -26,7 +26,7 @@ export default function BuyProduct() {
   useEffect(() => {
     const name = localStorage.getItem("name");
     const email = localStorage.getItem("email");
-    const phone = localStorage.getItem("no_hp") || "08123456789"; // fallback
+    const phone = localStorage.getItem("no_hp") || "08123456789"; 
     const id = localStorage.getItem("id");
 
     if (name && email && id) {
@@ -49,7 +49,7 @@ export default function BuyProduct() {
     const nameParts = fullName.trim().split(" ");
     const first_name = nameParts[0];
     const last_name = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
-    const token = localStorage.getItem("token"); // JWT atau token login
+    const token = localStorage.getItem("token");
 
     const res = await fetch(
       "http://127.0.0.1:1031/api/v1/create-midtrans-token",
@@ -57,7 +57,7 @@ export default function BuyProduct() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // token login user
+          Authorization: `Bearer ${token}`, 
         },
         body: JSON.stringify({
           order_id: "ORDER-ID-" + Date.now(),
@@ -104,7 +104,7 @@ export default function BuyProduct() {
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key", "YOUR_CLIENT_KEY"); // Ganti dengan client key sandbox kamu
+    script.setAttribute("data-client-key", "YOUR_CLIENT_KEY"); 
     script.async = true;
     document.body.appendChild(script);
 
@@ -119,7 +119,7 @@ export default function BuyProduct() {
         <script
           type="text/javascript"
           src="https://app.sandbox.midtrans.com/snap/snap.js"
-          data-client-key="SB-Mid-client-PsY6zCz8aRrbmxNc"
+          data-client-key=""
         ></script>
       </Head>
 
