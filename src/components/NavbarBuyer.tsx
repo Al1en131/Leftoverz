@@ -83,7 +83,14 @@ export default function NavbarBuyer() {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className="h-12 w-36"
+            className="h-12 w-36 hidden dark:block"
+          />
+          <Image
+            width={100}
+            height={100}
+            src="/images/logo-light.png"
+            alt="Logo"
+            className="h-12 w-36 block dark:hidden"
           />
         </Link>
         <div className="hidden lg:flex items-center space-x-12 text-lg">
