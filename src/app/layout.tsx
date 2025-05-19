@@ -3,10 +3,11 @@
 import Navbar from "../components/Navbar";
 import NavbarSeller from "../components/NavbarSeller";
 import NavbarBuyer from "../components/NavbarBuyer";
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "../components/Sidebar";
 import Footer from "../components/Footer";
 import { usePathname } from "next/navigation";
 import "../styles/globals.css";
+import ThemeProvider from "../components/theme-provider";
 
 export default function RootLayout({
   children,
@@ -31,8 +32,8 @@ export default function RootLayout({
   }
 
   return (
-    <html lang="en">
-      <body className="bg-[#080B2A] relative">
+    <html lang="en" suppressHydrationWarning>
+      <body className="dark:bg-[#080B2A] bg-white relative">
         {isAdminPage ? (
           <div className="flex min-h-screen">
             <Sidebar />
@@ -43,7 +44,14 @@ export default function RootLayout({
         ) : (
           <>
             {!isAuthPage && <NavbarComponent />}
-            <main>{children}</main>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              {children}
+            </ThemeProvider>
             {!isAuthPage && <Footer />}
           </>
         )}

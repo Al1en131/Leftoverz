@@ -689,7 +689,7 @@ export default function ProductDetail() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Tulis pesan..."
-                  className="flex-grow px-3 py-2 text-sm text-blue-400 border rounded-lg focus:outline-none"
+                  className="grow px-3 py-2 text-sm text-blue-400 border rounded-lg focus:outline-none"
                 />
                 <button
                   type="submit"

@@ -1,5 +1,7 @@
-@import "tailwindcss";
 @import "flowbite";
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
 
 :root {
   --background: #ffffff;

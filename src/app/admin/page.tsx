@@ -361,7 +361,7 @@ export default function Dashboard() {
                 This is a list of latest transactions
               </span>
             </div>
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <Link
                 href="/admin/transactions"
                 className="text-sm font-medium text-cyan-600 hover:bg-blue-400 hover:text-white rounded-lg p-2"
@@ -433,7 +433,7 @@ export default function Dashboard() {
                 This is a list of latest products
               </span>
             </div>
-            <div className="flex-shrink-0">
+            <div className="shrink-0">
               <Link
                 href="/admin/products"
                 className="text-sm font-medium text-cyan-600 hover:bg-blue-400 hover:text-white rounded-lg p-2"
