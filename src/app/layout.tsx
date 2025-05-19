@@ -46,7 +46,7 @@ export default function RootLayout({
             {!isAuthPage && <NavbarComponent />}
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme="dark"
               enableSystem
               disableTransitionOnChange
             >

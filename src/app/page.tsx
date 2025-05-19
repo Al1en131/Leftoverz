@@ -103,35 +103,35 @@ export default function Home() {
           height={100}
           alt=""
           src="/images/bubble.svg"
-          className="lg:h-[356px] lg:w-[356px] max-lg:w-52 max-lg:h-72 absolute top-0 left-0"
+          className="lg:h-[356px] lg:w-[356px] dark:block hidden max-lg:w-52 max-lg:h-72 absolute top-0 left-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble-2.svg"
-          className="lg:h-[356px] lg:w-[356px] max-lg:w-52 max-lg:h-72 absolute top-0 right-0"
+          className="lg:h-[356px] lg:w-[356px] dark:block hidden max-lg:w-52 max-lg:h-72 absolute top-0 right-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Vector.svg"
-          className="lg:h-[678px] lg:w-[514.09px] max-lg:h-44 max-lg:w-52 absolute top-28 right-0 -z-0"
+          className="lg:h-[678px] lg:w-[514.09px] dark:block hidden max-lg:h-44 max-lg:w-52 absolute top-28 right-0 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-8 absolute top-28 max-lg:right-20 right-26 -z-0"
+          className="w-8 absolute top-28 max-lg:right-10 right-26 -z-0"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute lg:top-28 max-lg:top-20 lg:right-96 max-lg:left-10 -z-0"
+          className="w-4 absolute lg:top-28 max-lg:top-30 lg:right-96 max-lg:left-10 -z-0"
         />
         <Image
           width={100}
@@ -147,9 +147,9 @@ export default function Home() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 lg:left-[550px] max-lg:hidden -z-0"
         />
-        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center pt-36 pb-24 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
+        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-28 lg:pb-24 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
-            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 mb-6 font-bold text-[#15BFFD]">
+            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 lg:mb-6 max-md:mb-2 font-bold text-[#15BFFD]">
               Left
               <span className="dark:text-white text-[#080B2A]">overz</span>
             </h1>
@@ -161,7 +161,7 @@ export default function Home() {
               Hemat uang, dapatkan barang yang kamu butuhkan, dan bantu kurangi
               sampah.
             </p>
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 pt-4 max-lg:justify-center">
               <Link
                 href="/auth/register"
                 className="bg-[#15BFFD] px-4 py-3 max-lg:py-1 max-lg:px-3 text-center dark:text-white text-[#080B2A] lg:w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
@@ -176,20 +176,22 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="z-50 w-1/2 max-lg:hidden flex">
+          <div className="z-50 w-1/2 max-lg:hidden">
+            {/* Gambar untuk light mode */}
             <Image
               width={100}
               height={10}
-              alt=""
-              src="/images/hero.svg"
-              className="z-40 w-full dark:hidden max-lg:hidden"
-            />
-            <Image
-              width={100}
-              height={10}
-              alt=""
+              alt="Hero"
               src="/images/hero-dark.svg"
-              className="z-40 w-full dark:block max-lg:hidden"
+              className="z-40 w-full block dark:hidden max-lg:hidden"
+            />
+            {/* Gambar untuk dark mode */}
+            <Image
+              width={100}
+              height={10}
+              alt="Hero Dark"
+              src="/images/hero.svg"
+              className="z-40 w-full hidden dark:block max-lg:hidden"
             />
           </div>
         </div>
@@ -199,14 +201,14 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/bubble-3.svg"
-            className="lg:h-[456px] lg:w-[456px] max-lg:h-72 max-lg:w-72 absolute lg:top-60 max-lg:bottom-0 -z-0 left-0"
+            className="lg:h-[456px] lg:w-[456px] dark:block hidden max-lg:h-72 max-lg:w-72 absolute lg:top-60 max-lg:bottom-0 -z-0 left-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-4.svg"
-            className="lg:h-[356px] lg:w-[356px] max-lg:w-72 max-lg:h-72 absolute -top-28 -z-0 right-0"
+            className="lg:h-[356px] lg:w-[356px] dark:block hidden max-lg:w-72 max-lg:h-72 absolute -top-28 -z-0 right-0"
           />
           <Image
             width={100}
@@ -279,7 +281,7 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/bubble-5.svg"
-            className="lg:h-[456px] lg:w-[456px] max-lg:h-72 max-lg:w-72 absolute z-0 -bottom-20 left-0"
+            className="lg:h-[456px] dark:block hidden lg:w-[456px] max-lg:h-72 max-lg:w-72 absolute z-0 -bottom-20 left-0"
           />
           <Image
             width={100}
@@ -476,14 +478,14 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/bubble-6.svg"
-            className="lg:w-[456px] max-lg:w-72 absolute -top-44 left-0 -z-0"
+            className="lg:w-[456px] dark:block hidden max-lg:w-72 absolute -top-44 left-0 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-7.svg"
-            className="lg:w-[456px] max-lg:w-72 absolute -bottom-10 right-0 -z-0"
+            className="lg:w-[456px] dark:block hidden max-lg:w-72 absolute -bottom-10 right-0 -z-0"
           />
           <Image
             width={100}
@@ -560,7 +562,7 @@ export default function Home() {
           <div className="flex justify-center mt-10">
             <Link
               href="/product"
-              className="bg-[#15BFFD] px-4 py-3 text-center dark:text-white text-[#080B2A] w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+              className="bg-blue-400 px-4 py-3 text-center dark:text-white text-[#080B2A] w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
             >
               Next
             </Link>

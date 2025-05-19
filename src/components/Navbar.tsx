@@ -12,13 +12,23 @@ export default function Navbar() {
   return (
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className="text-white text-lg font-semibold">
+        <Link
+          href="/"
+          className="dark:text-white text-blue-400 text-lg font-semibold"
+        >
           <Image
             width={100}
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className="h-12 w-36"
+            className="h-12 w-36 hidden dark:block"
+          />
+          <Image
+            width={100}
+            height={100}
+            src="/images/logo-light.png"
+            alt="Logo"
+            className="h-12 w-36 block dark:hidden"
           />
         </Link>
 
@@ -30,8 +40,8 @@ export default function Navbar() {
               className={`${
                 pathname === route
                   ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                  : "text-white"
-              } capitalize`} 
+                  : "dark:text-white text-blue-400"
+              } capitalize`}
             >
               {route === "/"
                 ? "Home"
@@ -41,7 +51,7 @@ export default function Navbar() {
         </div>
 
         <button
-          className="lg:hidden text-white"
+          className="lg:hidden dark:text-white text-blue-400"
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (
