@@ -97,7 +97,7 @@ export default function Navbar() {
                 // Menambahkan kelas `capitalize`
                 pathname === route
                   ? "font-bold text-gradian border-b-2 capitalize pb-2 z-50 text-gradian-border tracking-wide"
-                  : "text-white z-50 capitalize"
+                  : "dark:text-white text-blue-400 z-50 capitalize"
               }`}
               onClick={() => setIsOpen(false)}
             >

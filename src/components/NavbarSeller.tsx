@@ -48,7 +48,7 @@ export default function Navbar() {
     <>
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-100">
-          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className="dark:bg-[#080B2A] bg-white border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/warning.svg"
@@ -82,7 +82,7 @@ export default function Navbar() {
       <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
         {" "}
         <div className="container mx-auto flex justify-between items-center">
-          <Link href="/seller/" className="text-white text-lg font-semibold">
+          <Link href="/seller/" className="dark:text-white text-blue-400 text-lg font-semibold">
             <Image
               width={100}
               height={100}
@@ -107,7 +107,7 @@ export default function Navbar() {
                 className={`${
                   pathname === href
                     ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                    : "text-white"
+                    : "dark:text-white text-blue-400"
                 } capitalize`}
               >
                 {label}
@@ -116,7 +116,7 @@ export default function Navbar() {
 
             <div className="relative">
               <button onClick={() => setProfileOpen(!profileOpen)}>
-                <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center dark:text-white text-blue-400">
                   {name
                     ? name
                         .split(" ")
@@ -153,7 +153,7 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2 lg:hidden relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
-              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center dark:text-white text-blue-400">
                 {name
                   ? name
                       .split(" ")
@@ -185,7 +185,7 @@ export default function Navbar() {
                 </button>
               </div>
             )}
-            <button className="text-white" onClick={() => setIsOpen(!isOpen)}>
+            <button className="dark:text-white text-blue-400" onClick={() => setIsOpen(!isOpen)}>
               {isOpen ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +215,7 @@ export default function Navbar() {
         </div>
         {/* Mobile Menu Dropdown */}
         {isOpen && (
-          <div className="block lg:hidden bg-[#080B2A] absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
+          <div className="block lg:hidden dark:bg-[#080B2A] bg-white absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
             {navLinks.map(({ href, label }, index) => (
               <Link
                 key={index}
@@ -223,7 +223,7 @@ export default function Navbar() {
                 className={`block text-lg capitalize ${
                   pathname === href
                     ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                    : "text-white"
+                    : "dark:text-white text-blue-400"
                 }`}
                 onClick={() => setIsOpen(false)}
               >
