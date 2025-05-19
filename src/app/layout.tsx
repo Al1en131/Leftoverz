@@ -1,60 +1,24 @@
-"use client";
-
-import Navbar from "../components/Navbar";
-import NavbarSeller from "../components/NavbarSeller";
-import NavbarBuyer from "../components/NavbarBuyer";
-import Sidebar from "../components/Sidebar";
-import Footer from "../components/Footer";
-import { usePathname } from "next/navigation";
+// app/layout.tsx
 import "../styles/globals.css";
-import ThemeProvider from "../components/theme-provider";
+import { Providers } from "./providers";
+import LayoutClient from "./LayoutClient"; // Client Component
+
+export const metadata = {
+  title: "Leftoverz",
+  description: "Description",
+};
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
-
-  const isAuthPage =
-    pathname === "/auth/login" || pathname === "/auth/register";
-
-  const isSellerPage = pathname.startsWith("/seller");
-  const isBuyerPage = pathname.startsWith("/buyer");
-  const isAdminPage = pathname.startsWith("/admin");
-
-  let NavbarComponent = Navbar;
-
-  if (isSellerPage) {
-    NavbarComponent = NavbarSeller;
-  } else if (isBuyerPage) {
-    NavbarComponent = NavbarBuyer;
-  }
-
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="dark:bg-[#080B2A] bg-white relative">
-        {isAdminPage ? (
-          <div className="flex min-h-screen">
-            <Sidebar />
-            <main className="flex-1 bg-[#0f1535] text-white flex ml-64 flex-col min-h-screen">
-              <div className="flex-1 min-h-screen">{children}</div>
-            </main>
-          </div>
-        ) : (
-          <>
-            {!isAuthPage && <NavbarComponent />}
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="dark"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-            </ThemeProvider>
-            {!isAuthPage && <Footer />}
-          </>
-        )}
+      <body className="bg-white dark:bg-[#080B2A] relative">
+        <Providers>
+          <LayoutClient>{children}</LayoutClient>
+        </Providers>
       </body>
     </html>
   );
