@@ -1,4 +1,3 @@
-// theme-provider.tsx
 "use client";
 
 import {
@@ -8,21 +7,7 @@ import {
 
 export default function ThemeProvider({
   children,
-  attribute = "class",
-  defaultTheme = "dark",
-  enableSystem = true,
-  disableTransitionOnChange = true,
   ...props
 }: ThemeProviderProps) {
-  return (
-    <NextThemesProvider
-      attribute={attribute}
-      defaultTheme={defaultTheme}
-      enableSystem={enableSystem}
-      disableTransitionOnChange={disableTransitionOnChange}
-      {...props}
-    >
-      {children}
-    </NextThemesProvider>
-  );
+  return <NextThemesProvider {...props}>{children}</NextThemesProvider>;
 }
