@@ -128,7 +128,7 @@ export default function NavbarBuyer() {
               <span
                 className={`
   w-10 h-10 rounded-full flex items-center justify-center
-  ${theme === "dark" ? "text-white bg-blue-400" : "text-blue-400 bg-blue-400"}
+  ${theme === "dark" ? "text-white bg-blue-400" : "text-white bg-blue-400"}
 `}
               >
                 {name
@@ -144,7 +144,7 @@ export default function NavbarBuyer() {
             {profileOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2">
                 <div className="px-4 py-2 text-gray-800">
-                  <p className="font-semibold">{name}</p>
+                  <p className="font-semibold leading-5">{name}</p>
                   <p className="text-sm text-gray-500">{email}</p>
                 </div>
                 <hr />
@@ -176,7 +176,7 @@ export default function NavbarBuyer() {
             <span
               className={`
   w-10 h-10 rounded-full flex items-center justify-center
-  ${theme === "dark" ? "text-white bg-blue-400" : "text-blue-400 bg-blue-400"}
+  ${theme === "dark" ? "text-white bg-blue-400" : "text-white bg-blue-400"}
 `}
             >
               {name
@@ -192,7 +192,7 @@ export default function NavbarBuyer() {
           {profileOpen && (
             <div className="absolute right-0 top-12 w-48 bg-white shadow-lg rounded-lg py-2 z-50">
               <div className="px-4 py-2 text-gray-800">
-                <p className="font-semibold">{name}</p>
+                <p className="font-semibold leading-5">{name}</p>
                 <p className="text-sm text-gray-500">{email}</p>
               </div>
               <hr />
