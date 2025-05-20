@@ -346,7 +346,11 @@ export default function Home() {
               className={`
   px-4 mt-4 py-3 text-center w-36 rounded-full
   hover:bg-transparent
-  ${theme === "dark" ? "bg-[#15BFFD] text-white hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]" : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"}
+  ${
+    theme === "dark"
+      ? "bg-[#15BFFD] text-white hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+      : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
+  }
 `}
             >
               About Us
@@ -709,7 +713,11 @@ export default function Home() {
           title="Toggle theme"
           className={`
   fixed bottom-6 lg:right-20 max-md:right-8 z-50 p-2 rounded-full bg-blue-400
-  ${theme === "dark" ? "text-white border border-white" : "text-[#080B2A] border border-[#080B2A]"}
+  ${
+    theme === "dark"
+      ? "text-white border border-white"
+      : "text-[#080B2A] border border-[#080B2A]"
+  }
 `}
         >
           {theme === "dark" ? (

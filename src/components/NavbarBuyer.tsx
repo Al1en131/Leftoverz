@@ -4,13 +4,21 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function NavbarBuyer() {
+  const { theme, setTheme } = useTheme();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, []);
   useEffect(() => {
     const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
@@ -77,7 +85,10 @@ export default function NavbarBuyer() {
         </div>
       )}
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/buyer/" className="dark:text-white text-blue-400 text-lg font-semibold">
+        <Link
+          href="/buyer/"
+          className="dark:text-white text-blue-400 text-lg font-semibold"
+        >
           <Image
             width={100}
             height={100}
@@ -98,18 +109,28 @@ export default function NavbarBuyer() {
             <Link
               key={index}
               href={href}
-              className={`${
-                pathname === href
-                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                  : "dark:text-white text-blue-400"
-              } capitalize`}
+              className={`
+  capitalize
+  ${
+    pathname === href
+      ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+      : theme === "dark"
+      ? "text-white"
+      : "text-blue-400"
+  }
+`}
             >
               {label}
             </Link>
           ))}
           <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
-              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center dark:text-white text-blue-400">
+              <span
+                className={`
+  w-10 h-10 rounded-full flex items-center justify-center
+  ${theme === "dark" ? "text-white bg-blue-400" : "text-blue-400 bg-blue-400"}
+`}
+              >
                 {name
                   ? name
                       .split(" ")
@@ -152,7 +173,12 @@ export default function NavbarBuyer() {
 
         <div className="flex items-center gap-2 lg:hidden relative">
           <button onClick={() => setProfileOpen(!profileOpen)}>
-            <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+            <span
+              className={`
+  w-10 h-10 rounded-full flex items-center justify-center
+  ${theme === "dark" ? "text-white bg-blue-400" : "text-blue-400 bg-blue-400"}
+`}
+            >
               {name
                 ? name
                     .split(" ")
@@ -220,7 +246,12 @@ export default function NavbarBuyer() {
       </div>
 
       {isOpen && (
-        <div className="block lg:hidden dark:bg-[#080B2A] bg-white absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
+        <div
+          className={`
+  block lg:hidden absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4
+  ${theme === "dark" ? "bg-[#080B2A]" : "bg-white"}
+`}
+        >
           {navLinks.map(({ href, label }, index) => (
             <Link
               key={index}

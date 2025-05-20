@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
+  const { theme, setTheme } = useTheme();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -82,7 +84,10 @@ export default function Navbar() {
       <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
         {" "}
         <div className="container mx-auto flex justify-between items-center">
-          <Link href="/seller/" className="dark:text-white text-blue-400 text-lg font-semibold">
+          <Link
+            href="/seller/"
+            className="dark:text-white text-blue-400 text-lg font-semibold"
+          >
             <Image
               width={100}
               height={100}
@@ -104,11 +109,16 @@ export default function Navbar() {
               <Link
                 key={index}
                 href={href}
-                className={`${
-                  pathname === href
-                    ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                    : "dark:text-white text-blue-400"
-                } capitalize`}
+                className={`
+  capitalize
+  ${
+    pathname === href
+      ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+      : theme === "dark"
+      ? "text-white"
+      : "text-blue-400"
+  }
+`}
               >
                 {label}
               </Link>
@@ -116,7 +126,12 @@ export default function Navbar() {
 
             <div className="relative">
               <button onClick={() => setProfileOpen(!profileOpen)}>
-                <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center dark:text-white text-blue-400">
+                <span
+                  className={`
+  w-10 h-10 rounded-full flex items-center justify-center
+  ${theme === "dark" ? "text-white bg-blue-400" : "text-blue-400 bg-blue-400"}
+`}
+                >
                   {name
                     ? name
                         .split(" ")
@@ -153,7 +168,12 @@ export default function Navbar() {
 
           <div className="flex items-center gap-2 lg:hidden relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
-              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center dark:text-white text-blue-400">
+              <span
+                className={`
+  w-10 h-10 rounded-full flex items-center justify-center
+  ${theme === "dark" ? "text-white bg-blue-400" : "text-blue-400 bg-blue-400"}
+`}
+              >
                 {name
                   ? name
                       .split(" ")
@@ -185,7 +205,10 @@ export default function Navbar() {
                 </button>
               </div>
             )}
-            <button className="dark:text-white text-blue-400" onClick={() => setIsOpen(!isOpen)}>
+            <button
+              className="dark:text-white text-blue-400"
+              onClick={() => setIsOpen(!isOpen)}
+            >
               {isOpen ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -215,7 +238,12 @@ export default function Navbar() {
         </div>
         {/* Mobile Menu Dropdown */}
         {isOpen && (
-          <div className="block lg:hidden dark:bg-[#080B2A] bg-white absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4">
+          <div
+            className={`
+  block lg:hidden absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4
+  ${theme === "dark" ? "bg-[#080B2A]" : "bg-white"}
+`}
+          >
             {navLinks.map(({ href, label }, index) => (
               <Link
                 key={index}
