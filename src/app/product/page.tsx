@@ -439,7 +439,7 @@ export default function Product() {
                     width={100}
                     height={100}
                     className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
-                      theme === "dark" ? "" : "border-2 border-blue-400"
+                      theme === "dark" ? "" : "border-[1.9px] border-blue-400"
                     }`}
                   />
                 </div>

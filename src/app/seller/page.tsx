@@ -231,7 +231,7 @@ export default function SellerHome() {
         />
         <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-28 lg:pb-24 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
-            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 lg:mb-6 max-md:mb-2 font-bold text-[#15BFFD]">
+            <h1 className="lg:text-8xl max-lg:text-5xl leading-14 lg:mb-6 max-md:mb-2 font-bold text-blue-400">
               Left
               <span
                 className={`
@@ -262,7 +262,7 @@ export default function SellerHome() {
             <div className="flex gap-4 pt-4 max-lg:justify-center">
               <button
                 onClick={() => setShowLogoutPopup(true)}
-                className="bg-[#15BFFD] px-4 py-3 max-lg:py-1 max-lg:px-3 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+                className="bg-blue-400 px-4 py-3 max-lg:py-1 max-lg:px-3 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400"
               >
                 Logout
               </button>
@@ -387,7 +387,7 @@ export default function SellerHome() {
   hover:bg-transparent
   ${
     theme === "dark"
-      ? "bg-[#15BFFD] text-white hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+      ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
       : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
   }
 `}
@@ -703,7 +703,7 @@ export default function SellerHome() {
                     width={100}
                     height={100}
                     className={`w-full h-64 object-cover rounded-2xl ${
-                      theme === "dark" ? "" : "border-2 border-blue-400"
+                      theme === "dark" ? "" : "border-[1.9px] border-blue-400"
                     }`}
                   />
                 </div>

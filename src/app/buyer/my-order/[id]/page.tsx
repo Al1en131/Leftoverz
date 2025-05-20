@@ -79,7 +79,7 @@ export default function StatusOrder() {
               <div className="flex items-center gap-4 lg:absolute lg:bottom-0 lg:right-0 mt-4">
                 <Link
                   href=""
-                  className="bg-[#15BFFD] px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+                  className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                 >
                   Tracking Package
                 </Link>
@@ -112,7 +112,7 @@ export default function StatusOrder() {
         </div>
         <Link
           href=""
-          className="bg-white/20 px-6 py-3 text-center border border-blue-400 w-full flex justify-center text-white rounded-full hover:bg-transparent z-50 hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]"
+          className="bg-white/20 px-6 py-3 text-center border border-blue-400 w-full flex justify-center text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
         >
           Beli
         </Link>

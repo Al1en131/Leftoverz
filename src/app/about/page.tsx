@@ -319,7 +319,7 @@ export default function About() {
                   aria-labelledby="accordion-open-heading-1"
                 >
                   <div className="p-5 border-b-0 border_accordion2 bg-white/10">
-                    <p className="mb-2 text-[#15BFFD]">
+                    <p className="mb-2 text-blue-400">
                       Untuk membeli produk, anda perlu mendaftar dulu sebagai
                       pembeli, kemudian silakan pilih produk yang diinginkan di
                       halaman produk, klik tombol "Detail" untuk melihat rincian
@@ -377,7 +377,7 @@ export default function About() {
                   aria-labelledby="accordion-open-heading-2"
                 >
                   <div className="p-5 border-b-0 border_accordion2 bg-white/10">
-                    <p className="mb-2 text-[#15BFFD]">
+                    <p className="mb-2 text-blue-400">
                       Untuk menjual produk, Anda perlu mendaftar sebagai penjual
                       terlebih dahulu. Setelah itu, masuk ke dashboard Anda dan
                       pilih "Tambah Produk", lalu isi detail produk dan unggah
@@ -433,7 +433,7 @@ export default function About() {
                   aria-labelledby="accordion-open-heading-3"
                 >
                   <div className="p-5 border-b-0 border_accordion2 bg-white/10">
-                    <p className="mb-2 text-[#15BFFD]">
+                    <p className="mb-2 text-blue-400">
                       Ya, Anda bisa mengatur alamat pengiriman melalui halaman
                       profil Anda. Pastikan alamat diisi dengan lengkap agar
                       proses pengiriman berjalan lancar.
