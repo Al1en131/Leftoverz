@@ -545,10 +545,9 @@ export default function SellerHome() {
                       1. Login atau Registrasi
                     </p>
                     <p
-                      className={`
-  text-lg
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+                      className={`text-lg ${
+                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                      }`}
                     >
                       Pengguna dapat login jika sudah memiliki akun atau
                       melakukan registrasi dengan mengisi data seperti nama,
@@ -562,10 +561,9 @@ export default function SellerHome() {
                       2. Mencari Barang
                     </p>
                     <p
-                      className={`
-  text-lg
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+                      className={`text-lg ${
+                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                      }`}
                     >
                       Gunakan fitur pencarian dan filter untuk menemukan barang
                       yang diinginkan, lalu klik produk untuk melihat detailnya.
@@ -578,10 +576,9 @@ export default function SellerHome() {
                       3. Memesan Barang
                     </p>
                     <p
-                      className={`
-  text-lg
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+                      className={`text-lg ${
+                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                      }`}
                     >
                       Klik &apos;Beli&apos; atau tambahkan ke favorit jika ingin
                       membeli lebih dari satu barang, lalu lanjutkan ke
@@ -595,10 +592,9 @@ export default function SellerHome() {
                       4. Mengisi Detail Pemesanan
                     </p>
                     <p
-                      className={`
-  text-lg
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+                      className={`text-lg ${
+                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                      }`}
                     >
                       Periksa pesanan, pilih metode pembayaran (transfer,
                       e-wallet, atau COD), lalu konfirmasi pesanan.
@@ -611,10 +607,9 @@ export default function SellerHome() {
                       5. Pembayaran & Verifikasi Otomatis
                     </p>
                     <p
-                      className={`
-  text-lg
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+                      className={`text-lg ${
+                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                      }`}
                     >
                       Lakukan pembayaran sesuai instruksi. Sistem akan otomatis
                       memverifikasi tanpa perlu unggah bukti.
@@ -627,10 +622,9 @@ export default function SellerHome() {
                       6. Mengambil atau Menerima Barang
                     </p>
                     <p
-                      className={`
-  text-lg
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+                      className={`text-lg ${
+                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                      }`}
                     >
                       Tunggu barang dikirim sesuai estimasi waktu, lalu
                       konfirmasi penerimaan dan beri ulasan setelah barang
