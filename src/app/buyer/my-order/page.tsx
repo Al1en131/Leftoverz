@@ -74,6 +74,23 @@ export default function MyOrder() {
     const storedUserId = localStorage.getItem("id");
     if (storedUserId) setuserId(storedUserId);
   }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+  const indexOfLastProduct = currentPage * itemsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  const currentTransactions = transactions.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -155,14 +172,22 @@ export default function MyOrder() {
           height={100}
           alt=""
           src="/images/bubble.svg"
-          className="h-[356px] w-[356px] max-lg:hidden absolute top-0 left-0"
+          className={`
+                lg:h-[356px] lg:w-[356px]
+                ${theme === "dark" ? "block" : "hidden"}
+                max-lg:w-52 max-lg:h-72 absolute top-0 left-0
+              `}
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble-2.svg"
-          className="h-[356px] w-[356px] max-lg:hidden absolute top-0 right-0"
+          className={`
+                lg:h-[356px] lg:w-[356px]
+                ${theme === "dark" ? "block" : "hidden"}
+                max-lg:w-52 max-lg:h-72 absolute top-0 right-0
+              `}
         />
         <Image
           width={100}
@@ -293,7 +318,7 @@ export default function MyOrder() {
           <div className="relative">
             <button
               onClick={() => setOpen(!open)}
-              className="text-blue-400 bg-primary-700 hover:bg-primary-800 font-medium rounded-lg text-sm ps-4 py-2.5 inline-flex items-center"
+              className="text-blue-400 font-medium rounded-lg text-sm ps-4 py-2.5 inline-flex items-center"
             >
               <svg
                 className="w-6 h-6"
@@ -379,7 +404,7 @@ export default function MyOrder() {
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-            {transactions.map((item, index) => (
+            {currentTransactions.map((item, index) => (
               <div
                 key={index}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
@@ -452,6 +477,30 @@ export default function MyOrder() {
                 </div>
               </div>
             ))}
+          </div>
+          <div className="flex justify-center gap-4 mt-10 items-center">
+            <button
+              onClick={handlePreviousPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span
+              className={`font-semibold ${
+                theme === "dark" ? "text-white" : "text-blue-400"
+              }`}
+            >
+              Page {currentPage} of {totalPages}
+            </span>
+
+            <button
+              onClick={handleNextPage}
+              className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
         <button
