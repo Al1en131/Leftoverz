@@ -688,7 +688,9 @@ export default function Home() {
                     alt={product.name}
                     width={100}
                     height={100}
-                    className="w-full h-64 object-cover rounded-2xl"
+                    className={`w-full h-64 object-cover rounded-2xl ${
+                      theme === "dark" ? "" : "border-2 border-blue-400"
+                    }`}
                   />
                 </div>
                 <div className="mt-4">
