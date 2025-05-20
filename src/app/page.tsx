@@ -319,7 +319,7 @@ export default function Home() {
           <div
             className={`
     absolute inset-0 z-10
-    ${theme === "dark" ? "bg-white/5" : "bg-blue-400/50"}
+    ${theme === "dark" ? "bg-white/5" : "bg-blue-400"}
   `}
           ></div>
           <div
@@ -345,8 +345,8 @@ export default function Home() {
               href="/about"
               className={`
   px-4 mt-4 py-3 text-center w-36 rounded-full
-  hover:bg-transparent hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]
-  ${theme === "dark" ? "bg-[#15BFFD] text-white" : "bg-white text-[#080B2A]"}
+  hover:bg-transparent
+  ${theme === "dark" ? "bg-[#15BFFD] text-white hover:text-[#15BFFD] hover:border-2 hover:border-[#15BFFD]" : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"}
 `}
             >
               About Us

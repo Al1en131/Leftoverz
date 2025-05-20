@@ -1,11 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 
 export default function Navbar() {
+  const { theme, setTheme } = useTheme();
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, []);
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -21,14 +29,14 @@ export default function Navbar() {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className="h-12 w-36 hidden dark:block"
+            className={`${theme === "dark" ? "block" : "hidden"} h-12 w-36`}
           />
           <Image
             width={100}
             height={100}
             src="/images/logo-light.png"
             alt="Logo"
-            className="h-12 w-36 block dark:hidden"
+            className={`${theme === "dark" ? "hidden" : "block"} h-12 w-36`}
           />
         </Link>
 
@@ -37,11 +45,16 @@ export default function Navbar() {
             <Link
               key={index}
               href={route}
-              className={`${
-                pathname === route
-                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                  : "dark:text-white text-blue-400"
-              } capitalize`}
+              className={`
+  capitalize
+  ${
+    pathname === route
+      ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+      : theme === "dark"
+      ? "text-white"
+      : "text-blue-400"
+  }
+`}
             >
               {route === "/"
                 ? "Home"
@@ -93,11 +106,12 @@ export default function Navbar() {
             <Link
               key={index}
               href={route}
-              className={`block text-lg capitalize ${
-                // Menambahkan kelas `capitalize`
+              className={`block text-lg capitalize z-50 ${
                 pathname === route
-                  ? "font-bold text-gradian border-b-2 capitalize pb-2 z-50 text-gradian-border tracking-wide"
-                  : "dark:text-white text-blue-400 z-50 capitalize"
+                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+                  : theme === "dark"
+                  ? "text-white"
+                  : "text-blue-400"
               }`}
               onClick={() => setIsOpen(false)}
             >
