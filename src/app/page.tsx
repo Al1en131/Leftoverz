@@ -334,13 +334,16 @@ export default function Home() {
               Why Choose Us?
             </h4>
             <p className="text-lg max-lg:text-justify mb-6">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy
-              text ever since the 1500s, when an unknown printer took a galley
-              of type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged.
+              Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
+              bagi para anak kost dan perantau yang ingin menjual atau membeli
+              barang bekas berkualitas dengan mudah. Kami menawarkan fitur
+              pengiriman yang handal, pencarian visual yang memudahkan menemukan
+              barang impian, serta sistem pembayaran otomatis yang aman dan
+              cepat. Dengan Leftoverz, proses pindah kost jadi lebih ringan, dan
+              kebutuhan peralatan kost baru pun bisa terpenuhi tanpa harus
+              merogoh kocek dalam.
             </p>
+
             <Link
               href="/about"
               className={`
@@ -408,9 +411,10 @@ export default function Home() {
           >
             <h3 className="text-3xl font-bold ">Features</h3>
             <p className="">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry
+              Fitur-fitur canggih yang memudahkan jual beli barang bekas dengan
+              cepat dan aman.
             </p>
+
             <div className="lg:pt-14 max-lg:pt-8 lg:flex lg:justify-between max-lg:justify-center max-lg:w-full max-lg:block max-lg:space-y-4 items-center">
               <div className="border_section bg-transparent h-[350px]  rounded-xl p-5 lg:w-80 max-lg:w-full shadow-lg relative">
                 <Image
@@ -493,8 +497,8 @@ export default function Home() {
             >
               <h3 className="text-3xl font-bold ">How It Work?</h3>
               <p className="">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry
+                Ikuti langkah mudah untuk jual atau beli barang bekas dengan
+                cepat dan nyaman di Leftoverz.
               </p>
             </div>
             <div className="relative w-full">
@@ -638,8 +642,8 @@ export default function Home() {
           >
             <h3 className="text-3xl font-bold ">Newly Added Product</h3>
             <p className="">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry
+              Temukan produk-produk terbaru yang baru saja ditambahkan dan siap
+              untuk kamu miliki.
             </p>
           </div>
           <div className="lg:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center">

@@ -251,7 +251,7 @@ export default function Navbar() {
                 className={`block text-lg capitalize ${
                   pathname === href
                     ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-                    : "dark:text-white text-blue-400"
+                    : "text-white"
                 }`}
                 onClick={() => setIsOpen(false)}
               >
