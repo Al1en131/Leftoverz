@@ -133,10 +133,10 @@ useEffect(() => {
                 type="text"
                 name="name"
                 id="name"
-                className={`w-full p-2.5 rounded-lg text-white border-[1.5px] ${
+                className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 border-gray-300"
-                    : "bg-white/20 border-blue-400"
+                    ? "bg-white/20 text-white border-gray-300"
+                    : "bg-white/20 text-blue-400 border-blue-400"
                 }`}
                 placeholder="username"
                 required
@@ -157,10 +157,10 @@ useEffect(() => {
                 type="email"
                 name="email"
                 id="email"
-                className={`w-full p-2.5 rounded-lg text-white border-[1.5px] ${
+                className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 border-gray-300"
-                    : "bg-white/20 border-blue-400"
+                    ? "bg-white/20 text-white border-gray-300"
+                    : "bg-white/20 text-blue-400 border-blue-400"
                 }`}
                 placeholder="name@company.com"
                 required
@@ -181,10 +181,10 @@ useEffect(() => {
                 type="tel"
                 name="phone_number"
                 id="phone_number"
-                className={`w-full p-2.5 rounded-lg text-white border-[1.5px] ${
+                className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 border-gray-300"
-                    : "bg-white/20 border-blue-400"
+                    ? "bg-white/20 text-white border-gray-300"
+                    : "bg-white/20 text-blue-400 border-blue-400"
                 }`}
                 placeholder="0851"
                 required
@@ -206,10 +206,10 @@ useEffect(() => {
                 type="password"
                 name="password"
                 id="password"
-                className={`w-full p-2.5 rounded-lg text-white border-[1.5px] ${
+                className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 border-gray-300"
-                    : "bg-white/20 border-blue-400"
+                    ? "bg-white/20 text-white border-gray-300"
+                    : "bg-white/20 text-blue-400 border-blue-400"
                 }`}
                 placeholder="••••••••"
                 required

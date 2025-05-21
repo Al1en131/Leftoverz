@@ -626,13 +626,28 @@ export default function ProductDetail() {
           onClick={openChat}
           className="relative bg-blue-400 hover:bg-blue-400 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
-          <Image
-            width={100}
-            height={100}
-            alt=""
-            src="/images/chat.svg"
+          <svg
+            width="800px"
+            height="800px"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
             className="w-8 h-8"
-          />
+          >
+            <path
+              d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <path
+              d="M8 12H8.009M11.991 12H12M15.991 12H16"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
           {!isChatOpen && hasUnreadMessages && (
             <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-white border border-white rounded-full animate-ping"></span>
           )}
@@ -772,7 +787,7 @@ export default function ProductDetail() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-8 h-8 hover:scale-110 transition"
-                  stroke="currentColor"
+                  stroke="white"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -791,7 +806,7 @@ export default function ProductDetail() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-8 h-8 hover:scale-110 transition"
-                  stroke="currentColor"
+                  stroke="white"
                   strokeWidth="1.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -803,13 +818,6 @@ export default function ProductDetail() {
                 </svg>
               )}
             </button>
-
-            <Link
-              href={`/buyer/product/buy-product/${product?.id}`}
-              className="bg-blue-400 border-2 border-white rounded-full max-lg:px-8 lg:px-14 max-lg:py-2 lg:py-3 text-center text-white hover:bg-transparent z-50"
-            >
-              Beli
-            </Link>
           </div>
 
           <Link

@@ -198,10 +198,10 @@ useEffect(() => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className={`w-full p-2.5 rounded-lg text-white border-[1.5px] ${
+                className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 border-gray-300"
-                    : "bg-white/20 border-blue-400"
+                    ? "bg-white/20 text-white border-gray-300"
+                    : "bg-white/20 text-blue-400 border-blue-400"
                 }`}
                 placeholder="name@company.com"
                 required
@@ -221,10 +221,10 @@ useEffect(() => {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full p-2.5 rounded-lg text-white border-[1.5px] ${
+                className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 border-gray-300"
-                    : "bg-white/20 border-blue-400"
+                    ? "bg-white/20 text-white border-gray-300"
+                    : "bg-white/20 text-blue-400 border-blue-400"
                 }`}
                 placeholder="••••••••"
                 required
