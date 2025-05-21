@@ -31,12 +31,13 @@ type Product = {
 
 export default function Product() {
   const { theme, setTheme } = useTheme();
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme && storedTheme !== theme) {
-      setTheme(storedTheme);
-    }
-  }, []);
+useEffect(() => {
+  const storedTheme = localStorage.getItem("theme");
+  if (storedTheme && storedTheme !== theme) {
+    setTheme(storedTheme);
+  }
+}, [theme, setTheme]);
+
 
   // Fungsi untuk toggle tema
   const toggleTheme = () => {

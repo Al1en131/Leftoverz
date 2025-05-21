@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 
@@ -38,7 +38,6 @@ type Ward = {
 
 export default function DetailProfile() {
   const [name, setName] = useState<string | null>(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
     const storedUserName = localStorage.getItem("name");
@@ -70,7 +69,8 @@ export default function DetailProfile() {
     if (storedTheme && storedTheme !== theme) {
       setTheme(storedTheme);
     }
-  }, []);
+  }, [theme, setTheme]);
+
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
@@ -170,7 +170,11 @@ export default function DetailProfile() {
   const apiKey =
     "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
 
-  // 1. Get provinces
+  const isInitialLoadRef = useRef(true);
+  const isProvinceFirstLoad = useRef(true);
+  const isRegencyFirstLoad = useRef(true);
+  const isSubdistrictFirstLoad = useRef(true);
+
   useEffect(() => {
     fetch(`https://api.binderbyte.com/wilayah/provinsi?api_key=${apiKey}`)
       .then((res) => res.json())
@@ -196,7 +200,9 @@ export default function DetailProfile() {
         setRegency(data.value);
       }
 
-      if (!isInitialLoad) {
+      if (isProvinceFirstLoad.current) {
+        isProvinceFirstLoad.current = false;
+      } else {
         setFormData((prev) => ({
           ...prev,
           regency: "",
@@ -226,7 +232,9 @@ export default function DetailProfile() {
         setSubdistricts(data.value);
       }
 
-      if (!isInitialLoad) {
+      if (isRegencyFirstLoad.current) {
+        isRegencyFirstLoad.current = false;
+      } else {
         setFormData((prev) => ({
           ...prev,
           subdistrict: "",
@@ -254,7 +262,9 @@ export default function DetailProfile() {
         setWards(data.value);
       }
 
-      if (!isInitialLoad) {
+      if (isSubdistrictFirstLoad.current) {
+        isSubdistrictFirstLoad.current = false;
+      } else {
         setFormData((prev) => ({
           ...prev,
           ward: "",
@@ -275,9 +285,10 @@ export default function DetailProfile() {
       subdistricts.length > 0 &&
       wards.length > 0
     ) {
-      setIsInitialLoad(false); // load selesai
+      isInitialLoadRef.current = false;
     }
-  }, [formData, regency, subdistricts, wards, isInitialLoad]);
+  }, [formData, regency, subdistricts, wards]);
+
   const handleClosePopup = () => setShowSuccessPopup(false);
   const handleCloseErrorPopup = () => setShowErrorPopup(false);
   return (

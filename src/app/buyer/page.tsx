@@ -25,12 +25,13 @@ export default function BuyerHome() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme && storedTheme !== theme) {
-      setTheme(storedTheme);
-    }
-  }, []);
+useEffect(() => {
+  const storedTheme = localStorage.getItem("theme");
+  if (storedTheme && storedTheme !== theme) {
+    setTheme(storedTheme);
+  }
+}, [theme, setTheme]);
+
 
   // Fungsi untuk toggle tema
   const toggleTheme = () => {

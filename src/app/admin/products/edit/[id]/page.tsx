@@ -97,7 +97,9 @@ export default function EditProduct() {
           image: [],
         });
         setDisplayPrice(formatPrice(data.product.price?.toString() || ""));
-        setDisplayOriginalPrice(formatPrice(data.product.original_price?.toString() || ""));
+        setDisplayOriginalPrice(
+          formatPrice(data.product.original_price?.toString() || "")
+        );
 
         let parsedImage = data.product.image;
         try {
@@ -236,6 +238,7 @@ export default function EditProduct() {
         setShowErrorPopup(true);
       }
     } catch (err) {
+      console.error(err);
       setErrorMessage("Server error, please try again.");
       setShowErrorPopup(true);
     }

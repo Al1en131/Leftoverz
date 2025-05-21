@@ -40,12 +40,13 @@ export default function RoomChat() {
     null
   );
   const { theme, setTheme } = useTheme();
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme && storedTheme !== theme) {
-      setTheme(storedTheme);
-    }
-  }, []);
+useEffect(() => {
+  const storedTheme = localStorage.getItem("theme");
+  if (storedTheme && storedTheme !== theme) {
+    setTheme(storedTheme);
+  }
+}, [theme, setTheme]);
+
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);

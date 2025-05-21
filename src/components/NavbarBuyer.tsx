@@ -13,12 +13,13 @@ export default function NavbarBuyer() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme && storedTheme !== theme) {
-      setTheme(storedTheme);
-    }
-  }, []);
+useEffect(() => {
+  const storedTheme = localStorage.getItem("theme");
+  if (storedTheme && storedTheme !== theme) {
+    setTheme(storedTheme);
+  }
+}, [theme, setTheme]);
+
   useEffect(() => {
     const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");

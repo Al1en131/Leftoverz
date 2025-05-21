@@ -13,7 +13,7 @@ export default function About() {
     if (storedTheme && storedTheme !== theme) {
       setTheme(storedTheme);
     }
-  }, []);
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -328,10 +328,11 @@ export default function About() {
                     <p className="mb-2 text-blue-400">
                       Untuk membeli produk, anda perlu mendaftar dulu sebagai
                       pembeli, kemudian silakan pilih produk yang diinginkan di
-                      halaman produk, klik tombol "Detail" untuk melihat rincian
-                      produk, kemudian jika sudah merasa yakin maka klik tombol
-                      "Beli" dan ikuti instruksi untuk menyelesaikan transaksi.
-                      Anda dapat memilih metode pembayaran.
+                      halaman produk, klik tombol &quot;Detail&quot; untuk
+                      melihat rincian produk, kemudian jika sudah merasa yakin
+                      maka klik tombol &quot;Beli&quot; dan ikuti instruksi
+                      untuk menyelesaikan transaksi. Anda dapat memilih metode
+                      pembayaran.
                     </p>
                   </div>
                 </div>
@@ -386,8 +387,9 @@ export default function About() {
                     <p className="mb-2 text-blue-400">
                       Untuk menjual produk, Anda perlu mendaftar sebagai penjual
                       terlebih dahulu. Setelah itu, masuk ke dashboard Anda dan
-                      pilih "Tambah Produk", lalu isi detail produk dan unggah
-                      gambar. Produk Anda akan ditampilkan setelah disimpan.
+                      pilih &quot;Tambah Produk&quot;, lalu isi detail produk
+                      dan unggah gambar. Produk Anda akan ditampilkan setelah
+                      disimpan.
                     </p>
                   </div>
                 </div>

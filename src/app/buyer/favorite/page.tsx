@@ -143,18 +143,20 @@ export default function Favorite() {
         throw new Error(errorData.message || "Gagal menghapus favorit");
       }
 
-      // Setelah penghapusan berhasil, langsung update state products
-      setProducts(
-        (prev) => prev.filter((item) => item.product?.id !== itemId) // Menyaring produk yang tidak ada dalam favorit
-      );
-      setShowConfirmPopup(false); // Tutup popup setelah berhasil
+      setProducts((prev) => prev.filter((item) => item.product?.id !== itemId));
+      setSuccessMessage("Berhasil menghapus favorit.");
+      setShowSuccessPopup(true);
+      setShowConfirmPopup(false);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error("Error deleting favorite:", error.message);
+        setErrorMessage(error.message);
       } else {
         console.error("An unknown error occurred:", error);
+        setErrorMessage("Terjadi kesalahan yang tidak diketahui.");
       }
-      setShowConfirmPopup(false); // Tutup popup jika error
+      setShowErrorPopup(true);
+      setShowConfirmPopup(false);
     }
   };
 
@@ -209,7 +211,7 @@ export default function Favorite() {
     if (storedTheme && storedTheme !== theme) {
       setTheme(storedTheme);
     }
-  }, []);
+  }, [theme, setTheme]);
 
   // Fungsi untuk toggle tema
   const toggleTheme = () => {
@@ -565,7 +567,41 @@ export default function Favorite() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
             {/* Validasi jika tidak ada produk favorit */}
             {currentProducts.length === 0 ? (
-              <div className="col-span-full text-center text-white text-lg">
+              <div
+                className={`col-span-full block text-center justify-center text-lg mb-1 font-bold ${
+                  theme === "dark" ? "text-white" : "text-blue-400"
+                }`}
+              >
+                <svg
+                  width="800px"
+                  height="800px"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mb-6 w-32 h-32 flex mx-auto justify-center text-center items-center"
+                >
+                  <path
+                    d="M6.10999 17.5C3.89999 15.43 2 12.48 2 8.67999C2 5.58999 4.49 3.09003 7.56 3.09003C9.38 3.09003 10.99 3.97002 12 5.33002C13.01 3.97002 14.63 3.09003 16.44 3.09003C17.59 3.09003 18.66 3.43999 19.55 4.04999"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21.74 7C21.91 7.53 22 8.1 22 8.69C22 15.69 15.52 19.82 12.62 20.82C12.28 20.94 11.72 20.94 11.38 20.82C10.73 20.6 9.91002 20.22 9.02002 19.69"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M22 2L2 22"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
                 Belum ada data favorit yang anda masukkan.
               </div>
             ) : (

@@ -8,12 +8,13 @@ import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
-  useEffect(() => {
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme && storedTheme !== theme) {
-      setTheme(storedTheme);
-    }
-  }, []);
+useEffect(() => {
+  const storedTheme = localStorage.getItem("theme");
+  if (storedTheme && storedTheme !== theme) {
+    setTheme(storedTheme);
+  }
+}, [theme, setTheme]);
+
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
