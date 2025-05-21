@@ -211,7 +211,7 @@ export default function Product() {
           className={`
   pt-28 lg:pb-20 max-lg:pb-10 w-full lg:px-20 max-lg:px-6
   flex flex-col items-center gap-6 relative
-  ${theme === "dark" ? "bg-white/5" : "bg-black/10"}
+  ${theme === "dark" ? "bg-white/5" : "bg-black/5"}
 `}
         >
           <div className="relative w-full">
@@ -222,8 +222,14 @@ export default function Product() {
               src="/images/hero-product.jpg"
               className="rounded-2xl w-full h-64"
             />
-            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 rounded-2xl z-20"></div>
-            <h1 className="max-lg:text-5xl lg:text-6xl tracking-wide text-white font-bold text-center absolute inset-0 flex justify-center items-center z-30">
+            <div
+              className={`absolute top-0 left-0 w-full h-full rounded-2xl z-20 ${
+                theme === "dark" ? "bg-black opacity-40" : "bg-white/20"
+              }`}
+            ></div>
+            <h1 className={`max-lg:text-4xl lg:text-6xl tracking-wide font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
+              }`}>
               Product
             </h1>
           </div>

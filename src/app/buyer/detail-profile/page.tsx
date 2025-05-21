@@ -320,19 +320,23 @@ export default function DetailProfile() {
         </div>
       )}
       <main>
-        <Image
+       <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble.svg"
-          className="h-[356px] w-[356px] absolute top-0 left-0"
+          className={`lg:h-[356px] lg:w-[356px] ${
+            theme === "dark" ? "block" : "hidden"
+          } max-lg:w-52 max-lg:h-72 absolute top-0 left-0`}
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble-2.svg"
-          className="h-[356px] w-[356px] absolute top-0 right-0"
+          className={`lg:h-[356px] lg:w-[356px] ${
+            theme === "dark" ? "block" : "hidden"
+          } max-lg:w-52 max-lg:h-72 absolute top-0 right-0`}
         />
         <Image
           width={100}
