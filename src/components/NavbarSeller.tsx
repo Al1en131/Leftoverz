@@ -91,7 +91,7 @@ export default function Navbar() {
         {" "}
         <div className="container mx-auto flex justify-between items-center">
           <Link
-            href="/seller/"
+            href="/"
             className="dark:text-white text-blue-400 text-lg font-semibold"
           >
             <Image
@@ -99,14 +99,14 @@ export default function Navbar() {
               height={100}
               src="/images/logo.png"
               alt="Logo"
-              className="h-12 w-36 hidden dark:block"
+              className={`${theme === "dark" ? "block" : "hidden"} h-12 w-36`}
             />
             <Image
               width={100}
               height={100}
               src="/images/logo-light.png"
               alt="Logo"
-              className="h-12 w-36 block dark:hidden"
+              className={`${theme === "dark" ? "hidden" : "block"} h-12 w-36`}
             />
           </Link>
 

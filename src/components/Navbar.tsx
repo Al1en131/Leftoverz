@@ -8,12 +8,12 @@ import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -46,16 +46,13 @@ useEffect(() => {
             <Link
               key={index}
               href={route}
-              className={`
-  capitalize
-  ${
-    pathname === route
-      ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-      : theme === "dark"
-      ? "text-white"
-      : "text-blue-400"
-  }
-`}
+              className={`capitalize ${
+                pathname === route
+                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+                  : theme === "dark"
+                  ? "text-white"
+                  : "text-blue-400"
+              }`}
             >
               {route === "/"
                 ? "Home"
@@ -65,10 +62,9 @@ useEffect(() => {
         </div>
 
         <button
-          className={`
-  lg:hidden
-  ${theme === "dark" ? "text-white" : "text-blue-400"}
-`}
+          className={`lg:hidden ${
+            theme === "dark" ? "text-white" : "text-blue-400"
+          }`}
           onClick={() => setIsOpen(!isOpen)}
         >
           {isOpen ? (
@@ -108,8 +104,7 @@ useEffect(() => {
         <div
           className={`
   lg:hidden absolute top-full left-0 capitalize w-full py-4 px-6 z-50 space-y-4
-  ${theme === "dark" ? "bg-[#080B2A]" : "bg-blue-400"}
-`}
+  ${theme === "dark" ? "bg-[#080B2A]" : "bg-blue-400"}`}
         >
           {["/", "/about", "/product"].map((route, index) => (
             <Link

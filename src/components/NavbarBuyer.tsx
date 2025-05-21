@@ -13,12 +13,12 @@ export default function NavbarBuyer() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   useEffect(() => {
     const storedName = localStorage.getItem("name");
@@ -87,7 +87,7 @@ useEffect(() => {
       )}
       <div className="container mx-auto flex justify-between items-center">
         <Link
-          href="/buyer/"
+          href="/"
           className="dark:text-white text-blue-400 text-lg font-semibold"
         >
           <Image
@@ -95,14 +95,14 @@ useEffect(() => {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className="h-12 w-36 hidden dark:block"
+            className={`${theme === "dark" ? "block" : "hidden"} h-12 w-36`}
           />
           <Image
             width={100}
             height={100}
             src="/images/logo-light.png"
             alt="Logo"
-            className="h-12 w-36 block dark:hidden"
+            className={`${theme === "dark" ? "hidden" : "block"} h-12 w-36`}
           />
         </Link>
         <div className="hidden lg:flex items-center space-x-12 text-lg">
