@@ -31,7 +31,7 @@ export default function RootLayout({
     if (storedTheme && storedTheme !== theme) {
       setTheme(storedTheme as "light" | "dark");
     }
-  }, []);
+  }, [theme, setTheme]);
 
   let NavbarComponent = Navbar;
 

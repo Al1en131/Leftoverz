@@ -1,19 +1,27 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import Script from "next/script";
 
+type User = {
+  name: string;
+  email: string;
+  phone: string;
+  id: string;
+};
+
+// Deklarasi global untuk Snap Midtrans
 declare global {
   interface Window {
     snap: {
       pay: (
         token: string,
         callbacks: {
-          onSuccess?: (result: any) => void;
-          onPending?: (result: any) => void;
-          onError?: (result: any) => void;
+          onSuccess?: (result: unknown) => void;
+          onPending?: (result: unknown) => void;
+          onError?: (result: unknown) => void;
           onClose?: () => void;
         }
       ) => void;
@@ -22,23 +30,24 @@ declare global {
 }
 
 export default function BuyProduct() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
 
+  // Setup tema dari localStorage
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
-  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
 
+  // Ambil data user dari localStorage
   useEffect(() => {
     const name = localStorage.getItem("name");
     const email = localStorage.getItem("email");
@@ -46,25 +55,20 @@ useEffect(() => {
     const id = localStorage.getItem("id");
 
     if (name && email && id) {
-      setUser({
-        name,
-        email,
-        phone,
-        id,
-      });
+      setUser({ name, email, phone, id });
     }
   }, []);
 
+  // Fungsi pembayaran
   const handlePayment = async () => {
     if (!user) {
       alert("User belum login!");
       return;
     }
 
-    const fullName = user.name || "User Tanpa Nama";
-    const nameParts = fullName.trim().split(" ");
+    const nameParts = user.name.trim().split(" ");
     const first_name = nameParts[0];
-    const last_name = nameParts.length > 1 ? nameParts.slice(1).join(" ") : "";
+    const last_name = nameParts.slice(1).join(" ");
     const token = localStorage.getItem("token");
 
     const res = await fetch(
@@ -98,46 +102,33 @@ useEffect(() => {
     if (data.token) {
       window.snap.pay(data.token, {
         onSuccess: (result) => {
-          alert("Pembayaran berhasil");
+          alert("Pembayaran berhasil!");
           console.log(result);
         },
         onPending: (result) => {
-          alert("Menunggu pembayaran");
+          alert("Menunggu pembayaran.");
           console.log(result);
         },
         onError: (result) => {
-          alert("Pembayaran gagal");
+          alert("Pembayaran gagal.");
           console.error(result);
         },
         onClose: () => {
-          alert("Popup pembayaran ditutup");
+          alert("Popup pembayaran ditutup.");
         },
       });
     } else {
-      alert("Token pembayaran tidak diterima.");
+      alert("Token pembayaran tidak tersedia.");
     }
   };
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key", "YOUR_CLIENT_KEY");
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   return (
     <>
-      <Head>
-        <script
-          type="text/javascript"
-          src="https://app.sandbox.midtrans.com/snap/snap.js"
-          data-client-key=""
-        ></script>
-      </Head>
+      <Script
+        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="YOUR_CLIENT_KEY"
+        strategy="afterInteractive"
+      />
 
       <div
         className={`min-h-screen flex flex-col items-center ${

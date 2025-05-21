@@ -1,7 +1,7 @@
 "use client";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type User = {
   id: number;
@@ -40,12 +40,12 @@ export default function RoomChat() {
     null
   );
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -85,7 +85,7 @@ useEffect(() => {
     }
   }, [userId]);
 
-  const fetchChats = async () => {
+  const fetchChats = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -158,66 +158,72 @@ useEffect(() => {
     } catch (error) {
       console.error("Error fetching chats:", error);
     }
-  };
+  }, [userId]);
   useEffect(() => {
     if (userId) {
       fetchChats();
     }
-  }, [userId]);
-  const handleChatSelect = async (chat: Chat) => {
-    const opponentId =
-      userId === chat.sender_id ? chat.receiver_id : chat.sender_id;
+  }, [userId, fetchChats]);
 
-    const updatedChat = { ...chat, opponent_id: opponentId };
-    setSelectedChat(updatedChat);
+  const handleChatSelect = useCallback(
+    async (chat: Chat) => {
+      const opponentId =
+        userId === chat.sender_id ? chat.receiver_id : chat.sender_id;
 
-    localStorage.setItem("selectedChat", JSON.stringify(updatedChat));
-    localStorage.setItem("selectedProductId", String(chat.item_id || ""));
+      const updatedChat = { ...chat, opponent_id: opponentId };
+      setSelectedChat(updatedChat);
 
-    try {
-      await fetch(`http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`, {
-        method: "PUT",
-      });
+      localStorage.setItem("selectedChat", JSON.stringify(updatedChat));
+      localStorage.setItem("selectedProductId", String(chat.item_id || ""));
 
-      setChats((prevChats) =>
-        prevChats.map((prevChat) =>
-          prevChat.id === chat.id ? { ...prevChat, read_status: "1" } : prevChat
-        )
-      );
-    } catch (error) {
-      console.error("Error updating read_status:", error);
-    }
+      try {
+        await fetch(`http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`, {
+          method: "PUT",
+        });
 
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
-      );
-      const data = await res.json();
-
-      if (res.ok) {
-        let selectedMessages: Chat[];
-
-        if (chat.item_id) {
-          // Filter berdasarkan item_id jika tersedia
-          selectedMessages = data.filter(
-            (msg: Chat) => msg.item_id === chat.item_id
-          );
-        } else {
-          // Jika tidak ada item_id, tampilkan semua pesan dengan lawan bicara
-          selectedMessages = data;
-        }
-
-        setMessages(selectedMessages);
-        localStorage.setItem("messages", JSON.stringify(selectedMessages));
-      } else {
-        setMessages([]);
-        console.error("Gagal fetch messages:", data.message);
+        setChats((prevChats) =>
+          prevChats.map((prevChat) =>
+            prevChat.id === chat.id
+              ? { ...prevChat, read_status: "1" }
+              : prevChat
+          )
+        );
+      } catch (error) {
+        console.error("Error updating read_status:", error);
       }
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-      setMessages([]);
-    }
-  };
+
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          let selectedMessages: Chat[];
+
+          if (chat.item_id) {
+            // Filter berdasarkan item_id jika tersedia
+            selectedMessages = data.filter(
+              (msg: Chat) => msg.item_id === chat.item_id
+            );
+          } else {
+            // Jika tidak ada item_id, tampilkan semua pesan dengan lawan bicara
+            selectedMessages = data;
+          }
+
+          setMessages(selectedMessages);
+          localStorage.setItem("messages", JSON.stringify(selectedMessages));
+        } else {
+          setMessages([]);
+          console.error("Gagal fetch messages:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+        setMessages([]);
+      }
+    },
+    [userId]
+  );
 
   useEffect(() => {
     const storedMessages = localStorage.getItem("messages");
@@ -306,7 +312,7 @@ useEffect(() => {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [userId, selectedChat]);
+  }, [userId, selectedChat, fetchChats, handleChatSelect]);
 
   return (
     <div
@@ -504,13 +510,13 @@ useEffect(() => {
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
-                          stroke-width="1.5"
+                          strokeWidth="1.5"
                           stroke="currentColor"
                           className="w-32 h-32 mb-4"
                         >
                           <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                             d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
                           />
                         </svg>

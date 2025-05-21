@@ -526,7 +526,7 @@ useEffect(() => {
                       : "bg-white/30 placeholder-gray-400"
                   }`}
                   placeholder="Enter product price"
-                  value={formData.price}
+                  value={displayPrice}
                   onChange={handleChange}
                 />
               </div>

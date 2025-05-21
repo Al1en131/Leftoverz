@@ -8,6 +8,12 @@ import { useTheme } from "next-themes";
 
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme as "light" | "dark");
+    }
+  }, [theme, setTheme]);
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const pathname = usePathname();
   const router = useRouter();

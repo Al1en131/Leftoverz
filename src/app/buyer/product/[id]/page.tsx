@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
@@ -120,7 +120,7 @@ export default function ProductDetail() {
     fetchProduct();
   }, [productId]);
 
-  const openChat = async () => {
+  const openChat = useCallback(async () => {
     setIsChatOpen(true);
 
     const opponentId = product?.user_id;
@@ -133,12 +133,10 @@ export default function ProductDetail() {
       const data = await res.json();
 
       if (res.ok) {
-        const chatMessages = Array.isArray(data.chats) ? data.chats : []; // atau sesuaikan dengan struktur yang benar
+        const chatMessages = Array.isArray(data.chats) ? data.chats : [];
         const unreadChat = chatMessages.find(
           (msg: Chat) => msg.receiver_id === userId && msg.read_status === "0"
         );
-
-        console.log("Fetched chat messages:", chatMessages);
 
         if (unreadChat) {
           await fetch(
@@ -157,7 +155,8 @@ export default function ProductDetail() {
 
         setMessages(chatMessages);
         localStorage.setItem("messages", JSON.stringify(chatMessages));
-        setSelectedChat(chatMessages[0] || null);
+        // Jika selectedChat tidak digunakan, hapus setSelectedChat berikut:
+        // setSelectedChat(chatMessages[0] || null);
       } else {
         setMessages([]);
         console.error("Failed to fetch messages:", data.message);
@@ -166,7 +165,7 @@ export default function ProductDetail() {
       console.error("Error opening chat:", error);
       setMessages([]);
     }
-  };
+  }, [userId, productId, product]);
   useEffect(() => {
     const checkUnreadMessages = async () => {
       if (!userId || !productId || !product?.user_id) return;
@@ -199,20 +198,14 @@ export default function ProductDetail() {
   }, [userId, productId, product]);
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
     if (isChatOpen) {
       openChat();
-
-      intervalId = setInterval(() => {
+      const intervalId = setInterval(() => {
         openChat();
       }, 5000);
+      return () => clearInterval(intervalId);
     }
-
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, [isChatOpen, userId, productId, product]);
+  }, [isChatOpen, openChat, userId, productId, product]);
 
   const handleSendMessage = async () => {
     if (!newMessage || !productId || !userId || !product?.user_id) return;
@@ -255,6 +248,7 @@ export default function ProductDetail() {
         setSelectedChat((prev) =>
           prev ? { ...prev, message: newMessage } : prev
         );
+        console.log(selectedChat); 
         setNewMessage("");
         localStorage.setItem("messages", JSON.stringify(updatedMessages));
       } else {
@@ -288,9 +282,15 @@ export default function ProductDetail() {
       if (response.ok && data && data.data) {
         console.log("Data favorit diterima:", data.data);
 
+        interface FavoriteItem {
+          product?: {
+            id?: number;
+          };
+          // properti lain sesuai respons API
+        }
         // Ambil ID produk dari objek product di dalam masing-masing item
         const favoriteIds = data.data
-          .map((item: any) => Number(item.product?.id)) // pastikan number
+          .map((item: FavoriteItem) => Number(item.product?.id))
           .filter(Boolean);
 
         console.log("Favorite IDs:", favoriteIds);
@@ -312,9 +312,10 @@ export default function ProductDetail() {
     const savedFavorites = JSON.parse(
       localStorage.getItem("favorites") || "[]"
     );
-    const validFavorites = savedFavorites
+    const validFavorites = (savedFavorites as (string | number)[])
       .filter(Boolean)
-      .map((id: any) => Number(id)); // pastikan number
+      .map((id) => Number(id));
+
     setFavorites(validFavorites);
   }, []);
 
@@ -410,13 +411,12 @@ export default function ProductDetail() {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
-
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   // Fungsi untuk toggle tema
   const toggleTheme = () => {
@@ -427,6 +427,10 @@ useEffect(() => {
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (favoritesLoading) {
+    return <div>Loading favorites...</div>;
   }
 
   return (
@@ -789,8 +793,7 @@ useEffect(() => {
         title="Toggle theme"
         className={`fixed bottom-[155px] lg:right-[83px] max-md:right-8 z-40 p-3 rounded-full bg-blue-400 ${
           theme === "dark" ? "text-white" : "text-white"
-        }
-`}
+        }`}
       >
         {theme === "dark" ? (
           <svg

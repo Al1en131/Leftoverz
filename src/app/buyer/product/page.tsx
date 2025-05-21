@@ -139,13 +139,12 @@ export default function Product() {
   const [favorites, setFavorites] = useState<number[]>([]);
   const [favoritesLoading, setFavoritesLoading] = useState(true);
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
-
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   // Fungsi untuk toggle tema
   const toggleTheme = () => {
@@ -174,9 +173,14 @@ useEffect(() => {
       if (response.ok && data && data.data) {
         console.log("Data favorit diterima:", data.data);
 
-        // Ambil ID produk dari objek product di dalam masing-masing item
+        type FavoriteItem = {
+          product?: {
+            id: number;
+          };
+        };
+
         const favoriteIds = data.data
-          .map((item: any) => Number(item.product?.id)) // pastikan number
+          .map((item: FavoriteItem) => Number(item.product?.id))
           .filter(Boolean);
 
         console.log("Favorite IDs:", favoriteIds);
@@ -193,14 +197,15 @@ useEffect(() => {
       setFavoritesLoading(false);
     }
   };
-
   useEffect(() => {
     const savedFavorites = JSON.parse(
       localStorage.getItem("favorites") || "[]"
-    );
+    ) as (string | number)[];
+
     const validFavorites = savedFavorites
       .filter(Boolean)
-      .map((id: any) => Number(id)); // pastikan number
+      .map((id) => Number(id)); // otomatis tipe id infer dari (string | number)
+
     setFavorites(validFavorites);
   }, []);
 
