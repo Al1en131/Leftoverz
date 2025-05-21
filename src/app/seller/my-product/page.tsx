@@ -271,7 +271,9 @@ export default function MyProduct() {
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
                 <svg
-                  className="w-4 h-4 text-white"
+                  className={`w-4 h-4 ${
+                    theme === "dark" ? "text-white" : "text-blue-400"
+                  }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -291,7 +293,11 @@ export default function MyProduct() {
                 id="default-search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="block w-full p-3 ps-10 text-sm text-white border border-blue-400 rounded-lg bg-white/10"
+                className={`block w-full p-3 ps-10 text-sm border border-blue-400 rounded-lg ${
+                  theme === "dark"
+                    ? "text-white bg-white/10"
+                    : "text-blue-400 bg-black/5"
+                }`}
                 placeholder="Search your products ..."
               />
             </div>
@@ -554,8 +560,7 @@ export default function MyProduct() {
           theme === "dark"
             ? "text-white border border-white"
             : "text-[#080B2A] border border-[#080B2A]"
-        }
-`}
+        }`}
       >
         {theme === "dark" ? (
           <svg

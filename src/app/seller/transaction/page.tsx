@@ -213,7 +213,9 @@ export default function Transaction() {
               {/* Search Icon */}
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
                 <svg
-                  className="w-4 h-4 text-white"
+                  className={`w-4 h-4 ${
+                    theme === "dark" ? "text-white" : "text-blue-400"
+                  }`}
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -232,7 +234,11 @@ export default function Transaction() {
               <input
                 type="search"
                 id="default-search"
-                className="block w-full p-4 ps-10 text-sm text-white border border-blue-400 rounded-lg bg-white/10"
+                className={`block w-full p-4 ps-10 text-sm border border-blue-400 rounded-lg ${
+                  theme === "dark"
+                    ? "text-white bg-white/10"
+                    : "text-blue-400 bg-black/5"
+                }`}
                 placeholder="Search Mockups, Logos..."
                 value={searchQuery}
                 onChange={(e) => {
@@ -273,8 +279,13 @@ export default function Transaction() {
                 </tr>
               ) : paginatedTransactions.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="text-center text-white py-8">
-                    No transactions found.
+                  <td
+                    colSpan={7}
+                    className={`text-center py-8 ${
+                      theme === "dark" ? "text-white" : "text-black"
+                    }`}
+                  >
+                    Tidak ada data transaksi
                   </td>
                 </tr>
               ) : (
