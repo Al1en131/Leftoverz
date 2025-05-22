@@ -20,7 +20,7 @@ type RawTransaction = {
   seller_id: number;
   item_id: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "pending" | "paid" | "cancelled" | null;
+  status: "success" | "paid" | "cancelled" | null;
   created_at: string;
   item?: {
     name: string;
@@ -301,7 +301,7 @@ useEffect(() => {
               <div className="relative w-full">
                 <input
                   type="search"
-                  className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-e-lg max-lg:rounded-lg border border-blue-400"
+                  className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
                   placeholder={`Search ${selectedCategory}...`}
                   required
                 />
@@ -463,7 +463,7 @@ useEffect(() => {
                 <div className="my-4 flex justify-between items-center">
                   <span
                     className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-xl ${
-                      item.status == "paid"
+                      item.status == "success"
                         ? "bg-green-700 text-white"
                         : "bg-red-700 text-white"
                     }`}

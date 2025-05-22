@@ -14,6 +14,10 @@ type User = {
   province: string;
   ward: string;
   regency: string;
+  postal_code: string;
+  payment_account_number: string;
+  account_holder_name: string;
+  payment_type: string;
 };
 
 type Province = {
@@ -54,6 +58,10 @@ export default function DetailProfile() {
     province: "",
     ward: "",
     regency: "",
+    postal_code: "",
+    payment_account_number: "",
+    account_holder_name: "",
+    payment_type: "",
   });
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [regency, setRegency] = useState<Regency[]>([]);
@@ -124,7 +132,9 @@ export default function DetailProfile() {
   }, []);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
 
@@ -537,6 +547,95 @@ export default function DetailProfile() {
                     </div>
                     <div>
                       <label
+                        htmlFor="role"
+                        className={`mb-1 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        Tipe Payment
+                      </label>
+                      <select
+                        name="payment_type"
+                        id="payment_type"
+                        className={`w-full border border-blue-400 p-2 rounded-lg ${
+                          theme === "dark"
+                            ? "bg-white/10 placeholder-white text-white"
+                            : "bg-white/30 text-blue-400 placeholder-gray-400"
+                        }`}
+                        onChange={handleChange}
+                        value={formData.payment_type}
+                      >
+                        <option value="" disabled>
+                          Select payment type
+                        </option>
+                        <option className="text-blue-400" value="gopay">
+                          Gopay
+                        </option>
+                        <option className="text-blue-400" value="shopee pay">
+                          Shopee Pay
+                        </option>
+                        <option className="text-blue-400" value="dana">
+                          DANA
+                        </option>
+                        <option className="text-blue-400" value="bank bri">
+                          Bank BRI
+                        </option>
+                        <option className="text-blue-400" value="bank muamalat">
+                          Bank Muamalat
+                        </option>
+                        <option className="text-blue-400" value="bank mandiri">
+                          Bank Mandiri
+                        </option>
+                      </select>
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="account_holder_name"
+                        className={`mb-1 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        Nama Pemilik Rekening
+                      </label>
+                      <input
+                        type="text"
+                        name="account_holder_name"
+                        id="account_holder_name"
+                        className={`w-full border border-blue-400 p-2 rounded-lg ${
+                          theme === "dark"
+                            ? "bg-white/10 placeholder-white text-white"
+                            : "bg-white/30 text-blue-400 placeholder-gray-400"
+                        }`}
+                        placeholder="Enter account holder name"
+                        onChange={handleChange}
+                        value={formData.account_holder_name}
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="payment_account_number"
+                        className={`mb-1 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        No Rekening
+                      </label>
+                      <input
+                        type="number"
+                        name="payment_account_number"
+                        id="payment_account_number"
+                        className={`w-full border border-blue-400 p-2 rounded-lg ${
+                          theme === "dark"
+                            ? "bg-white/10 placeholder-white text-white"
+                            : "bg-white/30 text-blue-400 placeholder-gray-400"
+                        }`}
+                        placeholder="Enter payment account number"
+                        onChange={handleChange}
+                        value={formData.payment_account_number}
+                      />
+                    </div>
+                    <div>
+                      <label
                         className={`mb-1 ${
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
@@ -658,6 +757,29 @@ export default function DetailProfile() {
                         ))}
                       </select>
                     </div>
+                    <div>
+                      <label
+                        htmlFor="postal_code"
+                        className={`mb-1 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        Kode Pos
+                      </label>
+                      <input
+                        type="number"
+                        name="postal_code"
+                        id="postal_code"
+                        className={`w-full border border-blue-400 p-2 rounded-lg ${
+                          theme === "dark"
+                            ? "bg-white/10 placeholder-white text-white"
+                            : "bg-white/30 text-blue-400 placeholder-gray-400"
+                        }`}
+                        placeholder="Enter postal code"
+                        onChange={handleChange}
+                        value={formData.postal_code}
+                      />
+                    </div>
                   </div>
                   <div className="mt-4">
                     <label
@@ -680,7 +802,6 @@ export default function DetailProfile() {
                       placeholder="Alamat"
                     />
                   </div>
-
                   <button
                     type="submit"
                     className="w-full mt-6 bg-blue-400 text-white py-2 rounded-lg"

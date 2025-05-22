@@ -41,6 +41,10 @@ type User = {
   province: string;
   ward: string;
   regency: string;
+  postal_code: string;
+  payment_account_number: string;
+  account_holder_name: string;
+  payment_type: string;
 };
 
 // Deklarasi global Snap Midtrans
@@ -67,8 +71,14 @@ export default function BuyProduct() {
   const params = useParams();
   const productId = params?.id;
   const [userId, setUserId] = useState<number | null>(null);
-
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const { theme, setTheme } = useTheme();
+
+  const handleCloseSuccessPopup = () => {
+    setShowSuccessPopup(false);
+    router.push("/buyer/my-order"); // arahkan ke halaman pesanan
+  };
 
   // Ambil dan set theme dari localStorage
   useEffect(() => {
@@ -227,8 +237,15 @@ export default function BuyProduct() {
               }),
             }
           );
+
           const saveData = await saveRes.json();
           console.log("✅ Transaksi berhasil disimpan:", saveData);
+
+          // Tampilkan popup sukses
+          setSuccessMessage(
+            "Pembayaran berhasil! Terima kasih telah bertransaksi."
+          );
+          setShowSuccessPopup(true);
         } catch (err) {
           console.error("❌ Gagal menyimpan transaksi:", err);
         }
@@ -277,6 +294,31 @@ export default function BuyProduct() {
           theme === "dark" ? "bg-[#080B2A]" : "bg-white"
         }`}
       >
+        {showSuccessPopup && (
+          <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+            <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+              <div className="flex justify-center mb-4">
+                <Image
+                  src="/images/succes.svg"
+                  width={80}
+                  height={80}
+                  alt="Success"
+                  className="w-20 h-20"
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">
+                Success!
+              </h2>
+              <p className="mb-6 text-blue-400">{successMessage}</p>
+              <button
+                onClick={handleCloseSuccessPopup}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
         <Image
           width={100}
           height={100}
@@ -397,7 +439,7 @@ export default function BuyProduct() {
                   {user?.address
                     ?.toLowerCase()
                     .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  ,{" "}
+                  , {user?.postal_code},{" "}
                   {user?.ward
                     ?.toLowerCase()
                     .replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -511,8 +553,7 @@ export default function BuyProduct() {
             theme === "dark"
               ? "text-white border border-white"
               : "text-[#080B2A] border border-[#080B2A]"
-          }
-`}
+          }`}
         >
           {theme === "dark" ? (
             <svg
@@ -528,7 +569,8 @@ export default function BuyProduct() {
                 fill="currentColor"
                 fillRule="evenodd"
                 clipRule="evenodd"
-              ></path>
+              >
+              </path>
             </svg>
           ) : (
             <svg

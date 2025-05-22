@@ -11,7 +11,7 @@ type RawTransaction = {
   seller_id: number;
   item_id: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "pending" | "paid" | "cancelled" | null;
+  status: "success"| null;
   created_at: string;
   item?: {
     name: string;
@@ -347,7 +347,7 @@ useEffect(() => {
                     <td className="px-6 py-4 text-center">
                       <span
                         className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
-                          item.status == "paid"
+                          item.status === "success"
                             ? "bg-green-700 text-white"
                             : "bg-red-700 text-white"
                         }`}

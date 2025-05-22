@@ -207,7 +207,6 @@ export default function RoomChat() {
               (msg: Chat) => msg.item_id === chat.item_id
             );
           } else {
-            // Jika tidak ada item_id, tampilkan semua pesan dengan lawan bicara
             selectedMessages = data;
           }
 
@@ -242,8 +241,8 @@ export default function RoomChat() {
       return;
     }
 
-    const receiver_id = selectedChat.opponent_id!; // Pengirim adalah userId
-    const item_id = selectedProductId; // Menggunakan item_id yang dipilih
+    const receiver_id = selectedChat.opponent_id!;
+    const item_id = selectedProductId; 
 
     try {
       const response = await fetch(
@@ -403,8 +402,8 @@ export default function RoomChat() {
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
-            <div className="lg:flex lg:flex-row lg:justify-between h-screen max-lg:block z-50">
-              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 border-blue-400 overflow-y-auto min-h-[500px]">
+            <div className="lg:flex lg:flex-row lg:justify-between h-[500px] max-lg:block z-50">
+              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 border-blue-400 overflow-y-auto min-h-[300px]">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
@@ -498,7 +497,7 @@ export default function RoomChat() {
               </div>
 
               <div className="w-full lg:px-5 flex flex-col justify-between">
-                <div className="flex flex-col mt-5 overflow-y-auto min-h-[500px] grow px-1">
+                <div className="flex flex-col mt-5 overflow-y-auto min-h-[300px] grow px-1">
                   {messages.length === 0 ? (
                     <div
                       className={`flex justify-center items-center h-full text-center ${

@@ -88,7 +88,7 @@ export default function NavbarBuyer() {
       <div className="container mx-auto flex justify-between items-center">
         <Link
           href="/"
-          className="dark:text-white text-blue-400 text-lg font-semibold"
+          className=" text-lg font-semibold"
         >
           <Image
             width={100}

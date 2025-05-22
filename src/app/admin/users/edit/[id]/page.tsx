@@ -25,6 +25,10 @@ export default function User() {
     regency: "",
     subdistrict: "",
     ward: "",
+    postal_code: "",
+    payment_account_number: "",
+    account_holder_name: "",
+    payment_type: "",
   });
 
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -41,7 +45,6 @@ export default function User() {
     setShowSuccessPopup(false);
     router.push("/admin/users");
   };
-
   const handleCloseErrorPopup = () => {
     setShowErrorPopup(false);
   };
@@ -229,6 +232,10 @@ export default function User() {
           regency: "",
           subdistrict: "",
           ward: "",
+          postal_code: "",
+          payment_account_number: "",
+          account_holder_name: "",
+          payment_type: "",
         });
       }
     } catch (error: unknown) {
@@ -281,6 +288,10 @@ export default function User() {
           regency: data.user.regency,
           subdistrict: data.user.subdistrict,
           ward: data.user.ward,
+          postal_code: data.user.postal_code,
+          payment_account_number: data.user.payment_account_number,
+          account_holder_name: data.user.account_holder_name,
+          payment_type: data.user.payment_type,
         });
         console.log("Set form data:", {
           name: data.user.name,
@@ -292,6 +303,10 @@ export default function User() {
           regency: data.user.regency,
           subdistrict: data.user.subdistrict,
           ward: data.user.ward,
+          postal_code: data.user.postal_code,
+          payment_account_number: data.user.payment_account_number,
+          account_holder_name: data.user.account_holder_name,
+          payment_type: data.user.payment_type,
         });
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -457,6 +472,68 @@ export default function User() {
             />
           </div>
           <div>
+            <label htmlFor="role" className="block mb-1">
+              Tipe Payment
+            </label>
+            <select
+              name="payment_type"
+              id="payment_type"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              onChange={handleChange}
+              value={formData.payment_type}
+            >
+              <option value="" disabled>
+                Select payment type
+              </option>
+              <option className="text-blue-400" value="gopay">
+                Gopay
+              </option>
+              <option className="text-blue-400" value="shopee pay">
+                Shopee Pay
+              </option>
+              <option className="text-blue-400" value="dana">
+                DANA
+              </option>
+              <option className="text-blue-400" value="bank bri">
+                Bank BRI
+              </option>
+              <option className="text-blue-400" value="bank muamalat">
+                Bank Muamalat
+              </option>
+              <option className="text-blue-400" value="bank mandiri">
+                Bank Mandiri
+              </option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="account_holder_name" className="block mb-1">
+              Nama Pemilik Rekening
+            </label>
+            <input
+              type="text"
+              name="account_holder_name"
+              id="account_holder_name"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              placeholder="Enter account holder name"
+              onChange={handleChange}
+              value={formData.account_holder_name}
+            />
+          </div>
+          <div>
+            <label htmlFor="payment_account_number" className="block mb-1">
+              No Rekening
+            </label>
+            <input
+              type="number"
+              name="payment_account_number"
+              id="payment_account_number"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              placeholder="Enter payment account number"
+              onChange={handleChange}
+              value={formData.payment_account_number}
+            />
+          </div>
+          <div>
             {" "}
             <label htmlFor="phone_number" className="block mb-1">
               Provinsi
@@ -557,6 +634,20 @@ export default function User() {
               ))}
             </select>
           </div>
+          <div>
+            <label htmlFor="postal_code" className="block mb-1">
+              Kode Pos
+            </label>
+            <input
+              type="number"
+              name="postal_code"
+              id="postal_code"
+              className="w-full p-2 bg-white/20 text-white rounded"
+              placeholder="Enter postal code"
+              onChange={handleChange}
+              value={formData.postal_code}
+            />
+          </div>
 
           <div>
             <label htmlFor="address" className="block mb-1">
@@ -606,7 +697,6 @@ export default function User() {
             </div>
           </div>
         )}
-
         {showErrorPopup && (
           <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
             <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">

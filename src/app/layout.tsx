@@ -48,7 +48,9 @@ export default function RootLayout({
       className={theme === "dark" ? "dark" : ""}
     >
       <head />
-      <body className="dark:bg-[#080B2A] bg-white relative">
+      <body
+        className={`${theme === "dark" ? "bg-[#080B2A]" : "bg-white"} relative`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

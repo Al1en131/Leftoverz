@@ -287,9 +287,7 @@ export default function ProductDetail() {
           product?: {
             id?: number;
           };
-          // properti lain sesuai respons API
         }
-        // Ambil ID produk dari objek product di dalam masing-masing item
         const favoriteIds = data.data
           .map((item: FavoriteItem) => Number(item.product?.id))
           .filter(Boolean);
@@ -393,7 +391,7 @@ export default function ProductDetail() {
   };
   const handleCloseSuccessPopup = async () => {
     setShowSuccessPopup(false);
-    await fetchFavorites(); // Perbarui data favorit
+    await fetchFavorites();
     router.push("/buyer/favorite");
   };
   useEffect(() => {
@@ -401,7 +399,7 @@ export default function ProductDetail() {
       fetchFavorites();
     };
 
-    window.addEventListener("focus", refreshFavorites); // <-- ini penting
+    window.addEventListener("focus", refreshFavorites); 
 
     return () => {
       window.removeEventListener("focus", refreshFavorites);
@@ -438,7 +436,7 @@ export default function ProductDetail() {
     <div
       className={`min-h-screen flex items-center justify-center ${
         theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-      } lg:px-20 max-lg:px-6 max-lg:pt-24 max-lg:pb-8`}
+      } lg:px-20 max-lg:px-8 max-lg:pt-24 max-lg:pb-8`}
     >
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
@@ -532,100 +530,124 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
-      <div className="lg:flex lg:gap-10 max-lg:gap-4">
-        <div className="lg:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
-          <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
-            {product && (
-              <Image
-                src={selectedImage ?? "/placeholder.jpg"}
-                alt={product.name}
-                width={600}
-                height={600}
-                className="w-full lg:h-96 max-lg:h-72 object-cover rounded-lg"
+      <div className="">
+        <Link
+          href="/buyer/product/"
+          className="flex gap-2 mb-4 items-center"
+        >
+          <div className="bg-blue-400 items-center p-2 rounded-full">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18"
               />
-            )}
+            </svg>
           </div>
-          <div className="grid grid-cols-5 lg:gap-4 max-lg:gap-3 lg:mt-6 max-lg:mt-4">
-            {product?.image.map((img, index) => (
-              <button key={index} onClick={() => setSelectedImage(img)}>
+          <p className="text-blue-400">Back to Products</p>
+        </Link>
+        <div className="lg:flex lg:gap-10 max-lg:gap-4">
+          <div className="lg:w-4/12 max-lg:w-full z-40 max-lg:mb-4">
+            <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
+              {product && (
                 <Image
-                  src={img}
-                  alt={`Thumbnail ${index}`}
-                  width={100}
-                  height={100}
-                  className="lg:w-24 lg:h-24 max-lg:h-20 max-lg:w-full object-cover rounded-lg"
+                  src={selectedImage ?? "/placeholder.jpg"}
+                  alt={product.name}
+                  width={600}
+                  height={600}
+                  className="w-full lg:h-96 max-lg:h-72 object-cover rounded-lg"
                 />
-              </button>
-            ))}
+              )}
+            </div>
+            <div className="grid grid-cols-5 lg:gap-4 max-lg:gap-3 lg:mt-6 max-lg:mt-4">
+              {product?.image.map((img, index) => (
+                <button key={index} onClick={() => setSelectedImage(img)}>
+                  <Image
+                    src={img}
+                    alt={`Thumbnail ${index}`}
+                    width={100}
+                    height={100}
+                    className="lg:w-24 lg:h-16 max-lg:h-20 max-lg:w-full object-cover rounded-lg"
+                  />
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
-          <div className="block relative h-full">
-            <h3
-              className={`text-xl mb-2 font-bold tracking-wide ${
-                theme === "dark" ? "text-white" : "text-[#080B2A]"
-              }`}
-            >
-              {product?.name}
-            </h3>
-            <p
-              className={`mb-2  ${
-                theme === "dark" ? "text-white" : "text-[#080B2A]"
-              }`}
-            >
-              {product?.user?.ward
-                ?.toLowerCase()
-                .replace(/\b\w/g, (c) => c.toUpperCase())}
-              ,{" "}
-              {product?.user?.subdistrict
-                ?.toLowerCase()
-                .replace(/\b\w/g, (c) => c.toUpperCase())}
-              ,{" "}
-              {product?.user?.regency
-                ?.toLowerCase()
-                .replace(/\b\w/g, (c) => c.toUpperCase())}
-              ,{" "}
-              {product?.user?.province
-                ?.toLowerCase()
-                .replace(/\b\w/g, (c) => c.toUpperCase())}
-            </p>
-
-            <div className="flex items-center mb-8 gap-2">
-              <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
-                {product?.seller?.name
-                  ? product?.seller.name
-                      .split(" ")
-                      .map((word) => word.charAt(0))
-                      .join("")
-                      .toUpperCase()
-                  : "?"}
-              </span>
-              <p className="text-blue-400 font-semibold">
-                {product?.seller?.name}
+          <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
+            <div className="block relative h-full">
+              <h3
+                className={`text-xl mb-2 font-bold tracking-wide ${
+                  theme === "dark" ? "text-white" : "text-[#080B2A]"
+                }`}
+              >
+                {product?.name}
+              </h3>
+              <p
+                className={`mb-2  ${
+                  theme === "dark" ? "text-white" : "text-[#080B2A]"
+                }`}
+              >
+                {product?.user?.ward
+                  ?.toLowerCase()
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
+                ,{" "}
+                {product?.user?.subdistrict
+                  ?.toLowerCase()
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
+                ,{" "}
+                {product?.user?.regency
+                  ?.toLowerCase()
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
+                ,{" "}
+                {product?.user?.province
+                  ?.toLowerCase()
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
               </p>
-            </div>
-            <p
-              className={`text-base mb-5 max-lg:text-justify" ${
-                theme === "dark" ? "text-white" : "text-[#080B2A]"
-              }`}
-            >
-              {product?.description}
-            </p>
-            <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
-              <p>Lama Penggunaan :</p>
-              <p> {product?.used_duration}</p>
-            </div>
-            <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0">
-              <p>Harga Asli :</p>
-              <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+
+              <div className="flex items-center mb-8 gap-2">
+                <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
+                  {product?.seller?.name
+                    ? product?.seller.name
+                        .split(" ")
+                        .map((word) => word.charAt(0))
+                        .join("")
+                        .toUpperCase()
+                    : "?"}
+                </span>
+                <p className="text-blue-400 font-semibold">
+                  {product?.seller?.name}
+                </p>
+              </div>
+              <p
+                className={`text-base mb-5 max-lg:text-justify" ${
+                  theme === "dark" ? "text-white" : "text-[#080B2A]"
+                }`}
+              >
+                {product?.description}
+              </p>
+              <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
+                <p>Lama Penggunaan :</p>
+                <p> {product?.used_duration}</p>
+              </div>
+              <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0">
+                <p>Harga Asli :</p>
+                <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="fixed bottom-[90px] lg:right-20 max-lg:right-8 z-50">
+      <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-8 z-50">
         <button
           onClick={openChat}
-          className="relative bg-blue-400 hover:bg-blue-400 text-white p-3 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           <svg
             width="800px"
@@ -839,7 +861,7 @@ export default function ProductDetail() {
         onClick={toggleTheme}
         aria-label="Toggle theme"
         title="Toggle theme"
-        className={`fixed bottom-[155px] lg:right-[83px] max-md:right-8 z-40 p-3 rounded-full bg-blue-400 ${
+        className={`fixed bottom-[90px] lg:right-20 max-md:right-8 z-40 p-3 rounded-full bg-blue-400 ${
           theme === "dark" ? "text-white" : "text-white"
         }`}
       >

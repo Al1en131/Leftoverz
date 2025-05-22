@@ -70,11 +70,11 @@ export default function Products() {
 
   const getStatusColor = (status: string | null) => {
     switch (status) {
-      case "paid":
+      case "success":
         return "bg-green-700";
-      case "pending":
+      case "capture":
         return "bg-yellow-500";
-      case "cancelled":
+      case "failed":
         return "bg-red-700";
       default:
         return "bg-gray-500";
