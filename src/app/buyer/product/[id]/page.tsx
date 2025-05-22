@@ -42,6 +42,7 @@ type Product = {
     ward: string;
     regency: string;
     province: string;
+    name: string;
   };
 };
 
@@ -657,7 +658,13 @@ export default function ProductDetail() {
           <div className="mt-4 w-80 bg-white border border-blue-400 rounded-2xl shadow-xl overflow-hidden animate-fade-in">
             <div className="bg-blue-400 text-white px-4 py-3 font-semibold flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="w-8 h-8 text-xs text-blue-400 bg-white rounded-full flex items-center justify-center">
+                <span
+                  className={`w-8 h-8 text-xs rounded-full flex items-center justify-center ${
+                    theme === "dark"
+                      ? "text-blue-400 bg-white"
+                      : "text-white bg-blue-400"
+                  }`}
+                >
                   {product?.seller?.name
                     ? product?.seller.name
                         .split(" ")

@@ -4,15 +4,46 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Script from "next/script";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  phone_number: string;
+  role: string;
+  image: string[];
+  description: string;
+  price: number;
+  status: string;
+  user_id: number;
+  used_duration: string;
+  original_price: number;
+  seller?: { id: number; name: string };
+  user?: {
+    subdistrict: string;
+    ward: string;
+    regency: string;
+    province: string;
+    name: string;
+  };
+};
 
 type User = {
   name: string;
   email: string;
   phone: string;
   id: string;
+  role: string;
+  address: string;
+  subdistrict: string;
+  province: string;
+  ward: string;
+  regency: string;
 };
 
-// Deklarasi global untuk Snap Midtrans
+// Deklarasi global Snap Midtrans
 declare global {
   interface Window {
     snap: {
@@ -31,9 +62,15 @@ declare global {
 
 export default function BuyProduct() {
   const [user, setUser] = useState<User | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
+  const router = useRouter();
+  const params = useParams();
+  const productId = params?.id;
+  const [userId, setUserId] = useState<number | null>(null);
+
   const { theme, setTheme } = useTheme();
 
-  // Setup tema dari localStorage
+  // Ambil dan set theme dari localStorage
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -41,85 +78,190 @@ export default function BuyProduct() {
     }
   }, [theme, setTheme]);
 
+  // Ambil user ID dari localStorage dan fetch user dari API
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
+
+    if (storedUserId && token) {
+      const id = Number(storedUserId);
+      setUserId(id);
+
+      const fetchUser = async () => {
+        try {
+          const response = await fetch(
+            `http://127.0.0.1:1031/api/v1/user/${id}`,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+
+          const data = await response.json();
+          if (data?.user) {
+            setUser({
+              ...data.user,
+              id: String(data.user.id),
+            });
+          }
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+        }
+      };
+
+      fetchUser();
+    }
+  }, []);
+
+  // Ambil data produk
+  useEffect(() => {
+    if (!productId) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(
+          `http://127.0.0.1:1031/api/v1/product/detail/${productId}`
+        );
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        let parsedImage = data.product.image;
+
+        try {
+          parsedImage = JSON.parse(parsedImage);
+        } catch {
+          console.log("Image is not in valid JSON format, skipping parsing.");
+        }
+
+        const formattedImages = Array.isArray(parsedImage)
+          ? parsedImage.map(
+              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+            )
+          : parsedImage?.url
+          ? [`http://127.0.0.1:1031${parsedImage.url}`]
+          : [];
+
+        setProduct({
+          ...data.product,
+          image: formattedImages,
+        });
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error("An unknown error occurred");
+        }
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  const handlePayment = async () => {
+    if (!user || !product) {
+      alert("User atau Produk belum siap.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    const nameParts = user.name.trim().split(" ");
+    const first_name = nameParts[0];
+    const last_name = nameParts.slice(1).join(" ");
+    const order_id = "ORDER-ID-" + Date.now();
+
+    try {
+      const res = await fetch(
+        "http://127.0.0.1:1031/api/v1/create-midtrans-token",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            order_id,
+            gross_amount: product.price + 5000,
+            customer: {
+              first_name,
+              last_name,
+              email: user.email,
+              phone: user.phone,
+            },
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error("Gagal mendapatkan token dari Midtrans");
+      }
+
+      const data = await res.json();
+
+      if (!data.token) {
+        alert("Token pembayaran tidak tersedia.");
+        return;
+      }
+
+      const saveTransaction = async (result) => {
+        const total = product.price + 5000;
+        try {
+          const saveRes = await fetch(
+            "http://127.0.0.1:1031/api/v1/create/transaction",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                order_id,
+                buyer_id: user.id,
+                seller_id: product.user_id,
+                item_id: product.id,
+                payment_method: result.payment_type || "unknown",
+                status: result.transaction_status || "unknown",
+                total,
+              }),
+            }
+          );
+          const saveData = await saveRes.json();
+          console.log("✅ Transaksi berhasil disimpan:", saveData);
+        } catch (err) {
+          console.error("❌ Gagal menyimpan transaksi:", err);
+        }
+      };
+
+      window.snap.pay(data.token, {
+        onSuccess: saveTransaction,
+        onPending: saveTransaction,
+        onError: (result) => {
+          alert("❌ Pembayaran gagal.");
+          console.error(result);
+        },
+        onClose: () => {
+          alert("Pembayaran dibatalkan.");
+        },
+      });
+    } catch (error) {
+      console.error("❌ Error saat handlePayment:", error);
+    }
+  };
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
+
+  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
-  };
-
-  // Ambil data user dari localStorage
-  useEffect(() => {
-    const name = localStorage.getItem("name");
-    const email = localStorage.getItem("email");
-    const phone = localStorage.getItem("no_hp") || "08123456789";
-    const id = localStorage.getItem("id");
-
-    if (name && email && id) {
-      setUser({ name, email, phone, id });
-    }
-  }, []);
-
-  // Fungsi pembayaran
-  const handlePayment = async () => {
-    if (!user) {
-      alert("User belum login!");
-      return;
-    }
-
-    const nameParts = user.name.trim().split(" ");
-    const first_name = nameParts[0];
-    const last_name = nameParts.slice(1).join(" ");
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(
-      "http://127.0.0.1:1031/api/v1/create-midtrans-token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          order_id: "ORDER-ID-" + Date.now(),
-          gross_amount: 60000,
-          customer: {
-            first_name,
-            last_name,
-            email: user.email,
-            phone: user.phone,
-          },
-        }),
-      }
-    );
-
-    if (!res.ok) {
-      alert("Gagal mengambil token pembayaran.");
-      return;
-    }
-
-    const data = await res.json();
-
-    if (data.token) {
-      window.snap.pay(data.token, {
-        onSuccess: (result) => {
-          alert("Pembayaran berhasil!");
-          console.log(result);
-        },
-        onPending: (result) => {
-          alert("Menunggu pembayaran.");
-          console.log(result);
-        },
-        onError: (result) => {
-          alert("Pembayaran gagal.");
-          console.error(result);
-        },
-        onClose: () => {
-          alert("Popup pembayaran ditutup.");
-        },
-      });
-    } else {
-      alert("Token pembayaran tidak tersedia.");
-    }
   };
 
   return (
@@ -190,9 +332,27 @@ export default function BuyProduct() {
             <div className="lg:flex lg:gap-2 relative max-lg:space-y-6 items-center h-auto">
               <div className="lg:w-1/3 max-lg:w-full">
                 <div className="max-lg:flex items-center mb-4 gap-2 lg:hidden">
-                  <span className="w-8 h-8 bg-gray-300 rounded-full"></span>
-                  <p className="text-blue-400 text-xl tracking-wide font-semibold">
-                    Alien
+                  <span
+                    className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
+                      theme === "dark"
+                        ? "text-blue-400 bg-white"
+                        : "text-white bg-blue-400"
+                    }`}
+                  >
+                    {user?.name
+                      ? user?.name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                          .toUpperCase()
+                      : "?"}
+                  </span>
+                  <p
+                    className={`font-semibold text-lg ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
+                    {user?.name}
                   </p>
                 </div>
                 <Image
@@ -204,30 +364,67 @@ export default function BuyProduct() {
                 />
               </div>
               <div className="w-full">
-                <div className="max-lg:hidden items-center mb-4 gap-2 lg:block">
-                  <span className="w-8 h-8 bg-gray-300 rounded-full"></span>
-                  <p className="text-blue-400 text-xl tracking-wide font-semibold">
-                    Alien
+                <div className="flex items-center gap-2 max-lg:hidden">
+                  <span
+                    className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
+                      theme === "dark"
+                        ? "text-blue-400 bg-white"
+                        : "text-white bg-blue-400"
+                    }`}
+                  >
+                    {user?.name
+                      ? user?.name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                          .toUpperCase()
+                      : "?"}
+                  </span>
+                  <p
+                    className={`font-semibold text-lg ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
+                    {user?.name}
                   </p>
                 </div>
-                <h3 className="text-blue-400 text-xl lg:mb-4 mb-2 font-bold tracking-wide">
-                  Product Name
-                </h3>
+
                 <p
-                  className={`text-base ${
+                  className={`text-base mb-2 lg:ps-12 ${
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Rp. 20.000
+                  {user?.address
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {user?.ward
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {user?.subdistrict
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {user?.regency
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {user?.province
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
                 </p>
-                <div className="flex items-center gap-4 lg:absolute lg:bottom-0 lg:right-0 mt-4">
-                  <button
-                    onClick={handlePayment}
-                    className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
-                  >
-                    Payment Gateway
-                  </button>
-                </div>
+                <h3 className="text-blue-400 lg:ps-12 text-xl lg:mb-4 mb-2 font-bold tracking-wide">
+                  {product?.name}
+                </h3>
+
+                <p
+                  className={`text-base lg:ps-12 ${
+                    theme === "dark" ? "text-white" : "text-[#080B2A]"
+                  }`}
+                >
+                  Rp {product?.price.toLocaleString("id-ID")}
+                </p>
               </div>
             </div>
           </div>
@@ -248,30 +445,14 @@ export default function BuyProduct() {
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Barang
+                  {product?.name}
                 </p>
                 <p
                   className={`text-base ${
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Rp.30.000
-                </p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
-                >
-                  Barang
-                </p>
-                <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
-                >
-                  Rp.30.000
+                  Rp {product?.price.toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="flex justify-between items-center">
@@ -280,14 +461,14 @@ export default function BuyProduct() {
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Barang
+                  Biaya Admin
                 </p>
                 <p
                   className={`text-base ${
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Rp.30.000
+                  Rp.5.000
                 </p>
               </div>
             </div>
@@ -304,20 +485,23 @@ export default function BuyProduct() {
                   theme === "dark" ? "text-white" : "text-[#080B2A]"
                 }`}
               >
-                Rp.30.000
+                Rp{" "}
+                {(product?.price ? product.price + 5000 : 0).toLocaleString(
+                  "id-ID"
+                )}
               </p>
             </div>
           </div>
-          <Link
-            href=""
+          <button
+            onClick={handlePayment}
             className={`px-6 py-3 text-center border w-full flex justify-center rounded-full z-50 border-blue-400 hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400 ${
               theme === "dark"
                 ? "bg-white/20 text-white"
                 : "bg-black/5 text-[#080B2A]"
-            }  `}
+            }`}
           >
-            Beli
-          </Link>
+            Beli Sekarang
+          </button>
         </div>
         <button
           onClick={toggleTheme}

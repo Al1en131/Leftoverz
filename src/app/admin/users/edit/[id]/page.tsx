@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useRouter, useParams } from "next/navigation";
 import Link from "next/link";
@@ -70,6 +70,11 @@ export default function User() {
   const apiKey =
     "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
 
+  const isInitialLoadRef = useRef(true);
+  const isProvinceFirstLoad = useRef(true);
+  const isRegencyFirstLoad = useRef(true);
+  const isSubdistrictFirstLoad = useRef(true);
+
   useEffect(() => {
     fetch(`https://api.binderbyte.com/wilayah/provinsi?api_key=${apiKey}`)
       .then((res) => res.json())
@@ -95,7 +100,9 @@ export default function User() {
         setRegency(data.value);
       }
 
-      if (!isInitialLoad) {
+      if (isProvinceFirstLoad.current) {
+        isProvinceFirstLoad.current = false;
+      } else {
         setFormData((prev) => ({
           ...prev,
           regency: "",
@@ -108,7 +115,7 @@ export default function User() {
     };
 
     fetchRegency();
-  }, [formData.province, provinces, isInitialLoad]);
+  }, [formData.province, provinces]);
 
   useEffect(() => {
     const selectedRegency = regency.find(
@@ -125,7 +132,9 @@ export default function User() {
         setSubdistricts(data.value);
       }
 
-      if (!isInitialLoad) {
+      if (isRegencyFirstLoad.current) {
+        isRegencyFirstLoad.current = false;
+      } else {
         setFormData((prev) => ({
           ...prev,
           subdistrict: "",
@@ -136,7 +145,7 @@ export default function User() {
     };
 
     fetchSubdistrict();
-  }, [formData.regency, regency, isInitialLoad]);
+  }, [formData.regency, regency]);
 
   useEffect(() => {
     const selectedSubdistrict = subdistricts.find(
@@ -153,7 +162,9 @@ export default function User() {
         setWards(data.value);
       }
 
-      if (!isInitialLoad) {
+      if (isSubdistrictFirstLoad.current) {
+        isSubdistrictFirstLoad.current = false;
+      } else {
         setFormData((prev) => ({
           ...prev,
           ward: "",
@@ -162,7 +173,7 @@ export default function User() {
     };
 
     fetchWard();
-  }, [formData.subdistrict, subdistricts, isInitialLoad]);
+  }, [formData.subdistrict, subdistricts]);
 
   useEffect(() => {
     if (
@@ -174,9 +185,9 @@ export default function User() {
       subdistricts.length > 0 &&
       wards.length > 0
     ) {
-      setIsInitialLoad(false); // load selesai
+      isInitialLoadRef.current = false;
     }
-  }, [formData, regency, subdistricts, wards, isInitialLoad]);
+  }, [formData, regency, subdistricts, wards]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
