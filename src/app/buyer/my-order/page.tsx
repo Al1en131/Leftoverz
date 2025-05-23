@@ -505,7 +505,7 @@ export default function MyOrder() {
                     </div>
                     <div className="w-full flex justify-between items-center text-white">
                       <Link
-                        href={`/product/detail/${item.id}`}
+                        href={`/buyer/my-order/${item.id}`}
                         className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                       >
                         Lihat Status Pesanan

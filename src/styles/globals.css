@@ -174,3 +174,14 @@ body {
   border-radius: 10px;
 }
 
+/* Sembunyikan scrollbar untuk semua browser */
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+

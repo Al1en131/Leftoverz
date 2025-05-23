@@ -77,10 +77,9 @@ export default function BuyProduct() {
 
   const handleCloseSuccessPopup = () => {
     setShowSuccessPopup(false);
-    router.push("/buyer/my-order"); // arahkan ke halaman pesanan
+    router.push("/buyer/my-order");
   };
 
-  // Ambil dan set theme dari localStorage
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -398,7 +397,15 @@ export default function BuyProduct() {
                   </p>
                 </div>
                 <Image
-                  src="/images/hero-1.jpg"
+                  src={
+                    product?.image &&
+                    Array.isArray(product?.image) &&
+                    product?.image.length > 0 &&
+                    typeof product?.image[0] === "string" &&
+                    product?.image[0].startsWith("/")
+                      ? `http://127.0.0.1:1031${product?.image[0]}`
+                      : "/images/default-product.png"
+                  }
                   alt=""
                   width={100}
                   height={100}
@@ -569,8 +576,7 @@ export default function BuyProduct() {
                 fill="currentColor"
                 fillRule="evenodd"
                 clipRule="evenodd"
-              >
-              </path>
+              ></path>
             </svg>
           ) : (
             <svg
