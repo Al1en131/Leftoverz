@@ -242,7 +242,7 @@ export default function RoomChat() {
     }
 
     const receiver_id = selectedChat.opponent_id!;
-    const item_id = selectedProductId; 
+    const item_id = selectedProductId;
 
     try {
       const response = await fetch(
@@ -389,9 +389,10 @@ export default function RoomChat() {
             >
               <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Chat</h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old.
+                Kelola percakapan Anda dengan pembeli atau calon pembeli di
+                sini. Jawab pertanyaan, diskusikan detail produk, dan bangun
+                komunikasi yang baik untuk meningkatkan kepercayaan dan
+                penjualan.
               </p>
             </div>
           </div>
@@ -580,8 +581,6 @@ export default function RoomChat() {
                     })
                   )}
                 </div>
-
-                {/* Message input section */}
                 <div className="pt-5 flex items-center gap-2">
                   <div className="w-3/12 text-black">
                     <select

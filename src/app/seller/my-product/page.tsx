@@ -254,11 +254,13 @@ export default function MyProduct() {
                   : "bg-white/30 text-[#080B2A]"
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             >
-              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Product</h1>
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">
+                My Product
+              </h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old.
+                Ini adalah produk-produk yang kamu miliki. Kelola produkmu
+                dengan mudah di sini, mulai dari mengubah informasi hingga
+                menghapus produk yang sudah tidak ingin dijual.
               </p>
             </div>
           </div>

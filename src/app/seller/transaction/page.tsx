@@ -10,9 +10,10 @@ type RawTransaction = {
   buyer_id: number;
   seller_id: number;
   item_id: number;
-  payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "success"| null;
+  payment_method: string;
+  status: "success" | null;
   created_at: string;
+  total: number;
   item?: {
     name: string;
     image: string[]; // Tambahkan ini
@@ -32,12 +33,12 @@ export default function Transaction() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -197,9 +198,9 @@ useEffect(() => {
                 Transaction
               </h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
-                Contrary to popular belief, Lorem Ipsum is not simply random
-                text. It has roots in a piece of classical Latin literature from
-                45 BC, making it over 2000 years old.
+                Kelola dan pantau semua transaksi Anda dengan mudah di satu
+                tempat. Dapatkan informasi terkini dan detail tentang setiap
+                pembelian dan penjualan yang Anda lakukan melalui platform ini.
               </p>
             </div>
           </div>
@@ -262,8 +263,8 @@ useEffect(() => {
             >
               <tr className="border-b">
                 <th className="px-6 py-3 text-center">Image</th>
-                <th className="px-6 py-3 text-center">Product Name</th>
-                <th className="px-6 py-3 text-center">Buyer</th>
+                <th className="px-6 py-3 text-left">Product Name</th>
+                <th className="px-6 py-3 text-left">Buyer</th>
                 <th className="px-6 py-3 text-center">Payment Method</th>
                 <th className="px-6 py-3 text-center">Price</th>
                 <th className="px-6 py-3 text-center">Status</th>
@@ -331,18 +332,27 @@ useEffect(() => {
                       {item.buyer?.name}
                     </td>
                     <td
-                      className={`px-6 py-4 text-left capitalize ${
+                      className={`px-6 py-4 text-center capitalize ${
                         theme === "dark" ? "text-white" : "text-blue-400"
                       }`}
                     >
-                      {item.payment_method || "-"}
+                      {item.payment_method
+                        ? item.payment_method
+                            .split("_")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")
+                        : "-"}
                     </td>
+
                     <td
-                      className={`px-6 py-4 text-left ${
+                      className={`px-6 py-4 text-center ${
                         theme === "dark" ? "text-white" : "text-blue-400"
                       }`}
                     >
-                      Rp. {item.item?.price.toLocaleString("id-ID")}
+                      Rp. {item.total.toLocaleString("id-ID")}
                     </td>
                     <td className="px-6 py-4 text-center">
                       <span
@@ -358,13 +368,24 @@ useEffect(() => {
                     <td className="px-6 py-4 text-center space-x-2">
                       <Link
                         href={`/transaction/edit/${item.id}`}
-                        className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                        className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
                       >
-                        Edit
+                        <svg
+                          className="w-4 h-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
+                          />
+                        </svg>
                       </Link>
-                      <button className="px-4 py-2 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition">
-                        Delete
-                      </button>
                     </td>
                   </tr>
                 ))
