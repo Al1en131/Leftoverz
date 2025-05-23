@@ -216,7 +216,7 @@ export default function BuyProduct() {
         case "sicepat":
           apiKey =
             "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
-          courierParam = "sicepat"; // si cepat -> sicepat di param API
+          courierParam = "sicepat"; 
           break;
         default:
           alert("Kurir tidak dikenali.");

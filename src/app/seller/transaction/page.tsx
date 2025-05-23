@@ -14,6 +14,8 @@ type RawTransaction = {
   status: "success" | null;
   created_at: string;
   total: number;
+  awb: string;
+  courir: string;
   item?: {
     name: string;
     image: string[]; // Tambahkan ini
@@ -33,6 +35,66 @@ export default function Transaction() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
+  const [trackingData, setTrackingData] = useState(null);
+  const [showTrackingModal, setShowTrackingModal] = useState(false);
+
+  const handleTrackPackage = async () => {
+    try {
+      if (!selectedTransaction) {
+        alert("Pilih transaksi dulu.");
+        return;
+      }
+
+      const courierRaw = selectedTransaction.courir;
+      const awb = selectedTransaction.awb;
+
+      if (!courierRaw || !awb) {
+        alert("Data ekspedisi tidak lengkap.");
+        return;
+      }
+
+      const courier = courierRaw.toLowerCase();
+
+      let apiKey = "";
+      let courierParam = courier;
+
+      switch (courier) {
+        case "jne":
+        case "jnt":
+          apiKey =
+            "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
+          break;
+        case "si cepat":
+        case "sicepat":
+          apiKey =
+            "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
+          courierParam = "sicepat";
+          break;
+        default:
+          alert("Kurir tidak dikenali.");
+          return;
+      }
+
+      const res = await fetch(
+        `https://api.binderbyte.com/v1/track?api_key=${apiKey}&courier=${courierParam}&awb=${awb}`
+      );
+      const result = await res.json();
+
+      if (result.status === 200) {
+        setTrackingData(result.data);
+        setShowTrackingModal(true);
+      } else {
+        alert("Tracking gagal: " + result.message);
+      }
+    } catch (err) {
+      console.error("Tracking Error:", err);
+      alert("Terjadi kesalahan saat tracking.");
+    }
+  };
+
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -52,7 +114,7 @@ export default function Transaction() {
       setUserId(storedUserId);
     }
   }, []);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
@@ -69,57 +131,91 @@ export default function Transaction() {
     currentPage * itemsPerPage
   );
 
-  useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        if (!userId) return;
+  const fetchTransactions = async () => {
+    try {
+      if (!userId) return;
 
-        const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/transactions/user/${userId}`
-        );
-        const response: { transactions: RawTransaction[]; message: string } =
-          await res.json();
+      const res = await fetch(
+        `http://127.0.0.1:1031/api/v1/transactions/user/${userId}`
+      );
+      const response: { transactions: RawTransaction[]; message: string } =
+        await res.json();
 
-        if (res.ok) {
-          const mappedTransactions: Transaction[] = response.transactions.map(
-            (transaction) => {
-              const imageData = transaction.item?.image;
-              let imageArray: string[] = [];
+      if (res.ok) {
+        const mappedTransactions: Transaction[] = response.transactions.map(
+          (transaction) => {
+            const imageData = transaction.item?.image;
+            let imageArray: string[] = [];
 
-              if (typeof imageData === "string") {
-                try {
-                  imageArray = JSON.parse(imageData);
-                } catch {
-                  imageArray = [imageData];
-                }
-              } else if (Array.isArray(imageData)) {
-                imageArray = imageData;
+            if (typeof imageData === "string") {
+              try {
+                imageArray = JSON.parse(imageData);
+              } catch {
+                imageArray = [imageData];
               }
-
-              return {
-                ...transaction,
-                item_name: transaction.item?.name || "Unknown",
-                price: transaction.item?.price || 0,
-                buyer_name: transaction.buyer?.name || "Unknown",
-                seller_name: transaction.seller?.name || "Unknown",
-                image: imageArray,
-              };
+            } else if (Array.isArray(imageData)) {
+              imageArray = imageData;
             }
-          );
 
-          setTransactions(mappedTransactions);
-        } else {
-          console.error("Fetch error:", response.message);
-        }
-      } catch (error) {
-        console.error("Network error:", error);
-      } finally {
-        setLoading(false);
+            return {
+              ...transaction,
+              item_name: transaction.item?.name || "Unknown",
+              price: transaction.item?.price || 0,
+              buyer_name: transaction.buyer?.name || "Unknown",
+              seller_name: transaction.seller?.name || "Unknown",
+              image: imageArray,
+            };
+          }
+        );
+
+        setTransactions(mappedTransactions);
+      } else {
+        console.error("Fetch error:", response.message);
       }
-    };
-
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchTransactions();
   }, [userId]);
+
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState({ id: null, awb: "", courir: "" });
+
+  const handleEditClick = (item) => {
+    setEditData({
+      id: item.id,
+      awb: item.awb || "",
+      courir: item.courir || "", // pastikan property ini ada di `item`
+    });
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:1031/api/v1/transactions/${editData.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            awb: editData.awb,
+            courir: editData.courir,
+          }),
+        }
+      );
+
+      if (!response.ok) throw new Error("Gagal update");
+
+      setShowEditModal(false);
+      fetchTransactions(); // Pastikan fungsi ini sudah ada di scope
+    } catch (error) {
+      console.error("Update error:", error);
+    }
+  };
 
   return (
     <div
@@ -158,21 +254,21 @@ export default function Transaction() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-[400px] right-32 -z-0"
+          className="w-4 absolute top-[400px] right-32 -z-0 max-lg:hidden"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-44 left-10 -z-0"
+          className="w-4 absolute top-44 left-10 -z-0 max-lg:hidden"
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute top-36 left-[550px] -z-0"
+          className="w-4 absolute top-36 left-[550px] -z-0 max-lg:hidden"
         />
         <div
           className={`pt-28 pb-20 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative ${
@@ -252,146 +348,424 @@ export default function Transaction() {
           </form>
         </div>
 
-        <div className="relative overflow-x-auto lg:px-20 max-lg:px-6 pb-10 rounded-lg">
-          <table className="w-full border border-blue-400 rounded-lg overflow-hidden">
-            <thead
-              className={`text-md ${
-                theme === "dark"
-                  ? "bg-white/10 text-white"
-                  : "bg-black/5 text-blue-400"
-              }`}
-            >
-              <tr className="border-b">
-                <th className="px-6 py-3 text-center">Image</th>
-                <th className="px-6 py-3 text-left">Product Name</th>
-                <th className="px-6 py-3 text-left">Buyer</th>
-                <th className="px-6 py-3 text-center">Payment Method</th>
-                <th className="px-6 py-3 text-center">Price</th>
-                <th className="px-6 py-3 text-center">Status</th>
-                <th className="px-6 py-3 text-center">Action</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {loading ? (
-                <tr>
-                  <td colSpan={7} className="text-center text-white py-8">
-                    Loading...
-                  </td>
+        <div className="relative w-full lg:px-20 max-lg:px-6 pb-10 rounded-lg">
+          <div className="overflow-x-auto">
+            <table className="min-w-max w-full border border-blue-400 rounded-lg overflow-hidden">
+              <thead
+                className={`text-md ${
+                  theme === "dark"
+                    ? "bg-white/10 text-white"
+                    : "bg-black/5 text-blue-400"
+                }`}
+              >
+                <tr className="border-b">
+                  <th className="px-6 py-3 text-center">Image</th>
+                  <th className="px-6 py-3 text-left">Product Name</th>
+                  <th className="px-6 py-3 text-left">Buyer</th>
+                  <th className="px-6 py-3 text-center">Payment Method</th>
+                  <th className="px-6 py-3 text-center">Price</th>
+                  <th className="px-6 py-3 text-center">Status</th>
+                  <th className="px-6 py-3 text-center">Kurir</th>
+                  <th className="px-6 py-3 text-center">No. Resi</th>
+                  <th className="px-6 py-3 text-center">Action</th>
                 </tr>
-              ) : paginatedTransactions.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={7}
-                    className={`text-center py-8 ${
-                      theme === "dark" ? "text-white" : "text-black"
-                    }`}
-                  >
-                    Tidak ada data transaksi
-                  </td>
-                </tr>
-              ) : (
-                paginatedTransactions.map((item) => (
-                  <tr
-                    key={item.id}
-                    className={`border-b transition ${
-                      theme === "dark"
-                        ? "bg-white/10 text-white"
-                        : "bg-black/5 text-blue-400"
-                    }`}
-                  >
-                    <td className="px-6 py-4 text-center flex justify-center">
-                      <Image
-                        src={
-                          item.image &&
-                          Array.isArray(item.image) &&
-                          item.image.length > 0 &&
-                          typeof item.image[0] === "string" &&
-                          item.image[0].startsWith("/")
-                            ? `http://127.0.0.1:1031${item.image[0]}`
-                            : "/images/default-item.png"
-                        }
-                        alt={item.item_name}
-                        width={100}
-                        height={100}
-                        className="w-16 h-16 object-cover rounded-2xl"
-                      />
-                    </td>
-                    <td
-                      className={`px-6 py-4 text-left ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      {item.item?.name}
-                    </td>
-                    <td
-                      className={`px-6 py-4 text-left ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      {item.buyer?.name}
-                    </td>
-                    <td
-                      className={`px-6 py-4 text-center capitalize ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      {item.payment_method
-                        ? item.payment_method
-                            .split("_")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            )
-                            .join(" ")
-                        : "-"}
-                    </td>
+              </thead>
 
-                    <td
-                      className={`px-6 py-4 text-center ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      Rp. {item.total.toLocaleString("id-ID")}
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <span
-                        className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
-                          item.status === "success"
-                            ? "bg-green-700 text-white"
-                            : "bg-red-700 text-white"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center space-x-2">
-                      <Link
-                        href={`/transaction/edit/${item.id}`}
-                        className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
-                          />
-                        </svg>
-                      </Link>
+              <tbody>
+                {loading ? (
+                  <tr>
+                    <td colSpan={7} className="text-center text-white py-8">
+                      Loading...
                     </td>
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
+                ) : paginatedTransactions.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className={`text-center py-8 ${
+                        theme === "dark" ? "text-white" : "text-black"
+                      }`}
+                    >
+                      Tidak ada data transaksi
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedTransactions.map((item) => (
+                    <tr
+                      key={item.id}
+                      className={`border-b transition ${
+                        theme === "dark"
+                          ? "bg-white/10 text-white"
+                          : "bg-black/5 text-blue-400"
+                      }`}
+                    >
+                      <td className="px-6 py-4 text-center flex justify-center">
+                        <Image
+                          src={
+                            item.image &&
+                            Array.isArray(item.image) &&
+                            item.image.length > 0 &&
+                            typeof item.image[0] === "string" &&
+                            item.image[0].startsWith("/")
+                              ? `http://127.0.0.1:1031${item.image[0]}`
+                              : "/images/default-item.png"
+                          }
+                          alt={item.item_name}
+                          width={100}
+                          height={100}
+                          className="w-16 h-16 object-cover rounded-2xl"
+                        />
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-left ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.item?.name}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-left ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.buyer?.name}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-center capitalize ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.payment_method
+                          ? item.payment_method
+                              .split("_")
+                              .map(
+                                (word) =>
+                                  word.charAt(0).toUpperCase() + word.slice(1)
+                              )
+                              .join(" ")
+                          : "-"}
+                      </td>
+
+                      <td
+                        className={`px-6 py-4 text-center ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        Rp. {item.total.toLocaleString("id-ID")}
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <span
+                          className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
+                            item.status === "success"
+                              ? "bg-green-700 text-white"
+                              : "bg-red-700 text-white"
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-center capitalize ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.courir}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-center ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.awb}
+                      </td>
+                      <td className="px-6 py-4 text-center space-x-2">
+                        <button
+                          onClick={() => handleEditClick(item)}
+                          className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
+                            />
+                          </svg>
+                        </button>
+                        {showEditModal && (
+                          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                            <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-md p-6 rounded-xl shadow-xl relative">
+                              <button
+                                className="absolute top-4 right-4 text-red-500 font-bold text-xl"
+                                onClick={() => setShowEditModal(false)}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="currentColor"
+                                  className="size-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+
+                              <h2 className="text-xl font-bold mb-4 text-blue-500">
+                                Edit Transaction
+                              </h2>
+
+                              <div className="space-y-4">
+                                <div>
+                                  <label className="block text-sm font-medium text-blue-400">
+                                    Courier
+                                  </label>
+                                  <select
+                                    value={editData.courir}
+                                    onChange={(e) =>
+                                      setEditData({
+                                        ...editData,
+                                        courir: e.target.value,
+                                      })
+                                    }
+                                    className="w-full mt-1 p-2 border text-blue-400 border-gray-300 rounded-md"
+                                  >
+                                    <option value="">Pilih Kurir</option>
+                                    <option value="jnt">JNT</option>
+                                    <option value="jne">JNE</option>
+                                    <option value="si cepat">SiCepat</option>
+                                  </select>
+                                </div>
+                                <div>
+                                  <label className="block text-sm font-medium text-blue-400">
+                                    No.resi
+                                  </label>
+                                  <input
+                                    type="text"
+                                    value={editData.awb}
+                                    onChange={(e) =>
+                                      setEditData({
+                                        ...editData,
+                                        awb: e.target.value,
+                                      })
+                                    }
+                                    className="w-full mt-1 p-2 border bg-transparent border-gray-300 rounded-md"
+                                  />
+                                </div>
+                                <div className="flex justify-end gap-2">
+                                  <button
+                                    onClick={() => setShowEditModal(false)}
+                                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                                  >
+                                    Batal
+                                  </button>
+                                  <button
+                                    onClick={handleSaveEdit}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                                  >
+                                    Simpan
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        <button
+                          onClick={() => {
+                            setSelectedTransaction(item);
+                            handleTrackPackage(item);
+                          }}
+                          className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-4 h-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
+                          </svg>
+                        </button>
+                        {showTrackingModal && trackingData && (
+                          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                            <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-2xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden">
+                              <button
+                                className="absolute top-4 right-4 text-red-500 font-bold text-xl"
+                                onClick={() => setShowTrackingModal(false)}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="currentColor"
+                                  className="size-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6 18 18 6M6 6l12 12"
+                                  />
+                                </svg>
+                              </button>
+
+                              <h2 className="text-xl font-bold mb-4 text-blue-500">
+                                Tracking Information
+                              </h2>
+
+                              <div className="mb-4 text-blue-400 dark:text-white">
+                                <p>
+                                  <strong className="tracking-wider">
+                                    AWB:
+                                  </strong>{" "}
+                                  {trackingData.summary.awb || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Courier:
+                                  </strong>{" "}
+                                  {trackingData.summary.courier || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Status:
+                                  </strong>{" "}
+                                  {trackingData.summary.status || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Date:
+                                  </strong>{" "}
+                                  {trackingData.summary.date || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Weight:
+                                  </strong>{" "}
+                                  {trackingData.summary.weight || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Cost:
+                                  </strong>{" "}
+                                  Rp {trackingData.summary.amount || "-"}
+                                </p>
+                              </div>
+
+                              <div className="mb-4 text-blue-400 dark:text-white">
+                                <p>
+                                  <strong className="tracking-wider">
+                                    From:
+                                  </strong>{" "}
+                                  {trackingData.detail.origin || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    To:
+                                  </strong>{" "}
+                                  {trackingData.detail.destination || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Shipper:
+                                  </strong>{" "}
+                                  {trackingData.detail.shipper || "-"}
+                                </p>
+                                <p>
+                                  <strong className="tracking-wider">
+                                    Receiver:
+                                  </strong>{" "}
+                                  {trackingData.detail.receiver || "-"}
+                                </p>
+                              </div>
+
+                              <div>
+                                <h3 className="text-lg font-semibold text-blue-500 mb-2">
+                                  Tracking History
+                                </h3>
+                                <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                                  <div className="space-y-6 rounded-lg border border-blue-400 bg-white p-6 shadow-sm dark:bg-white/10">
+                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                      Tracking History
+                                    </h3>
+
+                                    <ol className="relative ms-3 border-s border-gray-500">
+                                      {trackingData?.history?.map(
+                                        (item, index) => (
+                                          <li
+                                            key={index}
+                                            className={`mb-10 ms-6 ${
+                                              index === 0
+                                                ? "text-primary-700 dark:text-primary-500"
+                                                : ""
+                                            }`}
+                                          >
+                                            <span
+                                              className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
+                                                index === 0
+                                                  ? "bg-blue-400"
+                                                  : "bg-gray-500"
+                                              } text-white`}
+                                            >
+                                              <svg
+                                                className="h-4 w-4"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor"
+                                              >
+                                                <path
+                                                  strokeLinecap="round"
+                                                  strokeLinejoin="round"
+                                                  strokeWidth={2}
+                                                  d="M5 11.917 9.724 16.5 19 7.5"
+                                                />
+                                              </svg>
+                                            </span>
+                                            <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">
+                                              {item.date}
+                                            </h4>
+                                            <p className="text-sm text-blue-400">
+                                              {item.desc}
+                                            </p>
+                                          </li>
+                                        )
+                                      )}
+                                    </ol>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
           <div className="flex justify-center pt-4 my-4 gap-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
