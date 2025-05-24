@@ -17,12 +17,12 @@ interface FormData {
 export default function Register() {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -268,7 +268,9 @@ useEffect(() => {
             <button
               type="submit"
               className={`w-full border-2 border-blue-400 rounded-lg py-2.5 hover:bg-blue-500 transition ${
-                theme === "dark" ? "text-white" : "text-blue-400 hover:text-white"
+                theme === "dark"
+                  ? "text-white"
+                  : "text-blue-400 hover:text-white"
               }`}
               disabled={loading}
             >
@@ -297,7 +299,11 @@ useEffect(() => {
       </div>
       {showSuccessPopup && (
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div
+            className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/succes.svg"
@@ -324,7 +330,11 @@ useEffect(() => {
       )}
       {showErrorPopup && (
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"
@@ -357,8 +367,7 @@ useEffect(() => {
           theme === "dark"
             ? "text-white border border-white"
             : "text-[#080B2A] border border-[#080B2A]"
-        }
-`}
+        }`}
       >
         {theme === "dark" ? (
           <svg

@@ -184,12 +184,12 @@ export default function Chats() {
         <table className="w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
           <thead className="text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
-              <th className="px-6 py-3 text-center">No.</th>
-              <th className="px-6 py-3 text-left">Sender</th>
-              <th className="px-6 py-3 text-left">Receiver</th>
-              <th className="px-6 py-3 text-left">Message</th>
-              <th className="px-6 py-3 text-center">Product</th>
-              <th className="px-6 py-3 text-center">Read Status</th>
+              <th className="px-3 py-3 text-center">No.</th>
+              <th className="px-3 py-3 text-left">Sender</th>
+              <th className="px-3 py-3 text-left">Receiver</th>
+              <th className="px-3 py-3 text-left">Message</th>
+              <th className="px-3 py-3 text-left">Product</th>
+              <th className="px-3 py-3 text-center">Read Status</th>
             </tr>
           </thead>
 
@@ -209,34 +209,34 @@ export default function Chats() {
             ) : (
               paginatedchats.map((chat, index) => (
                 <tr key={chat.id} className="border-b border-[#56577A]">
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-3 py-4 text-center">
                     {" "}
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                  <td className="px-6 py-4 text-left">
+                  <td className="px-3 py-4 text-left">
                     {chat.sender?.name && chat.sender.name.length > 25
                       ? chat.sender.name.slice(0, 25) + "..."
                       : chat.sender?.name}
                   </td>
-                  <td className="px-6 py-4 text-left">
+                  <td className="px-3 py-4 text-left">
                     {chat.receiver?.name && chat.receiver.name.length > 25
                       ? chat.receiver.name.slice(0, 25) + "..."
                       : chat.receiver?.name}
                   </td>
-                  <td className="px-6 py-4 text-left">{chat.message}</td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-3 py-4 text-left">{chat.message}</td>
+                  <td className="px-3 py-4 text-left">
                     {chat.Product?.name && chat.Product.name.length > 25
                       ? chat.Product.name.slice(0, 25) + "..."
                       : chat.Product?.name}
                   </td>
-                  <td className="px-6 py-4 text-center">
+                  <td className="px-3 py-4 text-center">
                     {chat.read_status == 0 ? (
                       <button className="px-4 py-1 bg-red-500 text-white rounded-full text-sm">
-                        Belum Dibaca
+                        Unread
                       </button>
                     ) : (
                       <button className="px-4 py-1 bg-blue-400 text-white rounded-full text-sm">
-                        Sudah Dibaca
+                        Read
                       </button>
                     )}
                   </td>

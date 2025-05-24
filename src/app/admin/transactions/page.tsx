@@ -13,6 +13,8 @@ type RawTransaction = {
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "pending" | "paid" | "cancelled" | null;
   created_at: string;
+  awb: string;
+  courir: string;
   item?: {
     name: string;
     image: string[];
@@ -62,8 +64,8 @@ export default function Products() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); 
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
@@ -243,14 +245,15 @@ export default function Products() {
         <table className="w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
           <thead className="text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
-              <th className="px-6 py-3 text-center">No.</th>
-              <th className="px-6 py-3 text-center">Image</th>
-              <th className="px-6 py-3 text-left">Product Name</th>
-              <th className="px-6 py-3 text-left">Buyer</th>
-              <th className="px-6 py-3 text-left">Seller</th>
-              <th className="px-6 py-3 text-center">Payment Method</th>
-              <th className="px-6 py-3 text-center">Price</th>
-              <th className="px-6 py-3 text-center">Status</th>
+              <th className="px-3 py-3 text-center">No.</th>
+              <th className="px-3 py-3 text-left">Product Name</th>
+              <th className="px-3 py-3 text-left">Buyer</th>
+              <th className="px-3 py-3 text-left">Seller</th>
+              <th className="px-3 py-3 text-center">Payment Method</th>
+              <th className="px-3 py-3 text-center">Price</th>
+              <th className="px-3 py-3 text-center">Kurir</th>
+              <th className="px-3 py-3 text-center">No. Resi</th>
+              <th className="px-3 py-3 text-center">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -259,43 +262,32 @@ export default function Products() {
                 key={item.id}
                 className="transition border-b border-[#56577A]"
               >
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-3 py-4 text-white text-center">
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </td>
-                <td className="px-6 py-4 text-white text-center justify-center flex">
-                  <Image
-                    src={
-                      item.image &&
-                      Array.isArray(item.image) &&
-                      item.image.length > 0 &&
-                      typeof item.image[0] === "string" &&
-                      item.image[0].startsWith("/")
-                        ? `http://127.0.0.1:1031${item.image[0]}`
-                        : "/images/default-item.png"
-                    }
-                    alt={item.item_name}
-                    width={100}
-                    height={100}
-                    className="w-12 h-12 object-cover rounded-2xl"
-                  />
-                </td>
-
-                <td className="px-6 py-4 text-white text-left">
+                <td className="px-3 py-4 text-white text-left">
                   {item.item_name}
                 </td>
-                <td className="px-6 py-4 text-white text-left">
+                <td className="px-3 py-4 text-white text-left">
                   {item.buyer_name}
                 </td>
-                <td className="px-6 py-4 text-white text-left">
+                <td className="px-3 py-4 text-white text-left">
                   {item.seller_name}
                 </td>
-                <td className="px-6 py-4 text-white capitalize text-center">
-                  {item.payment_method}
+                <td className="px-3 py-4 text-white capitalize text-center">
+                  {item.payment_method
+                    .split("_")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
                 </td>
-                <td className="px-6 py-4 text-white text-center">
+                <td className="px-3 py-4 text-white text-center">
                   Rp {item.item?.price.toLocaleString("id-ID")}
                 </td>
-                <td className="px-6 py-4 text-center">
+                <td className="px-3 py-4 capitalize text-white text-center">
+                  {item.courir}
+                </td>
+                <td className="px-3 py-4 text-white text-center">{item.awb||'-'}</td>
+                <td className="px-3 py-4 text-center">
                   <span
                     className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${getStatusColor(
                       item.status

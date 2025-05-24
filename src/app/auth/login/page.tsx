@@ -16,12 +16,12 @@ export default function Login() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [userRole, setUserRole] = useState("");
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -97,7 +97,11 @@ useEffect(() => {
     >
       {showErrorPopup && (
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#080B2A] border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"
@@ -125,7 +129,11 @@ useEffect(() => {
 
       {showSuccessPopup && (
         <div className="absolute inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div
+            className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/succes.svg"

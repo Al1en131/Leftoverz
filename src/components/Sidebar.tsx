@@ -227,7 +227,10 @@ const Sidebar = () => {
       </div>
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-100">
-          <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+}`}
+>
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/warning.svg"
