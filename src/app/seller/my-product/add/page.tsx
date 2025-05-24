@@ -178,7 +178,7 @@ useEffect(() => {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Login Successful!
+              Product Successful Created!
             </h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
@@ -492,8 +492,8 @@ useEffect(() => {
                   onChange={handleChange}
                   value={formData.status}
                 >
-                  <option value="available">Available</option>
-                  <option value="sold">Sold</option>
+                  <option className="text-blue-400" value="available">Available</option>
+                  <option className="text-blue-400" value="sold">Sold</option>
                 </select>
               </div>
 

@@ -253,7 +253,6 @@ export default function DetailProfile() {
         setWards([]);
       }
     };
-
     fetchSubdistrict();
   }, [formData.regency, regency]);
 
@@ -333,8 +332,6 @@ export default function DetailProfile() {
           </div>
         </div>
       )}
-
-      {/* Error Popup */}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${

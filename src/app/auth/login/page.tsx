@@ -207,8 +207,8 @@ export default function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 text-white border-gray-300"
-                    : "bg-white/20 text-blue-400 border-blue-400"
+                    ? "bg-white/5 text-white border-gray-300"
+                    : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
                 placeholder="name@company.com"
                 required
@@ -230,8 +230,8 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
                 className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 text-white border-gray-300"
-                    : "bg-white/20 text-blue-400 border-blue-400"
+                    ? "bg-white/5 text-white border-gray-300"
+                    : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
                 placeholder="••••••••"
                 required

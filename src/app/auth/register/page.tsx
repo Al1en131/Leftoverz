@@ -135,8 +135,8 @@ export default function Register() {
                 id="name"
                 className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 text-white border-gray-300"
-                    : "bg-white/20 text-blue-400 border-blue-400"
+                    ? "bg-white/5 text-white border-gray-300"
+                    : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
                 placeholder="username"
                 required
@@ -159,8 +159,8 @@ export default function Register() {
                 id="email"
                 className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 text-white border-gray-300"
-                    : "bg-white/20 text-blue-400 border-blue-400"
+                    ? "bg-white/5 text-white border-gray-300"
+                    : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
                 placeholder="name@company.com"
                 required
@@ -183,8 +183,8 @@ export default function Register() {
                 id="phone_number"
                 className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 text-white border-gray-300"
-                    : "bg-white/20 text-blue-400 border-blue-400"
+                    ? "bg-white/5 text-white border-gray-300"
+                    : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
                 placeholder="0851"
                 required
@@ -208,8 +208,8 @@ export default function Register() {
                 id="password"
                 className={`w-full p-2.5 rounded-lg border-[1.5px] ${
                   theme === "dark"
-                    ? "bg-white/20 text-white border-gray-300"
-                    : "bg-white/20 text-blue-400 border-blue-400"
+                    ? "bg-white/5 text-white border-gray-300"
+                    : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
                 placeholder="••••••••"
                 required

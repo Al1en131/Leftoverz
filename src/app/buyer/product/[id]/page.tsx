@@ -9,7 +9,6 @@ type User = {
   id: number;
   name: string;
 };
-
 type Chat = {
   id: number;
   sender_id: number;
@@ -333,7 +332,7 @@ export default function ProductDetail() {
         const response = await fetch(
           "http://127.0.0.1:1031/api/v1/favorite/delete",
           {
-            method: "DELETE", // ⚠️ gunakan POST bukan DELETE
+            method: "DELETE",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
@@ -399,7 +398,7 @@ export default function ProductDetail() {
       fetchFavorites();
     };
 
-    window.addEventListener("focus", refreshFavorites); 
+    window.addEventListener("focus", refreshFavorites);
 
     return () => {
       window.removeEventListener("focus", refreshFavorites);
@@ -417,7 +416,6 @@ export default function ProductDetail() {
     }
   }, [theme, setTheme]);
 
-  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
@@ -463,10 +461,11 @@ export default function ProductDetail() {
       )}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"
@@ -534,11 +533,8 @@ export default function ProductDetail() {
         className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
       <div className="">
-        <Link
-          href="/buyer/product/"
-          className="flex gap-2 mb-4 items-center"
-        >
-          <div className="bg-blue-400 items-center p-2 rounded-full">
+        <Link href="/buyer/product" className="flex gap-2 z-30 mb-4 items-center">
+          <div className="bg-blue-400 z-30 items-center p-2 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -554,7 +550,7 @@ export default function ProductDetail() {
               />
             </svg>
           </div>
-          <p className="text-blue-400">Back to Products</p>
+          <p className="text-white">Back to Products</p>
         </Link>
         <div className="lg:flex lg:gap-10 max-lg:gap-4">
           <div className="lg:w-4/12 max-lg:w-full z-40 max-lg:mb-4">

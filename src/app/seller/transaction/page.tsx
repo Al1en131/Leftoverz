@@ -382,7 +382,7 @@ export default function Transaction() {
                   <tr>
                     <td
                       colSpan={7}
-                      className={`text-center py-8 ${
+                      className={`text-center items-center justify-center lg:ps-64 py-8 ${
                         theme === "dark" ? "text-white" : "text-black"
                       }`}
                     >

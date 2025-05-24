@@ -269,7 +269,9 @@ export default function Products() {
                   {item.item_name}
                 </td>
                 <td className="px-3 py-4 text-white text-left">
-                  {item.buyer_name}
+                  {item.buyer_name && item.buyer_name.length > 25
+                    ? item.buyer_name.slice(0, 25) + "..."
+                    : item.buyer_name}
                 </td>
                 <td className="px-3 py-4 text-white text-left">
                   {item.seller_name}
@@ -286,10 +288,12 @@ export default function Products() {
                 <td className="px-3 py-4 capitalize text-white text-center">
                   {item.courir}
                 </td>
-                <td className="px-3 py-4 text-white text-center">{item.awb||'-'}</td>
+                <td className="px-3 py-4 text-white text-center">
+                  {item.awb || "-"}
+                </td>
                 <td className="px-3 py-4 text-center">
                   <span
-                    className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${getStatusColor(
+                    className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
                       item.status
                     )} text-white`}
                   >

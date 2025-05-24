@@ -54,7 +54,11 @@ export default function NavbarBuyer() {
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-100">
-          <div className="dark:bg-[#080B2A] bg-white border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
+          <div
+            className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/warning.svg"
@@ -86,10 +90,7 @@ export default function NavbarBuyer() {
         </div>
       )}
       <div className="container mx-auto flex justify-between items-center">
-        <Link
-          href="/"
-          className=" text-lg font-semibold"
-        >
+        <Link href="/" className=" text-lg font-semibold">
           <Image
             width={100}
             height={100}

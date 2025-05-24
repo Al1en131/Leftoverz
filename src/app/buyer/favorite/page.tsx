@@ -213,7 +213,6 @@ export default function Favorite() {
     }
   }, [theme, setTheme]);
 
-  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
@@ -459,7 +458,7 @@ export default function Favorite() {
                 <input
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
-                  placeholder={`Search ${selectedCategory}...`}
+                  placeholder="Search All Products"
                   required
                 />
                 <button

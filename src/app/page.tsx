@@ -24,12 +24,12 @@ export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -590,10 +590,9 @@ useEffect(() => {
             className="w-8 absolute top-44 right-20 max-lg:hidden -z-0"
           />
           <div
-            className={`
-  pb-12 text-center 
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+            className={`pb-12 text-center ${
+              theme === "dark" ? "text-white" : "text-[#080B2A]"
+            }`}
           >
             <h3 className="text-3xl font-bold ">Newly Added Product</h3>
             <p className="">

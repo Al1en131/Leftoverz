@@ -273,7 +273,6 @@ export default function Product() {
       setShowErrorPopup(true);
     }
   };
-
   useEffect(() => {
     fetchProducts();
     fetchFavorites();
@@ -284,7 +283,7 @@ export default function Product() {
   };
   const handleCloseSuccessPopup = async () => {
     setShowSuccessPopup(false);
-    await fetchFavorites(); // Perbarui data favorit
+    await fetchFavorites(); 
     router.push("/buyer/favorite");
   };
 
@@ -293,7 +292,7 @@ export default function Product() {
       fetchFavorites();
     };
 
-    window.addEventListener("focus", refreshFavorites); // <-- ini penting
+    window.addEventListener("focus", refreshFavorites); 
 
     return () => {
       window.removeEventListener("focus", refreshFavorites);
@@ -342,10 +341,11 @@ export default function Product() {
         )}
         {showErrorPopup && (
           <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-            <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+            <div
+              className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+                theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+              }`}
+            >
               <div className="flex justify-center mb-4">
                 <Image
                   src="/images/error.svg"
@@ -417,11 +417,9 @@ export default function Product() {
           className="w-4 absolute top-36 left-[550px] max-lg:hidden -z-0"
         />
         <div
-          className={`
-  pt-28 lg:pb-20 max-lg:pb-10 w-full lg:px-20 max-lg:px-6
-  flex flex-col items-center gap-6 relative
-  ${theme === "dark" ? "bg-white/5" : "bg-black/5"}
-`}
+          className={`pt-28 lg:pb-20 max-lg:pb-10 w-full lg:px-20 max-lg:px-6 flex flex-col items-center gap-6 relative ${
+            theme === "dark" ? "bg-white/5" : "bg-black/5"
+          }`}
         >
           <div className="relative w-full">
             <Image
@@ -471,7 +469,6 @@ export default function Product() {
                   />
                 </svg>
               </button>
-
               {dropdownOpen && (
                 <div
                   ref={dropdownRef}
@@ -501,7 +498,7 @@ export default function Product() {
                 <input
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
-                  placeholder={`Search ${selectedCategory}...`}
+                  placeholder="Search All Products"
                   required
                 />
                 <button
@@ -706,7 +703,6 @@ export default function Product() {
                         <path d="M22 8.69C22 10.66 21.49 12.4 20.69 13.91C19.81 12.98 18.57 12.4 17.2 12.4C14.55 12.4 12.4 14.55 12.4 17.2C12.4 18.43 12.87 19.55 13.63 20.4C13.26 20.57 12.92 20.71 12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.09998 7.56 3.09998C9.37 3.09998 10.99 3.98002 12 5.33002C13.01 3.98002 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.6 22 8.69Z" />
                       </svg>
                     ) : (
-                      // SVG untuk produk belum difavoritkan (outline icon)
                       <svg
                         width="32"
                         height="32"
@@ -763,8 +759,7 @@ export default function Product() {
             theme === "dark"
               ? "text-white border border-white"
               : "text-[#080B2A] border border-[#080B2A]"
-          }
-`}
+          }`}
         >
           {theme === "dark" ? (
             <svg

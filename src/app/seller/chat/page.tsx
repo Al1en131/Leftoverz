@@ -64,7 +64,6 @@ export default function RoomChat() {
   const [userProducts, setUserProducts] = useState<Product[]>([]);
   useEffect(() => {
     if (userId) {
-      // Fetch produk berdasarkan userId
       const fetchProducts = async () => {
         try {
           const res = await fetch(
@@ -202,7 +201,6 @@ export default function RoomChat() {
           let selectedMessages: Chat[];
 
           if (chat.item_id) {
-            // Filter berdasarkan item_id jika tersedia
             selectedMessages = data.filter(
               (msg: Chat) => msg.item_id === chat.item_id
             );
@@ -273,7 +271,6 @@ export default function RoomChat() {
             id: receiver_id,
           },
         };
-
         setMessages((prevMessages) => [...prevMessages, newMessageData]);
         setNewMessage("");
       } else {
@@ -535,7 +532,6 @@ export default function RoomChat() {
                             isSender ? "justify-end" : "justify-start"
                           } mb-4`}
                         >
-                          {/* Avatar penerima */}
                           {isReceiver && (
                             <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full flex items-center justify-center text-white font-bold">
                               {message.sender?.name
@@ -548,7 +544,6 @@ export default function RoomChat() {
                             </span>
                           )}
 
-                          {/* Pesan */}
                           <div
                             className={`py-3 px-4 rounded-xl ${
                               isSender
@@ -563,8 +558,6 @@ export default function RoomChat() {
                             )}
                             {message.message}
                           </div>
-
-                          {/* Avatar pengirim */}
                           {isSender && (
                             <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center mr-4 text-white font-bold">
                               {message.sender?.name
@@ -600,7 +593,6 @@ export default function RoomChat() {
                       ))}
                     </select>
                   </div>
-
                   <input
                     className="w-full bg-gray-300 text-black py-2.5 px-4 rounded-xl"
                     type="text"
