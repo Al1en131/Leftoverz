@@ -284,8 +284,7 @@ export default function Login() {
           theme === "dark"
             ? "text-white border border-white"
             : "text-[#080B2A] border border-[#080B2A]"
-        }
-`}
+        }`}
       >
         {theme === "dark" ? (
           <svg
