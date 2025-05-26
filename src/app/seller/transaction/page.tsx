@@ -337,7 +337,7 @@ export default function Transaction() {
                     ? "text-white bg-white/10"
                     : "text-blue-400 bg-black/5"
                 }`}
-                placeholder="Search Mockups, Logos..."
+                placeholder="Search your transactions"
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -469,14 +469,14 @@ export default function Transaction() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        {item.courir}
+                        {item.courir || '-'}
                       </td>
                       <td
                         className={`px-6 py-4 text-center ${
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        {item.awb}
+                        {item.awb || '-'}
                       </td>
                       <td className="px-6 py-4 text-center space-x-2">
                         <button
@@ -499,7 +499,7 @@ export default function Transaction() {
                           </svg>
                         </button>
                         {showEditModal && (
-                          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                          <div className="fixed inset-0 z-50 bg-black/20 flex items-center justify-center text-left">
                             <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-md p-6 rounded-xl shadow-xl relative">
                               <button
                                 className="absolute top-4 right-4 text-red-500 font-bold text-xl"
@@ -609,7 +609,7 @@ export default function Transaction() {
                           </svg>
                         </button>
                         {showTrackingModal && trackingData && (
-                          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                          <div className="fixed inset-0 z-50 bg-black/20 flex items-center justify-center text-left">
                             <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-2xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden">
                               <button
                                 className="absolute top-4 right-4 text-red-500 font-bold text-xl"

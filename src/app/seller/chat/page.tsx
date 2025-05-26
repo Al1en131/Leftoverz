@@ -60,7 +60,6 @@ export default function RoomChat() {
     if (storedUserId) setUserId(Number(storedUserId));
     if (storedUserName) setUserName(storedUserName);
   }, []);
-
   const [userProducts, setUserProducts] = useState<Product[]>([]);
   useEffect(() => {
     if (userId) {
@@ -79,7 +78,6 @@ export default function RoomChat() {
           console.error("Error fetching products:", error);
         }
       };
-
       fetchProducts();
     }
   }, [userId]);
@@ -301,7 +299,6 @@ export default function RoomChat() {
 
   useEffect(() => {
     if (!userId || !selectedChat) return;
-
     const interval = setInterval(() => {
       fetchChats();
       handleChatSelect(selectedChat);
@@ -309,7 +306,6 @@ export default function RoomChat() {
 
     return () => clearInterval(interval);
   }, [userId, selectedChat, fetchChats, handleChatSelect]);
-
   return (
     <div
       className={`items-center ${
@@ -600,7 +596,6 @@ export default function RoomChat() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                   />
-
                   <button
                     className="p-3 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={handleSendMessage}
