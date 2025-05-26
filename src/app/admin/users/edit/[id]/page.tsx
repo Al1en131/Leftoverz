@@ -459,7 +459,7 @@ export default function User() {
 
           <div>
             <label htmlFor="phone_number" className="block mb-1">
-              No HP
+              Phone Number
             </label>
             <input
               type="text"
@@ -473,7 +473,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="role" className="block mb-1">
-              Tipe Payment
+              Payment Type
             </label>
             <select
               name="payment_type"
@@ -507,7 +507,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="account_holder_name" className="block mb-1">
-              Nama Pemilik Rekening
+              Account Holder Name
             </label>
             <input
               type="text"
@@ -521,7 +521,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="payment_account_number" className="block mb-1">
-              No Rekening
+              Payment Account Number
             </label>
             <input
               type="number"
@@ -536,7 +536,7 @@ export default function User() {
           <div>
             {" "}
             <label htmlFor="phone_number" className="block mb-1">
-              Provinsi
+              Province
             </label>
             <select
               name="province"
@@ -561,7 +561,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="kabupaten" className="block mb-1">
-              Kabupaten
+              Regency
             </label>
             <select
               name="regency"
@@ -571,7 +571,7 @@ export default function User() {
               value={formData.regency}
             >
               <option value="" disabled>
-                Select kabupaten
+                Select regency
               </option>
               {regency.map((data: { id: string; name: string }) => (
                 <option
@@ -586,7 +586,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="district" className="block mb-1">
-              Kecamatan
+              District
             </label>
             <select
               name="subdistrict"
@@ -596,7 +596,7 @@ export default function User() {
               value={formData.subdistrict}
             >
               <option value="" disabled>
-                Select kecamatan
+                Select district
               </option>
               {subdistricts.map((data: { id: string; name: string }) => (
                 <option
@@ -611,7 +611,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="village" className="block mb-1">
-              Kelurahan
+              Village
             </label>
             <select
               name="ward"
@@ -621,7 +621,7 @@ export default function User() {
               value={formData.ward}
             >
               <option value="" disabled>
-                Select kelurahan
+                Select Village
               </option>
               {wards.map((data: { id: string; name: string }) => (
                 <option
@@ -636,7 +636,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="postal_code" className="block mb-1">
-              Kode Pos
+              Postal Code
             </label>
             <input
               type="number"

@@ -309,7 +309,7 @@ export default function EditProduct() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Product Successfully Updated!
+              Success!
             </h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 

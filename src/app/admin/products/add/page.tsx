@@ -214,7 +214,7 @@ export default function AddProduct() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Product Successfully Created!
+              Success!
             </h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
