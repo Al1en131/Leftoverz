@@ -34,6 +34,7 @@ type Product = {
     user_id: number;
     seller_name: string;
     subdistrict: string;
+    status: string;
     seller: { name: string; subdistrict: string };
   };
 };
@@ -89,16 +90,18 @@ export default function Favorite() {
       const data = await response.json();
       console.log(data);
 
-      const parsedFavorites = data.data.map(
-        (fav: RawFavorite): Product => ({
-          ...fav,
-          user: fav.user,
-          product: {
-            ...fav.product,
-            image: JSON.parse(fav.product.image),
-          },
-        })
-      );
+      const parsedFavorites = data.data
+        .filter((fav: RawFavorite) => fav.product?.status === "available")
+        .map(
+          (fav: RawFavorite): Product => ({
+            ...fav,
+            user: fav.user,
+            product: {
+              ...fav.product,
+              image: JSON.parse(fav.product.image),
+            },
+          })
+        );
 
       setProducts(parsedFavorites);
     } catch (error: unknown) {
@@ -298,10 +301,11 @@ export default function Favorite() {
       )}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"
@@ -405,55 +409,6 @@ export default function Favorite() {
         <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center">
           <form className="w-full mx-auto relative">
             <div className="flex">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setDropdownOpen(!dropdownOpen);
-                }}
-                className="shrink-0 z-10 lg:inline-flex hidden items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
-                type="button"
-              >
-                {selectedCategory}
-                <svg
-                  className="w-2.5 h-2.5 ms-2.5"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-
-              {dropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute left-0 top-full mt-1 z-10 bg-black/60 border border-white divide-gray-100 rounded-lg shadow-sm w-44"
-                >
-                  <ul className="py-2 text-sm text-white">
-                    {["Mockups", "Templates", "Design", "Logos"].map(
-                      (category) => (
-                        <li key={category}>
-                          <button
-                            type="button"
-                            className="inline-flex w-full px-4 py-2 hover:bg-white/20"
-                            onClick={() => {
-                              setSelectedCategory(category);
-                              setDropdownOpen(false);
-                            }}
-                          >
-                            {category}
-                          </button>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              )}
               <div className="relative w-full">
                 <input
                   type="search"
@@ -567,7 +522,6 @@ export default function Favorite() {
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-            {/* Validasi jika tidak ada produk favorit */}
             {currentProducts.length === 0 ? (
               <div
                 className={`col-span-full block text-center justify-center text-lg mb-1 font-bold ${
@@ -665,12 +619,12 @@ export default function Favorite() {
                   <div className="w-full flex justify-between items-center gap-2 text-white">
                     <Link
                       href={`/buyer/product/${item.product?.id}`}
-                      className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                      className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                     >
                       Lihat Detail
                     </Link>
                     <button
-                      className={`z-50 ${
+                      className={`z-30 ${
                         theme === "dark" ? "text-white" : "text-blue-400"
                       }`}
                       onClick={() => {

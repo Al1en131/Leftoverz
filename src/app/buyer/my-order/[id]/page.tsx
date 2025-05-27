@@ -66,10 +66,12 @@ type RawTransaction = {
   buyer?: { name: string };
   seller?: {
     name: string;
+    address: string;
     ward: string;
     regency: string;
     province: string;
     subdistrict: string;
+    postal_code: number;
   };
 };
 
@@ -216,7 +218,7 @@ export default function BuyProduct() {
         case "sicepat":
           apiKey =
             "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
-          courierParam = "sicepat"; 
+          courierParam = "sicepat";
           break;
         default:
           alert("Kurir tidak dikenali.");
@@ -330,7 +332,7 @@ export default function BuyProduct() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-[700px] right-[300px] opacity-35 -z-0"
         />
-        <div className="lg:p-20 max-lg:px-6 max-lg:py-14 mt-10 w-full">
+        <div className="lg:p-20 max-lg:px-6 max-lg:py-14 lg:mt-4 max-lg:mt-10 w-full">
           <div
             className={`lg:p-10 p-7 border_section rounded-2xl ${
               theme === "dark" ? "bg-white/20" : "bg-black/5"
@@ -355,10 +357,17 @@ export default function BuyProduct() {
                 />
               </div>
               <div className="w-full">
-                <p className="text-blue-400 mb-2 text-lg">Buyer :</p>
-                <div className="flex items-center gap-2 mb-3">
+                <p
+                  className={`text-xl ${
+                    theme === "dark" ? "text-white" : "text-[#080B2A]"
+                  }`}
+                >
+                  {transaction?.item_name}
+                </p>
+                <p className="text-blue-400 mb-1 text-base">Buyer :</p>
+                <div className="flex items-center gap-2">
                   <span
-                    className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
+                    className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
                       theme === "dark"
                         ? "text-white bg-blue-400"
                         : "text-white bg-blue-400"
@@ -382,14 +391,14 @@ export default function BuyProduct() {
                 </div>
 
                 <p
-                  className={`text-base mb-2 lg:ps-12 ${
+                  className={`text-base mb-1 ps-12 ${
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
                   {user?.address
                     ?.toLowerCase()
                     .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  , {user?.postal_code},{" "}
+                  ,
                   {user?.ward
                     ?.toLowerCase()
                     .replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -405,14 +414,15 @@ export default function BuyProduct() {
                   {user?.province
                     ?.toLowerCase()
                     .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  , {user?.postal_code}
                 </p>
                 {!loading && transaction && (
                   <div>
-                    <p className="text-blue-400 mt-4 text-lg">Seller :</p>
+                    <p className="text-blue-400 mt-3 text-base">Seller :</p>
 
-                    <div className="mt-2 flex items-center gap-2">
+                    <div className="mt-1 flex items-center gap-2">
                       <span
-                        className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
+                        className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
                           theme === "dark"
                             ? "text-white bg-blue-400"
                             : "text-white bg-blue-400"
@@ -435,14 +445,14 @@ export default function BuyProduct() {
                       </p>
                     </div>
                     <p
-                      className={`text-base mt-3 mb-2 lg:ps-12 ${
+                      className={`text-base mb-2 ps-12 ${
                         theme === "dark" ? "text-white" : "text-[#080B2A]"
                       }`}
                     >
-                      {transaction.seller?.subdistrict
+                      {transaction.seller?.address
                         ?.toLowerCase()
                         .replace(/\b\w/g, (c) => c.toUpperCase())}
-                      , {user?.postal_code},{" "}
+                      ,
                       {transaction.seller?.ward
                         ?.toLowerCase()
                         .replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -458,6 +468,7 @@ export default function BuyProduct() {
                       {transaction.seller?.province
                         ?.toLowerCase()
                         .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      ,{""} {transaction?.seller?.postal_code}
                     </p>
                   </div>
                 )}
@@ -466,7 +477,7 @@ export default function BuyProduct() {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={handleTrackPackage}
-                className="bg-blue-400 px-4 py-2 rounded-full text-white hover:bg-blue-500"
+                className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
               >
                 Tracking Package
               </button>
@@ -604,7 +615,12 @@ export default function BuyProduct() {
               theme === "dark" ? "bg-white/20" : "bg-black/5"
             }`}
           >
-            <h3 className="text-3xl font-bold text-blue-400">Payment Detail</h3>
+            <h3 className="text-3xl font-bold text-blue-400 mb-1">
+              Payment Detail
+            </h3>
+            <p className="text-blue-400 text-base mb-2">
+              {transaction?.order_id}
+            </p>
             <div
               className={`block items-center py-4 space-y-2 mb-4 border-b ${
                 theme === "dark" ? "border-b-white" : "border-b-blue-400"

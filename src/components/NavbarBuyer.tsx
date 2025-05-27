@@ -96,15 +96,15 @@ export default function NavbarBuyer() {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className={`${theme === "dark" ? "block" : "hidden"} h-12 w-36`}
+            className={`${theme === "dark" ? "block" : "block"} h-12 w-36`}
           />
-          <Image
+          {/* <Image
             width={100}
             height={100}
             src="/images/logo-light.png"
             alt="Logo"
             className={`${theme === "dark" ? "hidden" : "block"} h-12 w-36`}
-          />
+          /> */}
         </Link>
         <div className="hidden lg:flex items-center space-x-12 text-lg">
           {navLinks.map(({ href, label }, index) => (
@@ -154,7 +154,7 @@ export default function NavbarBuyer() {
                   href="/buyer/detail-profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
-                  Lihat Profil
+                  Edit Profile
                 </Link>
                 <Link
                   href="/buyer/favorite"
@@ -202,7 +202,7 @@ export default function NavbarBuyer() {
                 href="/buyer/detail-profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
-                Lihat Profil
+                Edit Profile
               </Link>
               <Link
                 href="/buyer/favorite"

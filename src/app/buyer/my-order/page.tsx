@@ -29,6 +29,7 @@ type RawTransaction = {
   };
   buyer?: { name: string };
   seller?: { name: string };
+  total: number;
 };
 
 type Transaction = RawTransaction & {
@@ -249,61 +250,11 @@ export default function MyOrder() {
         <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center">
           <form className="w-full mx-auto relative">
             <div className="flex">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setDropdownOpen(!dropdownOpen);
-                }}
-                className="shrink-0 z-10 lg:inline-flex hidden items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
-                type="button"
-              >
-                {selectedCategory}
-                <svg
-                  className="w-2.5 h-2.5 ms-2.5"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-
-              {dropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute left-0 top-full mt-1 z-10 bg-black/60 border border-white divide-gray-100 rounded-lg shadow-sm w-44"
-                >
-                  <ul className="py-2 text-sm text-white">
-                    {["Mockups", "Templates", "Design", "Logos"].map(
-                      (category) => (
-                        <li key={category}>
-                          <button
-                            type="button"
-                            className="inline-flex w-full px-4 py-2 hover:bg-white/20"
-                            onClick={() => {
-                              setSelectedCategory(category);
-                              setDropdownOpen(false);
-                            }}
-                          >
-                            {category}
-                          </button>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              )}
-
               <div className="relative w-full">
                 <input
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
-                  placeholder={`Search ${selectedCategory}...`}
+                  placeholder="Search all data your order..."
                   required
                 />
                 <button
@@ -497,10 +448,10 @@ export default function MyOrder() {
                             : "bg-red-700 text-white"
                         }`}
                       >
-                        {item.status}
+                        Payment {item.status}
                       </span>
                       <p className="text-blue-400 text-base">
-                        Rp. {item.item?.price.toLocaleString()}
+                        Rp. {item.total.toLocaleString()}
                       </p>
                     </div>
                     <div className="w-full flex justify-between items-center text-white">

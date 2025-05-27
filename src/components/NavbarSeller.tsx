@@ -160,7 +160,7 @@ export default function Navbar() {
                     href="/seller/detail-profile"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                   >
-                    Lihat Profil
+                    Edit Profile
                   </Link>
                   <button
                     className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
@@ -202,7 +202,7 @@ export default function Navbar() {
                   href="/seller/detail-profile"
                   className="block px-4 py-2 text-gray-800 z-50 hover:bg-gray-100"
                 >
-                  Lihat Profil
+                  Edit Profile
                 </Link>
                 <button
                   className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"

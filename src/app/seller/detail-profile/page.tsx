@@ -94,9 +94,7 @@ export default function DetailProfile() {
       [name]: value,
     }));
   };
-
   const [userId, setUserId] = useState<number | null>(null);
-
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
     if (storedUserId) {

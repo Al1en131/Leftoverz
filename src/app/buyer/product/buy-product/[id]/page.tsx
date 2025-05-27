@@ -46,8 +46,6 @@ type User = {
   account_holder_name: string;
   payment_type: string;
 };
-
-// Deklarasi global Snap Midtrans
 declare global {
   interface Window {
     snap: {
@@ -87,7 +85,6 @@ export default function BuyProduct() {
     }
   }, [theme, setTheme]);
 
-  // Ambil user ID dari localStorage dan fetch user dari API
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
     const token = localStorage.getItem("token");
@@ -236,11 +233,9 @@ export default function BuyProduct() {
               }),
             }
           );
-
           const saveData = await saveRes.json();
           console.log("✅ Transaksi berhasil disimpan:", saveData);
 
-          // Tampilkan popup sukses
           setSuccessMessage(
             "Pembayaran berhasil! Terima kasih telah bertransaksi."
           );
@@ -283,14 +278,12 @@ export default function BuyProduct() {
     <>
       <Script
         src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key=""
+        data-client-key="SB-Mid-client-PsY6zCz8aRrbmxNc"
         strategy="afterInteractive"
       />
 
       <div
-        className={`min-h-screen flex flex-col items-center ${
-          theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-        }`}
+        className={`min-h-screen flex flex-col items-center bg-[#080B2A]`}
       >
         {showSuccessPopup && (
           <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
@@ -365,9 +358,7 @@ export default function BuyProduct() {
         />
         <div className="lg:p-20 max-lg:px-6 max-lg:py-14 mt-10 w-full">
           <div
-            className={`lg:p-10 p-7 border_section rounded-2xl ${
-              theme === "dark" ? "bg-white/20" : "bg-black/5"
-            }`}
+            className={`lg:p-10 p-7 border_section rounded-2xl bg-white/20`}
           >
             <div className="lg:flex lg:gap-2 relative max-lg:space-y-6 items-center h-auto">
               <div className="lg:w-1/3 max-lg:w-full">
@@ -388,9 +379,7 @@ export default function BuyProduct() {
                       : "?"}
                   </span>
                   <p
-                    className={`font-semibold text-lg ${
-                      theme === "dark" ? "text-white" : "text-blue-400"
-                    }`}
+                    className={`font-semibold text-lg text-white`}
                   >
                     {user?.name}
                   </p>
@@ -406,7 +395,7 @@ export default function BuyProduct() {
                   alt="Product Image"
                   width={100}
                   height={100}
-                  className="lg:w-60 h-60 max-lg:w-full object-cover border border-blue-400 rounded-lg"
+                  className="lg:w-60 h-60 max-lg:w-full object-cover rounded-lg"
                 />
               </div>
               <div className="w-full">
@@ -414,7 +403,7 @@ export default function BuyProduct() {
                   <span
                     className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
                       theme === "dark"
-                        ? "text-blue-400 bg-white"
+                        ? "text-white bg-blue-400"
                         : "text-white bg-blue-400"
                     }`}
                   >
@@ -427,18 +416,14 @@ export default function BuyProduct() {
                       : "?"}
                   </span>
                   <p
-                    className={`font-semibold text-lg ${
-                      theme === "dark" ? "text-white" : "text-blue-400"
-                    }`}
+                    className={`font-semibold text-lg text-white`}
                   >
                     {user?.name}
                   </p>
                 </div>
 
                 <p
-                  className={`text-base mb-2 lg:ps-12 ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
+                  className={`text-base mb-2 lg:ps-12 text-white`}
                 >
                   {user?.address
                     ?.toLowerCase()
@@ -465,9 +450,7 @@ export default function BuyProduct() {
                 </h3>
 
                 <p
-                  className={`text-base lg:ps-12 ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
+                  className={`text-base lg:ps-12 text-white`}
                 >
                   Rp {product?.price.toLocaleString("id-ID")}
                 </p>
@@ -475,44 +458,33 @@ export default function BuyProduct() {
             </div>
           </div>
           <div
-            className={`p-10 border_section my-5 rounded-2xl ${
-              theme === "dark" ? "bg-white/20" : "bg-black/5"
-            }`}
+            className={`p-10 border_section my-5 rounded-2xl bg-white/20`}
           >
             <h3 className="text-3xl font-bold text-blue-400">Payment Detail</h3>
             <div
-              className={`block items-center py-4 space-y-2 mb-4 border-b ${
-                theme === "dark" ? "border-b-white" : "border-b-blue-400"
-              }`}
+              className={`block items-center py-4 space-y-2 mb-4 border-b border-b-white`}
             >
               <div className="flex justify-between items-center">
                 <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
+                  className={`text-base text-white`}
                 >
                   {product?.name}
                 </p>
                 <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
+                  className={`text-base text-white
+                  `}
                 >
                   Rp {product?.price.toLocaleString("id-ID")}
                 </p>
               </div>
               <div className="flex justify-between items-center">
                 <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
+                  className={`text-base text-white`}
                 >
                   Biaya Admin
                 </p>
                 <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
+                  className={`text-base text-white`}
                 >
                   Rp.5.000
                 </p>
@@ -520,16 +492,12 @@ export default function BuyProduct() {
             </div>
             <div className="flex justify-between items-center">
               <p
-                className={`text-base font-bold tracking-wide ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
+                className={`text-base font-bold tracking-wide text-white`}
               >
                 Total
               </p>
               <p
-                className={`text-base ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
+                className={`text-base text-white`}
               >
                 Rp{" "}
                 {(product?.price ? product.price + 5000 : 0).toLocaleString(
@@ -540,11 +508,8 @@ export default function BuyProduct() {
           </div>
           <button
             onClick={handlePayment}
-            className={`px-6 py-3 text-center border w-full flex justify-center rounded-full z-50 border-blue-400 hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400 ${
-              theme === "dark"
-                ? "bg-white/20 text-white"
-                : "bg-black/5 text-[#080B2A]"
-            }`}
+            className={`px-6 py-3 text-center border w-full flex justify-center rounded-full z-50 border-blue-400 hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400 bg-white/20 text-white"
+               `}
           >
             Beli Sekarang
           </button>

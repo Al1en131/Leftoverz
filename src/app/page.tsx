@@ -104,7 +104,6 @@ export default function Home() {
     };
     fetchProducts();
   }, []);
-
   if (loading) {
     return <div>Loading...</div>;
   }
