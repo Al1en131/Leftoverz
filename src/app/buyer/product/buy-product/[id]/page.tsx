@@ -278,7 +278,7 @@ export default function BuyProduct() {
     <>
       <Script
         src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="SB-Mid-client-PsY6zCz8aRrbmxNc"
+        data-client-key=""
         strategy="afterInteractive"
       />
 
