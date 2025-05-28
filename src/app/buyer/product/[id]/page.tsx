@@ -532,7 +532,7 @@ export default function ProductDetail() {
         src="/images/Star-1.svg"
         className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
-      <div className="">
+      <div className="w-full">
         <Link href="/buyer/product" className="flex gap-2 z-30 mb-4 items-center">
           <div className="bg-blue-400 z-30 items-center p-2 rounded-full">
             <svg
@@ -552,7 +552,7 @@ export default function ProductDetail() {
           </div>
           <p className="text-white">Back to Products</p>
         </Link>
-        <div className="lg:flex lg:gap-10 max-lg:gap-4">
+        <div className="lg:flex lg:gap-10 max-lg:gap-4 w-full">
           <div className="lg:w-4/12 max-lg:w-full max-lg:mb-4">
             <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
               {product && (

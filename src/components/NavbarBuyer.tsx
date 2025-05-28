@@ -96,15 +96,15 @@ export default function NavbarBuyer() {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className={`${theme === "dark" ? "block" : "block"} h-12 w-36`}
+            className={`${theme === "dark" ? "block" : "hidden"} h-12 w-36`}
           />
-          {/* <Image
+          <Image
             width={100}
             height={100}
             src="/images/logo-light.png"
             alt="Logo"
             className={`${theme === "dark" ? "hidden" : "block"} h-12 w-36`}
-          /> */}
+          />
         </Link>
         <div className="hidden lg:flex items-center space-x-12 text-lg">
           {navLinks.map(({ href, label }, index) => (
