@@ -85,7 +85,37 @@ export default function AddProduct() {
     return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  const handleChange = (
+  const getEmbeddingFromImage = async (
+    file: File
+  ): Promise<number[] | null> => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch(
+        "http://127.0.0.1:1031/api/v1/embed-local/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Failed to embed image: ${text}`);
+      }
+
+      const data = await response.json();
+      return data.embedding; // harus array angka
+    } catch (error) {
+      console.error("Error generating embedding:", error);
+      return null;
+    }
+  };
+
+  const [embedding, setEmbedding] = useState<number[] | null>(null);
+
+  const handleChange = async (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
@@ -95,8 +125,9 @@ export default function AddProduct() {
 
     if (type === "file" && target.files) {
       const selectedFiles = Array.from(target.files);
-      const totalFiles = formData.image.length + selectedFiles.length;
 
+      // Batasi jumlah gambar maksimal
+      const totalFiles = formData.image.length + selectedFiles.length;
       if (totalFiles > 5) {
         alert("You can only upload up to 5 images.");
         return;
@@ -111,6 +142,13 @@ export default function AddProduct() {
         URL.createObjectURL(file)
       );
       setImagePreviews((prev) => [...prev, ...newPreviews]);
+
+      if (formData.image.length === 0 && selectedFiles.length > 0) {
+        const embeddingResult = await getEmbeddingFromImage(selectedFiles[0]);
+        if (embeddingResult) {
+          setEmbedding(embeddingResult);
+        }
+      }
     } else if (name === "price") {
       const raw = value.replace(/\D/g, "");
       setDisplayPrice(formatPrice(value));
@@ -152,6 +190,9 @@ export default function AddProduct() {
     form.append("original_price", formData.original_price);
 
     formData.image.forEach((file) => form.append("image", file));
+    if (embedding) {
+      form.append("embedding", JSON.stringify(embedding));
+    }
 
     if (
       !formData.name ||
@@ -213,9 +254,7 @@ export default function AddProduct() {
               />
             </div>
 
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Success!
-            </h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button

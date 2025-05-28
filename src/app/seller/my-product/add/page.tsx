@@ -31,8 +31,34 @@ export default function AddProduct() {
     const numberString = value.replace(/\D/g, "");
     return numberString.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+  const getEmbeddingFromImage = async (
+    file: File
+  ): Promise<number[] | null> => {
+    const formData = new FormData();
+    formData.append("image", file);
 
-  const handleChange = (
+    try {
+      const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Failed to embed image: ${text}`);
+      }
+
+      const data = await response.json();
+      return data.embedding;
+    } catch (error) {
+      console.error("Error generating embedding:", error);
+      return null;
+    }
+  };
+
+  const [embedding, setEmbedding] = useState<number[] | null>(null);
+
+  const handleChange = async (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >
@@ -49,15 +75,25 @@ export default function AddProduct() {
         return;
       }
 
+      // Update gambar
       setFormData((prev) => ({
         ...prev,
         image: [...prev.image, ...selectedFiles],
       }));
 
+      // Tampilkan preview
       const newPreviews = selectedFiles.map((file) =>
         URL.createObjectURL(file)
       );
       setImagePreviews((prev) => [...prev, ...newPreviews]);
+
+      // Ambil embedding hanya dari file pertama (atau pertama kali upload)
+      if (formData.image.length === 0 && selectedFiles.length > 0) {
+        const embeddingResult = await getEmbeddingFromImage(selectedFiles[0]);
+        if (embeddingResult) {
+          setEmbedding(embeddingResult);
+        }
+      }
     } else if (name === "price") {
       const raw = value.replace(/\D/g, "");
       setDisplayPrice(formatPrice(value));
@@ -78,6 +114,8 @@ export default function AddProduct() {
         [name]: value,
       }));
     }
+
+    // ... (sisa handleChange tidak berubah)
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -99,6 +137,9 @@ export default function AddProduct() {
 
     // Mengirimkan gambar
     formData.image.forEach((file) => form.append("image", file));
+    if (embedding) {
+      form.append("embedding", JSON.stringify(embedding));
+    }
 
     if (!formData.name || !formData.price || !formData.description) {
       alert("Please fill out all required fields.");
@@ -143,12 +184,12 @@ export default function AddProduct() {
   };
 
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -163,10 +204,11 @@ useEffect(() => {
     >
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/succes.svg"
@@ -193,10 +235,11 @@ useEffect(() => {
       )}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"
@@ -492,8 +535,12 @@ useEffect(() => {
                   onChange={handleChange}
                   value={formData.status}
                 >
-                  <option className="text-blue-400" value="available">Available</option>
-                  <option className="text-blue-400" value="sold">Sold</option>
+                  <option className="text-blue-400" value="available">
+                    Available
+                  </option>
+                  <option className="text-blue-400" value="sold">
+                    Sold
+                  </option>
                 </select>
               </div>
 

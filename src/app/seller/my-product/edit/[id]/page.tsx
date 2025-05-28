@@ -47,12 +47,12 @@ export default function EditProduct() {
     original_price: "",
   });
   const { theme, setTheme } = useTheme();
-useEffect(() => {
-  const storedTheme = localStorage.getItem("theme");
-  if (storedTheme && storedTheme !== theme) {
-    setTheme(storedTheme);
-  }
-}, [theme, setTheme]);
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
@@ -168,21 +168,46 @@ useEffect(() => {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const getEmbeddingFromImage = async (
+    file: File
+  ): Promise<number[] | null> => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Failed to embed image: ${text}`);
+      }
+
+      const data = await response.json();
+      return data.embedding;
+    } catch (error) {
+      console.error("Error generating embedding:", error);
+      return null;
+    }
+  };
+
+  const [embedding, setEmbedding] = useState<number[] | null>(null);
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
 
-    // Hitung total gambar: yang lama masih disimpan + yang baru diunggah
     const totalImages =
       keptInitialImages.length + formData.image.length + newFiles.length;
 
     if (totalImages > 5) {
       setShowErrorPopup(true);
       setErrorMessage("Maximum 5 images allowed including existing ones.");
-      if (fileInputRef.current) fileInputRef.current.value = ""; // reset input
+      if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
 
-    // Gabungkan file lama dengan file baru
     const updatedFiles = [...formData.image, ...newFiles];
     const updatedPreviews = [
       ...imagePreviews,
@@ -191,6 +216,14 @@ useEffect(() => {
 
     setFormData((prev) => ({ ...prev, image: updatedFiles }));
     setImagePreviews(updatedPreviews);
+
+    if (newFiles.length > 0) {
+      // Ambil embedding dari gambar pertama yang baru diupload
+      const embeddingResult = await getEmbeddingFromImage(newFiles[0]);
+      if (embeddingResult) {
+        setEmbedding(embeddingResult);
+      }
+    }
 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -232,6 +265,9 @@ useEffect(() => {
     data.append("keptImages", JSON.stringify(keptInitialImages));
     data.append("used_duration", formData.used_duration);
     data.append("original_price", formData.original_price);
+    if (embedding) {
+      data.append("embedding", JSON.stringify(embedding));
+    }
 
     try {
       const res = await fetch(
@@ -273,10 +309,11 @@ useEffect(() => {
     >
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/succes.svg"
@@ -303,10 +340,11 @@ useEffect(() => {
       )}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"

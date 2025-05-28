@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import "flowbite/dist/flowbite.css";
 import { Listbox } from "@headlessui/react";
 import Link from "next/link";
@@ -26,7 +26,7 @@ type Product = {
   user_id: number;
   seller?: { name: string };
   user?: { subdistrict: string };
-  embedding: Float16Array;
+  embedding: number[];
 };
 
 export default function Product() {
@@ -123,83 +123,148 @@ export default function Product() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("http://127.0.0.1:1031/api/v1/clip", {
+    const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local", {
       method: "POST",
       body: formData,
     });
 
     if (!response.ok) {
-      throw new Error("Gagal mengunggah gambar");
+      const errorText = await response.text();
+      throw new Error(`Gagal mengunggah gambar: ${errorText}`);
     }
 
     const data = await response.json();
-    return data.embedding;
+    console.log("Received embedding from backend:", data.embedding);
+
+    if (Array.isArray(data.embedding)) {
+      if (Array.isArray(data.embedding[0])) {
+        // Kalau backend return array of array, ambil yang pertama
+        return data.embedding[0];
+      } else {
+        // Kalau sudah 1D array
+        return data.embedding;
+      }
+    }
+
+    // Jika embedding bukan array, kembalikan array kosong
+    return [];
   };
 
   const [imageEmbedding, setImageEmbedding] = useState<number[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0];
     if (file) {
-      setImage(URL.createObjectURL(file));
-      const embedding = await getImageEmbedding(file);
-      setImageEmbedding(embedding);
+      setIsLoading(true);
+      try {
+        setImage(URL.createObjectURL(file));
+        const embedding = await getImageEmbedding(file);
+        console.log("Embedding length from upload:", embedding.length);
+        if (embedding.length === 0) {
+          console.warn(
+            "Embedding kosong diterima, mungkin ada masalah backend"
+          );
+        }
+        setImageEmbedding(embedding);
+      } catch (err) {
+        console.error("Error uploading image", err);
+        setImageEmbedding(null);
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
-  const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
   const cosineSimilarity = (vecA: number[], vecB: number[]): number => {
     const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
     const normA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
     const normB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
-    return dot / (normA * normB);
+    const similarity = dot / (normA * normB);
+    console.log("cosineSimilarity:", similarity);
+    return similarity;
   };
+  const filteredProducts = useMemo(() => {
+    let result = products
+      .filter((product) => {
+        const query = searchQuery.toLowerCase();
+        const nameMatch = product.name.toLowerCase().includes(query);
+        const sellerMatch = product.seller?.name.toLowerCase().includes(query);
+        const subdistrictMatch = product.user?.subdistrict
+          ?.toLowerCase()
+          .includes(query);
+        return nameMatch || sellerMatch || subdistrictMatch;
+      })
+      .filter((product) => {
+        const price = Number(product.price);
+        const from = Number(priceFrom);
+        const to = Number(priceTo);
 
-  const filteredProducts = products
-    .filter((product) => {
-      const query = searchQuery.toLowerCase();
-      const nameMatch = product.name.toLowerCase().includes(query);
-      const sellerMatch = product.seller?.name.toLowerCase().includes(query);
-      const subdistrictMatch = product.user?.subdistrict
-        ?.toLowerCase()
-        .includes(query);
-      return nameMatch || sellerMatch || subdistrictMatch;
-    })
-    .filter((product) => {
-      const price = Number(product.price);
-      const from = Number(priceFrom);
-      const to = Number(priceTo);
+        const fromValid = !priceFrom || (!isNaN(from) && price >= from);
+        const toValid = !priceTo || (!isNaN(to) && price <= to);
 
-      const fromValid = !priceFrom || (!isNaN(from) && price >= from);
-      const toValid = !priceTo || (!isNaN(to) && price <= to);
+        return fromValid && toValid;
+      })
+      .filter((product) => {
+        if (!imageEmbedding || imageEmbedding.length === 0) return true;
+        if (!product.embedding) return true;
 
-      return fromValid && toValid;
-    })
-    .filter((product) => {
-      if (
-        !imageEmbedding ||
-        !product.embedding ||
-        !Array.isArray(product.embedding)
-      )
-        return true;
-      const similarity = cosineSimilarity(imageEmbedding, product.embedding);
-      return similarity > 0.3; // Adjust threshold as needed
-    })
+        let productEmbedding: number[] = [];
 
-    .sort((a, b) => {
-      if (selected.value === "low-price") {
-        return a.price - b.price;
-      } else if (selected.value === "high-price") {
-        return b.price - a.price;
-      }
-      return 0;
-    });
+        if (Array.isArray(product.embedding)) {
+          productEmbedding = product.embedding;
+        } else if (typeof product.embedding === "string") {
+          try {
+            productEmbedding = JSON.parse(product.embedding);
+          } catch (error) {
+            console.error(
+              `Failed to parse embedding for product "${product.name}":`,
+              error
+            );
+            return true; // jangan filter produk kalau gagal parse
+          }
+        } else {
+          return true; // embedding bukan array/string
+        }
+
+        if (productEmbedding.length !== imageEmbedding.length) {
+          return false; // skip produk ini
+        }
+
+        const similarity = cosineSimilarity(imageEmbedding, productEmbedding);
+
+        return similarity > 0.5; // threshold bisa disesuaikan
+      });
+
+    // sort
+    if (selected.value === "low-price") {
+      result = result.sort((a, b) => a.price - b.price);
+    } else if (selected.value === "high-price") {
+      result = result.sort((a, b) => b.price - a.price);
+    }
+
+    return result;
+  }, [
+    products,
+    searchQuery,
+    priceFrom,
+    priceTo,
+    selected.value,
+    imageEmbedding,
+  ]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const currentPageProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -209,12 +274,15 @@ export default function Product() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  // Reset page ke 1 jika filter berubah, termasuk imageEmbedding
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, priceFrom, priceTo, selected.value, imageEmbedding]);
+
+  // fetchProducts dan lain-lain tetap
   useEffect(() => {
     fetchProducts();
   }, []);
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, priceFrom, priceTo, selected]);
 
   if (loading) {
     return <div>Loading...</div>;

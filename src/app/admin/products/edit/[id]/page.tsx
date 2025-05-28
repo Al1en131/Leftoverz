@@ -149,7 +149,34 @@ export default function EditProduct() {
     }
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const getEmbeddingFromImage = async (
+    file: File
+  ): Promise<number[] | null> => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local/create", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`Failed to embed image: ${text}`);
+      }
+
+      const data = await response.json();
+      return data.embedding;
+    } catch (error) {
+      console.error("Error generating embedding:", error);
+      return null;
+    }
+  };
+
+  const [embedding, setEmbedding] = useState<number[] | null>(null);
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
 
     const totalImages =
@@ -170,6 +197,14 @@ export default function EditProduct() {
 
     setFormData((prev) => ({ ...prev, image: updatedFiles }));
     setImagePreviews(updatedPreviews);
+
+    if (newFiles.length > 0) {
+      // Ambil embedding dari gambar pertama yang baru diupload
+      const embeddingResult = await getEmbeddingFromImage(newFiles[0]);
+      if (embeddingResult) {
+        setEmbedding(embeddingResult);
+      }
+    }
 
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
@@ -215,9 +250,15 @@ export default function EditProduct() {
     form.append("description", formData.description);
     form.append("user_id", formData.user_id);
     form.append("status", formData.status);
+
     formData.image.forEach((file) => form.append("image", file));
     form.append("removedImages", JSON.stringify(removedImages));
     form.append("keptImages", JSON.stringify(keptInitialImages));
+
+    // Kirim embedding hanya kalau ada
+    if (embedding) {
+      form.append("embedding", JSON.stringify(embedding));
+    }
 
     try {
       const res = await fetch(
@@ -308,9 +349,7 @@ export default function EditProduct() {
               />
             </div>
 
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Success!
-            </h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
