@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import "flowbite/dist/flowbite.css";
 import { Listbox } from "@headlessui/react";
 import Link from "next/link";
@@ -28,10 +28,12 @@ type Product = {
   user_id: number;
   seller?: { name: string };
   user?: { subdistrict: string };
+  embedding: number[];
 };
 
 export default function Product() {
   const router = useRouter();
+  const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -43,13 +45,6 @@ export default function Product() {
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -118,15 +113,173 @@ export default function Product() {
     }
   };
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const getImageEmbedding = async (file: File): Promise<number[]> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Gagal mengunggah gambar: ${errorText}`);
+    }
+
+    const data = await response.json();
+    console.log("Received embedding from backend:", data.embedding);
+
+    if (Array.isArray(data.embedding)) {
+      if (Array.isArray(data.embedding[0])) {
+        // Kalau backend return array of array, ambil yang pertama
+        return data.embedding[0];
+      } else {
+        // Kalau sudah 1D array
+        return data.embedding;
+      }
+    }
+
+    // Jika embedding bukan array, kembalikan array kosong
+    return [];
+  };
+
+  const [imageEmbedding, setImageEmbedding] = useState<number[] | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Fungsi upload gambar dan ambil embedding
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setIsLoading(true);
+      try {
+        setImage(URL.createObjectURL(file)); // Preview
+        const embedding = await getImageEmbedding(file);
+        console.log("Embedding length from upload:", embedding.length);
+        if (embedding.length === 0) {
+          console.warn(
+            "Embedding kosong diterima, mungkin ada masalah backend"
+          );
+        }
+        setImageEmbedding(embedding);
+      } catch (err) {
+        console.error("Error uploading image", err);
+        setImageEmbedding(null);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  // Reset semua data gambar dan input file
+  const handleClearImage = () => {
+    setImage(null);
+    setImageEmbedding(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const itemsPerPage = 12;
+  const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = products.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
+  const cosineSimilarity = (vecA: number[], vecB: number[]): number => {
+    const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+    const normA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+    const normB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+    const similarity = dot / (normA * normB);
+    return similarity;
+  };
+
+  const filteredProducts = useMemo(() => {
+    // Step 1: Filter by search and price first
+    let result = products.filter((product) => {
+      const query = searchQuery.toLowerCase();
+      const nameMatch = product.name.toLowerCase().includes(query);
+      const sellerMatch = product.seller?.name.toLowerCase().includes(query);
+      const subdistrictMatch = product.user?.subdistrict
+        ?.toLowerCase()
+        .includes(query);
+      return nameMatch || sellerMatch || subdistrictMatch;
+    });
+
+    result = result.filter((product) => {
+      const price = Number(product.price);
+      const from = Number(priceFrom);
+      const to = Number(priceTo);
+
+      const fromValid = !priceFrom || (!isNaN(from) && price >= from);
+      const toValid = !priceTo || (!isNaN(to) && price <= to);
+
+      return fromValid && toValid;
+    });
+
+    // Step 2: Jika ada image embedding, cari satu produk dengan similarity tertinggi
+    if (imageEmbedding && imageEmbedding.length > 0) {
+      let maxSim = -1;
+      let bestMatch: (typeof products)[0] | null = null;
+
+      for (const product of result) {
+        if (!product.embedding) continue;
+
+        let productEmbedding: number[] = [];
+
+        if (Array.isArray(product.embedding)) {
+          productEmbedding = product.embedding.map(Number);
+        } else if (typeof product.embedding === "string") {
+          try {
+            productEmbedding = JSON.parse(product.embedding).map(Number);
+          } catch (error) {
+            console.error(
+              `Failed to parse embedding for product "${product.name}":`,
+              error
+            );
+            continue;
+          }
+        }
+
+        if (productEmbedding.length !== imageEmbedding.length) continue;
+
+        const similarity = cosineSimilarity(imageEmbedding, productEmbedding);
+        console.log(`Comparing ${product.name}, similarity: ${similarity}`);
+
+        if (similarity > maxSim) {
+          maxSim = similarity;
+          bestMatch = product;
+        }
+      }
+
+      // Kalau ada hasil terbaik, tampilkan hanya dia
+      result = bestMatch ? [bestMatch] : [];
+    }
+
+    // Step 3: Sorting
+    if (selected.value === "low-price") {
+      result = result.sort((a, b) => a.price - b.price);
+    } else if (selected.value === "high-price") {
+      result = result.sort((a, b) => b.price - a.price);
+    }
+
+    return result;
+  }, [
+    products,
+    searchQuery,
+    priceFrom,
+    priceTo,
+    selected.value,
+    imageEmbedding,
+  ]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+
+  const currentPageProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
-  const totalPages = Math.ceil(products.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -135,6 +288,11 @@ export default function Product() {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+
+  // Reset page ke 1 jika filter berubah, termasuk imageEmbedding
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, priceFrom, priceTo, selected.value, imageEmbedding]);
 
   const [favorites, setFavorites] = useState<number[]>([]);
   const [favoritesLoading, setFavoritesLoading] = useState(true);
@@ -283,7 +441,7 @@ export default function Product() {
   };
   const handleCloseSuccessPopup = async () => {
     setShowSuccessPopup(false);
-    await fetchFavorites(); 
+    await fetchFavorites();
     router.push("/buyer/favorite");
   };
 
@@ -292,7 +450,7 @@ export default function Product() {
       fetchFavorites();
     };
 
-    window.addEventListener("focus", refreshFavorites); 
+    window.addEventListener("focus", refreshFavorites);
 
     return () => {
       window.removeEventListener("focus", refreshFavorites);
@@ -541,29 +699,64 @@ export default function Product() {
               </svg>
             </button>
             {open && (
-              <div className="absolute z-10 w-72 p-4 right-0 top-10 bg-black/50 border border-white rounded-lg shadow-lg mt-2">
-                <h6 className="mb-3 text-sm font-medium text-white">Filter</h6>
+              <div
+                className={`absolute z-10 w-72 p-4 right-0 top-10 border rounded-lg shadow-lg mt-2 ${
+                  theme === "dark"
+                    ? "bg-[#080B2A]/90 border-blue-400"
+                    : "bg-white border-blue-400"
+                }`}
+              >
+                <h6
+                  className={`mb-3 text-lg font-bold ${
+                    theme === "dark" ? "text-white" : "text-blue-400"
+                  }`}
+                >
+                  Filter
+                </h6>
                 <div className="mb-3">
-                  <label className="text-sm font-medium text-white">
+                  <label
+                    className={`text-base font-medium ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
                     Upload Image
                   </label>
                   <input
                     type="file"
                     onChange={handleImageUpload}
-                    className="mt-1 block w-full text-sm border bg-white/30 rounded-lg"
+                    ref={fileInputRef}
+                    className={`mt-1 block w-full text-base border rounded-lg ${
+                      theme === "dark"
+                        ? "text-white bg-white/30"
+                        : "text-blue-400 bg-black/5"
+                    }`}
                   />
                 </div>
+
                 {image && (
-                  <Image
-                    src={image}
-                    alt="Preview"
-                    width={100}
-                    height={100}
-                    className="mt-2 rounded-lg"
-                  />
+                  <div className="relative mt-2 w-full h-48 mb-4">
+                    <button
+                      type="button"
+                      onClick={handleClearImage}
+                      className="absolute top-1 right-1 z-10 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-600"
+                    >
+                      ✕
+                    </button>
+                    <Image
+                      src={image}
+                      alt="Preview"
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
                 )}
+
                 <div className="mb-3">
-                  <label className="text-sm font-medium text-white">
+                  <label
+                    className={`text-base font-medium ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
                     Price
                   </label>
                   <div className="flex gap-2">
@@ -572,28 +765,52 @@ export default function Product() {
                       placeholder="From"
                       value={priceFrom}
                       onChange={(e) => setPriceFrom(e.target.value)}
-                      className="w-1/2 p-2 border rounded-lg placeholder-white text-white bg-white/30"
+                      className={`w-1/2 p-2 border rounded-lg ${
+                        theme === "dark"
+                          ? "text-white placeholder-white border-white bg-white/30"
+                          : "text-blue-400 placeholder-blue-400 border-blue-400 bg-black/5"
+                      }`}
                     />
                     <input
                       type="number"
                       placeholder="To"
                       value={priceTo}
                       onChange={(e) => setPriceTo(e.target.value)}
-                      className="w-1/2 p-2 border rounded-lg bg-white/30 placeholder-white text-white"
+                      className={`w-1/2 p-2 border rounded-lg ${
+                        theme === "dark"
+                          ? "text-white placeholder-white border-white bg-white/30"
+                          : "text-blue-400 placeholder-blue-400 border-blue-400 bg-black/5"
+                      }`}
                     />
                   </div>
                 </div>
                 <div className="relative">
                   <Listbox value={selected} onChange={setSelected}>
-                    <Listbox.Button className="w-full p-2 border rounded-lg text-white bg-white/30">
+                    <Listbox.Button
+                      className={`w-full p-2 border rounded-lg ${
+                        theme === "dark"
+                          ? "text-white bg-white/30"
+                          : "text-blue-400 bg-black/5"
+                      }`}
+                    >
                       {selected.label}
                     </Listbox.Button>
-                    <Listbox.Options className="absolute w-full bg-black/60 border border-white rounded-lg mt-1 shadow-lg">
+                    <Listbox.Options
+                      className={`absolute w-full border rounded-lg mt-1 shadow-lg ${
+                        theme === "dark"
+                          ? "bg-[#080B2A]/90 border-white"
+                          : "bg-white border-blue-400"
+                      }`}
+                    >
                       {options.map((option) => (
                         <Listbox.Option
                           key={option.value}
                           value={option}
-                          className="p-2 text-white hover:bg-blue-500 cursor-pointer"
+                          className={`p-2 cursor-pointer  hover:rounded-lg ${
+                            theme === "dark"
+                              ? "text-white hover:bg-blue-400"
+                              : "text-blue-400 hover:bg-blue-100 "
+                          }`}
                         >
                           {option.label}
                         </Listbox.Option>
@@ -607,7 +824,7 @@ export default function Product() {
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-            {currentProducts.map((product) => (
+            {filteredProducts.map((product) => (
               <div
                 key={product.id}
                 className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
