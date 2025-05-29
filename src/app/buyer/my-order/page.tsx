@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import "flowbite/dist/flowbite.css";
-import { Listbox } from "@headlessui/react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 
@@ -24,7 +23,7 @@ type RawTransaction = {
   created_at: string;
   item?: {
     name: string;
-    image: string[]; // Tambahkan ini
+    image: string[]; 
     price: number;
   };
   buyer?: { name: string };
@@ -75,15 +74,37 @@ export default function MyOrder() {
     const storedUserId = localStorage.getItem("id");
     if (storedUserId) setuserId(storedUserId);
   }, []);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredTransactions, setFilteredTransactions] = useState<
+    Transaction[]
+  >([]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = e.target.value;
+    setSearchTerm(keyword);
+
+    const filtered = transactions.filter(
+      (t) =>
+        t.item_name.toLowerCase().includes(keyword.toLowerCase()) ||
+        t.seller_name.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    setFilteredTransactions(filtered);
+  };
+  useEffect(() => {
+  setFilteredTransactions(transactions);
+}, [transactions]);
+
+
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentTransactions = transactions.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
+  const indexOfLastTransaction = currentPage * itemsPerPage;
+  const indexOfFirstTransaction = indexOfLastTransaction - itemsPerPage;
+  const currentTransactions = filteredTransactions.slice(
+    indexOfFirstTransaction,
+    indexOfLastTransaction
   );
-  const totalPages = Math.ceil(transactions.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -92,6 +113,9 @@ export default function MyOrder() {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
+  useEffect(() => {
+    setCurrentPage(1); 
+  }, [searchTerm]);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -152,7 +176,6 @@ export default function MyOrder() {
     }
   }, [theme, setTheme]);
 
-  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
@@ -255,11 +278,12 @@ export default function MyOrder() {
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
                   placeholder="Search all data your order..."
-                  required
+                  value={searchTerm}
+                  onChange={handleSearchChange}
                 />
                 <button
                   type="submit"
-                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-400 rounded-e-lg border border-blue-00 hover:bg-blue-500"
+                  className="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-400 rounded-e-lg border border-blue-400 hover:bg-blue-500"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 20 20">
                     <path
@@ -274,92 +298,6 @@ export default function MyOrder() {
               </div>
             </div>
           </form>
-          <div className="relative">
-            <button
-              onClick={() => setOpen(!open)}
-              className="text-blue-400 font-medium rounded-lg text-sm ps-4 py-2.5 inline-flex items-center"
-            >
-              <svg
-                className="w-6 h-6"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeWidth="2"
-                  d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z"
-                />
-              </svg>
-            </button>
-            {open && (
-              <div className="absolute z-10 w-72 p-4 right-0 top-10 bg-black/50 border border-white rounded-lg shadow-lg mt-2">
-                <h6 className="mb-3 text-sm font-medium text-white">Filter</h6>
-                <div className="mb-3">
-                  <label className="text-sm font-medium text-white">
-                    Upload Image
-                  </label>
-                  <input
-                    type="file"
-                    onChange={handleImageUpload}
-                    className="mt-1 block w-full text-sm border bg-white/30 rounded-lg"
-                  />
-                </div>
-                {image && (
-                  <Image
-                    src={image}
-                    alt="Preview"
-                    width={100}
-                    height={100}
-                    className="mt-2 rounded-lg"
-                  />
-                )}
-                <div className="mb-3">
-                  <label className="text-sm font-medium text-white">
-                    Price
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="From"
-                      value={priceFrom}
-                      onChange={(e) => setPriceFrom(e.target.value)}
-                      className="w-1/2 p-2 border rounded-lg placeholder-white text-white bg-white/30"
-                    />
-                    <input
-                      type="number"
-                      placeholder="To"
-                      value={priceTo}
-                      onChange={(e) => setPriceTo(e.target.value)}
-                      className="w-1/2 p-2 border rounded-lg bg-white/30 placeholder-white text-white"
-                    />
-                  </div>
-                </div>
-                <div className="relative">
-                  <Listbox value={selected} onChange={setSelected}>
-                    <Listbox.Button className="w-full p-2 border rounded-lg text-white bg-white/30">
-                      {selected.label}
-                    </Listbox.Button>
-                    <Listbox.Options className="absolute w-full bg-black/60 border border-white rounded-lg mt-1 shadow-lg">
-                      {options.map((option) => (
-                        <Listbox.Option
-                          key={option.value}
-                          value={option}
-                          className="p-2 text-white hover:bg-blue-500 cursor-pointer"
-                        >
-                          {option.label}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
-                  </Listbox>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
           {currentTransactions.length === 0 ? (
