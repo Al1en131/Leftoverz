@@ -252,12 +252,9 @@ export default function Product() {
           bestMatch = product;
         }
       }
-
-      // Kalau ada hasil terbaik, tampilkan hanya dia
       result = bestMatch ? [bestMatch] : [];
     }
 
-    // Step 3: Sorting
     if (selected.value === "low-price") {
       result = result.sort((a, b) => a.price - b.price);
     } else if (selected.value === "high-price") {
@@ -289,7 +286,6 @@ export default function Product() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  // Reset page ke 1 jika filter berubah, termasuk imageEmbedding
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, priceFrom, priceTo, selected.value, imageEmbedding]);
@@ -303,8 +299,6 @@ export default function Product() {
       setTheme(storedTheme);
     }
   }, [theme, setTheme]);
-
-  // Fungsi untuk toggle tema
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
     setTheme(newTheme);
@@ -362,7 +356,7 @@ export default function Product() {
 
     const validFavorites = savedFavorites
       .filter(Boolean)
-      .map((id) => Number(id)); // otomatis tipe id infer dari (string | number)
+      .map((id) => Number(id)); 
 
     setFavorites(validFavorites);
   }, []);
@@ -382,7 +376,7 @@ export default function Product() {
         const response = await fetch(
           "http://127.0.0.1:1031/api/v1/favorite/delete",
           {
-            method: "DELETE", // ⚠️ gunakan POST bukan DELETE
+            method: "DELETE", 
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
