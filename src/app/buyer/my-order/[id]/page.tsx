@@ -58,6 +58,27 @@ type Transaction = RawTransaction & {
   image: string[];
 };
 
+type TrackingDataType = {
+  summary: {
+    awb: string;
+    courier: string;
+    status: string;
+    date: string;
+    weight: string;
+    amount: string;
+  };
+  detail: {
+    origin: string;
+    destination: string;
+    shipper: string;
+    receiver: string;
+  };
+  history: {
+    date: string;
+    desc: string;
+  }[];
+};
+
 export default function BuyProduct() {
   const [user, setUser] = useState<User | null>(null);
   const params = useParams();
@@ -65,7 +86,9 @@ export default function BuyProduct() {
   const [userId, setUserId] = useState<number | null>(null);
   const { theme, setTheme } = useTheme();
   const [transaction, setTransaction] = useState<Transaction | null>(null);
-  const [trackingData, setTrackingData] = useState(null);
+  const [trackingData, setTrackingData] = useState<TrackingDataType | null>(
+    null
+  );
   const [showTrackingModal, setShowTrackingModal] = useState(false);
 
   useEffect(() => {
@@ -422,8 +445,12 @@ export default function BuyProduct() {
                 Tracking Package
               </button>
               {showTrackingModal && trackingData && (
-                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
-                  <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-2xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden">
+                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                  <div
+                    className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 ${
+                      theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                    }`}
+                  >
                     <button
                       className="absolute top-4 right-4 text-red-500 font-bold text-xl"
                       onClick={() => setShowTrackingModal(false)}
@@ -448,7 +475,11 @@ export default function BuyProduct() {
                       Tracking Information
                     </h2>
 
-                    <div className="mb-4 text-blue-400 dark:text-white">
+                    <div
+                      className={`mb-4 ${
+                        theme === "dark" ? "text-white" : "text-blue-400"
+                      }`}
+                    >
                       <p>
                         <strong className="tracking-wider">AWB:</strong>{" "}
                         {trackingData.summary.awb || "-"}
@@ -475,7 +506,11 @@ export default function BuyProduct() {
                       </p>
                     </div>
 
-                    <div className="mb-4 text-blue-400 dark:text-white">
+                    <div
+                      className={`mb-4 ${
+                        theme === "dark" ? "text-white" : "text-blue-400"
+                      }`}
+                    >
                       <p>
                         <strong className="tracking-wider">From:</strong>{" "}
                         {trackingData.detail.origin || "-"}
@@ -499,8 +534,16 @@ export default function BuyProduct() {
                         Tracking History
                       </h3>
                       <div className="mt-6 grow sm:mt-8 lg:mt-0">
-                        <div className="space-y-6 rounded-lg border border-blue-400 bg-white p-6 shadow-sm dark:bg-white/10">
-                          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        <div
+                          className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm ${
+                            theme === "dark" ? "bg-white/10" : "bg-white"
+                          }`}
+                        >
+                          <h3
+                            className={`text-xl font-semibold ${
+                              theme === "dark" ? "text-white" : "text-gray-900"
+                            }`}
+                          >
                             Tracking History
                           </h3>
 
@@ -510,7 +553,9 @@ export default function BuyProduct() {
                                 key={index}
                                 className={`mb-10 ms-6 ${
                                   index === 0
-                                    ? "text-primary-700 dark:text-primary-500"
+                                    ? theme === "dark"
+                                      ? "text-primary-500"
+                                      : "text-primary-700"
                                     : ""
                                 }`}
                               >
@@ -533,7 +578,13 @@ export default function BuyProduct() {
                                     />
                                   </svg>
                                 </span>
-                                <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">
+                                <h4
+                                  className={`mb-0.5 text-base font-semibold ${
+                                    theme === "dark"
+                                      ? "text-white"
+                                      : "text-gray-900"
+                                  }`}
+                                >
                                   {item.date}
                                 </h4>
                                 <p className="text-sm text-blue-400">

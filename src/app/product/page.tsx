@@ -52,20 +52,6 @@ export default function Product() {
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -154,7 +140,6 @@ export default function Product() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Fungsi upload gambar dan ambil embedding
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -162,7 +147,7 @@ export default function Product() {
     if (file) {
       setIsLoading(true);
       try {
-        setImage(URL.createObjectURL(file)); // Preview
+        setImage(URL.createObjectURL(file)); 
         const embedding = await getImageEmbedding(file);
         console.log("Embedding length from upload:", embedding.length);
         if (embedding.length === 0) {
@@ -179,8 +164,6 @@ export default function Product() {
       }
     }
   };
-
-  // Reset semua data gambar dan input file
   const handleClearImage = () => {
     setImage(null);
     setImageEmbedding(null);
@@ -191,8 +174,6 @@ export default function Product() {
 
   const itemsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
   const cosineSimilarity = (vecA: number[], vecB: number[]): number => {
     const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
     const normA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
@@ -202,7 +183,6 @@ export default function Product() {
   };
 
   const filteredProducts = useMemo(() => {
-    // Step 1: Filter by search and price first
     let result = products.filter((product) => {
       const query = searchQuery.toLowerCase();
       const nameMatch = product.name.toLowerCase().includes(query);
@@ -224,7 +204,6 @@ export default function Product() {
       return fromValid && toValid;
     });
 
-    // Step 2: Jika ada image embedding, cari satu produk dengan similarity tertinggi
     if (imageEmbedding && imageEmbedding.length > 0) {
       let maxSim = -1;
       let bestMatch: (typeof products)[0] | null = null;
@@ -258,12 +237,8 @@ export default function Product() {
           bestMatch = product;
         }
       }
-
-      // Kalau ada hasil terbaik, tampilkan hanya dia
       result = bestMatch ? [bestMatch] : [];
     }
-
-    // Step 3: Sorting
     if (selected.value === "low-price") {
       result = result.sort((a, b) => a.price - b.price);
     } else if (selected.value === "high-price") {
@@ -282,11 +257,6 @@ export default function Product() {
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
 
-  const currentPageProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
@@ -294,18 +264,15 @@ export default function Product() {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
-
-  // Reset page ke 1 jika filter berubah, termasuk imageEmbedding
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, priceFrom, priceTo, selected.value, imageEmbedding]);
 
-  // fetchProducts dan lain-lain tetap
   useEffect(() => {
     fetchProducts();
   }, []);
 
-  if (loading) {
+  if (loading || isLoading) {
     return <div>Loading...</div>;
   }
   return (

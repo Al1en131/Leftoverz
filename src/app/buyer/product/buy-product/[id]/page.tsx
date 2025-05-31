@@ -60,6 +60,10 @@ declare global {
     };
   }
 }
+type MidtransResult = {
+  payment_type: string;
+  transaction_status: string;
+};
 
 export default function BuyProduct() {
   const [user, setUser] = useState<User | null>(null);
@@ -210,7 +214,9 @@ export default function BuyProduct() {
         return;
       }
 
-      const saveTransaction = async (result) => {
+      const saveTransaction = async (result: unknown) => {
+        const { payment_type, transaction_status } = result as MidtransResult;
+
         const total = product.price + 5000;
         try {
           const saveRes = await fetch(
@@ -226,8 +232,8 @@ export default function BuyProduct() {
                 buyer_id: user.id,
                 seller_id: product.user_id,
                 item_id: product.id,
-                payment_method: result.payment_type || "unknown",
-                status: result.transaction_status || "unknown",
+                payment_method: payment_type || "unknown",
+                status: transaction_status || "unknown",
                 total,
               }),
             }
@@ -245,8 +251,8 @@ export default function BuyProduct() {
       };
 
       window.snap.pay(data.token, {
-        onSuccess: saveTransaction,
-        onPending: saveTransaction,
+        onSuccess: (result) => saveTransaction(result as MidtransResult),
+        onPending: (result) => saveTransaction(result as MidtransResult),
         onError: (result) => {
           alert("❌ Pembayaran gagal.");
           console.error(result);
@@ -281,9 +287,7 @@ export default function BuyProduct() {
         strategy="afterInteractive"
       />
 
-      <div
-        className={`min-h-screen flex flex-col items-center bg-[#080B2A]`}
-      >
+      <div className={`min-h-screen flex flex-col items-center bg-[#080B2A]`}>
         {showSuccessPopup && (
           <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
             <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
@@ -356,9 +360,7 @@ export default function BuyProduct() {
           className="w-4 absolute top-[700px] right-[300px] opacity-35 -z-0"
         />
         <div className="lg:p-20 max-lg:px-6 max-lg:py-14 mt-10 w-full">
-          <div
-            className={`lg:p-10 p-7 border_section rounded-2xl bg-white/20`}
-          >
+          <div className={`lg:p-10 p-7 border_section rounded-2xl bg-white/20`}>
             <div className="lg:flex lg:gap-2 relative max-lg:space-y-6 items-center h-auto">
               <div className="lg:w-1/3 max-lg:w-full">
                 <div className="max-lg:flex items-center mb-4 gap-2 lg:hidden">
@@ -377,9 +379,7 @@ export default function BuyProduct() {
                           .toUpperCase()
                       : "?"}
                   </span>
-                  <p
-                    className={`font-semibold text-lg text-white`}
-                  >
+                  <p className={`font-semibold text-lg text-white`}>
                     {user?.name}
                   </p>
                 </div>
@@ -414,16 +414,12 @@ export default function BuyProduct() {
                           .toUpperCase()
                       : "?"}
                   </span>
-                  <p
-                    className={`font-semibold text-lg text-white`}
-                  >
+                  <p className={`font-semibold text-lg text-white`}>
                     {user?.name}
                   </p>
                 </div>
 
-                <p
-                  className={`text-base mb-2 lg:ps-12 text-white`}
-                >
+                <p className={`text-base mb-2 lg:ps-12 text-white`}>
                   {user?.address
                     ?.toLowerCase()
                     .replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -448,27 +444,19 @@ export default function BuyProduct() {
                   {product?.name}
                 </h3>
 
-                <p
-                  className={`text-base lg:ps-12 text-white`}
-                >
+                <p className={`text-base lg:ps-12 text-white`}>
                   Rp {product?.price.toLocaleString("id-ID")}
                 </p>
               </div>
             </div>
           </div>
-          <div
-            className={`p-10 border_section my-5 rounded-2xl bg-white/20`}
-          >
+          <div className={`p-10 border_section my-5 rounded-2xl bg-white/20`}>
             <h3 className="text-3xl font-bold text-blue-400">Payment Detail</h3>
             <div
               className={`block items-center py-4 space-y-2 mb-4 border-b border-b-white`}
             >
               <div className="flex justify-between items-center">
-                <p
-                  className={`text-base text-white`}
-                >
-                  {product?.name}
-                </p>
+                <p className={`text-base text-white`}>{product?.name}</p>
                 <p
                   className={`text-base text-white
                   `}
@@ -477,27 +465,15 @@ export default function BuyProduct() {
                 </p>
               </div>
               <div className="flex justify-between items-center">
-                <p
-                  className={`text-base text-white`}
-                >
-                  Biaya Admin
-                </p>
-                <p
-                  className={`text-base text-white`}
-                >
-                  Rp.5.000
-                </p>
+                <p className={`text-base text-white`}>Biaya Admin</p>
+                <p className={`text-base text-white`}>Rp.5.000</p>
               </div>
             </div>
             <div className="flex justify-between items-center">
-              <p
-                className={`text-base font-bold tracking-wide text-white`}
-              >
+              <p className={`text-base font-bold tracking-wide text-white`}>
                 Total
               </p>
-              <p
-                className={`text-base text-white`}
-              >
+              <p className={`text-base text-white`}>
                 Rp{" "}
                 {(product?.price ? product.price + 5000 : 0).toLocaleString(
                   "id-ID"

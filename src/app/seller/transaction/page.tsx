@@ -2,8 +2,7 @@
 
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type RawTransaction = {
   id: number;
@@ -18,7 +17,7 @@ type RawTransaction = {
   courir: string;
   item?: {
     name: string;
-    image: string[]; // Tambahkan ini
+    image: string[];
     price: number;
   };
   buyer?: { name: string };
@@ -31,6 +30,28 @@ type Transaction = RawTransaction & {
   seller_name: string;
   image: string[];
 };
+
+type TrackingDataType = {
+  summary: {
+    awb: string;
+    courier: string;
+    status: string;
+    date: string;
+    weight: string;
+    amount: string;
+  };
+  detail: {
+    origin: string;
+    destination: string;
+    shipper: string;
+    receiver: string;
+  };
+  history: {
+    date: string;
+    desc: string;
+  }[];
+};
+
 export default function Transaction() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
@@ -38,7 +59,9 @@ export default function Transaction() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
-  const [trackingData, setTrackingData] = useState(null);
+  const [trackingData, setTrackingData] = useState<TrackingDataType | null>(
+    null
+  );
   const [showTrackingModal, setShowTrackingModal] = useState(false);
 
   const handleTrackPackage = async () => {
@@ -131,7 +154,7 @@ export default function Transaction() {
     currentPage * itemsPerPage
   );
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     try {
       if (!userId) return;
 
@@ -177,19 +200,28 @@ export default function Transaction() {
     } finally {
       setLoading(false);
     }
-  };
-  useEffect(() => {
-    fetchTransactions();
   }, [userId]);
 
-  const [showEditModal, setShowEditModal] = useState(false);
-  const [editData, setEditData] = useState({ id: null, awb: "", courir: "" });
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
 
-  const handleEditClick = (item) => {
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editData, setEditData] = useState<{
+    id: number | null;
+    awb: string;
+    courir: string;
+  }>({
+    id: null,
+    awb: "",
+    courir: "",
+  });
+
+  const handleEditClick = (item: Transaction) => {
     setEditData({
       id: item.id,
       awb: item.awb || "",
-      courir: item.courir || "", // pastikan property ini ada di `item`
+      courir: item.courir || "",
     });
     setShowEditModal(true);
   };
@@ -211,7 +243,7 @@ export default function Transaction() {
       if (!response.ok) throw new Error("Gagal update");
 
       setShowEditModal(false);
-      fetchTransactions(); // Pastikan fungsi ini sudah ada di scope
+      fetchTransactions();
     } catch (error) {
       console.error("Update error:", error);
     }
@@ -308,7 +340,6 @@ export default function Transaction() {
               Search
             </label>
             <div className="relative">
-              {/* Search Icon */}
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
                 <svg
                   className={`w-4 h-4 ${
@@ -328,7 +359,6 @@ export default function Transaction() {
                   />
                 </svg>
               </div>
-              {/* Search Input */}
               <input
                 type="search"
                 id="default-search"
@@ -469,14 +499,14 @@ export default function Transaction() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        {item.courir || '-'}
+                        {item.courir || "-"}
                       </td>
                       <td
                         className={`px-6 py-4 text-center ${
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        {item.awb || '-'}
+                        {item.awb || "-"}
                       </td>
                       <td className="px-6 py-4 text-center space-x-2">
                         <button
@@ -500,7 +530,13 @@ export default function Transaction() {
                         </button>
                         {showEditModal && (
                           <div className="fixed inset-0 z-50 bg-black/20 flex items-center justify-center text-left">
-                            <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-md p-6 rounded-xl shadow-xl relative">
+                            <div
+                              className={`w-full max-w-md rounded-xl shadow-xl relative border-2 p-6 ${
+                                theme === "dark"
+                                  ? "bg-[#080B2A] border-blue-400 text-white"
+                                  : "bg-white border-blue-400 text-blue-400"
+                              }`}
+                            >
                               <button
                                 className="absolute top-4 right-4 text-red-500 font-bold text-xl"
                                 onClick={() => setShowEditModal(false)}
@@ -521,7 +557,7 @@ export default function Transaction() {
                                 </svg>
                               </button>
 
-                              <h2 className="text-xl font-bold mb-4 text-blue-500">
+                              <h2 className="text-xl font-bold mb-4 text-blue-400">
                                 Edit Transaction
                               </h2>
 
@@ -538,7 +574,7 @@ export default function Transaction() {
                                         courir: e.target.value,
                                       })
                                     }
-                                    className="w-full mt-1 p-2 border text-blue-400 border-gray-300 rounded-md"
+                                    className="w-full mt-1 p-2 border text-blue-400 border-blue-400 bg-transparent rounded-md"
                                   >
                                     <option value="">Pilih Kurir</option>
                                     <option value="jnt">JNT</option>
@@ -559,7 +595,7 @@ export default function Transaction() {
                                         awb: e.target.value,
                                       })
                                     }
-                                    className="w-full mt-1 p-2 border bg-transparent border-gray-300 rounded-md"
+                                    className="w-full mt-1 p-2 border bg-transparent border-blue-400 rounded-md"
                                   />
                                 </div>
                                 <div className="flex justify-end gap-2">
@@ -584,7 +620,7 @@ export default function Transaction() {
                         <button
                           onClick={() => {
                             setSelectedTransaction(item);
-                            handleTrackPackage(item);
+                            handleTrackPackage();
                           }}
                           className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
                         >
@@ -609,8 +645,12 @@ export default function Transaction() {
                           </svg>
                         </button>
                         {showTrackingModal && trackingData && (
-                          <div className="fixed inset-0 z-50 bg-black/20 flex items-center justify-center text-left">
-                            <div className="bg-white dark:bg-[#080B2A] border-blue-400 border-2 w-full max-w-2xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden">
+                          <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                            <div
+                              className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 ${
+                                theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                              }`}
+                            >
                               <button
                                 className="absolute top-4 right-4 text-red-500 font-bold text-xl"
                                 onClick={() => setShowTrackingModal(false)}
@@ -635,7 +675,13 @@ export default function Transaction() {
                                 Tracking Information
                               </h2>
 
-                              <div className="mb-4 text-blue-400 dark:text-white">
+                              <div
+                                className={`mb-4 ${
+                                  theme === "dark"
+                                    ? "text-white"
+                                    : "text-blue-400"
+                                }`}
+                              >
                                 <p>
                                   <strong className="tracking-wider">
                                     AWB:
@@ -674,7 +720,13 @@ export default function Transaction() {
                                 </p>
                               </div>
 
-                              <div className="mb-4 text-blue-400 dark:text-white">
+                              <div
+                                className={`mb-4 ${
+                                  theme === "dark"
+                                    ? "text-white"
+                                    : "text-blue-400"
+                                }`}
+                              >
                                 <p>
                                   <strong className="tracking-wider">
                                     From:
@@ -706,8 +758,20 @@ export default function Transaction() {
                                   Tracking History
                                 </h3>
                                 <div className="mt-6 grow sm:mt-8 lg:mt-0">
-                                  <div className="space-y-6 rounded-lg border border-blue-400 bg-white p-6 shadow-sm dark:bg-white/10">
-                                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                  <div
+                                    className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm ${
+                                      theme === "dark"
+                                        ? "bg-white/10"
+                                        : "bg-white"
+                                    }`}
+                                  >
+                                    <h3
+                                      className={`text-xl font-semibold ${
+                                        theme === "dark"
+                                          ? "text-white"
+                                          : "text-gray-900"
+                                      }`}
+                                    >
                                       Tracking History
                                     </h3>
 
@@ -718,7 +782,9 @@ export default function Transaction() {
                                             key={index}
                                             className={`mb-10 ms-6 ${
                                               index === 0
-                                                ? "text-primary-700 dark:text-primary-500"
+                                                ? theme === "dark"
+                                                  ? "text-primary-500"
+                                                  : "text-primary-700"
                                                 : ""
                                             }`}
                                           >
@@ -743,7 +809,13 @@ export default function Transaction() {
                                                 />
                                               </svg>
                                             </span>
-                                            <h4 className="mb-0.5 text-base font-semibold text-gray-900 dark:text-white">
+                                            <h4
+                                              className={`mb-0.5 text-base font-semibold ${
+                                                theme === "dark"
+                                                  ? "text-white"
+                                                  : "text-gray-900"
+                                              }`}
+                                            >
                                               {item.date}
                                             </h4>
                                             <p className="text-sm text-blue-400">

@@ -45,21 +45,6 @@ export default function Product() {
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All categories");
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -180,8 +165,6 @@ export default function Product() {
 
   const itemsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastProduct = currentPage * itemsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
   const cosineSimilarity = (vecA: number[], vecB: number[]): number => {
     const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
     const normA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
@@ -265,11 +248,6 @@ export default function Product() {
   ]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
-
-  const currentPageProducts = filteredProducts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   const handleNextPage = () => {
     if (currentPage < totalPages) setCurrentPage(currentPage + 1);
@@ -448,7 +426,7 @@ export default function Product() {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
 
-  if (loading || favoritesLoading) {
+  if (loading || favoritesLoading || isLoading) {
     return <div>Loading...</div>;
   }
 
@@ -591,54 +569,6 @@ export default function Product() {
         <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center">
           <form className="w-full mx-auto relative">
             <div className="flex">
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  setDropdownOpen(!dropdownOpen);
-                }}
-                className="shrink-0 z-10 lg:inline-flex hidden items-center py-2.5 px-4 text-base font-medium text-white bg-white/10 border border-blue-400 rounded-s-lg hover:bg-white/5"
-                type="button"
-              >
-                {selectedCategory}
-                <svg
-                  className="w-2.5 h-2.5 ms-2.5"
-                  fill="none"
-                  viewBox="0 0 10 6"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m1 1 4 4 4-4"
-                  />
-                </svg>
-              </button>
-              {dropdownOpen && (
-                <div
-                  ref={dropdownRef}
-                  className="absolute left-0 top-full mt-1 z-10 bg-black/60 border border-white divide-gray-100 rounded-lg shadow-sm w-44"
-                >
-                  <ul className="py-2 text-sm text-white">
-                    {["Mockups", "Templates", "Design", "Logos"].map(
-                      (category) => (
-                        <li key={category}>
-                          <button
-                            type="button"
-                            className="inline-flex w-full px-4 py-2 hover:bg-white/20"
-                            onClick={() => {
-                              setSelectedCategory(category);
-                              setDropdownOpen(false);
-                            }}
-                          >
-                            {category}
-                          </button>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              )}
               <div className="relative w-full">
                 <input
                   type="search"
