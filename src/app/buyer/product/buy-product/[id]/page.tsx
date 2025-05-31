@@ -1,6 +1,5 @@
 "use client";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import Script from "next/script";
@@ -119,7 +118,7 @@ export default function BuyProduct() {
 
       fetchUser();
     }
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     if (!productId) return;
@@ -364,7 +363,7 @@ export default function BuyProduct() {
               <div className="lg:w-1/3 max-lg:w-full">
                 <div className="max-lg:flex items-center mb-4 gap-2 lg:hidden">
                   <span
-                    className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
+                    className={`w-10 h-10 text-sm rounded-full flex items-center justify-center ${
                       theme === "dark"
                         ? "text-blue-400 bg-white"
                         : "text-white bg-blue-400"
@@ -401,7 +400,7 @@ export default function BuyProduct() {
               <div className="w-full">
                 <div className="flex items-center gap-2 max-lg:hidden">
                   <span
-                    className={`w-10 h-10 text-xs rounded-full flex items-center justify-center ${
+                    className={`w-10 h-10 text-sm rounded-full flex items-center justify-center ${
                       theme === "dark"
                         ? "text-white bg-blue-400"
                         : "text-white bg-blue-400"

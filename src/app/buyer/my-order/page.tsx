@@ -1,17 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "flowbite/dist/flowbite.css";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-
-const options = [
-  { value: "", label: "Pilih" },
-  { value: "low-price", label: "Harga Termurah" },
-  { value: "nearest", label: "Terdekat" },
-  { value: "high-price", label: "Harga Tertinggi" },
-];
 
 type RawTransaction = {
   id: number;
@@ -39,33 +32,6 @@ type Transaction = RawTransaction & {
 };
 
 export default function MyOrder() {
-  const [open, setOpen] = useState(false);
-  const [image, setImage] = useState<string | null>(null);
-  const [priceFrom, setPriceFrom] = useState("");
-  const [priceTo, setPriceTo] = useState("");
-  const [selected, setSelected] = useState(options[0]);
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All categories");
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
   const [userId, setuserId] = useState("");

@@ -2,32 +2,8 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import Transaction from "@/app/seller/transaction/page";
-
-type Product = {
-  id: number;
-  name: string;
-  email: string;
-  phone_number: string;
-  role: string;
-  image: string[];
-  description: string;
-  price: number;
-  status: string;
-  user_id: number;
-  used_duration: string;
-  original_price: number;
-  seller?: { id: number; name: string };
-  user?: {
-    subdistrict: string;
-    ward: string;
-    regency: string;
-    province: string;
-    name: string;
-  };
-};
 
 type User = {
   name: string;
@@ -84,22 +60,13 @@ type Transaction = RawTransaction & {
 
 export default function BuyProduct() {
   const [user, setUser] = useState<User | null>(null);
-  const [product, setProduct] = useState<Product | null>(null);
-  const router = useRouter();
   const params = useParams();
   const transactionId = params?.id;
   const [userId, setUserId] = useState<number | null>(null);
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
   const { theme, setTheme } = useTheme();
   const [transaction, setTransaction] = useState<Transaction | null>(null);
   const [trackingData, setTrackingData] = useState(null);
   const [showTrackingModal, setShowTrackingModal] = useState(false);
-
-  const handleCloseSuccessPopup = () => {
-    setShowSuccessPopup(false);
-    router.push("/buyer/my-order");
-  };
 
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -203,8 +170,6 @@ export default function BuyProduct() {
 
       let apiKey = "";
       let courierParam = courier;
-
-      // Penyesuaian courier dan API key
       switch (courier) {
         case "jne":
           apiKey =
@@ -261,31 +226,6 @@ export default function BuyProduct() {
           theme === "dark" ? "bg-[#080B2A]" : "bg-white"
         }`}
       >
-        {showSuccessPopup && (
-          <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-            <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
-              <div className="flex justify-center mb-4">
-                <Image
-                  src="/images/succes.svg"
-                  width={80}
-                  height={80}
-                  alt="Success"
-                  className="w-20 h-20"
-                />
-              </div>
-              <h2 className="text-2xl font-bold mb-1 text-blue-400">
-                Success!
-              </h2>
-              <p className="mb-6 text-blue-400">{successMessage}</p>
-              <button
-                onClick={handleCloseSuccessPopup}
-                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
-              >
-                OK
-              </button>
-            </div>
-          </div>
-        )}
         <Image
           width={100}
           height={100}

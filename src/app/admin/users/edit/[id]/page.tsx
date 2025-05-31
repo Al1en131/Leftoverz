@@ -39,7 +39,6 @@ export default function User() {
   const [regency, setRegency] = useState<Region[]>([]);
   const [subdistricts, setSubdistricts] = useState<Region[]>([]);
   const [wards, setWards] = useState<Region[]>([]);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const handleClosePopup = () => {
     setShowSuccessPopup(false);

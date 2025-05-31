@@ -224,10 +224,9 @@ export default function About() {
             className="w-4 absolute lg:bottom-28 max-lg:bottom-4 left-20 -z-0"
           />
           <div
-            className={`
-  justify-center w-full text-center mb-10
-  ${theme === "dark" ? "text-white" : "text-blue-400"}
-`}
+            className={`justify-center w-full text-center mb-10 ${
+              theme === "dark" ? "text-white" : "text-blue-400"
+            }`}
           >
             <h3 className="text-4xl font-bold mb-1">Question</h3>
             <p className="text-base text-gray-600">
@@ -241,30 +240,18 @@ export default function About() {
                 height={100}
                 alt=""
                 src="/images/bubble-8.svg"
-                className={`
-  ${theme === "dark" ? "dark:block" : "hidden"}
-  absolute
-  lg:h-[556px] lg:w-[556px]
-  max-lg:w-72 max-lg:h-72
-  lg:-top-48 max-lg:-top-20
-  lg:-left-28 max-lg:-left-5
-  -z-0
-`}
+                className={`${
+                  theme === "dark" ? "dark:block" : "hidden"
+                } absolute lg:h-[556px] lg:w-[556px] max-lg:w-72 max-lg:h-72 lg:-top-48 max-lg:-top-20 lg:-left-28 max-lg:-left-5 -z-0`}
               />
               <Image
                 width={100}
                 height={100}
                 alt=""
                 src="/images/bubble-8.svg"
-                className={`
-  absolute
-  lg:h-[556px] lg:w-[556px]
-  max-lg:w-72 max-lg:h-72
-  ${theme === "dark" ? "block" : "hidden"}
-  lg:top-0 max-lg:bottom-0
-  lg:-right-20 max-lg:-right-5
-  -z-0
-`}
+                className={`absolute lg:h-[556px] lg:w-[556px] max-lg:w-72 max-lg:h-72 ${
+                  theme === "dark" ? "block" : "hidden"
+                } lg:top-0 max-lg:bottom-0 lg:-right-20 max-lg:-right-5 -z-0`}
               />
               <div className="max-lg:flex max-lg:justify-center max-lg:items-center">
                 <Image
@@ -278,7 +265,6 @@ export default function About() {
             </div>
             <div className="w-full">
               <div id="accordion-open" data-accordion="open">
-                {/* FAQ 1 */}
                 <h2 id="accordion-open-heading-1">
                   <button
                     type="button"
@@ -336,8 +322,6 @@ export default function About() {
                     </p>
                   </div>
                 </div>
-
-                {/* FAQ 2 */}
                 <h2 id="accordion-open-heading-2">
                   <button
                     type="button"
@@ -393,8 +377,6 @@ export default function About() {
                     </p>
                   </div>
                 </div>
-
-                {/* FAQ 3 */}
                 <h2 id="accordion-open-heading-3">
                   <button
                     type="button"

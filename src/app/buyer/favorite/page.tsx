@@ -1,18 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "flowbite/dist/flowbite.css";
-import { Listbox } from "@headlessui/react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
-
-const options = [
-  { value: "", label: "Pilih" },
-  { value: "low-price", label: "Harga Termurah" },
-  { value: "nearest", label: "Terdekat" },
-  { value: "high-price", label: "Harga Tertinggi" },
-];
 
 type Product = {
   id: number;
@@ -41,17 +33,12 @@ type Product = {
 
 type RawFavorite = Omit<Product, "product"> & {
   product: Omit<NonNullable<Product["product"]>, "image"> & {
-    image: string; // ini masih dalam bentuk string JSON
+    image: string;
   };
 };
 
 export default function Favorite() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [open, setOpen] = useState(false);
-  const [image, setImage] = useState<string | null>(null);
-  const [priceFrom, setPriceFrom] = useState("");
-  const [priceTo, setPriceTo] = useState("");
-  const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
   const [userId, setUserId] = useState("");
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
@@ -167,20 +154,6 @@ export default function Favorite() {
     setShowErrorPopup(false);
     setShowSuccessPopup(false);
   };
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -488,7 +461,6 @@ export default function Favorite() {
                 Belum ada data favorit yang anda masukkan.
               </div>
             ) : (
-              // Jika ada produk favorit
               currentProducts.map((item) => (
                 <div
                   key={item.id}
