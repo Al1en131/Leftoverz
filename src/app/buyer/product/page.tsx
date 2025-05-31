@@ -132,15 +132,12 @@ export default function Product() {
 
     if (Array.isArray(data.embedding)) {
       if (Array.isArray(data.embedding[0])) {
-        // Kalau backend return array of array, ambil yang pertama
         return data.embedding[0];
       } else {
-        // Kalau sudah 1D array
         return data.embedding;
       }
     }
 
-    // Jika embedding bukan array, kembalikan array kosong
     return [];
   };
 
@@ -148,7 +145,6 @@ export default function Product() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Fungsi upload gambar dan ambil embedding
   const handleImageUpload = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -156,7 +152,7 @@ export default function Product() {
     if (file) {
       setIsLoading(true);
       try {
-        setImage(URL.createObjectURL(file)); // Preview
+        setImage(URL.createObjectURL(file)); 
         const embedding = await getImageEmbedding(file);
         console.log("Embedding length from upload:", embedding.length);
         if (embedding.length === 0) {
@@ -174,7 +170,6 @@ export default function Product() {
     }
   };
 
-  // Reset semua data gambar dan input file
   const handleClearImage = () => {
     setImage(null);
     setImageEmbedding(null);
@@ -196,7 +191,6 @@ export default function Product() {
   };
 
   const filteredProducts = useMemo(() => {
-    // Step 1: Filter by search and price first
     let result = products.filter((product) => {
       const query = searchQuery.toLowerCase();
       const nameMatch = product.name.toLowerCase().includes(query);
@@ -218,7 +212,6 @@ export default function Product() {
       return fromValid && toValid;
     });
 
-    // Step 2: Jika ada image embedding, cari satu produk dengan similarity tertinggi
     if (imageEmbedding && imageEmbedding.length > 0) {
       let maxSim = -1;
       let bestMatch: (typeof products)[0] | null = null;

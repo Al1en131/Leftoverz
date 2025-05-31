@@ -53,7 +53,7 @@ export default function Dashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      const token = localStorage.getItem("token"); 
       if (!token) {
         console.error("Token tidak ditemukan");
         setLoading(false);
@@ -87,7 +87,7 @@ export default function Dashboard() {
       }
     };
     const fetchDataProduct = async () => {
-      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token tidak ditemukan");
         setLoading(false);
@@ -118,7 +118,7 @@ export default function Dashboard() {
       }
     };
     const fetchDataTransaction = async () => {
-      const token = localStorage.getItem("token"); // Ambil token dari localStorage
+      const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token tidak ditemukan");
         setLoading(false);

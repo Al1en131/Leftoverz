@@ -199,7 +199,6 @@ export default function EditProduct() {
     setImagePreviews(updatedPreviews);
 
     if (newFiles.length > 0) {
-      // Ambil embedding dari gambar pertama yang baru diupload
       const embeddingResult = await getEmbeddingFromImage(newFiles[0]);
       if (embeddingResult) {
         setEmbedding(embeddingResult);
@@ -255,7 +254,6 @@ export default function EditProduct() {
     form.append("removedImages", JSON.stringify(removedImages));
     form.append("keptImages", JSON.stringify(keptInitialImages));
 
-    // Kirim embedding hanya kalau ada
     if (embedding) {
       form.append("embedding", JSON.stringify(embedding));
     }
@@ -487,7 +485,6 @@ export default function EditProduct() {
             </label>
 
             <div className="mt-4 flex justify-center items-center gap-4">
-              {/* Gambar lama */}
               {initialImageUrls.length > 0 && (
                 <div className="flex gap-4 flex-wrap mb-4">
                   {initialImageUrls.map((url, index) => (
@@ -523,8 +520,6 @@ export default function EditProduct() {
                   ))}
                 </div>
               )}
-
-              {/* Gambar baru */}
               {imagePreviews.length > 0 && (
                 <div className="flex gap-4 flex-wrap mb-4">
                   {imagePreviews.map((url, index) => (

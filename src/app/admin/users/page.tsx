@@ -381,7 +381,6 @@ export default function User() {
                       </span>
                     </td>
                     <td className="px-4 py-4 flex justify-center space-x-2">
-                      {/* Tombol Edit */}
                       <Link
                         href={`/admin/users/edit/${item.id}`}
                         className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
@@ -402,8 +401,6 @@ export default function User() {
                           />
                         </svg>
                       </Link>
-
-                      {/* Tombol Hapus */}
                       <button
                         onClick={() => confirmDelete(item.id)}
                         className="inline-flex items-center justify-center p-1 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"

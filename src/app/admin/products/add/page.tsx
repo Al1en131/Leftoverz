@@ -106,7 +106,7 @@ export default function AddProduct() {
       }
 
       const data = await response.json();
-      return data.embedding; // harus array angka
+      return data.embedding; 
     } catch (error) {
       console.error("Error generating embedding:", error);
       return null;
@@ -126,7 +126,6 @@ export default function AddProduct() {
     if (type === "file" && target.files) {
       const selectedFiles = Array.from(target.files);
 
-      // Batasi jumlah gambar maksimal
       const totalFiles = formData.image.length + selectedFiles.length;
       if (totalFiles > 5) {
         alert("You can only upload up to 5 images.");

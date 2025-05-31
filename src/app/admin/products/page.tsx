@@ -448,8 +448,6 @@ export default function Products() {
                       />
                     </svg>
                   </Link>
-
-                  {/* Tombol Hapus */}
                   <button
                     onClick={() => {
                       setSelectedProductId(product.id);

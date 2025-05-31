@@ -278,7 +278,6 @@ export default function About() {
             </div>
             <div className="w-full">
               <div id="accordion-open" data-accordion="open">
-                {/* FAQ 1 */}
                 <h2 id="accordion-open-heading-1">
                   <button
                     type="button"
@@ -336,8 +335,6 @@ export default function About() {
                     </p>
                   </div>
                 </div>
-
-                {/* FAQ 2 */}
                 <h2 id="accordion-open-heading-2">
                   <button
                     type="button"
@@ -393,8 +390,6 @@ export default function About() {
                     </p>
                   </div>
                 </div>
-
-                {/* FAQ 3 */}
                 <h2 id="accordion-open-heading-3">
                   <button
                     type="button"
