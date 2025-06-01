@@ -108,7 +108,7 @@ export default function BuyProduct() {
       const fetchUser = async () => {
         try {
           const response = await fetch(
-            `http://127.0.0.1:1031/api/v1/user/${id}`,
+            `https://backend-leftoverz-production.up.railway.app/api/v1/user/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -139,7 +139,7 @@ export default function BuyProduct() {
         if (!userId || !transactionId) return;
 
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/${userId}/transaction/${transactionId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/${userId}/transaction/${transactionId}`
         );
         const response: { transaction: RawTransaction; message: string } =
           await res.json();
@@ -310,7 +310,7 @@ export default function BuyProduct() {
                     transaction?.image.length > 0 &&
                     typeof transaction?.image[0] === "string" &&
                     transaction?.image[0].startsWith("/")
-                      ? `http://127.0.0.1:1031${transaction?.image[0]}`
+                      ? `https://backend-leftoverz-production.up.railway.app${transaction?.image[0]}`
                       : "/images/default-product.png"
                   }
                   alt=""

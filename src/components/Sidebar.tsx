@@ -21,7 +21,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" });
+      await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/logout", { method: "POST" });
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");

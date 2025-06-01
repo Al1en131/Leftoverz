@@ -54,7 +54,7 @@ export default function ProductDetail() {
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/product/detail/${productId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/product/detail/${productId}`
         );
         const data = await res.json();
 
@@ -72,10 +72,10 @@ export default function ProductDetail() {
 
         const formattedImages = Array.isArray(parsedImage)
           ? parsedImage.map(
-              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+              (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
             )
           : parsedImage?.url
-          ? [`http://127.0.0.1:1031${parsedImage.url}`]
+          ? [`https://backend-leftoverz-production.up.railway.app${parsedImage.url}`]
           : [];
 
         setProduct({

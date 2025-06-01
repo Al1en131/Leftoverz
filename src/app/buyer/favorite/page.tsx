@@ -59,7 +59,7 @@ export default function Favorite() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/favorite/user/${user_id}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/favorite/user/${user_id}`,
         {
           method: "GET",
           headers: {
@@ -114,7 +114,7 @@ export default function Favorite() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        "http://127.0.0.1:1031/api/v1/favorite/delete",
+        "https://backend-leftoverz-production.up.railway.app/api/v1/favorite/delete",
         {
           method: "DELETE",
           headers: {
@@ -495,7 +495,7 @@ export default function Favorite() {
                     <Image
                       src={
                         item.product?.image[0]
-                          ? `http://127.0.0.1:1031${item.product.image[0]}`
+                          ? `https://backend-leftoverz-production.up.railway.app${item.product.image[0]}`
                           : "/images/default-item.png"
                       }
                       alt="product"

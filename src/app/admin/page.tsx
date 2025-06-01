@@ -67,8 +67,8 @@ export default function Dashboard() {
         };
 
         const [penjualRes, pembeliRes] = await Promise.all([
-          fetch("http://127.0.0.1:1031/api/v1/count/seller", { headers }),
-          fetch("http://127.0.0.1:1031/api/v1/count/buyer", { headers }),
+          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/seller", { headers }),
+          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/buyer", { headers }),
         ]);
 
         if (penjualRes.ok && pembeliRes.ok) {
@@ -101,7 +101,7 @@ export default function Dashboard() {
         };
 
         const [productRes] = await Promise.all([
-          fetch("http://127.0.0.1:1031/api/v1/count/product", { headers }),
+          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/product", { headers }),
         ]);
 
         if (productRes.ok) {
@@ -132,7 +132,7 @@ export default function Dashboard() {
         };
 
         const [transactionRes] = await Promise.all([
-          fetch("http://127.0.0.1:1031/api/v1/count/transaction", { headers }),
+          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/transaction", { headers }),
         ]);
 
         if (transactionRes.ok) {
@@ -154,7 +154,7 @@ export default function Dashboard() {
         if (!token) throw new Error("Token not found");
 
         const response = await fetch(
-          "http://127.0.0.1:1031/api/v1/transactions",
+          "https://backend-leftoverz-production.up.railway.app/api/v1/transactions",
           {
             method: "GET",
             headers: {
@@ -195,7 +195,7 @@ export default function Dashboard() {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://127.0.0.1:1031/api/v1/products", {
+        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/products", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -483,7 +483,7 @@ export default function Dashboard() {
                                 product.image.length > 0 &&
                                 typeof product.image[0] === "string" &&
                                 product.image[0].startsWith("/")
-                                  ? `http://127.0.0.1:1031${product.image[0]}`
+                                  ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
                                   : "/images/default-product.png"
                               }
                               alt={product.name}

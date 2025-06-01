@@ -99,7 +99,7 @@ export default function BuyProduct() {
       const fetchUser = async () => {
         try {
           const response = await fetch(
-            `http://127.0.0.1:1031/api/v1/user/${id}`,
+            `https://backend-leftoverz-production.up.railway.app/api/v1/user/${id}`,
             {
               headers: {
                 "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export default function BuyProduct() {
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/product/detail/${productId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/product/detail/${productId}`
         );
         const data = await res.json();
 
@@ -150,7 +150,7 @@ export default function BuyProduct() {
         }
 
         const formattedImages = imageArray.map(
-          (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+          (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
         );
 
         setProduct({
@@ -183,7 +183,7 @@ export default function BuyProduct() {
 
     try {
       const res = await fetch(
-        "http://127.0.0.1:1031/api/v1/create-midtrans-token",
+        "https://backend-leftoverz-production.up.railway.app/api/v1/create-midtrans-token",
         {
           method: "POST",
           headers: {
@@ -220,7 +220,7 @@ export default function BuyProduct() {
         const total = product.price + 5000;
         try {
           const saveRes = await fetch(
-            "http://127.0.0.1:1031/api/v1/create/transaction",
+            "https://backend-leftoverz-production.up.railway.app/api/v1/create/transaction",
             {
               method: "POST",
               headers: {

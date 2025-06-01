@@ -196,8 +196,8 @@ export default function User() {
 
     try {
       const endpoint = userId
-        ? `http://127.0.0.1:1031/api/v1/user/update/${userId}`
-        : "http://127.0.0.1:1031/api/v1/user/create";
+        ? `https://backend-leftoverz-production.up.railway.app/api/v1/user/update/${userId}`
+        : "https://backend-leftoverz-production.up.railway.app/api/v1/user/create";
 
       const method = userId ? "PUT" : "POST";
 
@@ -272,7 +272,7 @@ export default function User() {
     if (!userId) return;
     const fetchUser = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:1031/api/v1/user/${userId}`);
+        const res = await fetch(`https://backend-leftoverz-production.up.railway.app/api/v1/user/${userId}`);
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message);

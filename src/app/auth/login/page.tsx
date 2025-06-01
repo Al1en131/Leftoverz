@@ -36,7 +36,7 @@ export default function Login() {
     setSuccessMessage("");
 
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/login", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

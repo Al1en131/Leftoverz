@@ -635,7 +635,7 @@ export default function Home() {
                       product.image.length > 0 &&
                       typeof product.image[0] === "string" &&
                       product.image[0].startsWith("/")
-                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
                         : "/images/default-product.png"
                     }
                     alt={product.name}

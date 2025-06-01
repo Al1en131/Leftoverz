@@ -59,7 +59,7 @@ export default function AddProduct() {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://127.0.0.1:1031/api/v1/users", {
+        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/users", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default function AddProduct() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:1031/api/v1/embed-local/create",
+        "https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create",
         {
           method: "POST",
           body: formData,
@@ -205,7 +205,7 @@ export default function AddProduct() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:1031/api/v1/product/create",
+        "https://backend-leftoverz-production.up.railway.app/api/v1/product/create",
         {
           method: "POST",
           headers: {

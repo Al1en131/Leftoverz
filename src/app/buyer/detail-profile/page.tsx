@@ -107,7 +107,7 @@ export default function DetailProfile() {
         try {
           const token = localStorage.getItem("token");
           const response = await fetch(
-            `http://127.0.0.1:1031/api/v1/user/${id}`,
+            `https://backend-leftoverz-production.up.railway.app/api/v1/user/${id}`,
             {
               method: "GET",
               headers: {
@@ -151,7 +151,7 @@ export default function DetailProfile() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/user/update/${userId}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/user/update/${userId}`,
         {
           method: "PUT",
           headers: {

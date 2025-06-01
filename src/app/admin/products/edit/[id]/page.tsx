@@ -56,7 +56,7 @@ export default function EditProduct() {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://127.0.0.1:1031/api/v1/users", {
+        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/users", {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -78,7 +78,7 @@ export default function EditProduct() {
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/product/${productId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/product/${productId}`
         );
         const data = await res.json();
         if (!res.ok) throw new Error(data.message);
@@ -108,7 +108,7 @@ export default function EditProduct() {
 
         if (Array.isArray(parsedImage)) {
           setInitialImageUrls(
-            parsedImage.map((url: string) => `http://127.0.0.1:1031${url}`)
+            parsedImage.map((url: string) => `https://backend-leftoverz-production.up.railway.app${url}`)
           );
           setKeptInitialImages(parsedImage);
         }
@@ -156,7 +156,7 @@ export default function EditProduct() {
     formData.append("image", file);
 
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local/create", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create", {
         method: "POST",
         body: formData,
       });
@@ -260,7 +260,7 @@ export default function EditProduct() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/product/edit/${productId}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/product/edit/${productId}`,
         {
           method: "PUT",
           headers: { Authorization: `Bearer ${token}` },

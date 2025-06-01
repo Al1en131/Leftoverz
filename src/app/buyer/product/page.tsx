@@ -48,7 +48,7 @@ export default function Product() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/allproducts", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/allproducts", {
         method: "GET",
       });
 
@@ -102,7 +102,7 @@ export default function Product() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local", {
+    const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local", {
       method: "POST",
       body: formData,
     });
@@ -284,7 +284,7 @@ export default function Product() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/favorite/user/${userId}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/favorite/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -345,7 +345,7 @@ export default function Product() {
     try {
       if (isFavorited) {
         const response = await fetch(
-          "http://127.0.0.1:1031/api/v1/favorite/delete",
+          "https://backend-leftoverz-production.up.railway.app/api/v1/favorite/delete",
           {
             method: "DELETE", 
             headers: {
@@ -368,7 +368,7 @@ export default function Product() {
         }
       } else {
         const response = await fetch(
-          "http://127.0.0.1:1031/api/v1/favorite/create",
+          "https://backend-leftoverz-production.up.railway.app/api/v1/favorite/create",
           {
             method: "POST",
             headers: {
@@ -781,7 +781,7 @@ export default function Product() {
                       product.image.length > 0 &&
                       typeof product.image[0] === "string" &&
                       product.image[0].startsWith("/")
-                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
                         : "/images/default-product.png"
                     }
                     alt={product.name}

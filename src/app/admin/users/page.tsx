@@ -70,7 +70,7 @@ export default function User() {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://127.0.0.1:1031/api/v1/users", {
+        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/users", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export default function User() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/user/delete/${userToDelete}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/user/delete/${userToDelete}`,
         {
           method: "DELETE",
           headers: {

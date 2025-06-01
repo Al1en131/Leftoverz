@@ -86,7 +86,7 @@ export default function Products() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/products/${selectedProductId}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/products/${selectedProductId}`,
         {
           method: "DELETE",
           headers: {
@@ -121,7 +121,7 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://127.0.0.1:1031/api/v1/products", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/products", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -388,7 +388,7 @@ export default function Products() {
                       product.image.length > 0 &&
                       typeof product.image[0] === "string" &&
                       product.image[0].startsWith("/")
-                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
                         : "/images/default-product.png"
                     }
                     alt={product.name}

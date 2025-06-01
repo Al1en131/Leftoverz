@@ -57,7 +57,7 @@ export default function Register() {
     setError("");
 
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/register", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

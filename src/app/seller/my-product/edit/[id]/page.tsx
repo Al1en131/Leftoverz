@@ -66,7 +66,7 @@ export default function EditProduct() {
     const fetchProductData = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/products/get/${userId}/${productId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/products/get/${userId}/${productId}`
         );
         const data = await res.json();
 
@@ -95,7 +95,7 @@ export default function EditProduct() {
 
         if (Array.isArray(parsedImage)) {
           setInitialImageUrls(
-            parsedImage.map((url: string) => `http://127.0.0.1:1031${url}`)
+            parsedImage.map((url: string) => `https://backend-leftoverz-production.up.railway.app${url}`)
           );
           setKeptInitialImages(parsedImage); // ✅ ini yang benar
         }
@@ -112,12 +112,12 @@ export default function EditProduct() {
           // Jika image adalah array dan memiliki gambar
           setInitialImageUrls(
             parsedImage.map(
-              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+              (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
             )
           );
         } else if (parsedImage && parsedImage.url) {
           // Jika image adalah objek dan memiliki properti url
-          setInitialImageUrls([`http://127.0.0.1:1031${parsedImage.url}`]);
+          setInitialImageUrls([`https://backend-leftoverz-production.up.railway.app${parsedImage.url}`]);
         } else {
           console.log("No valid image data found");
         }
@@ -175,7 +175,7 @@ export default function EditProduct() {
     formData.append("image", file);
 
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local/create", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create", {
         method: "POST",
         body: formData,
       });
@@ -271,7 +271,7 @@ export default function EditProduct() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/products/edit/user/${userId}/${productId}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/products/edit/user/${userId}/${productId}`,
         {
           method: "PUT",
           body: data,

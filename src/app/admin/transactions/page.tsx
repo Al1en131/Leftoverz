@@ -89,7 +89,7 @@ export default function Products() {
       if (!token) throw new Error("Token not found");
 
       const response = await fetch(
-        "http://127.0.0.1:1031/api/v1/transactions",
+        "https://backend-leftoverz-production.up.railway.app/api/v1/transactions",
         {
           method: "GET",
           headers: {

@@ -66,7 +66,7 @@ export default function RoomChat() {
       const fetchProducts = async () => {
         try {
           const res = await fetch(
-            `http://127.0.0.1:1031/api/v1/products/user/${userId}`
+            `https://backend-leftoverz-production.up.railway.app/api/v1/products/user/${userId}`
           );
           const data = await res.json();
           if (res.ok) {
@@ -88,7 +88,7 @@ export default function RoomChat() {
     try {
       // Ambil daftar chat
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/chats/user/${userId}`
+        `https://backend-leftoverz-production.up.railway.app/api/v1/chats/user/${userId}`
       );
       const data = await res.json();
 
@@ -102,7 +102,7 @@ export default function RoomChat() {
 
           // Ambil pesan terakhir antara user dan opponent
           const messagesRes = await fetch(
-            `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+            `https://backend-leftoverz-production.up.railway.app/api/v1/messages/${userId}/${opponentId}`
           );
           const messagesData = await messagesRes.json();
 
@@ -174,7 +174,7 @@ export default function RoomChat() {
       localStorage.setItem("selectedProductId", String(chat.item_id || ""));
 
       try {
-        await fetch(`http://127.0.0.1:1031/api/v1/chats/${chat.id}/read`, {
+        await fetch(`https://backend-leftoverz-production.up.railway.app/api/v1/chats/${chat.id}/read`, {
           method: "PUT",
         });
 
@@ -191,7 +191,7 @@ export default function RoomChat() {
 
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/messages/${userId}/${opponentId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/messages/${userId}/${opponentId}`
         );
         const data = await res.json();
 
@@ -242,7 +242,7 @@ export default function RoomChat() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/send/messages/${userId}/${receiver_id}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/send/messages/${userId}/${receiver_id}`,
         {
           method: "POST",
           headers: {

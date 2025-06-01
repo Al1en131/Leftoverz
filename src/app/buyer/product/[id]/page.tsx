@@ -77,7 +77,7 @@ export default function ProductDetail() {
     const fetchProduct = async () => {
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/product/detail/${productId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/product/detail/${productId}`
         );
         const data = await res.json();
 
@@ -95,10 +95,10 @@ export default function ProductDetail() {
 
         const formattedImages = Array.isArray(parsedImage)
           ? parsedImage.map(
-              (imgUrl: string) => `http://127.0.0.1:1031${imgUrl}`
+              (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
             )
           : parsedImage?.url
-          ? [`http://127.0.0.1:1031${parsedImage.url}`]
+          ? [`https://backend-leftoverz-production.up.railway.app${parsedImage.url}`]
           : [];
 
         setProduct({
@@ -128,7 +128,7 @@ export default function ProductDetail() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/chats/product/${productId}/${userId}/${opponentId}`
+        `https://backend-leftoverz-production.up.railway.app/api/v1/chats/product/${productId}/${userId}/${opponentId}`
       );
       const data = await res.json();
 
@@ -140,7 +140,7 @@ export default function ProductDetail() {
 
         if (unreadChat) {
           await fetch(
-            `http://127.0.0.1:1031/api/v1/chats/${unreadChat.id}/read`,
+            `https://backend-leftoverz-production.up.railway.app/api/v1/chats/${unreadChat.id}/read`,
             {
               method: "PUT",
             }
@@ -172,7 +172,7 @@ export default function ProductDetail() {
 
       try {
         const res = await fetch(
-          `http://127.0.0.1:1031/api/v1/chats/product/${productId}/${userId}/${product.user_id}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/chats/product/${productId}/${userId}/${product.user_id}`
         );
         const data = await res.json();
 
@@ -214,7 +214,7 @@ export default function ProductDetail() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/send/${productId}/${userId}/${receiver_id}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/send/${productId}/${userId}/${receiver_id}`,
         {
           method: "POST",
           headers: {
@@ -270,7 +270,7 @@ export default function ProductDetail() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/favorite/user/${userId}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/favorite/user/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -330,7 +330,7 @@ export default function ProductDetail() {
     try {
       if (isFavorited) {
         const response = await fetch(
-          "http://127.0.0.1:1031/api/v1/favorite/delete",
+          "https://backend-leftoverz-production.up.railway.app/api/v1/favorite/delete",
           {
             method: "DELETE",
             headers: {
@@ -353,7 +353,7 @@ export default function ProductDetail() {
         }
       } else {
         const response = await fetch(
-          "http://127.0.0.1:1031/api/v1/favorite/create",
+          "https://backend-leftoverz-production.up.railway.app/api/v1/favorite/create",
           {
             method: "POST",
             headers: {

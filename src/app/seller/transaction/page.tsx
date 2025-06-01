@@ -159,7 +159,7 @@ export default function Transaction() {
       if (!userId) return;
 
       const res = await fetch(
-        `http://127.0.0.1:1031/api/v1/transactions/user/${userId}`
+        `https://backend-leftoverz-production.up.railway.app/api/v1/transactions/user/${userId}`
       );
       const response: { transactions: RawTransaction[]; message: string } =
         await res.json();
@@ -229,7 +229,7 @@ export default function Transaction() {
   const handleSaveEdit = async () => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/transactions/${editData.id}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/transactions/${editData.id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -437,7 +437,7 @@ export default function Transaction() {
                             item.image.length > 0 &&
                             typeof item.image[0] === "string" &&
                             item.image[0].startsWith("/")
-                              ? `http://127.0.0.1:1031${item.image[0]}`
+                              ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
                               : "/images/default-item.png"
                           }
                           alt={item.item_name}

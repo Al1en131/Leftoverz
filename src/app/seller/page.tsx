@@ -47,7 +47,7 @@ useEffect(() => {
   }, [email]);
   const handleLogout = async () => {
     try {
-      await fetch("http://127.0.0.1:1031/api/v1/logout", { method: "POST" });
+      await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/logout", { method: "POST" });
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -67,7 +67,7 @@ useEffect(() => {
         const token = localStorage.getItem("token");
         const user_id = localStorage.getItem("id");
         const response = await fetch(
-          `http://127.0.0.1:1031/api/v1/products/user/${user_id}`,
+          `https://backend-leftoverz-production.up.railway.app/api/v1/products/user/${user_id}`,
           {
             method: "GET",
             headers: {
@@ -694,7 +694,7 @@ useEffect(() => {
                       product.image.length > 0 &&
                       typeof product.image[0] === "string" &&
                       product.image[0].startsWith("/")
-                        ? `http://127.0.0.1:1031${product.image[0]}`
+                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
                         : "/images/default-product.png"
                     }
                     alt={product.name}

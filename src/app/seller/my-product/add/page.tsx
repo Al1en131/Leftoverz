@@ -38,7 +38,7 @@ export default function AddProduct() {
     formData.append("image", file);
 
     try {
-      const response = await fetch("http://127.0.0.1:1031/api/v1/embed-local/create", {
+      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create", {
         method: "POST",
         body: formData,
       });
@@ -149,7 +149,7 @@ export default function AddProduct() {
     try {
       const user_id = localStorage.getItem("id");
       const response = await fetch(
-        `http://127.0.0.1:1031/api/v1/products/add/user/${user_id}`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/products/add/user/${user_id}`,
         {
           method: "POST",
           headers: {
