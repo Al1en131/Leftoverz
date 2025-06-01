@@ -45,7 +45,6 @@ export default function Home() {
           "https://backend-leftoverz.vercel.app/api/v1/allproducts",
           {
             method: "GET",
-            credentials: 'include',
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
