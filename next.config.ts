@@ -5,13 +5,13 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: "127.0.0.1",
-        port: "1031",
+        protocol: "https",
+        hostname: "backend-leftoverz-production.up.railway.app",
         pathname: "/uploads/**",
       },
     ],
   },
 };
+
 
 export default withFlowbiteReact(nextConfig);
