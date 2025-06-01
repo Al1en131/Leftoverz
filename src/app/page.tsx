@@ -42,7 +42,7 @@ export default function Home() {
       try {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          "https://backend-leftoverz.vercel.app/api/v1/allproducts",
+          "https://backend-leftoverz.railway.internal/api/v1/allproducts",
           {
             method: "GET",
             headers: {
