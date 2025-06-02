@@ -618,7 +618,7 @@ export default function Product() {
             </button>
             {open && (
               <div
-                className={`absolute z-10 w-72 p-4 right-0 top-10 border rounded-lg shadow-lg mt-2 ${
+                className={`absolute z-40 w-72 p-4 right-0 top-10 border rounded-lg shadow-lg mt-2 ${
                   theme === "dark"
                     ? "bg-[#080B2A]/90 border-blue-400"
                     : "bg-white border-blue-400"
@@ -804,7 +804,7 @@ export default function Product() {
                 <div className="w-full flex justify-between items-center gap-2 text-white">
                   <Link
                     href={`/buyer/product/${product.id}`}
-                    className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-40 hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                    className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                   >
                     Detail
                   </Link>
