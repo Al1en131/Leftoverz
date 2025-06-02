@@ -412,7 +412,7 @@ export default function Product() {
             </button>
             {open && (
               <div
-                className={`absolute z-10 w-72 p-4 right-0 top-10 border rounded-lg shadow-lg mt-2 ${
+                className={`absolute z-50 w-72 p-4 right-0 top-10 border rounded-lg shadow-lg mt-2 ${
                   theme === "dark"
                     ? "bg-[#080B2A]/90 border-blue-400"
                     : "bg-white border-blue-400"
