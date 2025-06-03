@@ -197,7 +197,7 @@ export default function DetailProfile() {
 
   useEffect(() => {
     const selectedProvince = provinces.find(
-      (p) => p.name.toLowerCase() === formData.province.toLowerCase()
+      (p) => p.name === formData.province
     );
     if (!selectedProvince) return;
 
@@ -229,7 +229,7 @@ export default function DetailProfile() {
 
   useEffect(() => {
     const selectedRegency = regency.find(
-      (r) => r.name.toLowerCase() === formData.regency.toLowerCase()
+      (r) => r.name === formData.regency
     );
     if (!selectedRegency) return;
 
@@ -258,7 +258,7 @@ export default function DetailProfile() {
 
   useEffect(() => {
     const selectedSubdistrict = subdistricts.find(
-      (s) => s.name.toLowerCase() === formData.subdistrict.toLowerCase()
+      (s) => s.name === formData.subdistrict
     );
     if (!selectedSubdistrict) return;
 
