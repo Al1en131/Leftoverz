@@ -95,10 +95,13 @@ export default function ProductDetail() {
 
         const formattedImages = Array.isArray(parsedImage)
           ? parsedImage.map(
-              (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
+              (imgUrl: string) =>
+                `https://backend-leftoverz-production.up.railway.app${imgUrl}`
             )
           : parsedImage?.url
-          ? [`https://backend-leftoverz-production.up.railway.app${parsedImage.url}`]
+          ? [
+              `https://backend-leftoverz-production.up.railway.app${parsedImage.url}`,
+            ]
           : [];
 
         setProduct({
@@ -422,14 +425,6 @@ export default function ProductDetail() {
     localStorage.setItem("theme", newTheme);
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (favoritesLoading) {
-    return <div>Loading favorites...</div>;
-  }
-
   return (
     <div
       className={`min-h-screen flex items-center justify-center ${
@@ -533,7 +528,10 @@ export default function ProductDetail() {
         className="w-4 absolute top-10 max-lg:hidden left-80 -z-0"
       />
       <div className="w-full">
-        <Link href="/buyer/product" className="flex gap-2 z-30 mb-4 items-center">
+        <Link
+          href="/buyer/product"
+          className="flex gap-2 z-30 mb-4 items-center"
+        >
           <div className="bg-blue-400 z-30 items-center p-2 rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -552,96 +550,102 @@ export default function ProductDetail() {
           </div>
           <p className="text-white">Back to Products</p>
         </Link>
-        <div className="lg:flex lg:gap-10 max-lg:gap-4 w-full">
-          <div className="lg:w-4/12 max-lg:w-full max-lg:mb-4">
-            <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
-              {product && (
-                <Image
-                  src={selectedImage ?? "/placeholder.jpg"}
-                  alt={product.name}
-                  width={600}
-                  height={600}
-                  className="w-full lg:h-96 max-lg:h-72 object-cover border border-blue-400 rounded-lg"
-                />
-              )}
-            </div>
-            <div className="grid grid-cols-5 lg:gap-4 max-lg:gap-3 lg:mt-6 max-lg:mt-4">
-              {product?.image.map((img, index) => (
-                <button key={index} onClick={() => setSelectedImage(img)}>
+        {loading || favoritesLoading ? (
+          <div className="text-center text-blue-400">
+            <p>Loading ...</p>
+          </div>
+        ) : (
+          <div className="lg:flex lg:gap-10 max-lg:gap-4 w-full">
+            <div className="lg:w-4/12 max-lg:w-full max-lg:mb-4">
+              <div className="lg:h-96 max-lg:h-72 rounded-lg overflow-hidden">
+                {product && (
                   <Image
-                    src={img}
-                    alt={`Thumbnail ${index}`}
-                    width={100}
-                    height={100}
-                    className="lg:w-24 lg:h-16 max-lg:h-20 max-lg:w-full border border-blue-400 object-cover rounded-lg"
+                    src={selectedImage ?? "/placeholder.jpg"}
+                    alt={product.name}
+                    width={600}
+                    height={600}
+                    className="w-full lg:h-96 max-lg:h-72 object-cover border border-blue-400 rounded-lg"
                   />
-                </button>
-              ))}
+                )}
+              </div>
+              <div className="grid grid-cols-5 lg:gap-4 max-lg:gap-3 lg:mt-6 max-lg:mt-4">
+                {product?.image.map((img, index) => (
+                  <button key={index} onClick={() => setSelectedImage(img)}>
+                    <Image
+                      src={img}
+                      alt={`Thumbnail ${index}`}
+                      width={100}
+                      height={100}
+                      className="lg:w-24 lg:h-16 max-lg:h-20 max-lg:w-full border border-blue-400 object-cover rounded-lg"
+                    />
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-          <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
-            <div className="block relative h-full">
-              <h3
-                className={`text-xl mb-2 font-bold tracking-wide ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
-              >
-                {product?.name}
-              </h3>
-              <p
-                className={`mb-2  ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
-              >
-                {product?.user?.ward
-                  ?.toLowerCase()
-                  .replace(/\b\w/g, (c) => c.toUpperCase())}
-                ,{" "}
-                {product?.user?.subdistrict
-                  ?.toLowerCase()
-                  .replace(/\b\w/g, (c) => c.toUpperCase())}
-                ,{" "}
-                {product?.user?.regency
-                  ?.toLowerCase()
-                  .replace(/\b\w/g, (c) => c.toUpperCase())}
-                ,{" "}
-                {product?.user?.province
-                  ?.toLowerCase()
-                  .replace(/\b\w/g, (c) => c.toUpperCase())}
-              </p>
-
-              <div className="flex items-center mb-8 gap-2">
-                <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
-                  {product?.seller?.name
-                    ? product?.seller.name
-                        .split(" ")
-                        .map((word) => word.charAt(0))
-                        .join("")
-                        .toUpperCase()
-                    : "?"}
-                </span>
-                <p className="text-blue-400 font-semibold">
-                  {product?.seller?.name}
+            <div className="mb-4 lg:w-8/12 max-lg:w-full block items-center relative">
+              <div className="block relative h-full">
+                <h3
+                  className={`text-xl mb-2 font-bold tracking-wide ${
+                    theme === "dark" ? "text-white" : "text-[#080B2A]"
+                  }`}
+                >
+                  {product?.name}
+                </h3>
+                <p
+                  className={`mb-2  ${
+                    theme === "dark" ? "text-white" : "text-[#080B2A]"
+                  }`}
+                >
+                  {product?.user?.ward
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {product?.user?.subdistrict
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {product?.user?.regency
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                  ,{" "}
+                  {product?.user?.province
+                    ?.toLowerCase()
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
                 </p>
-              </div>
-              <p
-                className={`text-base mb-5 max-lg:text-justify" ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
-              >
-                {product?.description}
-              </p>
-              <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
-                <p>Lama Penggunaan :</p>
-                <p> {product?.used_duration}</p>
-              </div>
-              <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0">
-                <p>Harga Asli :</p>
-                <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+
+                <div className="flex items-center mb-8 gap-2">
+                  <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center">
+                    {product?.seller?.name
+                      ? product?.seller.name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                          .toUpperCase()
+                      : "?"}
+                  </span>
+                  <p className="text-blue-400 font-semibold">
+                    {product?.seller?.name}
+                  </p>
+                </div>
+                <p
+                  className={`text-base mb-5 max-lg:text-justify" ${
+                    theme === "dark" ? "text-white" : "text-[#080B2A]"
+                  }`}
+                >
+                  {product?.description}
+                </p>
+                <div className="text-lg text-blue-400 max-lg:mb-4 lg:absolute lg:bottom-0 lg:left-0">
+                  <p>Lama Penggunaan :</p>
+                  <p> {product?.used_duration}</p>
+                </div>
+                <div className="text-lg text-blue-400 lg:absolute lg:bottom-0 lg:right-0">
+                  <p>Harga Asli :</p>
+                  <p> Rp {product?.original_price.toLocaleString("id-ID")}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-8 z-50">
         <button

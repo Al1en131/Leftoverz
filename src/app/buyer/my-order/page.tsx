@@ -16,7 +16,7 @@ type RawTransaction = {
   created_at: string;
   item?: {
     name: string;
-    image: string[]; 
+    image: string[];
     price: number;
   };
   buyer?: { name: string };
@@ -58,9 +58,8 @@ export default function MyOrder() {
     setFilteredTransactions(filtered);
   };
   useEffect(() => {
-  setFilteredTransactions(transactions);
-}, [transactions]);
-
+    setFilteredTransactions(transactions);
+  }, [transactions]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
@@ -80,7 +79,7 @@ export default function MyOrder() {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
   useEffect(() => {
-    setCurrentPage(1); 
+    setCurrentPage(1);
   }, [searchTerm]);
 
   useEffect(() => {
@@ -147,8 +146,6 @@ export default function MyOrder() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
-
-  if (loading) return <p className="text-white">Loading...</p>;
 
   return (
     <div
@@ -265,137 +262,142 @@ export default function MyOrder() {
             </div>
           </form>
         </div>
-        <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
-          {currentTransactions.length === 0 ? (
-            <div className="w-full text-center py-20">
-              <div
-                className={`col-span-full block text-center justify-center text-lg mb-1 font-bold ${
-                  theme === "dark" ? "text-white" : "text-blue-400"
-                }`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="mb-6 w-32 h-32 flex mx-auto justify-center text-center items-center"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
-                  />
-                </svg>
-                Belum ada data transaksi yang anda masukkan.
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-                {currentTransactions.map((item, index) => (
-                  <div
-                    key={index}
-                    className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
-                  >
-                    <div className="mb-4 flex justify-between items-center">
-                      <div className="block">
-                        <h3
-                          className={`text-lg mb-1 font-bold ${
-                            theme === "dark" ? "text-white" : "text-blue-400"
-                          }`}
-                        >
-                          {item.item?.name}
-                        </h3>
-                        <div className="flex items-center gap-2">
-                          <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
-                            {item.seller?.name
-                              ? item.seller?.name
-                                  .split(" ")
-                                  .map((word) => word.charAt(0))
-                                  .join("")
-                                  .toUpperCase()
-                              : "?"}
-                          </span>
-                          <p className="text-blue-400 font-semibold">
-                            {item.seller?.name}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-5">
-                      <Image
-                        src={
-                          item.image &&
-                          Array.isArray(item.image) &&
-                          item.image.length > 0 &&
-                          typeof item.image[0] === "string" &&
-                          item.image[0].startsWith("/")
-                            ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
-                            : "/images/default-item.png"
-                        }
-                        alt={item.item_name}
-                        width={100}
-                        height={100}
-                        className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
-                          theme === "dark"
-                            ? ""
-                            : "border-[1.9px] border-blue-400"
-                        }`}
-                      />
-                    </div>
-                    <div className="my-4 flex justify-between items-center">
-                      <span
-                        className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-xl ${
-                          item.status == "success"
-                            ? "bg-green-700 text-white"
-                            : "bg-red-700 text-white"
-                        }`}
-                      >
-                        Payment {item.status}
-                      </span>
-                      <p className="text-blue-400 text-base">
-                        Rp. {item.total.toLocaleString()}
-                      </p>
-                    </div>
-                    <div className="w-full flex justify-between items-center text-white">
-                      <Link
-                        href={`/buyer/my-order/${item.id}`}
-                        className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
-                      >
-                        Lihat Status Pesanan
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-center gap-4 mt-10 items-center">
-                <button
-                  onClick={handlePreviousPage}
-                  className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
-                  disabled={currentPage === 1}
-                >
-                  Previous
-                </button>
-                <span
-                  className={`font-semibold ${
+        {loading ? (
+          <div className="text-center text-blue-400">
+            <p>Loading ...</p>
+          </div>
+        ) : (
+          <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
+            {currentTransactions.length === 0 ? (
+              <div className="w-full text-center py-20">
+                <div
+                  className={`col-span-full block text-center justify-center text-lg mb-1 font-bold ${
                     theme === "dark" ? "text-white" : "text-blue-400"
                   }`}
                 >
-                  Page {currentPage} of {totalPages}
-                </span>
-                <button
-                  onClick={handleNextPage}
-                  className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
-                  disabled={currentPage === totalPages}
-                >
-                  Next
-                </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="mb-6 w-32 h-32 flex mx-auto justify-center text-center items-center"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+                    />
+                  </svg>
+                  Belum ada data transaksi yang anda masukkan.
+                </div>
               </div>
-            </>
-          )}
-        </div>
-
+            ) : (
+              <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
+                  {currentTransactions.map((item, index) => (
+                    <div
+                      key={index}
+                      className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                    >
+                      <div className="mb-4 flex justify-between items-center">
+                        <div className="block">
+                          <h3
+                            className={`text-lg mb-1 font-bold ${
+                              theme === "dark" ? "text-white" : "text-blue-400"
+                            }`}
+                          >
+                            {item.item?.name}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                              {item.seller?.name
+                                ? item.seller?.name
+                                    .split(" ")
+                                    .map((word) => word.charAt(0))
+                                    .join("")
+                                    .toUpperCase()
+                                : "?"}
+                            </span>
+                            <p className="text-blue-400 font-semibold">
+                              {item.seller?.name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mb-5">
+                        <Image
+                          src={
+                            item.image &&
+                            Array.isArray(item.image) &&
+                            item.image.length > 0 &&
+                            typeof item.image[0] === "string" &&
+                            item.image[0].startsWith("/")
+                              ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
+                              : "/images/default-item.png"
+                          }
+                          alt={item.item_name}
+                          width={100}
+                          height={100}
+                          className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
+                            theme === "dark"
+                              ? ""
+                              : "border-[1.9px] border-blue-400"
+                          }`}
+                        />
+                      </div>
+                      <div className="my-4 flex justify-between items-center">
+                        <span
+                          className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-xl ${
+                            item.status == "success"
+                              ? "bg-green-700 text-white"
+                              : "bg-red-700 text-white"
+                          }`}
+                        >
+                          Payment {item.status}
+                        </span>
+                        <p className="text-blue-400 text-base">
+                          Rp. {item.total.toLocaleString()}
+                        </p>
+                      </div>
+                      <div className="w-full flex justify-between items-center text-white">
+                        <Link
+                          href={`/buyer/my-order/${item.id}`}
+                          className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-50 hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                        >
+                          Lihat Status Pesanan
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="flex justify-center gap-4 mt-10 items-center">
+                  <button
+                    onClick={handlePreviousPage}
+                    className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </button>
+                  <span
+                    className={`font-semibold ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
+                    Page {currentPage} of {totalPages}
+                  </span>
+                  <button
+                    onClick={handleNextPage}
+                    className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-500 transition"
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
