@@ -104,9 +104,6 @@ export default function Home() {
     };
     fetchProducts();
   }, []);
-  if (loading) {
-    return <div>Loading...</div>;
-  }
   return (
     <div
       className={` ${
@@ -599,64 +596,70 @@ export default function Home() {
               untuk kamu miliki.
             </p>
           </div>
-          <div className="lg:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="lg:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
-              >
-                <div className="mb-4 flex justify-between items-center">
-                  <div className="flex items-center gap-2">
-                    <span className="w-9 h-9 bg-blue-400 rounded-full flex items-center justify-center text-white">
-                      {product.seller?.name
-                        ? product.seller?.name
-                            .split(" ")
-                            .map((word) => word.charAt(0))
-                            .join("")
-                            .toUpperCase()
-                        : "?"}
-                    </span>
-                    <p className="text-blue-400 font-semibold">
-                      {product.seller?.name}
+          {loading ? (
+            <div className="flex justify-center w-full py-10">
+              <p className="text-blue-400 text-lg">Loading...</p>
+            </div>
+          ) : (
+            <div className="lg:flex justify-center w-full max-lg:space-y-4 gap-10 z-50 items-center flex-wrap">
+              {products.map((product) => (
+                <div
+                  key={product.id}
+                  className="lg:w-80 max-lg:w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                >
+                  <div className="mb-4 flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <span className="w-9 h-9 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                        {product.seller?.name
+                          ? product.seller.name
+                              .split(" ")
+                              .map((word) => word.charAt(0))
+                              .join("")
+                              .toUpperCase()
+                          : "?"}
+                      </span>
+                      <p className="text-blue-400 font-semibold">
+                        {product.seller?.name}
+                      </p>
+                    </div>
+                    <Link
+                      href={`/product/${product.id}`}
+                      className="bg-blue-400 px-4 py-1 text-center text-white rounded-lg hover:bg-transparent z-20 hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                    >
+                      Detail
+                    </Link>
+                  </div>
+                  <div className="mb-5">
+                    <Image
+                      src={
+                        product.image &&
+                        Array.isArray(product.image) &&
+                        product.image.length > 0 &&
+                        typeof product.image[0] === "string" &&
+                        product.image[0].startsWith("/")
+                          ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
+                          : "/images/default-product.png"
+                      }
+                      alt={product.name}
+                      width={100}
+                      height={100}
+                      className={`w-full h-64 object-cover rounded-2xl ${
+                        theme === "dark" ? "" : "border-[1.9px] border-blue-400"
+                      }`}
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="text-blue-400 text-lg font-bold">
+                      {product.name}
+                    </h3>
+                    <p className="text-blue-400 text-base">
+                      {product.user?.subdistrict}
                     </p>
                   </div>
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="bg-blue-400 px-4 py-1 text-center text-white rounded-lg hover:bg-transparent z-20 hover:text-blue-400 hover:border-2 hover:border-bluetext-blue-400"
-                  >
-                    Detail
-                  </Link>
                 </div>
-                <div className="mb-5">
-                  <Image
-                    src={
-                      product.image &&
-                      Array.isArray(product.image) &&
-                      product.image.length > 0 &&
-                      typeof product.image[0] === "string" &&
-                      product.image[0].startsWith("/")
-                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
-                        : "/images/default-product.png"
-                    }
-                    alt={product.name}
-                    width={100}
-                    height={100}
-                    className={`w-full h-64 object-cover rounded-2xl ${
-                      theme === "dark" ? "" : "border-[1.9px] border-blue-400"
-                    }`}
-                  />
-                </div>
-                <div className="mt-4">
-                  <h3 className="text-blue-400 text-lg font-bold">
-                    {product.name}
-                  </h3>
-                  <p className="text-blue-400 text-base">
-                    {product.user?.subdistrict}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           <div className="flex justify-center mt-10">
             <Link
               href="/product"
