@@ -9,12 +9,6 @@ export default function Footer() {
       setTheme(storedTheme);
     }
   }, [theme, setTheme]);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
   return (
     <footer
       className={`text-white text-center ${

@@ -55,9 +55,12 @@ export default function Product() {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/allproducts", {
-        method: "GET",
-      });
+      const response = await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/allproducts",
+        {
+          method: "GET",
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -109,10 +112,13 @@ export default function Product() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch(
+      "https://backend-leftoverz-production.up.railway.app/api/v1/embed-local",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -147,7 +153,7 @@ export default function Product() {
     if (file) {
       setIsLoading(true);
       try {
-        setImage(URL.createObjectURL(file)); 
+        setImage(URL.createObjectURL(file));
         const embedding = await getImageEmbedding(file);
         console.log("Embedding length from upload:", embedding.length);
         if (embedding.length === 0) {
@@ -271,10 +277,6 @@ export default function Product() {
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  if (loading || isLoading) {
-    return <div>Loading...</div>;
-  }
   return (
     <div
       className={`items-center ${
@@ -535,77 +537,81 @@ export default function Product() {
           </div>
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-            {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
-              >
-                <div className="mb-4 flex justify-between items-center">
-                  <div className="block">
-                    <h3
-                      className={`text-lg mb-1 font-bold ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      {product.name}
-                    </h3>
+          {loading || isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
+              {filteredProducts.map((product) => (
+                <div
+                  key={product.id}
+                  className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                >
+                  <div className="mb-4 flex justify-between items-center">
+                    <div className="block">
+                      <h3
+                        className={`text-lg mb-1 font-bold ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {product.name}
+                      </h3>
 
-                    <div className="flex items-center gap-2">
-                      <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
-                        {product.seller?.name
-                          ? product.seller.name
-                              .split(" ")
-                              .map((word) => word.charAt(0))
-                              .join("")
-                              .toUpperCase()
-                          : "?"}
-                      </span>
-                      <p className="text-blue-400 font-semibold">
-                        {product.seller?.name || "Unknown Seller"}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                          {product.seller?.name
+                            ? product.seller.name
+                                .split(" ")
+                                .map((word) => word.charAt(0))
+                                .join("")
+                                .toUpperCase()
+                            : "?"}
+                        </span>
+                        <p className="text-blue-400 font-semibold">
+                          {product.seller?.name || "Unknown Seller"}
+                        </p>
+                      </div>
                     </div>
                   </div>
+                  <div className="mb-5">
+                    <Image
+                      src={
+                        product.image &&
+                        Array.isArray(product.image) &&
+                        product.image.length > 0 &&
+                        typeof product.image[0] === "string" &&
+                        product.image[0].startsWith("/")
+                          ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
+                          : "/images/default-product.png"
+                      }
+                      alt={product.name}
+                      width={100}
+                      height={100}
+                      className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
+                        theme === "dark" ? "" : "border-[1.9px] border-blue-400"
+                      }`}
+                    />
+                  </div>
+                  <div className="my-4 flex justify-between items-center">
+                    <p className="text-blue-400 text-lg">
+                      {product.user?.subdistrict}
+                    </p>
+                    <p className="text-blue-400 text-base">
+                      {" "}
+                      Rp {product.price.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+                  <div className="w-full flex justify-between items-center gap-2 text-white">
+                    <Link
+                      href={`/product/${product.id}`}
+                      className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                    >
+                      Detail
+                    </Link>
+                  </div>
                 </div>
-                <div className="mb-5">
-                  <Image
-                    src={
-                      product.image &&
-                      Array.isArray(product.image) &&
-                      product.image.length > 0 &&
-                      typeof product.image[0] === "string" &&
-                      product.image[0].startsWith("/")
-                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
-                        : "/images/default-product.png"
-                    }
-                    alt={product.name}
-                    width={100}
-                    height={100}
-                    className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
-                      theme === "dark" ? "" : "border-[1.9px] border-blue-400"
-                    }`}
-                  />
-                </div>
-                <div className="my-4 flex justify-between items-center">
-                  <p className="text-blue-400 text-lg">
-                    {product.user?.subdistrict}
-                  </p>
-                  <p className="text-blue-400 text-base">
-                    {" "}
-                    Rp {product.price.toLocaleString("id-ID")}
-                  </p>
-                </div>
-                <div className="w-full flex justify-between items-center gap-2 text-white">
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
-                  >
-                    Detail
-                  </Link>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
           <div className="flex justify-center gap-4 mt-10 items-center">
             <button
               onClick={handlePreviousPage}
