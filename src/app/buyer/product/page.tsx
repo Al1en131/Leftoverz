@@ -432,10 +432,6 @@ export default function Product() {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
 
-  if (loading || favoritesLoading || isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div
       className={`items-center ${
