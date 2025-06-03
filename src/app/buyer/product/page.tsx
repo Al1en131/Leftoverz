@@ -432,6 +432,10 @@ export default function Product() {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
 
+  if (loading || favoritesLoading || isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div
       className={`items-center ${
@@ -808,11 +812,60 @@ export default function Product() {
                   </div>
                   <div className="w-full flex justify-between items-center gap-2 text-white">
                     <Link
-                      href={`/product/${product.id}`}
+                      href={`/buyer/product/${product.id}`}
                       className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                     >
                       Detail
                     </Link>
+                    <button
+                      className={`z-30 ${
+                        theme === "dark" ? "text-white" : "text-blue-400"
+                      }`}
+                      onClick={() => handleAddFavorite(product.id)}
+                      aria-label={
+                        favorites.includes(Number(product.id))
+                          ? "Hapus dari favorit"
+                          : "Tambahkan ke favorit"
+                      }
+                    >
+                      {favorites.includes(Number(product.id)) ? (
+                        <svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-8 h-8 hover:scale-110 transition"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M22 17.2C22 19.85 19.85 22 17.2 22C15.78 22 14.51 21.38 13.63 20.4C12.87 19.55 12.4 18.43 12.4 17.2C12.4 14.55 14.55 12.4 17.2 12.4C18.57 12.4 19.81 12.98 20.69 13.91C20.68 13.91 20.68 13.91 20.69 13.92C21.5 14.78 22 15.93 22 17.2Z" />
+                          <path d="M18.48 18.54L15.95 16" />
+                          <path d="M18.45 16.03L15.92 18.57" />
+                          <path d="M22 8.69C22 10.66 21.49 12.4 20.69 13.91C19.81 12.98 18.57 12.4 17.2 12.4C14.55 12.4 12.4 14.55 12.4 17.2C12.4 18.43 12.87 19.55 13.63 20.4C13.26 20.57 12.92 20.71 12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.09998 7.56 3.09998C9.37 3.09998 10.99 3.98002 12 5.33002C13.01 3.98002 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.6 22 8.69Z" />
+                        </svg>
+                      ) : (
+                        <svg
+                          width="32"
+                          height="32"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-8 h-8 hover:scale-110 transition"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M17.2 22C19.851 22 22 19.851 22 17.2C22 14.549 19.851 12.4 17.2 12.4C14.549 12.4 12.4 14.549 12.4 17.2C12.4 19.851 14.549 22 17.2 22Z" />
+                          <path d="M18.99 17.26H15.41" />
+                          <path d="M17.2 15.51V19.1" />
+                          <path d="M22 8.69C22 10.66 21.49 12.4 20.69 13.91C19.81 12.98 18.57 12.4 17.2 12.4C14.55 12.4 12.4 14.55 12.4 17.2C12.4 18.43 12.87 19.55 13.63 20.4C13.26 20.57 12.92 20.71 12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.09998 7.56 3.09998C9.37 3.09998 10.99 3.98002 12 5.33002C13.01 3.98002 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.6 22 8.69Z" />
+                        </svg>
+                      )}
+                    </button>
                   </div>
                 </div>
               ))}
