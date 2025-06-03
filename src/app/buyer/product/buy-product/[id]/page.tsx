@@ -150,7 +150,8 @@ export default function BuyProduct() {
         }
 
         const formattedImages = imageArray.map(
-          (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
+          (imgUrl: string) =>
+            `https://backend-leftoverz-production.up.railway.app${imgUrl}`
         );
 
         setProduct({
@@ -283,7 +284,7 @@ export default function BuyProduct() {
     <>
       <Script
         src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key=""
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
         strategy="afterInteractive"
       />
 
