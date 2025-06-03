@@ -206,10 +206,6 @@ export default function Favorite() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
   return (
     <div
       className={`items-center ${
@@ -421,172 +417,178 @@ export default function Favorite() {
           </form>
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
-            {currentProducts.length === 0 ? (
-              <div
-                className={`col-span-full block text-center justify-center text-lg mb-1 font-bold ${
-                  theme === "dark" ? "text-white" : "text-blue-400"
-                }`}
-              >
-                <svg
-                  width="800px"
-                  height="800px"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mb-6 w-32 h-32 flex mx-auto justify-center text-center items-center"
-                >
-                  <path
-                    d="M6.10999 17.5C3.89999 15.43 2 12.48 2 8.67999C2 5.58999 4.49 3.09003 7.56 3.09003C9.38 3.09003 10.99 3.97002 12 5.33002C13.01 3.97002 14.63 3.09003 16.44 3.09003C17.59 3.09003 18.66 3.43999 19.55 4.04999"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M21.74 7C21.91 7.53 22 8.1 22 8.69C22 15.69 15.52 19.82 12.62 20.82C12.28 20.94 11.72 20.94 11.38 20.82C10.73 20.6 9.91002 20.22 9.02002 19.69"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M22 2L2 22"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Belum ada data favorit yang anda masukkan.
-              </div>
-            ) : (
-              currentProducts.map((item) => (
+          {loading ? (
+            <div className="text-center text-blue-400">Loading...</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
+              {currentProducts.length === 0 ? (
                 <div
-                  key={item.id}
-                  className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                  className={`col-span-full block text-center justify-center text-lg mb-1 font-bold ${
+                    theme === "dark" ? "text-white" : "text-blue-400"
+                  }`}
                 >
-                  <div className="mb-4 flex justify-between items-center">
-                    <div className="block">
-                      <h3
-                        className={`text-lg mb-1 font-bold ${
-                          theme === "dark" ? "text-white" : "text-blue-400"
-                        }`}
-                      >
-                        {item.product?.name}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
-                          {item.product?.seller_name
-                            ? item.product?.seller_name
-                                .split(" ")
-                                .map((word) => word.charAt(0))
-                                .join("")
-                                .toUpperCase()
-                            : "?"}
-                        </span>
-                        <p className="text-blue-400 font-semibold">
-                          {item.product?.seller_name || "Unknown Seller"}
-                        </p>
+                  <svg
+                    width="800px"
+                    height="800px"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="mb-6 w-32 h-32 flex mx-auto justify-center text-center items-center"
+                  >
+                    <path
+                      d="M6.10999 17.5C3.89999 15.43 2 12.48 2 8.67999C2 5.58999 4.49 3.09003 7.56 3.09003C9.38 3.09003 10.99 3.97002 12 5.33002C13.01 3.97002 14.63 3.09003 16.44 3.09003C17.59 3.09003 18.66 3.43999 19.55 4.04999"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M21.74 7C21.91 7.53 22 8.1 22 8.69C22 15.69 15.52 19.82 12.62 20.82C12.28 20.94 11.72 20.94 11.38 20.82C10.73 20.6 9.91002 20.22 9.02002 19.69"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <path
+                      d="M22 2L2 22"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                  Belum ada data favorit yang anda masukkan.
+                </div>
+              ) : (
+                currentProducts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="w-full p-6 rounded-xl border_section shadow-lg bg-white/5 relative"
+                  >
+                    <div className="mb-4 flex justify-between items-center">
+                      <div className="block">
+                        <h3
+                          className={`text-lg mb-1 font-bold ${
+                            theme === "dark" ? "text-white" : "text-blue-400"
+                          }`}
+                        >
+                          {item.product?.name}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <span className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center text-white">
+                            {item.product?.seller_name
+                              ? item.product?.seller_name
+                                  .split(" ")
+                                  .map((word) => word.charAt(0))
+                                  .join("")
+                                  .toUpperCase()
+                              : "?"}
+                          </span>
+                          <p className="text-blue-400 font-semibold">
+                            {item.product?.seller_name || "Unknown Seller"}
+                          </p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="mb-5">
-                    <Image
-                      src={
-                        item.product?.image[0]
-                          ? `https://backend-leftoverz-production.up.railway.app${item.product.image[0]}`
-                          : "/images/default-item.png"
-                      }
-                      alt="product"
-                      width={100}
-                      height={100}
-                      className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
-                        theme === "dark" ? "" : "border-[1.9px] border-blue-400"
-                      }`}
-                    />
-                  </div>
-                  <div className="my-4 flex justify-between items-center">
-                    <p className="text-blue-400 text-lg">
-                      {item.product?.subdistrict}
-                    </p>
-                    <p className="text-blue-400 text-base">
-                      {" "}
-                      Rp {item.product?.price.toLocaleString("id-ID")}
-                    </p>
-                  </div>
-                  <div className="w-full flex justify-between items-center gap-2 text-white">
-                    <Link
-                      href={`/buyer/product/${item.product?.id}`}
-                      className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
-                    >
-                      Lihat Detail
-                    </Link>
-                    <button
-                      className={`z-30 ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                      onClick={() => {
-                        const userId = localStorage.getItem("id");
-                        if (!userId) {
-                          console.error("User ID is missing");
-                          return;
+                    <div className="mb-5">
+                      <Image
+                        src={
+                          item.product?.image[0]
+                            ? `https://backend-leftoverz-production.up.railway.app${item.product.image[0]}`
+                            : "/images/default-item.png"
                         }
-                        if (!item.product?.id) {
-                          console.error("Item ID is missing");
-                          return;
-                        }
-                        setItemToDelete(item);
-                        setShowConfirmPopup(true);
-                      }}
-                      title="Hapus dari Favorit"
-                    >
-                      <svg
-                        width="800px"
-                        height="800px"
-                        viewBox="0 0 24 24"
-                        className="w-8 h-8 hover:scale-110 transition"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
+                        alt="product"
+                        width={100}
+                        height={100}
+                        className={`w-full lg:h-80 max-lg:h-72 object-cover rounded-2xl ${
+                          theme === "dark"
+                            ? ""
+                            : "border-[1.9px] border-blue-400"
+                        }`}
+                      />
+                    </div>
+                    <div className="my-4 flex justify-between items-center">
+                      <p className="text-blue-400 text-lg">
+                        {item.product?.subdistrict}
+                      </p>
+                      <p className="text-blue-400 text-base">
+                        {" "}
+                        Rp {item.product?.price.toLocaleString("id-ID")}
+                      </p>
+                    </div>
+                    <div className="w-full flex justify-between items-center gap-2 text-white">
+                      <Link
+                        href={`/buyer/product/${item.product?.id}`}
+                        className="bg-blue-400 px-6 py-3 text-center w-full text-white rounded-full hover:bg-transparent z-30 hover:text-blue-400 hover:border-2 hover:border-blue-400"
                       >
-                        <path
-                          d="M22 17.2C22 19.85 19.85 22 17.2 22C15.78 22 14.51 21.38 13.63 20.4C12.87 19.55 12.4 18.43 12.4 17.2C12.4 14.55 14.55 12.4 17.2 12.4C18.57 12.4 19.81 12.98 20.69 13.91C20.68 13.91 20.68 13.91 20.69 13.92C21.5 14.78 22 15.93 22 17.2Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M18.48 18.54L15.95 16"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M18.45 16.03L15.92 18.57"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeMiterlimit="10"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M22 8.69C22 10.66 21.49 12.4 20.69 13.91C19.81 12.98 18.57 12.4 17.2 12.4C14.55 12.4 12.4 14.55 12.4 17.2C12.4 18.43 12.87 19.55 13.63 20.4C13.26 20.57 12.92 20.71 12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.09998 7.56 3.09998C9.37 3.09998 10.99 3.98002 12 5.33002C13.01 3.98002 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.6 22 8.69Z"
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </button>
+                        Lihat Detail
+                      </Link>
+                      <button
+                        className={`z-30 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                        onClick={() => {
+                          const userId = localStorage.getItem("id");
+                          if (!userId) {
+                            console.error("User ID is missing");
+                            return;
+                          }
+                          if (!item.product?.id) {
+                            console.error("Item ID is missing");
+                            return;
+                          }
+                          setItemToDelete(item);
+                          setShowConfirmPopup(true);
+                        }}
+                        title="Hapus dari Favorit"
+                      >
+                        <svg
+                          width="800px"
+                          height="800px"
+                          viewBox="0 0 24 24"
+                          className="w-8 h-8 hover:scale-110 transition"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M22 17.2C22 19.85 19.85 22 17.2 22C15.78 22 14.51 21.38 13.63 20.4C12.87 19.55 12.4 18.43 12.4 17.2C12.4 14.55 14.55 12.4 17.2 12.4C18.57 12.4 19.81 12.98 20.69 13.91C20.68 13.91 20.68 13.91 20.69 13.92C21.5 14.78 22 15.93 22 17.2Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeMiterlimit="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M18.48 18.54L15.95 16"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeMiterlimit="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M18.45 16.03L15.92 18.57"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeMiterlimit="10"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M22 8.69C22 10.66 21.49 12.4 20.69 13.91C19.81 12.98 18.57 12.4 17.2 12.4C14.55 12.4 12.4 14.55 12.4 17.2C12.4 18.43 12.87 19.55 13.63 20.4C13.26 20.57 12.92 20.71 12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.09998 7.56 3.09998C9.37 3.09998 10.99 3.98002 12 5.33002C13.01 3.98002 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.6 22 8.69Z"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))
-            )}
-          </div>
+                ))
+              )}
+            </div>
+          )}
           <div className="flex justify-center gap-4 mt-10 items-center">
             <button
               onClick={handlePreviousPage}
