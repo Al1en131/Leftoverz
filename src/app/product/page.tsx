@@ -538,7 +538,7 @@ export default function Product() {
         </div>
         <div className="lg:py-10 max-lg:pt-0 max-lg:pb-10 lg:px-20 max-lg:px-6 w-full">
           {loading || isLoading ? (
-            <div>Loading...</div>
+            <div className="text-center text-blue-400">Loading...</div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10 max-lg:gap-4 z-50">
               {filteredProducts.map((product) => (
