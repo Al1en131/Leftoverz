@@ -199,7 +199,7 @@ export default function Home() {
                   theme === "dark" ? "text-white" : "text-[#080B2A]"
                 }`}
               >
-                Registrer
+                Register
               </Link>
               <Link
                 href="/auth/login"
