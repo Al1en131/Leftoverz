@@ -587,7 +587,7 @@ export default function RoomChat() {
                     })
                   )}
                 </div>
-                <div className="py-4 flex items-center gap-2 border-t border-gray-200">
+                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 bg-white dark:bg-[#0B1120] z-10">
                   <div className="w-1/3 sm:w-1/4">
                     <select
                       value={selectedProductId ?? ""}
@@ -628,7 +628,7 @@ export default function RoomChat() {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12..."
                       />
                     </svg>
                   </button>
