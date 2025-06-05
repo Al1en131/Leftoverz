@@ -416,7 +416,7 @@ export default function RoomChat() {
         </div>
         <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
           <div
-            className={`p-10 rounded-2xl border-2 border-blue-400 ${
+            className={`lg:p-10 max-lg:p-4 rounded-2xl border-2 border-blue-400 ${
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
@@ -553,7 +553,7 @@ export default function RoomChat() {
                           } mb-4`}
                         >
                           {isReceiver && (
-                            <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full flex items-center justify-center text-white font-bold">
+                            <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-4 flex items-center justify-center text-white font-bold">
                               {message.sender?.name
                                 ? message.sender.name
                                     .split(" ")
@@ -595,7 +595,7 @@ export default function RoomChat() {
                   )}
                   <div ref={messagesEndRef} />
                 </div>
-                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
+                <div className="py-4 flex items-center lg:ml-4 gap-2 border-t border-blue-400 sticky bottom-0 z-10">
                   <div className="w-1/3 sm:w-1/4">
                     <select
                       value={selectedProductId ?? ""}
