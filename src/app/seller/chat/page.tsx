@@ -421,7 +421,7 @@ export default function RoomChat() {
             }`}
           >
             <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
-              <div className="flex flex-col lg:w-1/5 w-full lg:border-r lg:border-blue-400 max-lg:h-56 overflow-y-auto">
+              <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 max-lg:h-56 overflow-y-auto">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
@@ -514,7 +514,7 @@ export default function RoomChat() {
                 )}
               </div>
 
-              <div className="flex flex-col w-full lg:w-4/5 overflow-hidden">
+              <div className="flex flex-col w-full lg:w-4/6 overflow-hidden">
                 <div className="flex-1 overflow-y-auto pt-5">
                   {messages.length === 0 ? (
                     <div
@@ -595,7 +595,7 @@ export default function RoomChat() {
                   )}
                   <div ref={messagesEndRef} />
                 </div>
-                <div className="py-4 flex items-center gap-2 border-t max-lg:bg-[#080B2A] border-blue-400 sticky bottom-0 z-10">
+                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
                   <div className="w-1/3 sm:w-1/4">
                     <select
                       value={selectedProductId ?? ""}
