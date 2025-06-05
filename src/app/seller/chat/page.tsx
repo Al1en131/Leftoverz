@@ -407,14 +407,14 @@ export default function RoomChat() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
+        <div className="lg:px-20 max-lg:px-2 py-10 justify-center items-center rounded-lg ">
           <div
             className={`p-10 rounded-2xl border-2 border-blue-400 ${
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
-            <div className="lg:flex lg:flex-row lg:justify-between lg:h-[500px] max-lg:h-[700px] max-lg:block z-50">
-              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 border-blue-400 overflow-y-auto min-h-[300px]">
+            <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
+              <div className="flex flex-col lg:w-2/5 w-full border-r border-blue-400 overflow-y-auto max-h-full">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
@@ -507,8 +507,8 @@ export default function RoomChat() {
                 )}
               </div>
 
-              <div className="w-full lg:px-5 max-lg:px-1 flex flex-col justify-between">
-                <div className="flex flex-col mt-5 overflow-y-auto min-h-[300px] grow px-1">
+              <div className="flex flex-col w-full lg:w-3/5 max-h-full px-4">
+                <div className="flex-1 overflow-y-auto pt-5">
                   {messages.length === 0 ? (
                     <div
                       className={`flex justify-center items-center h-full text-center ${
