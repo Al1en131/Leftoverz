@@ -587,7 +587,7 @@ export default function RoomChat() {
                     })
                   )}
                 </div>
-                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
+                <div className="py-4 flex items-center gap-2 border-t max-lg:bg-[#080B2A] border-blue-400 sticky bottom-0 z-10">
                   <div className="w-1/3 sm:w-1/4">
                     <select
                       value={selectedProductId ?? ""}
@@ -614,7 +614,7 @@ export default function RoomChat() {
                     onChange={(e) => setNewMessage(e.target.value)}
                   />
                   <button
-                    className="p-3 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
+                    className="lg:p-3 max-lg:p-1.5 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={handleSendMessage}
                   >
                     <svg
@@ -623,7 +623,7 @@ export default function RoomChat() {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="w-5 h-5"
+                      className="lg:w-5 lg:h-5 max-lg:w-4 max-lg:h-4"
                     >
                       <path
                         strokeLinecap="round"
