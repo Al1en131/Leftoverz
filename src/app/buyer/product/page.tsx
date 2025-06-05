@@ -431,7 +431,17 @@ export default function Product() {
   useEffect(() => {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
+  
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
+  if (isLoading) return null;
   return (
     <div
       className={`items-center ${

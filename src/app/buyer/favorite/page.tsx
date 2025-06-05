@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import "flowbite/dist/flowbite.css";
 import Link from "next/link";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 type Product = {
   id: number;
@@ -206,6 +207,18 @@ export default function Favorite() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <div
       className={`items-center ${

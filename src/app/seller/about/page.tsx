@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import "flowbite";
 import "flowbite/dist/flowbite.css";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 export default function About() {
   const { theme, setTheme } = useTheme();
@@ -30,7 +31,18 @@ export default function About() {
   }, []);
 
   if (!mounted) return null;
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
+  if (isLoading) return null;
   return (
     <div
       className={`items-center ${

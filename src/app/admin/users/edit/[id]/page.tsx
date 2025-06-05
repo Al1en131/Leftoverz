@@ -120,9 +120,7 @@ export default function User() {
   }, [formData.province, provinces]);
 
   useEffect(() => {
-    const selectedRegency = regency.find(
-      (r) => r.name === formData.regency
-    );
+    const selectedRegency = regency.find((r) => r.name === formData.regency);
     if (!selectedRegency) return;
 
     const fetchSubdistrict = async () => {
@@ -272,7 +270,9 @@ export default function User() {
     if (!userId) return;
     const fetchUser = async () => {
       try {
-        const res = await fetch(`https://backend-leftoverz-production.up.railway.app/api/v1/user/${userId}`);
+        const res = await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/user/${userId}`
+        );
         const data = await res.json();
 
         if (!res.ok) throw new Error(data.message);
@@ -321,7 +321,17 @@ export default function User() {
 
     fetchUser();
   }, [userId]);
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
+  if (isLoading) return null;
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       <Image

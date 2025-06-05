@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 type User = {
   id: number;
@@ -228,9 +229,7 @@ export default function DetailProfile() {
   }, [formData.province, provinces]);
 
   useEffect(() => {
-    const selectedRegency = regency.find(
-      (r) => r.name === formData.regency
-    );
+    const selectedRegency = regency.find((r) => r.name === formData.regency);
     if (!selectedRegency) return;
 
     const fetchSubdistrict = async () => {
@@ -300,6 +299,18 @@ export default function DetailProfile() {
 
   const handleClosePopup = () => setShowSuccessPopup(false);
   const handleCloseErrorPopup = () => setShowErrorPopup(false);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <div
       className={`items-center ${
@@ -308,10 +319,11 @@ export default function DetailProfile() {
     >
       {showSuccessPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/succes.svg"
@@ -334,10 +346,11 @@ export default function DetailProfile() {
       )}
       {showErrorPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-          <div className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
-  theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-}`}
->
+          <div
+            className={`border-red-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
+          >
             <div className="flex justify-center mb-4">
               <Image
                 src="/images/error.svg"

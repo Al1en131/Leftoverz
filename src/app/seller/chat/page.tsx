@@ -1,6 +1,7 @@
 "use client";
 import { useTheme } from "next-themes";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 type User = {
@@ -174,9 +175,12 @@ export default function RoomChat() {
       localStorage.setItem("selectedProductId", String(chat.item_id || ""));
 
       try {
-        await fetch(`https://backend-leftoverz-production.up.railway.app/api/v1/chats/${chat.id}/read`, {
-          method: "PUT",
-        });
+        await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/chats/${chat.id}/read`,
+          {
+            method: "PUT",
+          }
+        );
 
         setChats((prevChats) =>
           prevChats.map((prevChat) =>
@@ -306,6 +310,19 @@ export default function RoomChat() {
 
     return () => clearInterval(interval);
   }, [userId, selectedChat, fetchChats, handleChatSelect]);
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <div
       className={`items-center ${

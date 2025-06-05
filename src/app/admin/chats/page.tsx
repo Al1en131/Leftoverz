@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 type User = {
   id: number;
@@ -63,8 +64,8 @@ export default function Chats() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay); 
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate); 
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
@@ -73,13 +74,16 @@ export default function Chats() {
     const fetchChats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/chats", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://backend-leftoverz-production.up.railway.app/api/v1/chats",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -102,6 +106,18 @@ export default function Chats() {
     fetchChats();
   }, []);
 
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       <Image

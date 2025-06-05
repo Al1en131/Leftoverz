@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Transaction from "@/app/seller/transaction/page";
 
 type User = {
@@ -241,7 +241,18 @@ export default function BuyProduct() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
-  if (loading) return <p className="text-white">Loading...</p>;
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <>
       <div
@@ -295,388 +306,399 @@ export default function BuyProduct() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-[700px] right-[300px] opacity-35 -z-0"
         />
-        <div className="lg:p-20 max-lg:px-6 max-lg:py-14 lg:mt-4 max-lg:mt-10 w-full">
-          <div
-            className={`lg:p-10 p-7 border_section rounded-2xl ${
-              theme === "dark" ? "bg-white/20" : "bg-black/5"
-            }`}
-          >
-            <div className="lg:flex lg:gap-2 relative max-lg:space-y-6 items-center h-auto">
-              <div className="lg:w-1/3 max-lg:w-full">
-                <Image
-                  src={
-                    transaction?.image &&
-                    Array.isArray(transaction?.image) &&
-                    transaction?.image.length > 0 &&
-                    typeof transaction?.image[0] === "string" &&
-                    transaction?.image[0].startsWith("/")
-                      ? `https://backend-leftoverz-production.up.railway.app${transaction?.image[0]}`
-                      : "/images/default-product.png"
-                  }
-                  alt=""
-                  width={100}
-                  height={100}
-                  className="lg:w-60 h-60 max-lg:w-full object-cover rounded-lg"
-                />
-              </div>
-              <div className="w-full">
-                <p
-                  className={`text-xl ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
-                >
-                  {transaction?.item_name}
-                </p>
-                <p className="text-blue-400 mb-1 text-base">Buyer :</p>
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
-                      theme === "dark"
-                        ? "text-white bg-blue-400"
-                        : "text-white bg-blue-400"
-                    }`}
-                  >
-                    {user?.name
-                      ? user?.name
-                          .split(" ")
-                          .map((word) => word.charAt(0))
-                          .join("")
-                          .toUpperCase()
-                      : "?"}
-                  </span>
-                  <p
-                    className={`font-semibold text-lg ${
-                      theme === "dark" ? "text-blue-400" : "text-blue-400"
-                    }`}
-                  >
-                    {user?.name}
-                  </p>
+        {loading ? (
+          <div className="text-center text-blue-400">
+            <p>Loading ....</p>
+          </div>
+        ) : (
+          <div className="lg:p-20 max-lg:px-6 max-lg:py-14 lg:mt-4 max-lg:mt-10 w-full">
+            <div
+              className={`lg:p-10 p-7 border_section rounded-2xl ${
+                theme === "dark" ? "bg-white/20" : "bg-black/5"
+              }`}
+            >
+              <div className="lg:flex lg:gap-2 relative max-lg:space-y-6 items-center h-auto">
+                <div className="lg:w-1/3 max-lg:w-full">
+                  <Image
+                    src={
+                      transaction?.image &&
+                      Array.isArray(transaction?.image) &&
+                      transaction?.image.length > 0 &&
+                      typeof transaction?.image[0] === "string" &&
+                      transaction?.image[0].startsWith("/")
+                        ? `https://backend-leftoverz-production.up.railway.app${transaction?.image[0]}`
+                        : "/images/default-product.png"
+                    }
+                    alt=""
+                    width={100}
+                    height={100}
+                    className="lg:w-60 h-60 max-lg:w-full object-cover rounded-lg"
+                  />
                 </div>
-
-                <p
-                  className={`text-base mb-1 ps-12 ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
-                >
-                  {user?.address
-                    ?.toLowerCase()
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  ,
-                  {user?.ward
-                    ?.toLowerCase()
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  ,{" "}
-                  {user?.subdistrict
-                    ?.toLowerCase()
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  ,{" "}
-                  {user?.regency
-                    ?.toLowerCase()
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  ,{" "}
-                  {user?.province
-                    ?.toLowerCase()
-                    .replace(/\b\w/g, (c) => c.toUpperCase())}
-                  , {user?.postal_code}
-                </p>
-                {!loading && transaction && (
-                  <div>
-                    <p className="text-blue-400 mt-3 text-base">Seller :</p>
-
-                    <div className="mt-1 flex items-center gap-2">
-                      <span
-                        className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
-                          theme === "dark"
-                            ? "text-white bg-blue-400"
-                            : "text-white bg-blue-400"
-                        }`}
-                      >
-                        {transaction.seller_name
-                          ? transaction.seller_name
-                              .split(" ")
-                              .map((word) => word.charAt(0))
-                              .join("")
-                              .toUpperCase()
-                          : "?"}
-                      </span>
-                      <p
-                        className={`font-semibold text-lg ${
-                          theme === "dark" ? "text-blue-400" : "text-blue-400"
-                        }`}
-                      >
-                        {transaction.seller_name}
-                      </p>
-                    </div>
-                    <p
-                      className={`text-base mb-2 ps-12 ${
-                        theme === "dark" ? "text-white" : "text-[#080B2A]"
+                <div className="w-full">
+                  <p
+                    className={`text-xl ${
+                      theme === "dark" ? "text-white" : "text-[#080B2A]"
+                    }`}
+                  >
+                    {transaction?.item_name}
+                  </p>
+                  <p className="text-blue-400 mb-1 text-base">Buyer :</p>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
+                        theme === "dark"
+                          ? "text-white bg-blue-400"
+                          : "text-white bg-blue-400"
                       }`}
                     >
-                      {transaction.seller?.address
-                        ?.toLowerCase()
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                      ,
-                      {transaction.seller?.ward
-                        ?.toLowerCase()
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                      ,{" "}
-                      {transaction.seller?.subdistrict
-                        ?.toLowerCase()
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                      ,{" "}
-                      {transaction.seller?.regency
-                        ?.toLowerCase()
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                      ,{" "}
-                      {transaction.seller?.province
-                        ?.toLowerCase()
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
-                      ,{""} {transaction?.seller?.postal_code}
+                      {user?.name
+                        ? user?.name
+                            .split(" ")
+                            .map((word) => word.charAt(0))
+                            .join("")
+                            .toUpperCase()
+                        : "?"}
+                    </span>
+                    <p
+                      className={`font-semibold text-lg ${
+                        theme === "dark" ? "text-blue-400" : "text-blue-400"
+                      }`}
+                    >
+                      {user?.name}
                     </p>
                   </div>
-                )}
-              </div>
-            </div>
-            <div className="mt-4 flex justify-end">
-              <button
-                onClick={handleTrackPackage}
-                className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
-              >
-                Tracking Package
-              </button>
-              {showTrackingModal && trackingData && (
-                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
-                  <div
-                    className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 ${
-                      theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+
+                  <p
+                    className={`text-base mb-1 ps-12 ${
+                      theme === "dark" ? "text-white" : "text-[#080B2A]"
                     }`}
                   >
-                    <button
-                      className="absolute top-4 right-4 text-red-500 font-bold text-xl"
-                      onClick={() => setShowTrackingModal(false)}
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="size-6"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18 18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-
-                    <h2 className="text-xl font-bold mb-4 text-blue-500">
-                      Tracking Information
-                    </h2>
-
-                    <div
-                      className={`mb-4 ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      <p>
-                        <strong className="tracking-wider">AWB:</strong>{" "}
-                        {trackingData.summary.awb || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Courier:</strong>{" "}
-                        {trackingData.summary.courier || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Status:</strong>{" "}
-                        {trackingData.summary.status || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Date:</strong>{" "}
-                        {trackingData.summary.date || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Weight:</strong>{" "}
-                        {trackingData.summary.weight || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Cost:</strong> Rp{" "}
-                        {trackingData.summary.amount || "-"}
-                      </p>
-                    </div>
-
-                    <div
-                      className={`mb-4 ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
-                      }`}
-                    >
-                      <p>
-                        <strong className="tracking-wider">From:</strong>{" "}
-                        {trackingData.detail.origin || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">To:</strong>{" "}
-                        {trackingData.detail.destination || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Shipper:</strong>{" "}
-                        {trackingData.detail.shipper || "-"}
-                      </p>
-                      <p>
-                        <strong className="tracking-wider">Receiver:</strong>{" "}
-                        {trackingData.detail.receiver || "-"}
-                      </p>
-                    </div>
-
+                    {user?.address
+                      ?.toLowerCase()
+                      .replace(/\b\w/g, (c) => c.toUpperCase())}
+                    ,
+                    {user?.ward
+                      ?.toLowerCase()
+                      .replace(/\b\w/g, (c) => c.toUpperCase())}
+                    ,{" "}
+                    {user?.subdistrict
+                      ?.toLowerCase()
+                      .replace(/\b\w/g, (c) => c.toUpperCase())}
+                    ,{" "}
+                    {user?.regency
+                      ?.toLowerCase()
+                      .replace(/\b\w/g, (c) => c.toUpperCase())}
+                    ,{" "}
+                    {user?.province
+                      ?.toLowerCase()
+                      .replace(/\b\w/g, (c) => c.toUpperCase())}
+                    , {user?.postal_code}
+                  </p>
+                  {!loading && transaction && (
                     <div>
-                      <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                        Tracking History
-                      </h3>
-                      <div className="mt-6 grow sm:mt-8 lg:mt-0">
-                        <div
-                          className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm ${
-                            theme === "dark" ? "bg-white/10" : "bg-white"
+                      <p className="text-blue-400 mt-3 text-base">Seller :</p>
+
+                      <div className="mt-1 flex items-center gap-2">
+                        <span
+                          className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
+                            theme === "dark"
+                              ? "text-white bg-blue-400"
+                              : "text-white bg-blue-400"
                           }`}
                         >
-                          <h3
-                            className={`text-xl font-semibold ${
-                              theme === "dark" ? "text-white" : "text-gray-900"
+                          {transaction.seller_name
+                            ? transaction.seller_name
+                                .split(" ")
+                                .map((word) => word.charAt(0))
+                                .join("")
+                                .toUpperCase()
+                            : "?"}
+                        </span>
+                        <p
+                          className={`font-semibold text-lg ${
+                            theme === "dark" ? "text-blue-400" : "text-blue-400"
+                          }`}
+                        >
+                          {transaction.seller_name}
+                        </p>
+                      </div>
+                      <p
+                        className={`text-base mb-2 ps-12 ${
+                          theme === "dark" ? "text-white" : "text-[#080B2A]"
+                        }`}
+                      >
+                        {transaction.seller?.address
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,
+                        {transaction.seller?.ward
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{" "}
+                        {transaction.seller?.subdistrict
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{" "}
+                        {transaction.seller?.regency
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{" "}
+                        {transaction.seller?.province
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{""} {transaction?.seller?.postal_code}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="mt-4 flex justify-end">
+                <button
+                  onClick={handleTrackPackage}
+                  className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
+                >
+                  Tracking Package
+                </button>
+                {showTrackingModal && trackingData && (
+                  <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                    <div
+                      className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 ${
+                        theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                      }`}
+                    >
+                      <button
+                        className="absolute top-4 right-4 text-red-500 font-bold text-xl"
+                        onClick={() => setShowTrackingModal(false)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="size-6"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M6 18 18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+
+                      <h2 className="text-xl font-bold mb-4 text-blue-500">
+                        Tracking Information
+                      </h2>
+
+                      <div
+                        className={`mb-4 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        <p>
+                          <strong className="tracking-wider">AWB:</strong>{" "}
+                          {trackingData.summary.awb || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Courier:</strong>{" "}
+                          {trackingData.summary.courier || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Status:</strong>{" "}
+                          {trackingData.summary.status || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Date:</strong>{" "}
+                          {trackingData.summary.date || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Weight:</strong>{" "}
+                          {trackingData.summary.weight || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Cost:</strong> Rp{" "}
+                          {trackingData.summary.amount || "-"}
+                        </p>
+                      </div>
+
+                      <div
+                        className={`mb-4 ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        <p>
+                          <strong className="tracking-wider">From:</strong>{" "}
+                          {trackingData.detail.origin || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">To:</strong>{" "}
+                          {trackingData.detail.destination || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Shipper:</strong>{" "}
+                          {trackingData.detail.shipper || "-"}
+                        </p>
+                        <p>
+                          <strong className="tracking-wider">Receiver:</strong>{" "}
+                          {trackingData.detail.receiver || "-"}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-semibold text-blue-500 mb-2">
+                          Tracking History
+                        </h3>
+                        <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                          <div
+                            className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm ${
+                              theme === "dark" ? "bg-white/10" : "bg-white"
                             }`}
                           >
-                            Tracking History
-                          </h3>
+                            <h3
+                              className={`text-xl font-semibold ${
+                                theme === "dark"
+                                  ? "text-white"
+                                  : "text-gray-900"
+                              }`}
+                            >
+                              Tracking History
+                            </h3>
 
-                          <ol className="relative ms-3 border-s border-gray-500">
-                            {trackingData?.history?.map((item, index) => (
-                              <li
-                                key={index}
-                                className={`mb-10 ms-6 ${
-                                  index === 0
-                                    ? theme === "dark"
-                                      ? "text-primary-500"
-                                      : "text-primary-700"
-                                    : ""
-                                }`}
-                              >
-                                <span
-                                  className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
-                                    index === 0 ? "bg-blue-400" : "bg-gray-500"
-                                  } text-white`}
-                                >
-                                  <svg
-                                    className="h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M5 11.917 9.724 16.5 19 7.5"
-                                    />
-                                  </svg>
-                                </span>
-                                <h4
-                                  className={`mb-0.5 text-base font-semibold ${
-                                    theme === "dark"
-                                      ? "text-white"
-                                      : "text-gray-900"
+                            <ol className="relative ms-3 border-s border-gray-500">
+                              {trackingData?.history?.map((item, index) => (
+                                <li
+                                  key={index}
+                                  className={`mb-10 ms-6 ${
+                                    index === 0
+                                      ? theme === "dark"
+                                        ? "text-primary-500"
+                                        : "text-primary-700"
+                                      : ""
                                   }`}
                                 >
-                                  {item.date}
-                                </h4>
-                                <p className="text-sm text-blue-400">
-                                  {item.desc}
-                                </p>
-                              </li>
-                            ))}
-                          </ol>
+                                  <span
+                                    className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
+                                      index === 0
+                                        ? "bg-blue-400"
+                                        : "bg-gray-500"
+                                    } text-white`}
+                                  >
+                                    <svg
+                                      className="h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M5 11.917 9.724 16.5 19 7.5"
+                                      />
+                                    </svg>
+                                  </span>
+                                  <h4
+                                    className={`mb-0.5 text-base font-semibold ${
+                                      theme === "dark"
+                                        ? "text-white"
+                                        : "text-gray-900"
+                                    }`}
+                                  >
+                                    {item.date}
+                                  </h4>
+                                  <p className="text-sm text-blue-400">
+                                    {item.desc}
+                                  </p>
+                                </li>
+                              ))}
+                            </ol>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
-          <div
-            className={`p-10 border_section my-5 rounded-2xl ${
-              theme === "dark" ? "bg-white/20" : "bg-black/5"
-            }`}
-          >
-            <h3 className="text-3xl font-bold text-blue-400 mb-1">
-              Payment Detail
-            </h3>
-            <p className="text-blue-400 text-base mb-2">
-              {transaction?.order_id}
-            </p>
             <div
-              className={`block items-center py-4 space-y-2 mb-4 border-b ${
-                theme === "dark" ? "border-b-white" : "border-b-blue-400"
+              className={`p-10 border_section my-5 rounded-2xl ${
+                theme === "dark" ? "bg-white/20" : "bg-black/5"
               }`}
             >
-              <div className="flex justify-between items-center">
-                <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
-                >
-                  {transaction?.item?.name}
-                </p>
-                <p
-                  className={`text-base ${
-                    theme === "dark" ? "text-white" : "text-[#080B2A]"
-                  }`}
-                >
-                  Rp {transaction?.item?.price.toLocaleString("id-ID")}
-                </p>
+              <h3 className="text-3xl font-bold text-blue-400 mb-1">
+                Payment Detail
+              </h3>
+              <p className="text-blue-400 text-base mb-2">
+                {transaction?.order_id}
+              </p>
+              <div
+                className={`block items-center py-4 space-y-2 mb-4 border-b ${
+                  theme === "dark" ? "border-b-white" : "border-b-blue-400"
+                }`}
+              >
+                <div className="flex justify-between items-center">
+                  <p
+                    className={`text-base ${
+                      theme === "dark" ? "text-white" : "text-[#080B2A]"
+                    }`}
+                  >
+                    {transaction?.item?.name}
+                  </p>
+                  <p
+                    className={`text-base ${
+                      theme === "dark" ? "text-white" : "text-[#080B2A]"
+                    }`}
+                  >
+                    Rp {transaction?.item?.price.toLocaleString("id-ID")}
+                  </p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p
+                    className={`text-base ${
+                      theme === "dark" ? "text-white" : "text-[#080B2A]"
+                    }`}
+                  >
+                    Biaya Admin
+                  </p>
+                  <p
+                    className={`text-base ${
+                      theme === "dark" ? "text-white" : "text-[#080B2A]"
+                    }`}
+                  >
+                    Rp 5.000
+                  </p>
+                </div>
               </div>
               <div className="flex justify-between items-center">
                 <p
-                  className={`text-base ${
+                  className={`text-base font-bold tracking-wide ${
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Biaya Admin
+                  Total
                 </p>
                 <p
                   className={`text-base ${
                     theme === "dark" ? "text-white" : "text-[#080B2A]"
                   }`}
                 >
-                  Rp 5.000
+                  Rp {transaction?.total.toLocaleString("id-ID")}
                 </p>
               </div>
             </div>
-            <div className="flex justify-between items-center">
-              <p
-                className={`text-base font-bold tracking-wide ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
-              >
-                Total
-              </p>
-              <p
-                className={`text-base ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
-                }`}
-              >
-                Rp {transaction?.total.toLocaleString("id-ID")}
-              </p>
-            </div>
+            <button
+              className={`px-4 py-3 text-lg tracking-wide w-full capitalize font-semibold rounded-full ${
+                transaction?.status == "success"
+                  ? "bg-green-700 text-white"
+                  : "bg-red-700 text-white"
+              }`}
+            >
+              Payment {transaction?.status}
+            </button>
           </div>
-          <button
-            className={`px-4 py-3 text-lg tracking-wide w-full capitalize font-semibold rounded-full ${
-              transaction?.status == "success"
-                ? "bg-green-700 text-white"
-                : "bg-red-700 text-white"
-            }`}
-          >
-            Payment {transaction?.status}
-          </button>
-        </div>
+        )}
+
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"

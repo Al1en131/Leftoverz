@@ -424,7 +424,17 @@ export default function ProductDetail() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
+  if (isLoading) return null;
   return (
     <div
       className={`min-h-screen flex items-center justify-center ${

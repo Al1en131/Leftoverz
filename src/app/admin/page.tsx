@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 type RawTransaction = {
@@ -14,11 +15,11 @@ type RawTransaction = {
   item?: {
     name: string;
     image: string[];
-    price : number;
+    price: number;
   };
   buyer?: { name: string };
   seller?: { name: string };
-  created_at : string;
+  created_at: string;
 };
 
 type Transaction = RawTransaction & {
@@ -53,7 +54,7 @@ export default function Dashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("token"); 
+      const token = localStorage.getItem("token");
       if (!token) {
         console.error("Token tidak ditemukan");
         setLoading(false);
@@ -67,8 +68,14 @@ export default function Dashboard() {
         };
 
         const [penjualRes, pembeliRes] = await Promise.all([
-          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/seller", { headers }),
-          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/buyer", { headers }),
+          fetch(
+            "https://backend-leftoverz-production.up.railway.app/api/v1/count/seller",
+            { headers }
+          ),
+          fetch(
+            "https://backend-leftoverz-production.up.railway.app/api/v1/count/buyer",
+            { headers }
+          ),
         ]);
 
         if (penjualRes.ok && pembeliRes.ok) {
@@ -101,7 +108,10 @@ export default function Dashboard() {
         };
 
         const [productRes] = await Promise.all([
-          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/product", { headers }),
+          fetch(
+            "https://backend-leftoverz-production.up.railway.app/api/v1/count/product",
+            { headers }
+          ),
         ]);
 
         if (productRes.ok) {
@@ -132,7 +142,10 @@ export default function Dashboard() {
         };
 
         const [transactionRes] = await Promise.all([
-          fetch("https://backend-leftoverz-production.up.railway.app/api/v1/count/transaction", { headers }),
+          fetch(
+            "https://backend-leftoverz-production.up.railway.app/api/v1/count/transaction",
+            { headers }
+          ),
         ]);
 
         if (transactionRes.ok) {
@@ -195,13 +208,16 @@ export default function Dashboard() {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/products", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://backend-leftoverz-production.up.railway.app/api/v1/products",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -261,6 +277,19 @@ export default function Dashboard() {
   if (loading) {
     return <div>Loading...</div>;
   }
+
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       <Image
