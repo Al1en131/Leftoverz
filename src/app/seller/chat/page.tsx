@@ -421,7 +421,7 @@ export default function RoomChat() {
             }`}
           >
             <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
-              <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 overflow-y-auto">
+              <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 h-full overflow-y-auto">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
