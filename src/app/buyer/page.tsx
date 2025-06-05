@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { withAuth } from '../../lib/withAuth.jsx';
+import { withAuth } from '../../lib/withAuth';
 
 type Product = {
   id: number;
