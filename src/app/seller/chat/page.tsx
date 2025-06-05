@@ -30,7 +30,6 @@ type Chat = {
 };
 
 export default function RoomChat() {
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chats, setChats] = useState<Chat[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<number | null>(null);
@@ -323,12 +322,6 @@ export default function RoomChat() {
     }
   }, [router]);
 
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [messages]);
-
   if (isLoading) return null;
   return (
     <div
@@ -421,7 +414,7 @@ export default function RoomChat() {
             }`}
           >
             <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
-              <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 h-full overflow-y-auto">
+              <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 overflow-y-auto">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
@@ -593,7 +586,6 @@ export default function RoomChat() {
                       );
                     })
                   )}
-                  <div ref={messagesEndRef} />
                 </div>
                 <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
                   <div className="w-1/3 sm:w-1/4 lg:ml-8">
