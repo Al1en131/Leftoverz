@@ -587,14 +587,14 @@ export default function RoomChat() {
                     })
                   )}
                 </div>
-                <div className="pt-5 flex items-center gap-2">
-                  <div className="w-3/12 text-black">
+                <div className="py-4 flex items-center gap-2 border-t border-gray-200">
+                  <div className="w-1/3 sm:w-1/4">
                     <select
                       value={selectedProductId ?? ""}
                       onChange={(e) =>
                         setSelectedProductId(Number(e.target.value))
                       }
-                      className="py-2.5 px-4 w-full border bg-gray-300 rounded-xl"
+                      className="py-2.5 px-4 w-full border bg-gray-300 text-sm text-black rounded-xl"
                     >
                       <option value="" disabled>
                         Pilih produk
@@ -607,7 +607,7 @@ export default function RoomChat() {
                     </select>
                   </div>
                   <input
-                    className="w-full bg-gray-300 text-black py-2.5 px-4 rounded-xl"
+                    className="flex-1 bg-gray-300 text-black py-2.5 px-4 rounded-xl"
                     type="text"
                     placeholder="Type your message here..."
                     value={newMessage}
