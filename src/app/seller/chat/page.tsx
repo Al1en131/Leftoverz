@@ -553,7 +553,7 @@ export default function RoomChat() {
                           } mb-4`}
                         >
                           {isReceiver && (
-                            <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-4 flex items-center justify-center text-white font-bold">
+                            <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-14 flex items-center justify-center text-white font-bold">
                               {message.sender?.name
                                 ? message.sender.name
                                     .split(" ")
@@ -595,8 +595,8 @@ export default function RoomChat() {
                   )}
                   <div ref={messagesEndRef} />
                 </div>
-                <div className="py-4 flex items-center lg:ml-4 gap-2 border-t border-blue-400 sticky bottom-0 z-10">
-                  <div className="w-1/3 sm:w-1/4">
+                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
+                  <div className="w-1/3 sm:w-1/4 lg:ml-14">
                     <select
                       value={selectedProductId ?? ""}
                       onChange={(e) =>
