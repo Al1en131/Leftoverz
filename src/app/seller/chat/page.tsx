@@ -572,7 +572,7 @@ export default function RoomChat() {
                             {message.message}
                           </div>
                           {isSender && (
-                            <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center mr-4 text-white font-bold">
+                            <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center lg:mr-4 text-white font-bold">
                               {message.sender?.name
                                 ? message.sender.name
                                     .split(" ")
