@@ -2,7 +2,7 @@
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type User = {
   id: number;
@@ -30,6 +30,7 @@ type Chat = {
 };
 
 export default function RoomChat() {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [chats, setChats] = useState<Chat[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<number | null>(null);
@@ -322,6 +323,12 @@ export default function RoomChat() {
     }
   }, [router]);
 
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   if (isLoading) return null;
   return (
     <div
@@ -586,6 +593,7 @@ export default function RoomChat() {
                       );
                     })
                   )}
+                  <div ref={messagesEndRef} />
                 </div>
                 <div className="py-4 flex items-center gap-2 border-t max-lg:bg-[#080B2A] border-blue-400 sticky bottom-0 z-10">
                   <div className="w-1/3 sm:w-1/4">
