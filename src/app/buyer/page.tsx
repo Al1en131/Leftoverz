@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
+import { withAuth } from '../../lib/withAuth.jsx';
 
 type Product = {
   id: number;
@@ -21,7 +22,7 @@ type Product = {
   user?: { subdistrict: string };
   created_at: string;
 };
-export default function BuyerHome() {
+function BuyerHome() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
@@ -803,3 +804,5 @@ export default function BuyerHome() {
     </div>
   );
 }
+
+export default withAuth(BuyerHome);
