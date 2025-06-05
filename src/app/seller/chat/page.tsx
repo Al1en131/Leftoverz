@@ -407,9 +407,9 @@ export default function RoomChat() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 max-lg:px-1 py-10 justify-center items-center rounded-lg ">
+        <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
           <div
-            className={`p-10 rounded-2xl border-2 border-blue-400 ${
+            className={`lg:p-10 max-lg:p-4 rounded-2xl border-2 border-blue-400 ${
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
