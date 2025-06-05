@@ -515,7 +515,7 @@ export default function RoomChat() {
               </div>
 
               <div className="flex flex-col w-full lg:w-4/6 overflow-hidden">
-                <div className="flex-1 overflow-y-auto pt-5">
+                <div className="overflow-y-auto pt-5 h-[calc(100vh-120px)] px-4">
                   {messages.length === 0 ? (
                     <div
                       className={`flex justify-center items-center h-full text-center ${
