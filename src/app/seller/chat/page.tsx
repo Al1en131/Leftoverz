@@ -413,8 +413,8 @@ export default function RoomChat() {
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
-            <div className="lg:flex lg:flex-row lg:justify-between h-[500px] max-lg:block z-50">
-              <div className="flex flex-col lg:w-2/5 max-lg:w-full lg:border-r-2 border-blue-400 overflow-y-auto min-h-[300px]">
+            <div className="flex flex-col lg:flex-row lg:justify-between h-[80vh] max-h-[700px] z-50">
+              <div className="flex flex-col-reverse lg:flex-col mt-5 overflow-y-auto min-h-[300px] grow px-1">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"

@@ -218,6 +218,16 @@ export default function BuyProduct() {
       const saveTransaction = async (result: unknown) => {
         const { payment_type, transaction_status } = result as MidtransResult;
 
+        // Validasi status yang benar-benar sukses (biasanya "settlement" atau "capture")
+        const isSuccess =
+          transaction_status === "settlement" ||
+          transaction_status === "capture";
+
+        if (!isSuccess) {
+          alert("Transaksi belum selesai. Silakan selesaikan pembayaran.");
+          return;
+        }
+
         const total = product.price + 5000;
         try {
           const saveRes = await fetch(
