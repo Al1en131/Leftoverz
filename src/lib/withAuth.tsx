@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import type { ComponentType } from 'react'
+import type { ComponentType, PropsWithChildren } from 'react'
 
 export function withAuth<P>(WrappedComponent: ComponentType<P>) {
-  return function AuthComponent(props: P) {
+  return function AuthComponent(props: PropsWithChildren<P>) {
     const router = useRouter()
     const [isChecking, setIsChecking] = useState(true)
 
@@ -14,7 +14,7 @@ export function withAuth<P>(WrappedComponent: ComponentType<P>) {
       } else {
         setIsChecking(false)
       }
-    }, [])
+    }, [router])
 
     if (isChecking) return null
 
