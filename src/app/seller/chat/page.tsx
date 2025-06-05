@@ -407,14 +407,14 @@ export default function RoomChat() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 max-lg:px-2 py-10 justify-center items-center rounded-lg ">
+        <div className="lg:px-20 max-lg:px-1 py-10 justify-center items-center rounded-lg ">
           <div
             className={`p-10 rounded-2xl border-2 border-blue-400 ${
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
             <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
-              <div className="flex flex-col lg:w-2/5 w-full border-r border-blue-400 overflow-y-auto max-h-full">
+              <div className="flex flex-col lg:w-2/5 w-full lg:border-r lg:border-blue-400 overflow-y-auto max-h-full">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
