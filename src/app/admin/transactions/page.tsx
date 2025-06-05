@@ -33,6 +33,8 @@ type Transaction = RawTransaction & {
 };
 
 export default function Products() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
@@ -55,6 +57,15 @@ export default function Products() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
   useEffect(() => {
     const now = new Date();
@@ -150,25 +161,13 @@ export default function Products() {
     fetchTransactions();
   }, []);
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="min-h-screen bg-[#060B26] flex justify-center items-center text-white">
         <div className="spinner"></div>
       </div>
     );
   }
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.replace("/auth/login");
-    } else {
-      setIsLoading(false);
-    }
-  }, [router]);
-
-  if (isLoading) return null;
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       <Image

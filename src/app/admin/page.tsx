@@ -45,6 +45,8 @@ type Product = {
 };
 
 export default function Dashboard() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [penjualCount, setPenjualCount] = useState(0);
   const [pembeliCount, setPembeliCount] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -52,6 +54,16 @@ export default function Dashboard() {
   const [transactionCount, setTransactionCount] = useState(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
@@ -274,22 +286,10 @@ export default function Dashboard() {
     fetchProducts();
   }, []);
 
-  if (loading) {
+  if (loading || isLoading) {
     return <div>Loading...</div>;
   }
 
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.replace("/auth/login");
-    } else {
-      setIsLoading(false);
-    }
-  }, [router]);
-
-  if (isLoading) return null;
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       <Image

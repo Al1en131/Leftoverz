@@ -8,6 +8,8 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 
 export default function About() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const { theme, setTheme } = useTheme();
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
@@ -24,16 +26,6 @@ export default function About() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-    import("flowbite").then((flowbite) => {
-      flowbite.initAccordions();
-    });
-  }, []);
-
-  if (!mounted) return null;
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       router.replace("/auth/login");
@@ -41,8 +33,15 @@ export default function About() {
       setIsLoading(false);
     }
   }, [router]);
+  useEffect(() => {
+    setMounted(true);
+    import("flowbite").then((flowbite) => {
+      flowbite.initAccordions();
+    });
+  }, []);
 
-  if (isLoading) return null;
+  if (!mounted || isLoading) return null;
+
   return (
     <div
       className={`items-center ${

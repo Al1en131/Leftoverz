@@ -8,7 +8,18 @@ import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
 
 export default function About() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -30,19 +41,7 @@ export default function About() {
     });
   }, []);
 
-  if (!mounted) return null;
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.replace("/auth/login");
-    } else {
-      setIsLoading(false);
-    }
-  }, [router]);
-
-  if (isLoading) return null;
+  if (!mounted || isLoading) return null;
   return (
     <div
       className={`items-center ${

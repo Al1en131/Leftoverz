@@ -21,6 +21,8 @@ type Product = {
 };
 
 export default function Products() {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null
@@ -65,6 +67,15 @@ export default function Products() {
     setShowErrorPopup(false);
     setShowConfirmPopup(false);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
 
   useEffect(() => {
     const now = new Date();
@@ -179,22 +190,10 @@ export default function Products() {
     fetchProducts();
   }, []);
 
-  if (loading) {
+  if (loading || isLoading) {
     return <div>Loading...</div>;
   }
 
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.replace("/auth/login");
-    } else {
-      setIsLoading(false);
-    }
-  }, [router]);
-
-  if (isLoading) return null;
   return (
     <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
       {showConfirmPopup && (
