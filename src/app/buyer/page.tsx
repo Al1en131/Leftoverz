@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { withAuth } from '../../lib/withAuth';
 
 type Product = {
   id: number;
@@ -22,10 +21,11 @@ type Product = {
   user?: { subdistrict: string };
   created_at: string;
 };
-function BuyerHome() {
+export default function BuyerHome() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme, setTheme } = useTheme();
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -133,6 +133,16 @@ function BuyerHome() {
       console.error("Logout failed:", err);
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.replace("/auth/login");
+    } else {
+      setIsLoading(false);
+    }
+  }, [router]);
+
+  if (isLoading) return null;
   return (
     <div
       className={` ${
@@ -804,5 +814,3 @@ function BuyerHome() {
     </div>
   );
 }
-
-export default withAuth(BuyerHome);
