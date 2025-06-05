@@ -594,7 +594,7 @@ export default function RoomChat() {
                       onChange={(e) =>
                         setSelectedProductId(Number(e.target.value))
                       }
-                      className="py-2.5 px-4 w-full border bg-gray-300 text-sm text-black rounded-xl"
+                      className="lg:py-2.5 max-lg:py-2 px-4 w-full border bg-gray-300 text-sm text-black rounded-xl"
                     >
                       <option value="" disabled>
                         Pilih produk
@@ -607,14 +607,14 @@ export default function RoomChat() {
                     </select>
                   </div>
                   <input
-                    className="flex-1 bg-gray-300 text-black py-2.5 px-4 rounded-xl"
+                    className="flex-1 bg-gray-300 text-black lg:py-2.5 max-lg:py-2 px-4 rounded-xl"
                     type="text"
                     placeholder="Type your message here..."
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                   />
                   <button
-                    className="lg:p-3 max-lg:p-1.5 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
+                    className="lg:p-3 max-lg:p-2 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
                     onClick={handleSendMessage}
                   >
                     <svg
@@ -623,7 +623,7 @@ export default function RoomChat() {
                       viewBox="0 0 24 24"
                       strokeWidth="1.5"
                       stroke="currentColor"
-                      className="lg:w-5 lg:h-5 max-lg:w-4 max-lg:h-4"
+                      className="w-5 h-5"
                     >
                       <path
                         strokeLinecap="round"
