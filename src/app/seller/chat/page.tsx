@@ -421,7 +421,7 @@ export default function RoomChat() {
             }`}
           >
             <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
-              <div className="flex flex-col lg:w-2/5 w-full lg:border-r lg:border-blue-400 overflow-y-auto">
+              <div className="flex flex-col lg:w-1/5 w-full lg:border-r lg:border-blue-400 max-lg:h-56 overflow-y-auto">
                 <div className="border-b-2 border-blue-400 py-4 px-2">
                   <input
                     type="text"
@@ -514,7 +514,7 @@ export default function RoomChat() {
                 )}
               </div>
 
-              <div className="flex flex-col w-full lg:w-3/5 overflow-hidden">
+              <div className="flex flex-col w-full lg:w-4/5 overflow-hidden">
                 <div className="flex-1 overflow-y-auto pt-5">
                   {messages.length === 0 ? (
                     <div
