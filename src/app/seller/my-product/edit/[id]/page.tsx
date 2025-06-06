@@ -675,8 +675,8 @@ export default function EditProduct() {
                   <option value="" disabled>
                     Select Status
                   </option>
-                  <option value="available">Available</option>
-                  <option value="sold">Sold</option>
+                  <option className="text-blue-400" value="available">Available</option>
+                  <option className="text-blue-400" value="sold">Sold</option>
                 </select>
               </div>
               <div
