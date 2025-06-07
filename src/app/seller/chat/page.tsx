@@ -211,7 +211,6 @@ export default function RoomChat() {
         const data = await res.json();
 
         if (res.ok) {
-          // Ambil semua pesan tanpa filter item_id
           const selectedMessages: Chat[] = data;
 
           setMessages(selectedMessages);
