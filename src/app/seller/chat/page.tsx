@@ -547,9 +547,17 @@ export default function RoomChat() {
                             d="M15 19l-7-7 7-7"
                           />
                         </svg>
-                        Kembali
                       </button>
-                      <p className="text-base text-black font-semibold truncate">
+                      <p className="text-base text-white flex items-center gap-2 font-semibold truncate">
+                        <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-8 flex items-center justify-center text-white font-bold">
+                          {selectedChat.opponent_name
+                            ? selectedChat.opponent_name
+                                .split(" ")
+                                .map((word) => word.charAt(0))
+                                .join("")
+                                .toUpperCase()
+                            : "?"}
+                        </span>
                         {selectedChat.opponent_name}
                       </p>
                     </div>
