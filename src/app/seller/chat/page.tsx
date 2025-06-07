@@ -522,15 +522,12 @@ export default function RoomChat() {
                   )}
                 </div>
               )}
-
-              {/* === Chat Area === */}
               {(!isMobile || selectedChat) && (
                 <div className="flex flex-col w-full lg:w-4/6 h-full">
-                  {/* Tombol kembali khusus mobile */}
                   {isMobile && selectedChat && (
-                    <div className="bg-blue-400 flex items-center gap-2 px-4 py-3 sticky top-0 z-20">
+                    <div className="bg-blue-400 rounded-2xl flex items-center gap-2 px-4 py-3 sticky top-0 z-20">
                       <button
-                        className="text-base text-black flex items-center gap-1"
+                        className="text-base text-white flex items-center gap-1"
                         onClick={() => setSelectedChat(null)}
                       >
                         <svg
@@ -548,8 +545,8 @@ export default function RoomChat() {
                           />
                         </svg>
                       </button>
-                      <p className="text-base text-white flex items-center gap-2 font-semibold truncate">
-                        <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-8 flex items-center justify-center text-white font-bold">
+                      <p className="text-base flex text-white items-center gap-2 font-semibold truncate">
+                        <span className="w-8 h-8 shrink-0 bg-white rounded-full flex items-center justify-center text-blue-400 font-bold">
                           {selectedChat.opponent_name
                             ? selectedChat.opponent_name
                                 .split(" ")
