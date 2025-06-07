@@ -587,7 +587,7 @@ export default function RoomChat() {
                     })
                   )}
                 </div>
-                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 bg-white z-10">
+                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
                   <div className="w-1/3 sm:w-1/4 lg:ml-8">
                     <select
                       value={selectedProductId ?? ""}
