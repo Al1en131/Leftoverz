@@ -37,6 +37,7 @@ export default function RoomChat() {
   const [messages, setMessages] = useState<Chat[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const [userName, setUserName] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(
     null
   );
@@ -53,6 +54,16 @@ export default function RoomChat() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024); // < 1024px dianggap mobile
+    };
+
+    handleResize(); // pertama kali
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
@@ -414,226 +425,246 @@ export default function RoomChat() {
             }`}
           >
             <div className="lg:flex lg:flex-row max-lg:flex-col overflow-hidden lg:justify-between h-screen z-50">
-              <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 overflow-y-auto">
-                <div className="border-b-2 border-blue-400 py-4 px-2">
-                  <input
-                    type="text"
-                    placeholder="search chatting"
-                    className="py-2 px-2 border-2 border-blue-400 text-blue-400 rounded-xl w-full"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-
-                {chats
-                  .filter((chat) =>
-                    chat.opponent_name
-                      ?.toLowerCase()
-                      .includes(searchQuery.toLowerCase())
-                  )
-                  .slice()
-                  .reverse().length === 0 ? (
-                  <div
-                    className={`p-4 mt-4 text-center ${
-                      theme === "dark" ? "text-gray-400" : "text-blue-400"
-                    }`}
-                  >
-                    Tidak ada chat
+              {/* === Chat List === */}
+              {(!isMobile || !selectedChat) && (
+                <div className="flex flex-col lg:w-2/6 w-full lg:border-r lg:border-blue-400 overflow-y-auto">
+                  <div className="border-b-2 border-blue-400 py-4 px-2">
+                    <input
+                      type="text"
+                      placeholder="search chatting"
+                      className="py-2 px-2 border-2 border-blue-400 text-blue-400 rounded-xl w-full"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                   </div>
-                ) : (
-                  chats
+
+                  {chats
                     .filter((chat) =>
                       chat.opponent_name
                         ?.toLowerCase()
                         .includes(searchQuery.toLowerCase())
                     )
                     .slice()
-                    .reverse()
-                    .map((chat) => (
-                      <div
-                        key={chat.opponent_id}
-                        className="flex items-center gap-4 py-4 px-2 border-b border-blue-400 hover:bg-white/5 transition-colors"
-                        onClick={() => handleChatSelect(chat)}
-                      >
-                        <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
-                          {chat.opponent_name
-                            ? chat.opponent_name
-                                .split(" ")
-                                .map((w) => w.charAt(0))
-                                .join("")
-                                .toUpperCase()
-                            : "NN"}{" "}
-                        </span>
-                        <div className="flex-1 overflow-hidden">
-                          <div
-                            className={`text-lg font-semibold truncate capitalize ${
-                              theme === "dark" ? "text-white" : "text-blue-400"
-                            }`}
-                          >
-                            {chat.opponent_name || "Nama Tidak Diketahui"}
-                          </div>
-                          <div
-                            className={`text-sm truncate ${
-                              theme === "dark"
-                                ? "text-gray-400"
-                                : "text-[#080B2A]"
-                            }`}
-                          >
-                            {chat.message || "Pesan tidak ada"}
-                          </div>
-                        </div>
-
-                        {chat.sender_id !== userId &&
-                          chat.read_status === "0" && (
-                            <span className="ml-2 p-1.5 bg-blue-400 rounded-full">
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth="1.5"
-                                stroke="currentColor"
-                                className="size-6"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
-                                />
-                              </svg>
-                            </span>
-                          )}
-                      </div>
-                    ))
-                )}
-              </div>
-
-              <div className="flex flex-col w-full lg:w-4/6 h-full">
-                <div className="overflow-y-auto pt-5 px-4 flex-1 max-lg:pb-36">
-                  {messages.length === 0 ? (
+                    .reverse().length === 0 ? (
                     <div
-                      className={`flex justify-center items-center h-full text-center ${
-                        theme === "dark" ? "text-white" : "text-blue-400"
+                      className={`p-4 mt-4 text-center ${
+                        theme === "dark" ? "text-gray-400" : "text-blue-400"
                       }`}
                     >
-                      <div className="block">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth="1.5"
-                          stroke="currentColor"
-                          className="w-32 h-32 mb-4"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
-                          />
-                        </svg>
-                        <p> Belum ada pesan</p>
-                      </div>
+                      Tidak ada chat
                     </div>
                   ) : (
-                    messages.map((message, index) => {
-                      const isSender = message.sender_id === userId;
-                      const isReceiver = message.receiver_id === userId;
-
-                      return (
+                    chats
+                      .filter((chat) =>
+                        chat.opponent_name
+                          ?.toLowerCase()
+                          .includes(searchQuery.toLowerCase())
+                      )
+                      .slice()
+                      .reverse()
+                      .map((chat) => (
                         <div
-                          key={index}
-                          className={`flex gap-3 ${
-                            isSender ? "justify-end" : "justify-start"
-                          } mb-4`}
+                          key={chat.opponent_id}
+                          className="flex items-center gap-4 py-4 px-2 border-b border-blue-400 hover:bg-white/5 transition-colors"
+                          onClick={() => setSelectedChat(chat)}
                         >
-                          {isReceiver && (
-                            <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-8 flex items-center justify-center text-white font-bold">
-                              {message.sender?.name
-                                ? message.sender.name
-                                    .split(" ")
-                                    .map((word) => word.charAt(0))
-                                    .join("")
-                                    .toUpperCase()
-                                : "?"}
-                            </span>
-                          )}
-
-                          <div
-                            className={`py-3 px-4 rounded-xl ${
-                              isSender
-                                ? "bg-blue-400 text-white rounded-bl-3xl rounded-tl-3xl"
-                                : "bg-blue-300 text-white rounded-br-3xl rounded-tr-3xl"
-                            }`}
-                          >
-                            {message.Product?.name && (
-                              <div className="text-xs bg-white border border-blue-400 text-blue-400 flex rounded-lg p-2 font-semibold mb-2 w-fit">
-                                Produk : {message.Product.name}
-                              </div>
-                            )}
-                            {message.message}
+                          <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center text-white font-bold">
+                            {chat.opponent_name
+                              ? chat.opponent_name
+                                  .split(" ")
+                                  .map((w) => w.charAt(0))
+                                  .join("")
+                                  .toUpperCase()
+                              : "NN"}
+                          </span>
+                          <div className="flex-1 overflow-hidden">
+                            <div
+                              className={`text-lg font-semibold truncate capitalize ${
+                                theme === "dark"
+                                  ? "text-white"
+                                  : "text-blue-400"
+                              }`}
+                            >
+                              {chat.opponent_name || "Nama Tidak Diketahui"}
+                            </div>
+                            <div
+                              className={`text-sm truncate ${
+                                theme === "dark"
+                                  ? "text-gray-400"
+                                  : "text-[#080B2A]"
+                              }`}
+                            >
+                              {chat.message || "Pesan tidak ada"}
+                            </div>
                           </div>
-                          {isSender && (
-                            <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center lg:mr-4 text-white font-bold">
-                              {message.sender?.name
-                                ? message.sender.name
-                                    .split(" ")
-                                    .map((word) => word.charAt(0))
-                                    .join("")
-                                    .toUpperCase()
-                                : "?"}
-                            </span>
-                          )}
+
+                          {chat.sender_id !== userId &&
+                            chat.read_status === "0" && (
+                              <span className="ml-2 p-1.5 bg-blue-400 rounded-full">
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  strokeWidth="1.5"
+                                  stroke="currentColor"
+                                  className="size-6"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"
+                                  />
+                                </svg>
+                              </span>
+                            )}
                         </div>
-                      );
-                    })
+                      ))
                   )}
                 </div>
-                <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
-                  <div className="w-1/3 sm:w-1/4 lg:ml-8">
-                    <select
-                      value={selectedProductId ?? ""}
-                      onChange={(e) =>
-                        setSelectedProductId(Number(e.target.value))
-                      }
-                      className="lg:py-2.5 max-lg:py-2 px-4 w-full border bg-gray-300 text-sm text-black rounded-xl"
+              )}
+
+              {/* === Chat Area === */}
+              {(!isMobile || selectedChat) && (
+                <div className="flex flex-col w-full lg:w-4/6 h-full">
+                  {/* Tombol kembali khusus mobile */}
+                  {isMobile && selectedChat && (
+                    <button
+                      className="text-sm text-blue-400 mt-4 ml-4 mb-2 flex items-center gap-1"
+                      onClick={() => setSelectedChat(null)}
                     >
-                      <option value="" disabled>
-                        Pilih produk
-                      </option>
-                      {userProducts.map((product) => (
-                        <option key={product.id} value={product.id}>
-                          {product.name}
-                        </option>
-                      ))}
-                    </select>
+                      ← Kembali
+                    </button>
+                  )}
+
+                  <div className="overflow-y-auto pt-5 px-4 flex-1">
+                    {messages.length === 0 ? (
+                      <div
+                        className={`flex justify-center items-center h-full text-center ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        <div className="block">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-32 h-32 mb-4"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+                            />
+                          </svg>
+                          <p> Belum ada pesan</p>
+                        </div>
+                      </div>
+                    ) : (
+                      messages.map((message, index) => {
+                        const isSender = message.sender_id === userId;
+                        const isReceiver = message.receiver_id === userId;
+
+                        return (
+                          <div
+                            key={index}
+                            className={`flex gap-3 ${
+                              isSender ? "justify-end" : "justify-start"
+                            } mb-4`}
+                          >
+                            {isReceiver && (
+                              <span className="w-10 h-10 shrink-0 bg-blue-300 rounded-full lg:ml-8 flex items-center justify-center text-white font-bold">
+                                {message.sender?.name
+                                  ? message.sender.name
+                                      .split(" ")
+                                      .map((word) => word.charAt(0))
+                                      .join("")
+                                      .toUpperCase()
+                                  : "?"}
+                              </span>
+                            )}
+
+                            <div
+                              className={`py-3 px-4 rounded-xl ${
+                                isSender
+                                  ? "bg-blue-400 text-white rounded-bl-3xl rounded-tl-3xl"
+                                  : "bg-blue-300 text-white rounded-br-3xl rounded-tr-3xl"
+                              }`}
+                            >
+                              {message.Product?.name && (
+                                <div className="text-xs bg-white border border-blue-400 text-blue-400 flex rounded-lg p-2 font-semibold mb-2 w-fit">
+                                  Produk : {message.Product.name}
+                                </div>
+                              )}
+                              {message.message}
+                            </div>
+
+                            {isSender && (
+                              <span className="w-10 h-10 shrink-0 bg-blue-400 rounded-full flex items-center justify-center lg:mr-4 text-white font-bold">
+                                {message.sender?.name
+                                  ? message.sender.name
+                                      .split(" ")
+                                      .map((word) => word.charAt(0))
+                                      .join("")
+                                      .toUpperCase()
+                                  : "?"}
+                              </span>
+                            )}
+                          </div>
+                        );
+                      })
+                    )}
                   </div>
-                  <input
-                    className="flex-1 bg-gray-300 text-black lg:py-2.5 max-lg:py-2 px-4 rounded-xl"
-                    type="text"
-                    placeholder="Type your message here..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                  />
-                  <button
-                    className="lg:p-3 max-lg:p-2 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
-                    onClick={handleSendMessage}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-5 h-5"
+
+                  <div className="py-4 flex items-center gap-2 border-t border-blue-400 sticky bottom-0 z-10">
+                    <div className="w-1/3 sm:w-1/4 lg:ml-8">
+                      <select
+                        value={selectedProductId ?? ""}
+                        onChange={(e) =>
+                          setSelectedProductId(Number(e.target.value))
+                        }
+                        className="lg:py-2.5 max-lg:py-2 px-4 w-full border bg-gray-300 text-sm text-black rounded-xl"
+                      >
+                        <option value="" disabled>
+                          Pilih produk
+                        </option>
+                        {userProducts.map((product) => (
+                          <option key={product.id} value={product.id}>
+                            {product.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <input
+                      className="flex-1 bg-gray-300 text-black lg:py-2.5 max-lg:py-2 px-4 rounded-xl"
+                      type="text"
+                      placeholder="Type your message here..."
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                    <button
+                      className="lg:p-3 max-lg:p-2 bg-blue-400 text-white rounded-full aspect-square flex items-center justify-center hover:bg-blue-500 transition-colors"
+                      onClick={handleSendMessage}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-5 h-5"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
