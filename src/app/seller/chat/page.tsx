@@ -211,15 +211,8 @@ export default function RoomChat() {
         const data = await res.json();
 
         if (res.ok) {
-          let selectedMessages: Chat[];
-
-          if (chat.item_id) {
-            selectedMessages = data.filter(
-              (msg: Chat) => msg.item_id === chat.item_id
-            );
-          } else {
-            selectedMessages = data;
-          }
+          // Ambil semua pesan tanpa filter item_id
+          const selectedMessages: Chat[] = data;
 
           setMessages(selectedMessages);
           localStorage.setItem("messages", JSON.stringify(selectedMessages));
