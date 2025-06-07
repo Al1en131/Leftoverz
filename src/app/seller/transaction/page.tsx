@@ -67,10 +67,7 @@ export default function Transaction() {
 
   const handleTrackPackage = async () => {
     try {
-      if (!selectedTransaction) {
-        alert("Pilih transaksi dulu.");
-        return;
-      }
+      if (!selectedTransaction) return;
 
       const courierRaw = selectedTransaction.courir;
       const awb = selectedTransaction.awb;
