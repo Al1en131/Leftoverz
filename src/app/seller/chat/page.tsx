@@ -528,12 +528,31 @@ export default function RoomChat() {
                 <div className="flex flex-col w-full lg:w-4/6 h-full">
                   {/* Tombol kembali khusus mobile */}
                   {isMobile && selectedChat && (
-                    <button
-                      className="text-sm text-blue-400 mt-4 ml-4 mb-2 flex items-center gap-1"
-                      onClick={() => setSelectedChat(null)}
-                    >
-                      ← Kembali
-                    </button>
+                    <div className="bg-blue-400 flex items-center gap-2 px-4 py-3 sticky top-0 z-20">
+                      <button
+                        className="text-base text-black flex items-center gap-1"
+                        onClick={() => setSelectedChat(null)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 19l-7-7 7-7"
+                          />
+                        </svg>
+                        Kembali
+                      </button>
+                      <p className="text-base text-black font-semibold truncate">
+                        {selectedChat.opponent_name}
+                      </p>
+                    </div>
                   )}
 
                   <div className="overflow-y-auto pt-5 px-4 flex-1">
