@@ -66,9 +66,9 @@ export default function Transaction() {
   const [showTrackingModal, setShowTrackingModal] = useState(false);
 
   const handleTrackPackage = async () => {
-    try {
-      if (!selectedTransaction) return;
+    if (!selectedTransaction) return;
 
+    try {
       const courierRaw = selectedTransaction.courir;
       const awb = selectedTransaction.awb;
 
