@@ -627,8 +627,10 @@ export default function Transaction() {
                         )}
 
                         <button
-                          onClick={handleTrackPackage}
-                          disabled={!selectedTransaction}
+                          onClick={() => {
+                            setSelectedTransaction(item);
+                            handleTrackPackage();
+                          }}
                           className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
                         >
                           <svg
