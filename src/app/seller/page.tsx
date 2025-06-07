@@ -501,7 +501,7 @@ export default function SellerHome() {
                 />
                 <div className="mt-4 h-1/4">
                   <p className="text-lg font-semibold ">
-                    Terintegrasi dengan pengiriman
+                    Terintegrasi pelacakan paket pengiriman
                   </p>
                 </div>
               </div>
