@@ -546,7 +546,7 @@ export default function RoomChat() {
                         </svg>
                       </button>
                       <p className="text-base flex text-white items-center gap-2 font-semibold truncate">
-                        <span className="w-8 h-8 shrink-0 bg-white rounded-full flex items-center justify-center text-blue-400 font-bold">
+                        <span className="w-8 h-8 shrink-0 bg-white text-sm rounded-full flex items-center justify-center text-blue-400 font-bold">
                           {selectedChat.opponent_name
                             ? selectedChat.opponent_name
                                 .split(" ")
