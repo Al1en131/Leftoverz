@@ -36,15 +36,19 @@ export default function Login() {
     setSuccessMessage("");
 
     try {
-      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
 
       const data = await response.json();
+
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("role", data.role);
@@ -52,6 +56,7 @@ export default function Login() {
         localStorage.setItem("name", data.name);
         localStorage.setItem("email", data.email);
         localStorage.setItem("no_hp", data.phone_number);
+
         if (data.role === "penjual") {
           router.push("/seller");
         } else if (data.role === "pembeli") {
@@ -61,11 +66,17 @@ export default function Login() {
         } else {
           router.push("/");
         }
+
         setUserRole(data.role);
         setShowSuccessPopup(true);
+      } else {
+        setErrorMessage(data.message || "Email atau password salah");
+        setShowErrorPopup(true);
       }
-    } catch {
-      setErrorMessage("An error occurred. Please try again.");
+    } catch (error) {
+      setErrorMessage(
+        "Terjadi kesalahan saat menghubungi server. Silakan coba lagi."
+      );
       setShowErrorPopup(true);
     } finally {
       setLoading(false);
