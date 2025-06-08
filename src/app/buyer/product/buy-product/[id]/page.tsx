@@ -359,7 +359,7 @@ export default function BuyProduct() {
             <div className="bg-[#080B2A] border-yellow-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
               <div className="flex justify-center mb-4">
                 <Image
-                  src="/images/warning.svg" // Ganti jika belum punya
+                  src="/images/warning.svg" 
                   width={80}
                   height={80}
                   alt="Warning"
