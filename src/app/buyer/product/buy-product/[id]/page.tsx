@@ -75,6 +75,8 @@ export default function BuyProduct() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const { theme, setTheme } = useTheme();
+  const [showIncompleteProfilePopup, setShowIncompleteProfilePopup] =
+    useState(false);
 
   const handleCloseSuccessPopup = () => {
     setShowSuccessPopup(false);
@@ -110,10 +112,29 @@ export default function BuyProduct() {
 
           const data = await response.json();
           if (data?.user) {
-            setUser({
+            const userData = {
               ...data.user,
               id: String(data.user.id),
-            });
+            };
+            setUser(userData);
+
+            // Validasi data penting
+            const requiredFields = [
+              userData.address,
+              userData.postal_code,
+              userData.province,
+              userData.regency,
+              userData.ward,
+              userData.subdistrict,
+            ];
+
+            const hasMissingField = requiredFields.some(
+              (field) => !field || field.trim() === ""
+            );
+
+            if (hasMissingField) {
+              setShowIncompleteProfilePopup(true);
+            }
           }
         } catch (error) {
           console.error("Failed to fetch user:", error);
@@ -218,7 +239,6 @@ export default function BuyProduct() {
       const saveTransaction = async (result: unknown) => {
         const { payment_type, transaction_status } = result as MidtransResult;
 
-        // Validasi status yang benar-benar sukses (biasanya "settlement" atau "capture")
         const isSuccess =
           transaction_status === "settlement" ||
           transaction_status === "capture";
