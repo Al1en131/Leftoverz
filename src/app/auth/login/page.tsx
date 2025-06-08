@@ -74,6 +74,7 @@ export default function Login() {
         setShowErrorPopup(true);
       }
     } catch (error) {
+      console.error("Login error:", error);
       setErrorMessage(
         "Terjadi kesalahan saat menghubungi server. Silakan coba lagi."
       );
