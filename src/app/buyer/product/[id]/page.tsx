@@ -548,7 +548,7 @@ export default function ProductDetail() {
           href="/buyer/product"
           className="flex gap-2 z-30 mb-6 items-center"
         >
-          <div className="bg-blue-400 z-30 items-center p-2 rounded-full">
+          <div className="bg-blue-400 z-30 items-center p-2 text-white rounded-full">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
