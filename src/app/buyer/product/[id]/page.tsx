@@ -64,6 +64,11 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+  const formatNoHp = (no_hp: number | undefined) => {
+    if (!no_hp) return "";
+    const strNoHp = no_hp.toString();
+    return strNoHp.startsWith("0") ? "62" + strNoHp.slice(1) : strNoHp;
+  };
 
   useEffect(() => {
     const storedUserId = localStorage.getItem("id");
@@ -170,6 +175,7 @@ export default function ProductDetail() {
       setMessages([]);
     }
   }, [userId, productId, product]);
+
   useEffect(() => {
     const checkUnreadMessages = async () => {
       if (!userId || !productId || !product?.user_id) return;
@@ -660,7 +666,9 @@ export default function ProductDetail() {
       </div>
       <div className="fixed bottom-[90px] lg:right-[200px] max-lg:right-20 z-50">
         <Link
-          href={`https://wa.me/${product?.user?.no_hp}?text=Halo%20saya%20tertarik%20dengan%20produk%20Anda`}
+          href={`https://wa.me/${formatNoHp(
+            product?.user?.no_hp
+          )}?text=Halo%20saya%20tertarik%20dengan%20produk%20Anda`}
           className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           <svg
