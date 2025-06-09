@@ -733,7 +733,6 @@ export default function ProductDetail() {
               </button>
             </div>
             <div className="p-4 space-y-3 text-sm">
-              {/* Gambar produk (tidak ikut scroll) */}
               <div className="items-center gap-3 mb-2 border-[1.5px] p-2 flex border-blue-400 rounded-2xl">
                 <Image
                   src={
@@ -800,7 +799,7 @@ export default function ProductDetail() {
         )}
       </div>
       <div className="bg-blue-400 h-20 w-full fixed bottom-0 flex justify-between items-center lg:px-20 py-4 max-lg:px-6">
-        <p className="text-base font-bold">
+        <p className="text-lg font-bold">
           Rp {product?.price.toLocaleString("id-ID")}
         </p>
         <div className="flex items-center gap-4">
@@ -821,7 +820,6 @@ export default function ProductDetail() {
               }
             >
               {favorites.includes(Number(product?.id)) ? (
-                // Icon untuk produk yang sudah difavoritkan
                 <svg
                   width="32"
                   height="32"
@@ -840,7 +838,6 @@ export default function ProductDetail() {
                   <path d="M22 8.69C22 10.66 21.49 12.4 20.69 13.91C19.81 12.98 18.57 12.4 17.2 12.4C14.55 12.4 12.4 14.55 12.4 17.2C12.4 18.43 12.87 19.55 13.63 20.4C13.26 20.57 12.92 20.71 12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.09998 7.56 3.09998C9.37 3.09998 10.99 3.98002 12 5.33002C13.01 3.98002 14.63 3.09998 16.44 3.09998C19.51 3.09998 22 5.6 22 8.69Z" />
                 </svg>
               ) : (
-                // Icon untuk produk yang belum difavoritkan
                 <svg
                   width="32"
                   height="32"
