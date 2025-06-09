@@ -663,7 +663,7 @@ export default function ProductDetail() {
           </div>
         )}
       </div>
-      <div className="fixed bottom-[90px] lg:right-[205px] max-lg:right-24 z-50">
+      <div className="fixed bottom-[90px] lg:right-[201px] max-lg:right-24 z-50">
         <Link
           href={`https://wa.me/${formatNoHp(
             product?.seller?.phone_number
