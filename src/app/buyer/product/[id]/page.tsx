@@ -35,7 +35,7 @@ type Product = {
   user_id: number;
   used_duration: string;
   original_price: number;
-  seller?: { name: string; no_hp: number };
+  seller?: { name: string; phone_number: number };
   user?: {
     subdistrict: string;
     ward: string;
@@ -63,9 +63,9 @@ export default function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
-  const formatNoHp = (no_hp: number | undefined) => {
-    if (!no_hp) return "";
-    const strNoHp = no_hp.toString();
+  const formatNoHp = (phone_number: number | undefined) => {
+    if (!phone_number) return "";
+    const strNoHp = phone_number.toString();
     return strNoHp.startsWith("0") ? "62" + strNoHp.slice(1) : strNoHp;
   };
 
@@ -666,7 +666,7 @@ export default function ProductDetail() {
       <div className="fixed bottom-[90px] lg:right-[200px] max-lg:right-20 z-50">
         <Link
           href={`https://wa.me/${formatNoHp(
-            product?.seller?.no_hp
+            product?.seller?.phone_number
           )}?text=Halo%20saya%20tertarik%20dengan%20produk%20Anda`}
           className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
