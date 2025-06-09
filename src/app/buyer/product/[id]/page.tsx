@@ -663,7 +663,7 @@ export default function ProductDetail() {
           </div>
         )}
       </div>
-      <div className="fixed bottom-[90px] lg:right-[200px] max-lg:right-36 z-50">
+      <div className="fixed bottom-[90px] lg:right-[200px] max-lg:right-40 z-50">
         <Link
           href={`https://wa.me/${formatNoHp(
             product?.seller?.phone_number
@@ -680,7 +680,7 @@ export default function ProductDetail() {
         </Link>
       </div>
 
-      <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-20 z-50">
+      <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-24 z-50">
         <button
           onClick={openChat}
           className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
