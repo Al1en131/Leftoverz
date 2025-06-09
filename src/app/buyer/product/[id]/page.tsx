@@ -821,7 +821,7 @@ export default function ProductDetail() {
         )}
       </div>
       <div className="bg-blue-400 h-20 w-full fixed bottom-0 flex justify-between items-center lg:px-20 py-4 max-lg:px-6">
-        <p className="text-lg font-bold">
+        <p className="text-lg font-bold text-white">
           Rp {product?.price.toLocaleString("id-ID")}
         </p>
         <div className="flex items-center gap-4">
