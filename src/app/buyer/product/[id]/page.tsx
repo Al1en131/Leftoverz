@@ -668,7 +668,7 @@ export default function ProductDetail() {
           href={`https://wa.me/${formatNoHp(
             product?.seller?.phone_number
           )}?text=Halo%20saya%20tertarik%20dengan%20produk%20Anda`}
-          className="bg-blue-400 hover:bg-blue-500 text-white w-14 h-14 flex items-center justify-center rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="bg-blue-400 hover:bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
