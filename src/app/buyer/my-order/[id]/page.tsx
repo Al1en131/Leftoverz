@@ -1243,7 +1243,7 @@ export default function BuyProduct() {
             </button>
           </div>
         )}
-        <div className="fixed bottom-6 lg:right-[140px] max-lg:right-24 z-50">
+        <div className="fixed bottom-6 lg:right-[140px] max-lg:right-24 z-30">
           <button
             onClick={openChat}
             className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
@@ -1385,7 +1385,7 @@ export default function BuyProduct() {
           onClick={toggleTheme}
           aria-label="Toggle theme"
           title="Toggle theme"
-          className={`fixed bottom-6 lg:right-20 max-md:right-8 z-50 p-3 rounded-full bg-blue-400 ${
+          className={`fixed bottom-6 lg:right-20 max-md:right-8 z-30 p-3 rounded-full bg-blue-400 ${
             theme === "dark"
               ? "text-white border border-white"
               : "text-[#080B2A] border border-[#080B2A]"
