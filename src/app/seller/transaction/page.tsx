@@ -488,7 +488,7 @@ export default function Transaction() {
                         {item.buyer?.address
                           ?.toLowerCase()
                           .replace(/\b\w/g, (c) => c.toUpperCase())}
-                        , {item.buyer?.postal_code},{" "}
+                        ,{" "}
                         {item.buyer?.ward
                           ?.toLowerCase()
                           .replace(/\b\w/g, (c) => c.toUpperCase())}
@@ -504,6 +504,14 @@ export default function Transaction() {
                         {item.buyer?.province
                           ?.toLowerCase()
                           .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{item.buyer?.postal_code}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-center ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.buyer?.phone_number}
                       </td>
                       <td
                         className={`px-6 py-4 text-center capitalize ${
@@ -527,13 +535,6 @@ export default function Transaction() {
                         }`}
                       >
                         Rp. {item.total.toLocaleString("id-ID")}
-                      </td>
-                      <td
-                        className={`px-6 py-4 text-center ${
-                          theme === "dark" ? "text-white" : "text-blue-400"
-                        }`}
-                      >
-                        {item.buyer?.phone_number}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <span
