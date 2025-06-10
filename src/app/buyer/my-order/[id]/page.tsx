@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
 import Transaction from "@/app/seller/transaction/page";
-import RefundModal from "@/components/ModalRefund";
+import RefundModal from "../../../../components/ModalRefund";
 
 type User = {
   id: number;
