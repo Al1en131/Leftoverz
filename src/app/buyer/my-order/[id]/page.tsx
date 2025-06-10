@@ -106,7 +106,6 @@ type TrackingDataType = {
     date: string;
     weight: string;
     amount: string;
-    estimation: string;
   };
   detail: {
     origin: string;
@@ -740,10 +739,6 @@ export default function BuyProduct() {
                         <p>
                           <strong className="tracking-wider">AWB:</strong>{" "}
                           {trackingData.summary.awb || "-"}
-                        </p>
-                        <p>
-                          <strong className="tracking-wider">Cost:</strong> Rp{" "}
-                          {trackingData.summary.estimation || "-"}
                         </p>
                         <p>
                           <strong className="tracking-wider">Courier:</strong>{" "}
