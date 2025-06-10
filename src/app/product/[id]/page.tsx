@@ -188,7 +188,7 @@ export default function ProductDetail() {
                     alt={product.name}
                     width={600}
                     height={600}
-                    className="w-full lg:h-96 max-lg:h-72 object-cover border border-blue-400 rounded-lg"
+                    className="w-full lg:h-96 max-lg:h-72 object-cover border-2 border-blue-400 rounded-lg"
                   />
                 )}
               </div>
@@ -200,7 +200,7 @@ export default function ProductDetail() {
                       alt={`Thumbnail ${index}`}
                       width={100}
                       height={100}
-                      className="lg:w-24 lg:h-24 max-lg:h-20 max-lg:w-full border border-blue-400 object-cover rounded-lg"
+                      className="lg:w-24 lg:h-24 max-lg:h-20 max-lg:w-full border-2 border-blue-400 object-cover rounded-lg"
                     />
                   </button>
                 ))}
