@@ -153,6 +153,9 @@ export default function BuyProduct() {
   const [userName, setUserName] = useState("");
   const [refund, setRefund] = useState<RefundType | null>(null);
   const [showStatusModal, setShowStatusModal] = useState(false);
+  const [showShippingModal, setShowShippingModal] = useState(false);
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [courier, setCourier] = useState("");
   const handleRefundSuccess = () => {
     console.log("Refund berhasil diproses");
   };
@@ -311,7 +314,6 @@ export default function BuyProduct() {
       setLoading(false);
     }
   };
-
   const openChat = useCallback(async () => {
     setIsChatOpen(true);
 
@@ -573,6 +575,36 @@ export default function BuyProduct() {
       fetchRefund();
     }
   }, [transaction?.id]);
+  const handleShippingSubmit = async () => {
+    if (!trackingNumber || !courier) {
+      alert("Semua field harus diisi");
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/refund/shipping/${refund?.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ tracking_number: trackingNumber, courier }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Berhasil mengisi data pengiriman.");
+        setRefund(data.refund);
+        setShowShippingModal(false);
+      } else {
+        alert(data.message || "Gagal menyimpan data.");
+      }
+    } catch (error) {
+      console.error("Gagal submit data pengiriman:", error);
+      alert("Terjadi kesalahan.");
+    }
+  };
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -792,6 +824,11 @@ export default function BuyProduct() {
                     transaction?.status === "success") &&
                     (refund ? (
                       <button
+                        onClick={() =>
+                          refund.status === "approved"
+                            ? setShowShippingModal(true)
+                            : setShowStatusModal(true)
+                        }
                         className={`px-4 py-2 z-30 ${
                           refund.status === "refunded"
                             ? "bg-green-500 hover:bg-green-600"
@@ -801,12 +838,11 @@ export default function BuyProduct() {
                             ? "bg-blue-500 hover:bg-blue-600"
                             : "bg-gray-400"
                         } text-white rounded`}
-                        onClick={() => setShowStatusModal(true)}
                       >
                         {refund.status === "refunded"
                           ? "Refund Berhasil"
                           : refund.status === "approved"
-                          ? "Sedang Proses Pengembalian"
+                          ? "Input Pengiriman"
                           : refund.status === "requested"
                           ? "Menunggu Persetujuan"
                           : "Lihat Status Refund"}
@@ -819,7 +855,56 @@ export default function BuyProduct() {
                         Ajukan Refund
                       </button>
                     ))}
-
+                  {showShippingModal && (
+                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+                      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                        <h2 className="text-xl font-bold mb-4">
+                          Masukkan Info Pengiriman
+                        </h2>
+                        <form onSubmit={handleShippingSubmit}>
+                          <div className="mb-3">
+                            <label className="block mb-1">
+                              Tracking Number (Resi)
+                            </label>
+                            <input
+                              type="text"
+                              className="w-full border p-2 rounded"
+                              value={trackingNumber}
+                              onChange={(e) =>
+                                setTrackingNumber(e.target.value)
+                              }
+                              required
+                            />
+                          </div>
+                          <div className="mb-3">
+                            <label className="block mb-1">Kurir</label>
+                            <input
+                              type="text"
+                              className="w-full border p-2 rounded"
+                              value={courier}
+                              onChange={(e) => setCourier(e.target.value)}
+                              required
+                            />
+                          </div>
+                          <div className="flex justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setShowShippingModal(false)}
+                              className="px-4 py-2 bg-gray-300 rounded"
+                            >
+                              Batal
+                            </button>
+                            <button
+                              type="submit"
+                              className="px-4 py-2 bg-blue-600 text-white rounded"
+                            >
+                              Kirim
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  )}
                   {showModal && (
                     <div className="fixed inset-0 bg-black/20 bg-opacity-30 flex justify-center items-center z-50">
                       <div className="bg-[#080B2A] p-6 rounded-xl w-full max-w-md shadow-lg">
@@ -878,10 +963,6 @@ export default function BuyProduct() {
                           Status: <strong>{refund?.status}</strong>
                         </p>
                         <p>Alasan: {refund?.reason}</p>
-                        {refund?.tracking_number && (
-                          <p>Resi: {refund.tracking_number}</p>
-                        )}
-                        {refund?.courier && <p>Kurir: {refund.courier}</p>}
                         <button
                           onClick={() => setShowStatusModal(false)}
                           className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
