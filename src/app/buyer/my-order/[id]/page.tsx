@@ -829,7 +829,7 @@ export default function BuyProduct() {
                             ? setShowShippingModal(true)
                             : setShowStatusModal(true)
                         }
-                        className={`px-4 py-2 z-30 ${
+                        className={`px-4 py-2 z-30 rounded-full ${
                           refund.status === "refunded"
                             ? "bg-green-500 hover:bg-green-600"
                             : refund.status === "requested"
@@ -839,7 +839,7 @@ export default function BuyProduct() {
                             : refund.status === "shipping"
                             ? "bg-indigo-500 hover:bg-indigo-600"
                             : "bg-gray-400"
-                        } text-white rounded`}
+                        } text-white`}
                       >
                         {refund.status === "refunded"
                           ? "Refund Berhasil"
@@ -854,7 +854,7 @@ export default function BuyProduct() {
                     ) : (
                       <button
                         onClick={() => setShowModal(true)}
-                        className="px-4 py-2 z-30 bg-red-500 hover:bg-red-600 text-white rounded"
+                        className="px-4 py-2 z-30 rounded-full bg-red-500 hover:bg-red-600 text-white"
                       >
                         Ajukan Refund
                       </button>
