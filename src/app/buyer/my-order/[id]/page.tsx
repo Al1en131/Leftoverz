@@ -862,7 +862,7 @@ export default function BuyProduct() {
                   {showShippingModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
-                        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
+                        className={`w-full max-w-md p-6 rounded-lg border-2 border-blue-400 shadow-lg ${
                           theme === "dark" ? "bg-[#080B2A]" : "bg-white"
                         }`}
                       >
@@ -923,7 +923,7 @@ export default function BuyProduct() {
                   {showModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
-                        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
+                        className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 border-blue-400 ${
                           theme === "dark" ? "bg-[#080B2A]" : "bg-white"
                         }`}
                       >
@@ -975,7 +975,7 @@ export default function BuyProduct() {
                   {showStatusModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
-                        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
+                        className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 border-blue-400 ${
                           theme === "dark" ? "bg-[#080B2A]" : "bg-white"
                         }`}
                       >
