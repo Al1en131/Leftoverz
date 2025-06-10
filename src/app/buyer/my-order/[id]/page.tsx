@@ -868,6 +868,30 @@ export default function BuyProduct() {
                       </div>
                     </div>
                   )}
+                  {showStatusModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                        <h2 className="text-xl font-bold mb-4">
+                          Status Refund
+                        </h2>
+                        <p>
+                          Status: <strong>{refund?.status}</strong>
+                        </p>
+                        <p>Alasan: {refund?.reason}</p>
+                        {refund?.tracking_number && (
+                          <p>Resi: {refund.tracking_number}</p>
+                        )}
+                        {refund?.courier && <p>Kurir: {refund.courier}</p>}
+                        <button
+                          onClick={() => setShowStatusModal(false)}
+                          className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          Tutup
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     onClick={handleTrackPackage}
                     className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
