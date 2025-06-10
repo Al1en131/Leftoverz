@@ -715,36 +715,42 @@ export default function Home() {
           )}
         </button>
         <div className="relative w-full text-[#080B2A] dark:text-white shadow-md">
-          <div className="py-12 sm:px-6 lg:px-20">
-            <h2 className="text-3xl font-extrabold mb-10 text-center">
-              Meet the Developer
-            </h2>
+          <div className="py-12 max-lg:px-8 lg:px-20">
+            <div
+              className={`pb-12 text-center ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
+              }`}
+            >
+              <h3 className="text-3xl font-bold ">Meet the Developer</h3>
+              <p className="">
+                Kenalan dengan saya sebagai Web Developer yang suka menciptakan solusi
+                kreatif lewat teknologi.
+              </p>
+            </div>
             <div className="bg-white/5 border rounded-3xl p-8 border-blue-400">
               <div className="flex flex-col md:flex-row justify-center items-center gap-16">
                 <Image
                   width={150}
-                  height={150}
+                  height={200}
                   src="/images/alif.png"
                   alt="Alif Essa Nurcahyani"
                   className="rounded-2xl object-cover shadow-lg"
                 />
 
                 <div className="text-left">
-                  <h2 className="text-2xl font-semibold mb-1">
-                    Halo, nama saya Alif Essa Nurcahyani.
+                  <h2 className="text-2xl font-semibold">
+                    Alif Essa Nurcahyani.
                   </h2>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2">
+                  <p className="text-gray-700 dark:text-gray-300 mb-3">
+                    Web Developer | Frontend Developer
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300 mb-2 max-lg:text-justify">
                     Saya adalah mahasiswa semester 8 di Universitas Muhammadiyah
                     PKU Surakarta dengan fokus pada Web Developer. Saya memiliki
                     pengalaman dalam menangani proyek mulai dari perancangan
                     hingga pengembangan front-end dan back-end, menggunakan
                     teknologi seperti Laravel, React JS, Vue.js, Express JS,
-                    Next JS, Bootstrap, dan TailwindCSS. Dengan latar belakang
-                    tersebut, saya telah memimpin tim dalam menciptakan solusi
-                    digital yang inovatif dan berhasil mengimplementasikan
-                    proyek dengan hasil yang signifikan. Komitmen saya adalah
-                    untuk terus belajar dan berkembang di bidang teknologi guna
-                    menciptakan solusi web yang optimal dan berdampak.
+                    Next JS, Bootstrap, dan TailwindCSS.
                   </p>
                   <div className="flex flex-wrap gap-3 mt-4">
                     <a
