@@ -739,7 +739,7 @@ export default function Home() {
 
                 <div className="text-left">
                   <h2 className="text-2xl font-semibold">
-                    Alif Essa Nurcahyani.
+                    Alif Essa Nurcahyani
                   </h2>
                   <p className="text-gray-700 dark:text-gray-300 mb-3">
                     Web Developer | Frontend Developer
