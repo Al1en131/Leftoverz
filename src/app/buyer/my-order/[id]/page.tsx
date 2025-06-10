@@ -138,7 +138,6 @@ export default function BuyProduct() {
   const [product, setProduct] = useState<Product | null>(null);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [userName, setUserName] = useState("");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (user && user.name) {
@@ -184,7 +183,6 @@ export default function BuyProduct() {
           image: formattedImages,
         });
 
-        setSelectedImage(formattedImages[0] || null);
         setLoading(false);
       } catch (err: unknown) {
         if (err instanceof Error) {
