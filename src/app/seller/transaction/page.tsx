@@ -414,7 +414,7 @@ export default function Transaction() {
                   <th className="px-6 py-3 center">Phone number</th>
                   <th className="px-6 py-3 text-center">Payment Method</th>
                   <th className="px-6 py-3 text-center">Price</th>
-                  <th className="px-6 py-3 text-center">Status</th>
+                  <th className="px-6 py-3 text-center">Status Payment</th>
                   <th className="px-6 py-3 text-center">Kurir</th>
                   <th className="px-6 py-3 text-center">No. Resi</th>
                   <th className="px-6 py-3 text-center">Action</th>
