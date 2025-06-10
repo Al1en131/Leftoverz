@@ -884,7 +884,146 @@ export default function BuyProduct() {
             </button>
           </div>
         )}
+        <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-24 z-50">
+          <button
+            onClick={openChat}
+            className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+          >
+            <svg
+              width="800px"
+              height="800px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-8 h-8"
+            >
+              <path
+                d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M8 12H8.009M11.991 12H12M15.991 12H16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {!isChatOpen && hasUnreadMessages && (
+              <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-white border border-white rounded-full animate-ping"></span>
+            )}
+          </button>
+          {isChatOpen && (
+            <div className="mt-4 w-80 bg-white border border-blue-400 rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+              <div className="bg-blue-400 text-white px-4 py-3 font-semibold flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`w-8 h-8 text-xs rounded-full flex items-center justify-center ${
+                      theme === "dark"
+                        ? "text-blue-400 bg-white"
+                        : "text-white bg-blue-400"
+                    }`}
+                  >
+                    {product?.seller?.name
+                      ? product?.seller.name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                          .toUpperCase()
+                      : "?"}
+                  </span>
+                  <p className="text-white font-semibold">
+                    {product?.seller?.name}
+                  </p>
+                </div>
+                <button onClick={() => setIsChatOpen(false)}>
+                  <svg
+                    className="w-6 h-6 text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18 17.94 6M18 18 6.06 6"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-4 space-y-3 text-sm">
+                <div className="items-center gap-3 mb-2 border-[1.5px] p-2 flex border-blue-400 rounded-2xl">
+                  <Image
+                    src={
+                      product?.image?.[0]
+                        ? product.image[0]
+                        : "/images/default-product.png"
+                    }
+                    alt="product?.id"
+                    width={100}
+                    height={100}
+                    className="h-16 w-16 object-cover rounded-2xl"
+                  />
+                  <div className="">
+                    <p className="text-blue-400 text-base font-semibold">
+                      {product?.name}
+                    </p>
+                    <p className="text-blue-400 text-sm">
+                      Rp {product?.price.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+                </div>
 
+                {/* Chat messages (scrollable) */}
+                <div className="max-h-60 overflow-y-auto space-y-2">
+                  {messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`p-2 rounded-lg w-fit ${
+                        msg.sender_id === userId
+                          ? "text-white bg-blue-400 self-end ml-auto text-right"
+                          : "text-gray-700 bg-gray-300"
+                      }`}
+                    >
+                      {msg.message}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t px-4 py-2 bg-gray-50">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Tulis pesan..."
+                    className="grow px-3 py-2 text-sm text-blue-400 border rounded-lg focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="text-white bg-blue-400 px-3 py-2 rounded-lg text-sm hover:bg-blue-400"
+                  >
+                    Kirim
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
