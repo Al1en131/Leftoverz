@@ -6,10 +6,10 @@ import { useParams, useRouter } from "next/navigation";
 import Transaction from "@/app/seller/transaction/page";
 
 type User = {
+  id: number;
   name: string;
   email: string;
   phone: string;
-  id: number;
   role: string;
   address: string;
   subdistrict: string;
@@ -21,6 +21,10 @@ type User = {
   account_holder_name: string;
   payment_type: string;
 };
+type SenderUser = {
+  id: number;
+  name: string;
+};
 
 type Chat = {
   id: number;
@@ -30,8 +34,8 @@ type Chat = {
   message: string;
   read_status: "0" | "1";
   created_at: string;
-  sender?: User;
-  receiver?: User;
+  sender?: SenderUser;
+  receiver?: SenderUser;
   Product?: Product;
   opponent_id?: number;
 };
