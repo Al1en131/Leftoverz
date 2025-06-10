@@ -1000,16 +1000,18 @@ export default function BuyProduct() {
                       </div>
                     </div>
                   )}
-                  {(refund?.status === "shipping" ||
-                    refund?.status === "refunded" ||
-                    refund?.status === "approved") && (
-                    <button
-                      onClick={handleTrackPackage}
-                      className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
-                    >
-                      Tracking Package
-                    </button>
-                  )}
+                  {refund &&
+                    !["approved", "refunded", "shipping"].includes(
+                      refund.status
+                    ) && (
+                      <button
+                        onClick={handleTrackPackage}
+                        className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
+                      >
+                        Tracking Package
+                      </button>
+                    )}
+
                   {showTrackingModal && trackingData && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
