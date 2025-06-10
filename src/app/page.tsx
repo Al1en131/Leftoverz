@@ -727,7 +727,7 @@ export default function Home() {
                 bermanfaat.
               </p>
             </div>
-            <div className="bg-white/5 border rounded-3xl p-8 border-blue-400">
+            <div className="bg-white/5 border-2 rounded-3xl p-8 border-blue-400">
               <div className="flex flex-col md:flex-row justify-center items-center gap-16">
                 <Image
                   width={150}
@@ -765,7 +765,7 @@ export default function Home() {
                     Next JS, Bootstrap, dan TailwindCSS.
                   </p>
 
-                  <div className="flex flex-wrap gap-3 mt-4">
+                  <div className="flex flex-wrap gap-3 mt-3">
                     <a
                       href="https://wa.me/6285172041077"
                       target="_blank"
