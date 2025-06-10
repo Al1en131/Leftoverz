@@ -123,7 +123,7 @@ export default function BuyProduct() {
   const [user, setUser] = useState<User | null>(null);
   const params = useParams();
   const transactionId = params?.id;
-  const productId = params?.id;
+  const [productId, setProductId] = useState<number | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const { theme, setTheme } = useTheme();
   const [transaction, setTransaction] = useState<Transaction | null>(null);
@@ -144,58 +144,54 @@ export default function BuyProduct() {
       setUserName(user.name);
     }
   }, [user]);
-
   useEffect(() => {
-    if (!productId) return;
-
-    const fetchProduct = async () => {
+    const fetchTransactionById = async () => {
       try {
+        if (!userId || !transactionId) return;
+
         const res = await fetch(
-          `https://backend-leftoverz-production.up.railway.app/api/v1/product/detail/${productId}`
+          `https://backend-leftoverz-production.up.railway.app/api/v1/${userId}/transaction/${transactionId}`
         );
-        const data = await res.json();
+        const response: { transaction: RawTransaction; message: string } =
+          await res.json();
 
-        if (!res.ok) throw new Error(data.message);
+        if (res.ok) {
+          const t = response.transaction;
+          setProductId(t.item_id);
 
-        let parsedImage = data.product.image;
+          let imageArray: string[] = [];
 
-        try {
-          parsedImage = JSON.parse(parsedImage);
-        } catch {
-          console.log("Image is not in valid JSON format, skipping parsing.");
-        }
+          if (typeof t.item?.image === "string") {
+            try {
+              imageArray = JSON.parse(t.item.image);
+            } catch {
+              imageArray = [t.item.image];
+            }
+          } else if (Array.isArray(t.item?.image)) {
+            imageArray = t.item.image;
+          }
 
-        console.log("Parsed image data:", parsedImage);
+          const mappedTransaction: Transaction = {
+            ...t,
+            item_name: t.item?.name || "Unknown",
+            buyer_name: t.buyer?.name || "Unknown",
+            seller_name: t.seller?.name || "Unknown",
+            image: imageArray,
+          };
 
-        const formattedImages = Array.isArray(parsedImage)
-          ? parsedImage.map(
-              (imgUrl: string) =>
-                `https://backend-leftoverz-production.up.railway.app${imgUrl}`
-            )
-          : parsedImage?.url
-          ? [
-              `https://backend-leftoverz-production.up.railway.app${parsedImage.url}`,
-            ]
-          : [];
-
-        setProduct({
-          ...data.product,
-          image: formattedImages,
-        });
-
-        setLoading(false);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          console.error(err.message);
+          setTransaction(mappedTransaction);
         } else {
-          console.error("An unknown error occurred");
+          console.error("Fetch error:", response.message);
         }
+      } catch (error) {
+        console.error("Network error:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchProduct();
-  }, [productId]);
-
+    fetchTransactionById();
+  }, [userId, transactionId]);
   const openChat = useCallback(async () => {
     setIsChatOpen(true);
 
@@ -375,53 +371,6 @@ export default function BuyProduct() {
     }
   }, []);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchTransactionById = async () => {
-      try {
-        if (!userId || !transactionId) return;
-
-        const res = await fetch(
-          `https://backend-leftoverz-production.up.railway.app/api/v1/${userId}/transaction/${transactionId}`
-        );
-        const response: { transaction: RawTransaction; message: string } =
-          await res.json();
-
-        if (res.ok) {
-          const t = response.transaction;
-
-          let imageArray: string[] = [];
-
-          if (typeof t.item?.image === "string") {
-            try {
-              imageArray = JSON.parse(t.item.image);
-            } catch {
-              imageArray = [t.item.image];
-            }
-          } else if (Array.isArray(t.item?.image)) {
-            imageArray = t.item.image;
-          }
-
-          const mappedTransaction: Transaction = {
-            ...t,
-            item_name: t.item?.name || "Unknown",
-            buyer_name: t.buyer?.name || "Unknown",
-            seller_name: t.seller?.name || "Unknown",
-            image: imageArray,
-          };
-
-          setTransaction(mappedTransaction);
-        } else {
-          console.error("Fetch error:", response.message);
-        }
-      } catch (error) {
-        console.error("Network error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTransactionById();
-  }, [userId, transactionId]);
 
   const handleTrackPackage = async () => {
     try {
