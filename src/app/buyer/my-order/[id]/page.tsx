@@ -863,7 +863,9 @@ export default function BuyProduct() {
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
                         className={`w-full max-w-md p-6 rounded-lg border-2 border-blue-400 shadow-lg ${
-                          theme === "dark" ? "bg-[#080B2A] text-white" : "bg-white text-[#080B2A]"
+                          theme === "dark"
+                            ? "bg-[#080B2A] text-white"
+                            : "bg-white text-[#080B2A]"
                         }`}
                       >
                         <h2 className="text-xl font-bold mb-4">
@@ -919,12 +921,13 @@ export default function BuyProduct() {
                       </div>
                     </div>
                   )}
-
                   {showModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
                         className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 border-blue-400 ${
-                          theme === "dark" ? "bg-[#080B2A] text-white" : "bg-white text-[#080B2A]"
+                          theme === "dark"
+                            ? "bg-[#080B2A] text-white"
+                            : "bg-white text-[#080B2A]"
                         }`}
                       >
                         <h2 className="text-lg font-semibold mb-4">
@@ -976,7 +979,9 @@ export default function BuyProduct() {
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
                         className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 border-blue-400 ${
-                          theme === "dark" ? "bg-[#080B2A] text-white" : "bg-white text-[#080B2A]"
+                          theme === "dark"
+                            ? "bg-[#080B2A] text-white"
+                            : "bg-white text-[#080B2A]"
                         }`}
                       >
                         <h2 className="text-xl font-bold mb-4">
@@ -995,13 +1000,16 @@ export default function BuyProduct() {
                       </div>
                     </div>
                   )}
-
-                  <button
-                    onClick={handleTrackPackage}
-                    className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
-                  >
-                    Tracking Package
-                  </button>
+                  {(refund?.status === "shipping" ||
+                    refund?.status === "refunded" ||
+                    refund?.status === "approved") && (
+                    <button
+                      onClick={handleTrackPackage}
+                      className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
+                    >
+                      Tracking Package
+                    </button>
+                  )}
                   {showTrackingModal && trackingData && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
