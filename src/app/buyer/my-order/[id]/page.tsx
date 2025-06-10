@@ -142,7 +142,6 @@ export default function BuyProduct() {
     console.log("Refund berhasil diproses");
   };
   const [reason, setReason] = useState("");
-  const [amount, setAmount] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
 
