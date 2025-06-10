@@ -152,44 +152,6 @@ export default function BuyProduct() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const formData = new FormData();
-    formData.append("amount", amount);
-    formData.append("reason", reason);
-    if (image) {
-      formData.append("image", image);
-    }
-
-    try {
-      const res = await fetch(
-        `https://backend-leftoverz-production.up.railway.app/api/v1/transaction/${transaction?.order_id}/refund`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-
-      if (!res.ok) throw new Error(data.message || "Refund gagal");
-
-      alert("Refund berhasil!");
-      setShowModal(false);
-      handleRefundSuccess();
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert("Gagal refund: " + err.message);
-      } else {
-        alert("Gagal refund: Terjadi kesalahan tak dikenal");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
     if (user && user.name) {
       setUserName(user.name);
@@ -292,6 +254,50 @@ export default function BuyProduct() {
 
     fetchTransactionById();
   }, [userId, transactionId]);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!transaction || !transaction.order_id || !transaction.total) {
+      alert("Data transaksi tidak lengkap.");
+      return;
+    }
+
+    setLoading(true);
+
+    const formData = new FormData();
+    const amount = (Number(transaction.total) - 5000).toString();
+    formData.append("amount", amount);
+    formData.append("reason", reason);
+    if (image) {
+      formData.append("image", image);
+    }
+
+    try {
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/transaction/${transaction.order_id}/refund`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Refund gagal");
+
+      alert("Refund berhasil!");
+      setShowModal(false);
+      handleRefundSuccess?.();
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert("Gagal refund: " + err.message);
+      } else {
+        alert("Gagal refund: Terjadi kesalahan tak dikenal");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const openChat = useCallback(async () => {
     setIsChatOpen(true);
 
