@@ -138,6 +138,8 @@ export default function BuyProduct() {
   const [product, setProduct] = useState<Product | null>(null);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [userName, setUserName] = useState("");
+  const [isRefunded, setIsRefunded] = useState(false);
+
   const handleRefundSuccess = () => {
     console.log("Refund berhasil diproses");
   };
@@ -284,6 +286,7 @@ export default function BuyProduct() {
       if (!res.ok) throw new Error(data.message || "Refund gagal");
 
       alert("Refund berhasil!");
+      setIsRefunded(true);
       setShowModal(false);
       handleRefundSuccess?.();
     } catch (err: unknown) {
@@ -752,14 +755,24 @@ export default function BuyProduct() {
               <div className="mt-4 flex justify-end items-center gap-2">
                 <div className="flex items-center gap-2">
                   {(transaction?.status === "settlement" ||
-                    transaction?.status === "success") && (
-                    <button
-                      onClick={() => setShowModal(true)}
-                      className="px-4 py-2 z-30 bg-red-500 hover:bg-red-600 text-white rounded"
-                    >
-                      Refund
-                    </button>
-                  )}
+                    transaction?.status === "success") &&
+                    (isRefunded ? (
+                      <button
+                        className="px-4 py-2 z-30 bg-green-500 hover:bg-green-600 text-white rounded"
+                        onClick={() =>
+                          alert("Refund sedang diproses atau telah diproses.")
+                        }
+                      >
+                        Lihat Status Refund
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setShowModal(true)}
+                        className="px-4 py-2 z-30 bg-red-500 hover:bg-red-600 text-white rounded"
+                      >
+                        Refund
+                      </button>
+                    ))}
 
                   {showModal && (
                     <div className="fixed inset-0 bg-black/20 bg-opacity-30 flex justify-center items-center z-50">
