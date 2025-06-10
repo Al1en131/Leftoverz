@@ -132,7 +132,7 @@ export default function ProductDetail() {
         height={100}
         alt=""
         src="/images/Star-1.svg"
-        className="w-8 absolute top-28 max-lg:hidden right-26 -z-0"
+        className="w-8 absolute top-28 max-lg:hidden right-32 -z-0"
       />
       <Image
         width={100}
