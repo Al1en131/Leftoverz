@@ -762,8 +762,8 @@ export default function BuyProduct() {
                   )}
 
                   {showModal && (
-                    <div className="fixed inset-0 bg-[#080B2A] bg-opacity-30 flex justify-center items-center z-50">
-                      <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
+                    <div className="fixed inset-0 bg-black/20 bg-opacity-30 flex justify-center items-center z-50">
+                      <div className="bg-[#080B2A] p-6 rounded-xl w-full max-w-md shadow-lg">
                         <h2 className="text-lg font-semibold mb-4">
                           Ajukan Refund
                         </h2>
