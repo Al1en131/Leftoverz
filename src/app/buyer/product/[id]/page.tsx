@@ -163,8 +163,6 @@ export default function ProductDetail() {
 
         setMessages(chatMessages);
         localStorage.setItem("messages", JSON.stringify(chatMessages));
-        // Jika selectedChat tidak digunakan, hapus setSelectedChat berikut:
-        // setSelectedChat(chatMessages[0] || null);
       } else {
         setMessages([]);
         console.error("Failed to fetch messages:", data.message);

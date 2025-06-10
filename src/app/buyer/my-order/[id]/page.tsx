@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
 import Transaction from "@/app/seller/transaction/page";
@@ -9,7 +9,7 @@ type User = {
   name: string;
   email: string;
   phone: string;
-  id: string;
+  id: number;
   role: string;
   address: string;
   subdistrict: string;
@@ -20,6 +20,41 @@ type User = {
   payment_account_number: string;
   account_holder_name: string;
   payment_type: string;
+};
+type Chat = {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  item_id: number;
+  message: string;
+  read_status: "0" | "1";
+  created_at: string;
+  sender?: User;
+  receiver?: User;
+  Product?: Product;
+  opponent_id?: number;
+};
+type Product = {
+  id: number;
+  name: string;
+  email: string;
+  phone_number: string;
+  role: string;
+  image: string[];
+  description: string;
+  price: number;
+  status: string;
+  user_id: number;
+  used_duration: string;
+  original_price: number;
+  seller?: { name: string; phone_number: number };
+  user?: {
+    subdistrict: string;
+    ward: string;
+    regency: string;
+    province: string;
+    name: string;
+  };
 };
 
 type RawTransaction = {
@@ -78,19 +113,168 @@ type TrackingDataType = {
     desc: string;
   }[];
 };
-
 export default function BuyProduct() {
   const [user, setUser] = useState<User | null>(null);
   const params = useParams();
   const transactionId = params?.id;
+  const productId = params?.id;
   const [userId, setUserId] = useState<number | null>(null);
   const { theme, setTheme } = useTheme();
   const [transaction, setTransaction] = useState<Transaction | null>(null);
   const [trackingData, setTrackingData] = useState<TrackingDataType | null>(
     null
   );
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [messages, setMessages] = useState<Chat[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
   const [showTrackingModal, setShowTrackingModal] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    if (user && user.name) {
+      setUserName(user.name);
+    }
+  }, [user]);
 
+  const openChat = useCallback(async () => {
+    setIsChatOpen(true);
+
+    const opponentId = product?.user_id;
+    if (!userId || !opponentId || !productId) return;
+
+    try {
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/chats/product/${productId}/${userId}/${opponentId}`
+      );
+      const data = await res.json();
+
+      if (res.ok) {
+        const chatMessages = Array.isArray(data.chats) ? data.chats : [];
+        const unreadChat = chatMessages.find(
+          (msg: Chat) => msg.receiver_id === userId && msg.read_status === "0"
+        );
+
+        if (unreadChat) {
+          await fetch(
+            `https://backend-leftoverz-production.up.railway.app/api/v1/chats/${unreadChat.id}/read`,
+            {
+              method: "PUT",
+            }
+          );
+
+          setMessages((prevChats) =>
+            prevChats.map((chat) =>
+              chat.id === unreadChat.id ? { ...chat, read_status: "1" } : chat
+            )
+          );
+        }
+
+        setMessages(chatMessages);
+        localStorage.setItem("messages", JSON.stringify(chatMessages));
+      } else {
+        setMessages([]);
+        console.error("Failed to fetch messages:", data.message);
+      }
+    } catch (error) {
+      console.error("Error opening chat:", error);
+      setMessages([]);
+    }
+  }, [userId, productId, product]);
+
+  useEffect(() => {
+    const checkUnreadMessages = async () => {
+      if (!userId || !productId || !product?.user_id) return;
+
+      try {
+        const res = await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/chats/product/${productId}/${userId}/${product.user_id}`
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          const chatMessages = Array.isArray(data.chats) ? data.chats : [];
+          const hasUnread = chatMessages.some(
+            (msg: Chat) => msg.receiver_id === userId && msg.read_status === "0"
+          );
+          setHasUnreadMessages(hasUnread);
+        }
+      } catch (error) {
+        console.error("Failed to check unread messages:", error);
+      }
+    };
+
+    checkUnreadMessages(); // initial check
+
+    const interval = setInterval(() => {
+      checkUnreadMessages();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [userId, productId, product]);
+
+  useEffect(() => {
+    if (isChatOpen) {
+      openChat();
+      const intervalId = setInterval(() => {
+        openChat();
+      }, 5000);
+      return () => clearInterval(intervalId);
+    }
+  }, [isChatOpen, openChat, userId, productId, product]);
+
+  const handleSendMessage = async () => {
+    if (!newMessage || !productId || !userId || !product?.user_id) return;
+
+    const receiver_id = product.user_id;
+
+    try {
+      const response = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/send/${productId}/${userId}/${receiver_id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ message: newMessage }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const newMessageData: Chat = {
+          id: data.chat?.id,
+          sender_id: userId,
+          receiver_id,
+          item_id: Number(productId),
+          message: newMessage,
+          read_status: "0",
+          created_at: new Date().toISOString(),
+          sender: { id: userId, name: userName },
+          receiver: data.chat?.receiver || {
+            id: receiver_id,
+            name: "Receiver",
+          },
+        };
+
+        const updatedMessages = [...messages, newMessageData];
+        setMessages(updatedMessages);
+        setSelectedChat((prev) =>
+          prev ? { ...prev, message: newMessage } : prev
+        );
+        console.log(selectedChat);
+        setNewMessage("");
+        localStorage.setItem("messages", JSON.stringify(updatedMessages));
+      } else {
+        console.error("Failed to send message:", data.message);
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -698,7 +882,145 @@ export default function BuyProduct() {
             </button>
           </div>
         )}
+        <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-24 z-50">
+          <button
+            onClick={openChat}
+            className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+          >
+            <svg
+              width="800px"
+              height="800px"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-8 h-8"
+            >
+              <path
+                d="M17 3.33782C15.5291 2.48697 13.8214 2 12 2C6.47715 2 2 6.47715 2 12C2 13.5997 2.37562 15.1116 3.04346 16.4525C3.22094 16.8088 3.28001 17.2161 3.17712 17.6006L2.58151 19.8267C2.32295 20.793 3.20701 21.677 4.17335 21.4185L6.39939 20.8229C6.78393 20.72 7.19121 20.7791 7.54753 20.9565C8.88837 21.6244 10.4003 22 12 22C17.5228 22 22 17.5228 22 12C22 10.1786 21.513 8.47087 20.6622 7"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M8 12H8.009M11.991 12H12M15.991 12H16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            {!isChatOpen && hasUnreadMessages && (
+              <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-white border border-white rounded-full animate-ping"></span>
+            )}
+          </button>
+          {isChatOpen && (
+            <div className="mt-4 w-80 bg-white border border-blue-400 rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+              <div className="bg-blue-400 text-white px-4 py-3 font-semibold flex justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`w-8 h-8 text-xs rounded-full flex items-center justify-center ${
+                      theme === "dark"
+                        ? "text-blue-400 bg-white"
+                        : "text-white bg-blue-400"
+                    }`}
+                  >
+                    {product?.seller?.name
+                      ? product?.seller.name
+                          .split(" ")
+                          .map((word) => word.charAt(0))
+                          .join("")
+                          .toUpperCase()
+                      : "?"}
+                  </span>
+                  <p className="text-white font-semibold">
+                    {product?.seller?.name}
+                  </p>
+                </div>
+                <button onClick={() => setIsChatOpen(false)}>
+                  <svg
+                    className="w-6 h-6 text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M6 18 17.94 6M18 18 6.06 6"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-4 space-y-3 text-sm">
+                <div className="items-center gap-3 mb-2 border-[1.5px] p-2 flex border-blue-400 rounded-2xl">
+                  <Image
+                    src={
+                      product?.image?.[0]
+                        ? product.image[0]
+                        : "/images/default-product.png"
+                    }
+                    alt="product?.id"
+                    width={100}
+                    height={100}
+                    className="h-16 w-16 object-cover rounded-2xl"
+                  />
+                  <div className="">
+                    <p className="text-blue-400 text-base font-semibold">
+                      {product?.name}
+                    </p>
+                    <p className="text-blue-400 text-sm">
+                      Rp {product?.price.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+                </div>
 
+                <div className="max-h-60 overflow-y-auto space-y-2">
+                  {messages.map((msg, index) => (
+                    <div
+                      key={index}
+                      className={`p-2 rounded-lg w-fit ${
+                        msg.sender_id === userId
+                          ? "text-white bg-blue-400 self-end ml-auto text-right"
+                          : "text-gray-700 bg-gray-300"
+                      }`}
+                    >
+                      {msg.message}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t px-4 py-2 bg-gray-50">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Tulis pesan..."
+                    className="grow px-3 py-2 text-sm text-blue-400 border rounded-lg focus:outline-none"
+                  />
+                  <button
+                    type="submit"
+                    className="text-white bg-blue-400 px-3 py-2 rounded-lg text-sm hover:bg-blue-400"
+                  >
+                    Kirim
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+        </div>
         <button
           onClick={toggleTheme}
           aria-label="Toggle theme"
