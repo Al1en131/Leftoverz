@@ -723,8 +723,8 @@ export default function Home() {
             >
               <h3 className="text-3xl font-bold ">Meet the Developer</h3>
               <p className="">
-                Kenalan dengan saya sebagai Web Developer yang suka menciptakan
-                solusi kreatif lewat teknologi.
+                Seorang developer yang antusias membangun solusi digital yang
+                bermanfaat.
               </p>
             </div>
             <div className="bg-white/5 border rounded-3xl p-8 border-blue-400">
