@@ -99,7 +99,7 @@ export type RefundType = {
   image?: string | string[] | null;
   refunded_at?: string | null;
   tracking_number?: string | null;
-  courier?: string | null;
+  courir?: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -155,7 +155,7 @@ export default function BuyProduct() {
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [showShippingModal, setShowShippingModal] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState("");
-  const [courier, setCourier] = useState("");
+  const [courir, setCourir] = useState("");
   const handleRefundSuccess = () => {
     console.log("Refund berhasil diproses");
   };
@@ -576,7 +576,7 @@ export default function BuyProduct() {
     }
   }, [transaction?.id]);
   const handleShippingSubmit = async () => {
-    if (!trackingNumber || !courier) {
+    if (!trackingNumber || !courir) {
       alert("Semua field harus diisi");
       return;
     }
@@ -587,7 +587,7 @@ export default function BuyProduct() {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ tracking_number: trackingNumber, courier }),
+          body: JSON.stringify({ tracking_number: trackingNumber, courir }),
         }
       );
 
@@ -878,13 +878,19 @@ export default function BuyProduct() {
                           </div>
                           <div className="mb-3">
                             <label className="block mb-1">Kurir</label>
-                            <input
-                              type="text"
+                            <select
                               className="w-full border p-2 rounded"
-                              value={courier}
-                              onChange={(e) => setCourier(e.target.value)}
+                              value={courir}
+                              onChange={(e) => setCourir(e.target.value)}
                               required
-                            />
+                            >
+                              <option value="" disabled>
+                                Pilih Kurir
+                              </option>
+                              <option value="JNE">JNE</option>
+                              <option value="JNT">J&T</option>
+                              <option value="SiCepat">SiCepat</option>
+                            </select>
                           </div>
                           <div className="flex justify-end gap-2">
                             <button
@@ -905,6 +911,7 @@ export default function BuyProduct() {
                       </div>
                     </div>
                   )}
+
                   {showModal && (
                     <div className="fixed inset-0 bg-black/20 bg-opacity-30 flex justify-center items-center z-50">
                       <div className="bg-[#080B2A] p-6 rounded-xl w-full max-w-md shadow-lg">
