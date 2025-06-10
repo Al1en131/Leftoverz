@@ -860,8 +860,12 @@ export default function BuyProduct() {
                       </button>
                     ))}
                   {showShippingModal && (
-                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-                      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                      <div
+                        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
+                          theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                        }`}
+                      >
                         <h2 className="text-xl font-bold mb-4">
                           Masukkan Info Pengiriman
                         </h2>
@@ -917,8 +921,12 @@ export default function BuyProduct() {
                   )}
 
                   {showModal && (
-                    <div className="fixed inset-0 bg-black/20 bg-opacity-30 flex justify-center items-center z-50">
-                      <div className="bg-[#080B2A] p-6 rounded-xl w-full max-w-md shadow-lg">
+                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                      <div
+                        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
+                          theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                        }`}
+                      >
                         <h2 className="text-lg font-semibold mb-4">
                           Ajukan Refund
                         </h2>
@@ -965,8 +973,12 @@ export default function BuyProduct() {
                     </div>
                   )}
                   {showStatusModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                      <div
+                        className={`w-full max-w-md p-6 rounded-lg shadow-lg ${
+                          theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                        }`}
+                      >
                         <h2 className="text-xl font-bold mb-4">
                           Status Refund
                         </h2>
