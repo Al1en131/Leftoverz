@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { useParams, useRouter } from "next/navigation";
 import Transaction from "@/app/seller/transaction/page";
+import RefundModal from "@/components/ModalRefund";
 
 type User = {
   id: number;
@@ -69,7 +70,7 @@ type RawTransaction = {
   seller_id: number;
   item_id: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "success" | "paid" | "cancelled" | null;
+  status: "success" | "paid" | "cancelled" | "settlement" | null;
   created_at: string;
   total: number;
   awb: string;
@@ -138,6 +139,9 @@ export default function BuyProduct() {
   const [product, setProduct] = useState<Product | null>(null);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [userName, setUserName] = useState("");
+  const handleRefundSuccess = () => {
+    console.log("Refund berhasil diproses");
+  };
 
   useEffect(() => {
     if (user && user.name) {
@@ -693,7 +697,13 @@ export default function BuyProduct() {
                   )}
                 </div>
               </div>
-              <div className="mt-4 flex justify-end">
+              <div className="mt-4 flex justify-end items-center gap-2">
+                {transaction?.status === "settlement" && (
+                  <RefundModal
+                    orderId={transaction?.order_id}
+                    onSuccess={handleRefundSuccess}
+                  />
+                )}
                 <button
                   onClick={handleTrackPackage}
                   className="bg-blue-400 px-4 py-2 z-30 rounded-full text-white hover:bg-blue-500"
