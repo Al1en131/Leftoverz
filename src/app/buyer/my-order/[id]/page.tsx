@@ -763,7 +763,7 @@ export default function BuyProduct() {
                   )}
 
                   {showModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-center items-center z-50">
+                    <div className="fixed inset-0 bg-[#080B2A] bg-opacity-30 flex justify-center items-center z-50">
                       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-lg">
                         <h2 className="text-lg font-semibold mb-4">
                           Ajukan Refund
@@ -776,17 +776,6 @@ export default function BuyProduct() {
                               className="w-full border rounded p-2"
                               value={reason}
                               onChange={(e) => setReason(e.target.value)}
-                            />
-                          </div>
-
-                          <div className="mb-3">
-                            <label className="block mb-1">Jumlah Refund</label>
-                            <input
-                              required
-                              type="number"
-                              className="w-full border rounded p-2"
-                              value={amount}
-                              onChange={(e) => setAmount(e.target.value)}
                             />
                           </div>
 
