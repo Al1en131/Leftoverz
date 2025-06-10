@@ -805,7 +805,7 @@ export default function Home() {
                       href="https://github.com/Al1en131"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-2 bg-gray-800 text-white flex items-center gap-2 rounded-full hover:bg-gray-900 transition"
+                      className="px-6 py-2 bg-gray-600 text-white flex items-center gap-2 rounded-full hover:bg-gray-700 transition"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
