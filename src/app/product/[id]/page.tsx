@@ -277,7 +277,7 @@ export default function ProductDetail() {
           </div>
         )}
       </div>
-      <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-24 z-50">
+      <div className="fixed bottom-6 lg:right-[140px] max-lg:right-24 z-50">
         <a
           target="_blank"
           rel="noopener noreferrer"
