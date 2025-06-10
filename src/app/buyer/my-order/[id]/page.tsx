@@ -135,14 +135,68 @@ export default function BuyProduct() {
   const [newMessage, setNewMessage] = useState<string>("");
   const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [product] = useState<Product | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [userName, setUserName] = useState("");
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   useEffect(() => {
     if (user && user.name) {
       setUserName(user.name);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!productId) return;
+
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/product/detail/${productId}`
+        );
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.message);
+
+        let parsedImage = data.product.image;
+
+        try {
+          parsedImage = JSON.parse(parsedImage);
+        } catch {
+          console.log("Image is not in valid JSON format, skipping parsing.");
+        }
+
+        console.log("Parsed image data:", parsedImage);
+
+        const formattedImages = Array.isArray(parsedImage)
+          ? parsedImage.map(
+              (imgUrl: string) =>
+                `https://backend-leftoverz-production.up.railway.app${imgUrl}`
+            )
+          : parsedImage?.url
+          ? [
+              `https://backend-leftoverz-production.up.railway.app${parsedImage.url}`,
+            ]
+          : [];
+
+        setProduct({
+          ...data.product,
+          image: formattedImages,
+        });
+
+        setSelectedImage(formattedImages[0] || null);
+        setLoading(false);
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          console.error(err.message);
+        } else {
+          console.error("An unknown error occurred");
+        }
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
 
   const openChat = useCallback(async () => {
     setIsChatOpen(true);
