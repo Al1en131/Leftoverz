@@ -179,8 +179,12 @@ export default function BuyProduct() {
       alert("Refund berhasil!");
       setShowModal(false);
       handleRefundSuccess();
-    } catch (err: any) {
-      alert("Gagal refund: " + err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert("Gagal refund: " + err.message);
+      } else {
+        alert("Gagal refund: Terjadi kesalahan tak dikenal");
+      }
     } finally {
       setLoading(false);
     }
