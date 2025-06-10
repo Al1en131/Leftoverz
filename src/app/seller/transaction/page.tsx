@@ -21,7 +21,16 @@ type RawTransaction = {
     image: string[];
     price: number;
   };
-  buyer?: { name: string };
+  buyer?: {
+    name: string;
+    ward: string;
+    regency: string;
+    subdistrict: string;
+    province: string;
+    address: string;
+    postal_code: number;
+    phone_number: number;
+  };
   seller?: { name: string };
 };
 
@@ -401,6 +410,8 @@ export default function Transaction() {
                   <th className="px-6 py-3 text-center">Image</th>
                   <th className="px-6 py-3 text-left">Product Name</th>
                   <th className="px-6 py-3 text-left">Buyer</th>
+                  <th className="px-6 py-3 text-left">Address</th>
+                  <th className="px-6 py-3 center">Phone number</th>
                   <th className="px-6 py-3 text-center">Payment Method</th>
                   <th className="px-6 py-3 text-center">Price</th>
                   <th className="px-6 py-3 text-center">Status</th>
@@ -470,6 +481,31 @@ export default function Transaction() {
                         {item.buyer?.name}
                       </td>
                       <td
+                        className={`px-6 py-4 text-left ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.buyer?.address
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        , {item.buyer?.postal_code},{" "}
+                        {item.buyer?.ward
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{" "}
+                        {item.buyer?.subdistrict
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{" "}
+                        {item.buyer?.regency
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                        ,{" "}
+                        {item.buyer?.province
+                          ?.toLowerCase()
+                          .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      </td>
+                      <td
                         className={`px-6 py-4 text-center capitalize ${
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
@@ -491,6 +527,13 @@ export default function Transaction() {
                         }`}
                       >
                         Rp. {item.total.toLocaleString("id-ID")}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-center ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        {item.buyer?.phone_number}
                       </td>
                       <td className="px-6 py-4 text-center">
                         <span
