@@ -90,6 +90,19 @@ type RawTransaction = {
     postal_code: number;
   };
 };
+export type RefundType = {
+  id: number;
+  transaction_id: number;
+  reason: string;
+  status: "requested" | "approved" | "rejected" | "refunded";
+  response?: string | null;
+  image?: string | string[] | null;
+  refunded_at?: string | null;
+  tracking_number?: string | null;
+  courier?: string | null;
+  created_at: string;
+  updated_at: string;
+};
 
 type Transaction = RawTransaction & {
   item_name: string;
@@ -138,8 +151,8 @@ export default function BuyProduct() {
   const [product, setProduct] = useState<Product | null>(null);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [userName, setUserName] = useState("");
-  const [isRefunded, setIsRefunded] = useState(false);
-
+  const [refund, setRefund] = useState<RefundType | null>(null);
+  const [showStatusModal, setShowStatusModal] = useState(false);
   const handleRefundSuccess = () => {
     console.log("Refund berhasil diproses");
   };
@@ -286,7 +299,6 @@ export default function BuyProduct() {
       if (!res.ok) throw new Error(data.message || "Refund gagal");
 
       alert("Refund berhasil!");
-      setIsRefunded(true);
       setShowModal(false);
       handleRefundSuccess?.();
     } catch (err: unknown) {
@@ -540,6 +552,28 @@ export default function BuyProduct() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+  useEffect(() => {
+    const fetchRefund = async () => {
+      try {
+        const res = await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${transactionId}`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setRefund(data.refund);
+        } else {
+          setRefund(null); // Refund belum diajukan
+        }
+      } catch (error) {
+        console.error("Gagal mengambil data refund:", error);
+      }
+    };
+
+    if (transaction?.id) {
+      fetchRefund();
+    }
+  }, [transaction?.id]);
+
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -756,21 +790,33 @@ export default function BuyProduct() {
                 <div className="flex items-center gap-2">
                   {(transaction?.status === "settlement" ||
                     transaction?.status === "success") &&
-                    (isRefunded ? (
+                    (refund ? (
                       <button
-                        className="px-4 py-2 z-30 bg-green-500 hover:bg-green-600 text-white rounded"
-                        onClick={() =>
-                          alert("Refund sedang diproses atau telah diproses.")
-                        }
+                        className={`px-4 py-2 z-30 ${
+                          refund.status === "refunded"
+                            ? "bg-green-500 hover:bg-green-600"
+                            : refund.status === "requested"
+                            ? "bg-yellow-500 hover:bg-yellow-600"
+                            : refund.status === "approved"
+                            ? "bg-blue-500 hover:bg-blue-600"
+                            : "bg-gray-400"
+                        } text-white rounded`}
+                        onClick={() => setShowStatusModal(true)}
                       >
-                        Lihat Status Refund
+                        {refund.status === "refunded"
+                          ? "Refund Berhasil"
+                          : refund.status === "approved"
+                          ? "Sedang Proses Pengembalian"
+                          : refund.status === "requested"
+                          ? "Menunggu Persetujuan"
+                          : "Lihat Status Refund"}
                       </button>
                     ) : (
                       <button
                         onClick={() => setShowModal(true)}
                         className="px-4 py-2 z-30 bg-red-500 hover:bg-red-600 text-white rounded"
                       >
-                        Refund
+                        Ajukan Refund
                       </button>
                     ))}
 
