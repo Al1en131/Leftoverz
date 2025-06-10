@@ -273,7 +273,7 @@ export default function BuyProduct() {
 
     try {
       const res = await fetch(
-        `https://backend-leftoverz-production.up.railway.app/api/v1/transaction/${transaction.order_id}/refund`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/${transaction.order_id}/refund`,
         {
           method: "POST",
           body: formData,
