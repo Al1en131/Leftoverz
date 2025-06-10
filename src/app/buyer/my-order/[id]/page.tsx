@@ -888,7 +888,7 @@ export default function BuyProduct() {
             </button>
           </div>
         )}
-        <div className="fixed bottom-[90px] lg:right-[140px] max-lg:right-24 z-50">
+        <div className="fixed bottom-6 lg:right-[140px] max-lg:right-24 z-50">
           <button
             onClick={openChat}
             className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
@@ -984,8 +984,6 @@ export default function BuyProduct() {
                     </p>
                   </div>
                 </div>
-
-                {/* Chat messages (scrollable) */}
                 <div className="max-h-60 overflow-y-auto space-y-2">
                   {messages.map((msg, index) => (
                     <div
