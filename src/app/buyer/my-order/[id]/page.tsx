@@ -94,7 +94,7 @@ export type RefundType = {
   id: number;
   transaction_id: number;
   reason: string;
-  status: "requested" | "approved" | "rejected" | "refunded";
+  status: "requested" | "approved" | "rejected" | "refunded" | "shipping";
   response?: string | null;
   image?: string | string[] | null;
   refunded_at?: string | null;
@@ -836,13 +836,17 @@ export default function BuyProduct() {
                             ? "bg-yellow-500 hover:bg-yellow-600"
                             : refund.status === "approved"
                             ? "bg-blue-500 hover:bg-blue-600"
+                            : refund.status === "shipping"
+                            ? "bg-indigo-500 hover:bg-indigo-600"
                             : "bg-gray-400"
                         } text-white rounded`}
                       >
                         {refund.status === "refunded"
                           ? "Refund Berhasil"
                           : refund.status === "approved"
-                          ? "Input Pengiriman"
+                          ? "Refund disetujui"
+                          : refund.status === "shipping"
+                          ? "Barang Sedang Dikirim"
                           : refund.status === "requested"
                           ? "Menunggu Persetujuan"
                           : "Lihat Status Refund"}
