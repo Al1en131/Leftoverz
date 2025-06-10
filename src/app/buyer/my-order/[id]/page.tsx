@@ -750,7 +750,7 @@ export default function BuyProduct() {
                     transaction?.status === "success") && (
                     <button
                       onClick={() => setShowModal(true)}
-                      className="px-4 py-2 bg-red-500 text-white rounded"
+                      className="px-4 py-2 z-30 bg-red-500 hover:bg-red-600 text-white rounded"
                     >
                       Refund
                     </button>
