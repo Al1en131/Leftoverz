@@ -174,7 +174,7 @@ export default function ProductDetail() {
               />
             </svg>
           </div>
-          <p className="text-white">Back to Products</p>
+          <p className="text-blue-400">Back to Products</p>
         </Link>
         {loading ? (
           <div className="text-center text-blue-400">Loading...</div>
