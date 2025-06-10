@@ -135,7 +135,7 @@ export default function BuyProduct() {
   const [newMessage, setNewMessage] = useState<string>("");
   const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product] = useState<Product | null>(null);
   const [hasUnreadMessages, setHasUnreadMessages] = useState(false);
   const [userName, setUserName] = useState("");
 
