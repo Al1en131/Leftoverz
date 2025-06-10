@@ -738,13 +738,25 @@ export default function Home() {
                 />
 
                 <div className="text-left">
-                  <h2 className="text-2xl font-semibold">
+                  <h2
+                    className={` text-2xl font-semibold${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  >
                     Alif Essa Nurcahyani
                   </h2>
-                  <p className="text-gray-700 dark:text-gray-300 mb-3">
+                  <p
+                    className={`mb-3 ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  >
                     Web Developer | Frontend Developer
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300 mb-2 max-lg:text-justify">
+                  <p
+                    className={`mb-2 max-lg:text-justify ${
+                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                    }`}
+                  >
                     Saya adalah mahasiswa semester 8 di Universitas Muhammadiyah
                     PKU Surakarta dengan fokus pada Web Developer. Saya memiliki
                     pengalaman dalam menangani proyek mulai dari perancangan
@@ -752,6 +764,7 @@ export default function Home() {
                     teknologi seperti Laravel, React JS, Vue.js, Express JS,
                     Next JS, Bootstrap, dan TailwindCSS.
                   </p>
+
                   <div className="flex flex-wrap gap-3 mt-4">
                     <a
                       href="https://wa.me/6285172041077"
