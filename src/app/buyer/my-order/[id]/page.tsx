@@ -1167,7 +1167,7 @@ export default function BuyProduct() {
                               : refund?.status === "shipping"
                               ? "Barang Sedang Dikirim"
                               : refund?.status_package === "delivered"
-                              ? "Barang Sedang Dikirim"
+                              ? "Barang Sudah Sampai"
                               : "Pengembalian Barang sedang Diproses"}
                           </strong>
 
