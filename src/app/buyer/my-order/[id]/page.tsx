@@ -626,7 +626,7 @@ export default function BuyProduct() {
       }
     };
 
-    if (transaction?.id) {
+    if (transactionId) {
       fetchRefund();
     }
   }, [transactionId]);
