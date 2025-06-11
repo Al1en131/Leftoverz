@@ -629,7 +629,7 @@ export default function BuyProduct() {
     if (transaction?.id) {
       fetchRefund();
     }
-  }, [transaction?.id]);
+  }, [transactionId]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleMarkAsDelivered = async () => {
