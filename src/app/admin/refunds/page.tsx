@@ -379,7 +379,7 @@ export default function Products() {
                 </td>
                 {isModalOpen && selectedRefund && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                    <div className="bg-[#060B26] rounded-lg shadow-lg p-6 w-full max-w-md">
                       <h2 className="text-lg font-semibold mb-4 text-gray-800">
                         Update Refund Status
                       </h2>
