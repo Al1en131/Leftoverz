@@ -49,8 +49,7 @@ export default function Products() {
   const [selectedRefund, setSelectedRefund] = useState<RefundDisplay | null>(
     null
   );
-  const [newStatus, setNewStatus] = useState<string | null>(null);
-
+  const [newStatus, setNewStatus] = useState("");
   const [dateString, setDateString] = useState({
     day: "",
     fullDate: "",
@@ -173,6 +172,12 @@ export default function Products() {
   useEffect(() => {
     fetchRefunds();
   }, []);
+
+  useEffect(() => {
+    if (isModalOpen && selectedRefund) {
+      setNewStatus(selectedRefund.status); // ← ini isi dari backend, bukan "pending" sembarang
+    }
+  }, [isModalOpen, selectedRefund]);
 
   if (loading || isLoading) {
     return (
@@ -374,20 +379,21 @@ export default function Products() {
                 </td>
                 {isModalOpen && selectedRefund && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-                    <div className="bg-[#060B26] rounded-lg shadow-lg p-6 w-full max-w-md">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                       <h2 className="text-lg font-semibold mb-4 text-gray-800">
                         Update Refund Status
                       </h2>
 
                       <select
-                        value={newStatus ?? "pending"}
+                        value={newStatus}
                         onChange={(e) => setNewStatus(e.target.value)}
                         className="w-full border rounded p-2 mb-4"
                       >
-                        <option value="pending">Pending</option>
+                        <option value="requested">Requested</option>
                         <option value="approved">Approved</option>
                         <option value="rejected">Rejected</option>
-                        <option value="completed">Completed</option>
+                        <option value="shipping">Shipping</option>
+                        <option value="refunded">Refunded</option>
                       </select>
 
                       <div className="flex justify-end gap-3">
@@ -400,20 +406,27 @@ export default function Products() {
                         <button
                           onClick={async () => {
                             try {
-                              await fetch(
+                              const token = localStorage.getItem("token");
+                              const res = await fetch(
                                 `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${selectedRefund.id}`,
                                 {
                                   method: "PUT",
                                   headers: {
                                     "Content-Type": "application/json",
+                                    Authorization: `Bearer ${token}`,
                                   },
                                   body: JSON.stringify({ status: newStatus }),
                                 }
                               );
+
+                              if (!res.ok) throw new Error("Failed to update");
+
+                              // Sukses: Tutup modal & refresh data
                               setIsModalOpen(false);
-                              // Optional: refresh data setelah update
+                              fetchRefunds(); // pastikan ini fungsi yang me-refresh data refund
                             } catch (error) {
                               console.error("Failed to update refund:", error);
+                              alert("Update gagal. Coba lagi.");
                             }
                           }}
                           className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
