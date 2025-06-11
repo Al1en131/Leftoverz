@@ -164,6 +164,8 @@ export default function BuyProduct() {
   const [reason, setReason] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const formatNoHp = (phone_number: number | undefined) => {
     if (!phone_number) return "";
     const strNoHp = phone_number.toString();
@@ -651,17 +653,24 @@ export default function BuyProduct() {
       const result = await res.json();
 
       if (res.ok) {
-        alert("Pesanan ditandai sebagai selesai.");
         setRefund(result.refund);
+        setSuccessMessage("Pesanan ditandai sebagai selesai.");
+        setShowSuccessPopup(true);
       } else {
-        alert("Gagal memperbarui status: " + result.message);
+        setSuccessMessage("Gagal memperbarui status: " + result.message);
+        setShowSuccessPopup(true);
       }
     } catch (err) {
       console.error("Error:", err);
-      alert("Terjadi kesalahan saat update status.");
+      setSuccessMessage("Terjadi kesalahan saat update status.");
+      setShowSuccessPopup(true);
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleCloseSuccessPopup = () => {
+    setShowSuccessPopup(false);
   };
 
   const handleMarkAsTransactionDelivered = async () => {
@@ -683,14 +692,17 @@ export default function BuyProduct() {
       const result = await res.json();
 
       if (res.ok) {
-        alert("Pesanan ditandai sebagai selesai.");
+        setSuccessMessage("Pesanan ditandai sebagai selesai.");
+        setShowSuccessPopup(true);
         setRefund(result.transaction);
       } else {
-        alert("Gagal memperbarui status: " + result.message);
+        setSuccessMessage("Gagal memperbarui status: " + result.message);
+        setShowSuccessPopup(true);
       }
     } catch (err) {
       console.error("Error:", err);
-      alert("Terjadi kesalahan saat update status.");
+      setSuccessMessage("Terjadi kesalahan saat update status.");
+      setShowSuccessPopup(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -698,7 +710,8 @@ export default function BuyProduct() {
 
   const handleShippingSubmit = async () => {
     if (!trackingNumber || !courir) {
-      alert("Semua field harus diisi");
+      setSuccessMessage("Semua field harus diisi.");
+      setShowSuccessPopup(true);
       return;
     }
 
@@ -715,15 +728,17 @@ export default function BuyProduct() {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Berhasil mengisi data pengiriman.");
+        setSuccessMessage("Berhasil mengisi data pengiriman.");
         setRefund(data.refund);
         setShowShippingModal(false);
       } else {
-        alert(data.message || "Gagal menyimpan data.");
+        setSuccessMessage(data.message || "Gagal menyimpan data.");
       }
     } catch (error) {
       console.error("Gagal submit data pengiriman:", error);
-      alert("Terjadi kesalahan.");
+      setSuccessMessage("Terjadi kesalahan.");
+    } finally {
+      setShowSuccessPopup(true);
     }
   };
 
@@ -746,6 +761,32 @@ export default function BuyProduct() {
           theme === "dark" ? "bg-[#080B2A]" : "bg-white"
         }`}
       >
+        {showSuccessPopup && (
+          <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+            <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+              <div className="flex justify-center mb-4">
+                <Image
+                  src="/images/succes.svg"
+                  width={80}
+                  height={80}
+                  alt="Success"
+                  className="w-20 h-20"
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">
+                Success!
+              </h2>
+              <p className="mb-6 text-blue-400">{successMessage}</p>
+              <button
+                onClick={handleCloseSuccessPopup}
+                className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
+
         <Image
           width={100}
           height={100}
