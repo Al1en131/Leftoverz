@@ -545,18 +545,18 @@ export default function BuyProduct() {
 
   const handleTrackPackageRefund = async () => {
     try {
-      const courier = transaction?.courir?.toLowerCase(); // dari transaksi
-      const awb = refund?.tracking_number; // dari refund
+      const courir = refund?.courir?.toLowerCase(); 
+      const awb = refund?.tracking_number;
 
-      if (!courier || !awb) {
+      if (!courir || !awb) {
         alert("Data ekspedisi tidak lengkap.");
         return;
       }
 
       let apiKey = "";
-      let courierParam = courier;
+      let courierParam = courir;
 
-      switch (courier) {
+      switch (courir) {
         case "jne":
         case "jnt":
           apiKey =
