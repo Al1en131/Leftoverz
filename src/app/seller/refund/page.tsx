@@ -34,63 +34,7 @@ export default function Refund() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
-  //   const [trackingData, setTrackingData] = useState<TrackingDataType | null>(
-  //     null
-  //   );
-  //   const [showTrackingModal, setShowTrackingModal] = useState(false);
   const [refund, setRefund] = useState<RefundDisplayType[]>([]);
-
-  //   const handleTrackPackage = async () => {
-  //     if (!selectedTransaction) return;
-
-  //     try {
-  //       const courierRaw = selectedTransaction.courir;
-  //       const awb = selectedTransaction.awb;
-
-  //       if (!courierRaw || !awb) {
-  //         alert("Data ekspedisi tidak lengkap.");
-  //         return;
-  //       }
-
-  //       const courier = courierRaw.toLowerCase();
-
-  //       let apiKey = "";
-  //       let courierParam = courier;
-
-  //       switch (courier) {
-  //         case "jne":
-  //         case "jnt":
-  //           apiKey =
-  //             "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
-  //           break;
-  //         case "si cepat":
-  //         case "sicepat":
-  //           apiKey =
-  //             "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
-  //           courierParam = "sicepat";
-  //           break;
-  //         default:
-  //           alert("Kurir tidak dikenali.");
-  //           return;
-  //       }
-
-  //       const res = await fetch(
-  //         `https://api.binderbyte.com/v1/track?api_key=${apiKey}&courier=${courierParam}&awb=${awb}`
-  //       );
-  //       const result = await res.json();
-
-  //       if (result.status === 200) {
-  //         setTrackingData(result.data);
-  //         setShowTrackingModal(true);
-  //       } else {
-  //         alert("Tracking gagal: " + result.message);
-  //       }
-  //     } catch (err) {
-  //       console.error("Tracking Error:", err);
-  //       alert("Terjadi kesalahan saat tracking.");
-  //     }
-  //   };
-
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -112,19 +56,6 @@ export default function Refund() {
   }, []);
 
   const [loading, setLoading] = useState(true);
-  //   const filteredTransactions = transactions.filter(
-  //     (item) =>
-  //       item.item_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //       item.buyer_name?.toLowerCase().includes(searchQuery.toLowerCase())
-  //   );
-
-  //   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-
-  //   const paginatedTransactions = filteredTransactions.slice(
-  //     (currentPage - 1) * itemsPerPage,
-  //     currentPage * itemsPerPage
-  //   );
-
   const fetchRefund = useCallback(async () => {
     try {
       if (!userId) return;
@@ -160,26 +91,6 @@ export default function Refund() {
   useEffect(() => {
     fetchRefund();
   }, [fetchRefund]);
-
-  //   const [showEditModal, setShowEditModal] = useState(false);
-  //   const [editData, setEditData] = useState<{
-  //     id: number | null;
-  //     awb: string;
-  //     courir: string;
-  //   }>({
-  //     id: null,
-  //     awb: "",
-  //     courir: "",
-  //   });
-
-  //   const handleEditClick = (item: RefundType) => {
-  //     setEditData({
-  //       id: item.id,
-  //       awb: refund.tracking_number || "",
-  //       courir: refund.courir || "",
-  //     });
-  //     setShowEditModal(true);
-  //   };
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
