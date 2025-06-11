@@ -1369,12 +1369,12 @@ export default function BuyProduct() {
               <button
                 onClick={handleMarkAsTransactionDelivered}
                 disabled={transaction?.status_package === "delivered"}
-                className={`px-4 py-3 text-lg tracking-wide w-full border-2 capitalize font-semibold rounded-full ${
+                className={`px-4 py-2 text-base tracking-wide w-full capitalize font-semibold rounded-full ${
                   transaction?.status_package === "delivered"
                     ? "bg-blue-400 text-white cursor-not-allowed"
                     : transaction?.status_package === "refund"
                     ? "bg-red-400 text-white cursor-not-allowed"
-                    : "hover:bg-blue-50 border-blue-400"
+                    : "hover:bg-blue-50 border-2 border-blue-400"
                 }`}
               >
                 {transaction?.status_package === "delivered"
@@ -1386,7 +1386,7 @@ export default function BuyProduct() {
 
               <button
                 onClick={handleTrackPackage}
-                className="px-4 py-3 text-lg tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
+                className="px-4 py-2 text-base tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
               >
                 Tracking Package
               </button>
