@@ -391,7 +391,7 @@ export default function Products() {
                         <button
                           onClick={async () => {
                             try {
-                              await fetch(`/api/refund/${selectedRefund.id}`, {
+                              await fetch(`https://backend-leftoverz-production.up.railway.app/api/v1/refund/${selectedRefund.id}`, {
                                 method: "PUT",
                                 headers: {
                                   "Content-Type": "application/json",
