@@ -29,6 +29,7 @@ type Refund = {
   transaction: RawTransaction;
   created_at: string;
   tracking_number: string;
+  status_package: string;
 };
 
 type RefundDisplay = {
@@ -141,27 +142,9 @@ export default function Products() {
       const mappedRefunds: RefundDisplay[] = data.refunds.map((refund) => {
         const trx = refund.transaction;
 
-        if (!trx || !trx.item || !trx.buyer || !trx.seller) {
-          return {
-            id: refund.id,
-            item_name: "Unknown",
-            buyer_name: "Unknown",
-            seller_name: "Unknown",
-            image: [],
-            payment_method: "-",
-            price: 0,
-            awb: "-",
-            tracking_number: "-",
-            courir: "-",
-            status_package: "-",
-            status: null,
-            created_at: refund.created_at,
-          };
-        }
-
-        // Handle image
+        // safer image parse
         let imageArray: string[] = [];
-        const imageData = trx.item.image;
+        const imageData = trx?.item?.image;
 
         if (typeof imageData === "string") {
           try {
@@ -175,17 +158,17 @@ export default function Products() {
 
         return {
           id: refund.id,
-          item_name: trx.item.name,
-          buyer_name: trx.buyer.name,
-          seller_name: trx.seller.name,
+          item_name: trx?.item?.name || "Unknown",
+          buyer_name: trx?.buyer?.name || "Unknown",
+          seller_name: trx?.seller?.name || "Unknown",
           image: imageArray,
-          payment_method: trx.payment_method,
-          price: trx.item.price,
-          awb: trx.awb || "-",
-          tracking_number: trx.awb || "-",
-          courir: trx.courir || "-",
-          status: trx.status || null,
-          status_package: trx.status || "-",
+          payment_method: trx?.payment_method || "-",
+          price: trx?.item?.price || 0,
+          awb: trx?.awb || "-",
+          tracking_number: refund.tracking_number || "-",
+          courir: trx?.courir || "-",
+          status: trx?.status || null,
+          status_package: refund.status_package || "-", 
           created_at: refund.created_at,
         };
       });
@@ -376,7 +359,7 @@ export default function Products() {
                   <button
                     onClick={() => {
                       setSelectedRefund(item);
-                      setNewStatus(item.status); 
+                      setNewStatus(item.status);
                       setIsModalOpen(true);
                     }}
                     className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-sm"

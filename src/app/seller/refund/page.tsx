@@ -11,7 +11,7 @@ export type RefundType = {
   reason: string;
   status: "requested" | "approved" | "rejected" | "refunded" | "shipping";
   response?: string | null;
-  image?: string | string[] | null;
+  image?: string[];
   refunded_at?: string | null;
   tracking_number?: string | null;
   courir?: string | null;
@@ -95,12 +95,27 @@ export default function Refund() {
 
       if (res.ok) {
         const mappedRefunds: RefundDisplayType[] = response.refunds.map(
-          (refund) => ({
-            ...refund,
-            item_name: refund.item?.name || "Unknown",
-            buyer_name: refund.buyer?.name || "Unknown",
-            image: refund.image,
-          })
+          (refund) => {
+            let imageArray: string[] = [];
+
+            const rawImage = refund.image;
+            if (typeof rawImage === "string") {
+              try {
+                imageArray = JSON.parse(rawImage);
+              } catch {
+                imageArray = [rawImage];
+              }
+            } else if (Array.isArray(rawImage)) {
+              imageArray = rawImage;
+            }
+
+            return {
+              ...refund,
+              item_name: refund.item?.name || "Unknown",
+              buyer_name: refund.buyer?.name || "Unknown",
+              image: imageArray,
+            };
+          }
         );
 
         setRefund(mappedRefunds);
@@ -374,7 +389,7 @@ export default function Refund() {
                     {/* Status Refund */}
                     <td className="px-6 py-3 text-center capitalize">
                       <span
-                        className={`px-2 py-1 rounded-full text-base font-semibold ${
+                        className={`px-3 py-2 rounded-full text-sm font-semibold ${
                           item.status === "requested"
                             ? "bg-yellow-100 text-yellow-600"
                             : item.status === "approved"
@@ -386,7 +401,7 @@ export default function Refund() {
                             : "bg-gray-100 text-gray-600"
                         }`}
                       >
-                        {item.status||"-"}
+                        {item.status || "-"}
                       </span>
                     </td>
 
@@ -397,7 +412,7 @@ export default function Refund() {
 
                     {/* Action */}
                     <td className="px-6 py-3 text-center">
-                      {item.status === "shipping" && (
+                      {(item.status === "shipping" && (
                         <button
                           onClick={() => {
                             setSelectedRefund(item);
@@ -425,7 +440,8 @@ export default function Refund() {
                             />
                           </svg>
                         </button>
-                      ) || "-"}
+                      )) ||
+                        "-"}
                     </td>
                     {showTrackingModal && trackingData && (
                       <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
