@@ -74,6 +74,7 @@ type RawTransaction = {
   total: number;
   awb: string;
   courir: string;
+  status_package: "processed" | "delivered";
   item?: {
     name: string;
     image: string[];
@@ -937,7 +938,9 @@ export default function BuyProduct() {
                 <div className="flex items-center gap-2">
                   {(transaction?.status === "settlement" ||
                     transaction?.status === "success") &&
+                    transaction?.status_package !== "delivered" &&
                     (refund ? (
+                      // Tombol status refund seperti biasa
                       <button
                         onClick={() =>
                           refund.status === "approved"
@@ -980,6 +983,7 @@ export default function BuyProduct() {
                         Ajukan Refund
                       </button>
                     ))}
+
                   {showShippingModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
