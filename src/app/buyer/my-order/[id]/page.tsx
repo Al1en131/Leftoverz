@@ -1329,10 +1329,18 @@ export default function BuyProduct() {
             <div className="lg:flex max-lg:block max-lg:space-y-3 items-center gap-4">
               <button
                 onClick={handleMarkAsTransactionDelivered}
-                className="px-4 py-3 text-lg tracking-wide border-2 border-blue-400 w-full capitalize font-semibold rounded-full"
+                disabled={transaction?.status_package === "delivered"}
+                className={`px-4 py-3 text-lg tracking-wide border-2 w-full capitalize font-semibold rounded-full ${
+                  transaction?.status_package === "delivered"
+                    ? "bg-blue-400 text-white cursor-not-allowed"
+                    : "border-blue-400 hover:bg-blue-50"
+                }`}
               >
-                Pesanan Selesai
+                {transaction?.status_package === "delivered"
+                  ? "Pesanan Diterima"
+                  : "Pesanan Selesai"}
               </button>
+
               <button
                 onClick={handleTrackPackage}
                 className="px-4 py-3 text-lg tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
