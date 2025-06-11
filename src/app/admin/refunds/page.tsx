@@ -28,6 +28,7 @@ type Refund = {
   id: number;
   transaction: RawTransaction;
   created_at: string;
+  tracking_number: string;
 };
 
 type RefundDisplay = {
@@ -36,9 +37,8 @@ type RefundDisplay = {
   buyer_name: string;
   seller_name: string;
   image: string[];
-  payment_method: string;
-  price: number;
-  awb: string;
+  tracking_number: string;
+  status_package: string;
   courir: string;
   status: string | null;
   created_at: string;
@@ -140,9 +140,28 @@ export default function Products() {
 
       const mappedRefunds: RefundDisplay[] = data.refunds.map((refund) => {
         const trx = refund.transaction;
-        const imageData = trx.item?.image;
 
+        if (!trx || !trx.item || !trx.buyer || !trx.seller) {
+          return {
+            id: refund.id,
+            item_name: "Unknown",
+            buyer_name: "Unknown",
+            seller_name: "Unknown",
+            image: [],
+            payment_method: "-",
+            price: 0,
+            awb: "-",
+            tracking_number: "-",
+            courir: "-",
+            status_package: "-",
+            status: null,
+            created_at: refund.created_at,
+          };
+        }
+
+        // Handle image
         let imageArray: string[] = [];
+        const imageData = trx.item.image;
 
         if (typeof imageData === "string") {
           try {
@@ -156,15 +175,17 @@ export default function Products() {
 
         return {
           id: refund.id,
-          item_name: trx.item?.name || "Unknown",
-          buyer_name: trx.buyer?.name || "Unknown",
-          seller_name: trx.seller?.name || "Unknown",
+          item_name: trx.item.name,
+          buyer_name: trx.buyer.name,
+          seller_name: trx.seller.name,
           image: imageArray,
           payment_method: trx.payment_method,
-          price: trx.item?.price || 0,
+          price: trx.item.price,
           awb: trx.awb || "-",
+          tracking_number: trx.awb || "-",
           courir: trx.courir || "-",
           status: trx.status || null,
+          status_package: trx.status || "-",
           created_at: refund.created_at,
         };
       });
@@ -338,7 +359,7 @@ export default function Products() {
                 </td>
 
                 <td className="px-3 py-4 text-white text-center">
-                  {item.awb || "-"}
+                  {item.tracking_number || "-"}
                 </td>
 
                 <td className="px-3 py-4 text-center">
@@ -347,7 +368,7 @@ export default function Products() {
                       item.status
                     )} text-white`}
                   >
-                    {item.status || "-"}
+                    {item.status_package || "-"}
                   </span>
                 </td>
 
@@ -355,7 +376,7 @@ export default function Products() {
                   <button
                     onClick={() => {
                       setSelectedRefund(item);
-                      setNewStatus(item.status); // isi default dari data
+                      setNewStatus(item.status); 
                       setIsModalOpen(true);
                     }}
                     className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-sm"
@@ -391,13 +412,16 @@ export default function Products() {
                         <button
                           onClick={async () => {
                             try {
-                              await fetch(`https://backend-leftoverz-production.up.railway.app/api/v1/refund/${selectedRefund.id}`, {
-                                method: "PUT",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({ status: newStatus }),
-                              });
+                              await fetch(
+                                `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${selectedRefund.id}`,
+                                {
+                                  method: "PUT",
+                                  headers: {
+                                    "Content-Type": "application/json",
+                                  },
+                                  body: JSON.stringify({ status: newStatus }),
+                                }
+                              );
                               setIsModalOpen(false);
                               // Optional: refresh data setelah update
                             } catch (error) {
