@@ -921,6 +921,8 @@ export default function BuyProduct() {
                             ? "bg-blue-500 hover:bg-blue-600"
                             : refund.status === "shipping"
                             ? "bg-indigo-500 hover:bg-indigo-600"
+                            : refund.status === "rejected"
+                            ? "bg-red-600 hover:bg-indigo-600"
                             : "bg-gray-400"
                         } text-white`}
                       >
