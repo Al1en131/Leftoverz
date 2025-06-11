@@ -542,6 +542,54 @@ export default function BuyProduct() {
       alert("Terjadi kesalahan saat tracking.");
     }
   };
+
+  const handleTrackPackageRefund = async () => {
+    try {
+      const courier = transaction?.courir?.toLowerCase(); // dari transaksi
+      const awb = refund?.tracking_number; // dari refund
+
+      if (!courier || !awb) {
+        alert("Data ekspedisi tidak lengkap.");
+        return;
+      }
+
+      let apiKey = "";
+      let courierParam = courier;
+
+      switch (courier) {
+        case "jne":
+        case "jnt":
+          apiKey =
+            "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
+          break;
+        case "si cepat":
+        case "sicepat":
+          apiKey =
+            "23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d";
+          courierParam = "sicepat";
+          break;
+        default:
+          alert("Kurir tidak dikenali.");
+          return;
+      }
+
+      const res = await fetch(
+        `https://api.binderbyte.com/v1/track?api_key=${apiKey}&courier=${courierParam}&awb=${awb}`
+      );
+      const result = await res.json();
+
+      if (result.status === 200) {
+        setTrackingData(result.data);
+        setShowTrackingModal(true);
+      } else {
+        alert("Tracking gagal: " + result.message);
+      }
+    } catch (err) {
+      console.error("Tracking Error:", err);
+      alert("Terjadi kesalahan saat tracking.");
+    }
+  };
+
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
@@ -1045,13 +1093,37 @@ export default function BuyProduct() {
                                 ? "text-green-500"
                                 : refund?.status === "rejected"
                                 ? "text-red-500"
-                                : "text-yellow-500"
+                                : refund?.status === "requested"
+                                ? "text-yellow-500"
+                                : refund?.status === "refunded"
+                                ? "text-green-500"
+                                : refund?.status === "shipping"
+                                ? "text-blue-500"
+                                : "text-gray-500"
                             }
                           >
-                            {refund?.status}
+                            {refund?.status === "approved"
+                              ? "Pengajuan Pengembalian Dana Disetujui"
+                              : refund?.status === "rejected"
+                              ? "Pengajuan Pengembalian Dana Ditolak"
+                              : refund?.status === "requested"
+                              ? "Menunggu Persetujuan Penjual"
+                              : refund?.status === "refunded"
+                              ? "Pengembalian Dana Sudah Berhasil"
+                              : refund?.status === "shipping"
+                              ? "Barang Sedang Dikirim"
+                              : "Pengembalian Barang sedang Diproses"}
                           </strong>
+
+                          {refund?.status === "shipping" && (
+                            <button
+                              onClick={handleTrackPackageRefund}
+                              className="mt-4 block mx-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            >
+                              Tracking Package
+                            </button>
+                          )}
                         </p>
-                        <p>Alasan: {refund?.reason || "-"}</p>
 
                         <button
                           onClick={() => setShowStatusModal(false)}
