@@ -978,19 +978,83 @@ export default function BuyProduct() {
                   {showStatusModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
-                        className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 border-blue-400 ${
+                        className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 ${
                           theme === "dark"
                             ? "bg-[#080B2A] text-white"
                             : "bg-white text-[#080B2A]"
+                        } ${
+                          refund?.status === "approved"
+                            ? "border-green-400"
+                            : refund?.status === "rejected"
+                            ? "border-red-400"
+                            : "border-yellow-400"
                         }`}
                       >
-                        <h2 className="text-xl font-bold mb-4">
+                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                          {refund?.status === "approved" && (
+                            <Image
+                              src="./images/yes.svg"
+                              height={100}
+                              width={100}
+                              alt=""
+                              className="w-14 h-14"
+                            />
+                          )}
+                          {refund?.status === "rejected" && (
+                            <Image
+                              src="./images/no.svg"
+                              height={100}
+                              width={100}
+                              alt=""
+                              className="w-14 h-14"
+                            />
+                          )}
+                          {refund?.status === "requested" && (
+                            <Image
+                              src="./images/clock.svg"
+                              height={100}
+                              width={100}
+                              alt=""
+                              className="w-14 h-14"
+                            />
+                          )}
+                          {refund?.status === "shipping" && (
+                            <Image
+                              src="./images/maps.svg"
+                              height={100}
+                              width={100}
+                              alt=""
+                              className="w-14 h-14"
+                            />
+                          )}
+                          {refund?.status === "refunded" && (
+                            <Image
+                              src="./images/money.svg"
+                              height={100}
+                              width={100}
+                              alt=""
+                              className="w-14 h-14"
+                            />
+                          )}
                           Status Refund
                         </h2>
+
                         <p>
-                          Status: <strong>{refund?.status}</strong>
+                          Status:{" "}
+                          <strong
+                            className={
+                              refund?.status === "approved"
+                                ? "text-green-500"
+                                : refund?.status === "rejected"
+                                ? "text-red-500"
+                                : "text-yellow-500"
+                            }
+                          >
+                            {refund?.status}
+                          </strong>
                         </p>
-                        <p>Alasan: {refund?.reason}</p>
+                        <p>Alasan: {refund?.reason || "-"}</p>
+
                         <button
                           onClick={() => setShowStatusModal(false)}
                           className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
@@ -1000,6 +1064,7 @@ export default function BuyProduct() {
                       </div>
                     </div>
                   )}
+
                   {refund &&
                     !["approved", "refunded", "shipping"].includes(
                       refund.status
