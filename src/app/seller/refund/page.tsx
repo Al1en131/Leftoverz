@@ -332,25 +332,21 @@ export default function Refund() {
                   >
                     {/* Image */}
                     <td className="px-6 py-3 text-center">
-                      {Array.isArray(item.image) ? (
-                        <Image
-                          width={100}
-                          height={100}
-                          src={item.image[0]}
-                          alt="Product"
-                          className="h-12 w-12 object-cover rounded-md mx-auto"
-                        />
-                      ) : item.image ? (
-                        <Image
-                          width={100}
-                          height={100}
-                          src={item.image}
-                          alt="Product"
-                          className="h-12 w-12 object-cover rounded-md mx-auto"
-                        />
-                      ) : (
-                        <span className="text-gray-400 italic">No Image</span>
-                      )}
+                      <Image
+                        src={
+                          item.image &&
+                          Array.isArray(item.image) &&
+                          item.image.length > 0 &&
+                          typeof item.image[0] === "string" &&
+                          item.image[0].startsWith("/")
+                            ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
+                            : "/images/default-item.png"
+                        }
+                        alt={item.item_name}
+                        width={100}
+                        height={100}
+                        className="w-16 h-16 object-cover rounded-2xl"
+                      />
                     </td>
 
                     {/* Product Name */}

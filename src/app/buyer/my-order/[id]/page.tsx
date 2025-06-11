@@ -1202,10 +1202,7 @@ export default function BuyProduct() {
                                 Tracking Package
                               </button>
                               <button
-                                onClick={() => {
-                                  handleMarkAsDelivered();
-                                  setShowStatusModal(false);
-                                }}
+                                onClick={handleMarkAsDelivered}
                                 className={`mt-4 mb-2 block mx-auto px-4 py-2 rounded border ${
                                   refund?.status_package === "delivered"
                                     ? "bg-blue-400 text-white border-blue-400 cursor-default"
@@ -1226,7 +1223,10 @@ export default function BuyProduct() {
                           )}
                           {refund?.status === "approved" && (
                             <button
-                              onClick={() => setShowShippingModal(true)}
+                              onClick={() => {
+                                setShowShippingModal(true);
+                                setShowStatusModal(false);
+                              }}
                               className="mt-4 mb-2 block mx-auto px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
                             >
                               Masukkan Info Pengiriman
