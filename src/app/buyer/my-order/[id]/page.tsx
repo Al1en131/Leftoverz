@@ -663,7 +663,7 @@ export default function BuyProduct() {
     setIsSubmitting(true);
     try {
       const res = await fetch(
-        `https://backend-leftoverz-production.up.railway.app/api/v1/${transactionId}/status-package`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/${transactionId}/transaction/status-package`,
         {
           method: "PUT",
           headers: {
