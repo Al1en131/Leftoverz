@@ -130,7 +130,7 @@ export default function Transaction() {
       if (!userId) return;
 
       const res = await fetch(
-        `https://backend-leftoverz-production.up.railway.app/api/v1/${userId}/refund`
+        `https://backend-leftoverz-production.up.railway.app/api/v1/seller/${userId}/refund`
       );
 
       const response: { refunds: RefundType[]; message: string } =
@@ -312,7 +312,7 @@ export default function Transaction() {
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
-                //   setCurrentPage(1);
+                  //   setCurrentPage(1);
                 }}
               />
             </div>
