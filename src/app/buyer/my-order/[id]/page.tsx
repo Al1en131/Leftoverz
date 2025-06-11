@@ -940,7 +940,6 @@ export default function BuyProduct() {
                     transaction?.status === "success") &&
                     transaction?.status_package !== "delivered" &&
                     (refund ? (
-                      // Tombol status refund seperti biasa
                       <button
                         onClick={() =>
                           refund.status === "approved"
