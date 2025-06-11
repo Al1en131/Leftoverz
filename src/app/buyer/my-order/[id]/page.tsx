@@ -102,6 +102,7 @@ export type RefundType = {
   courir?: string | null;
   created_at: string;
   updated_at: string;
+  status_package: "delivered" | "processed";
 };
 
 type Transaction = RawTransaction & {
@@ -545,7 +546,7 @@ export default function BuyProduct() {
 
   const handleTrackPackageRefund = async () => {
     try {
-      const courir = refund?.courir?.toLowerCase(); 
+      const courir = refund?.courir?.toLowerCase();
       const awb = refund?.tracking_number;
 
       if (!courir || !awb) {
@@ -623,6 +624,34 @@ export default function BuyProduct() {
       fetchRefund();
     }
   }, [transaction?.id]);
+  const handleMarkAsDelivered = async () => {
+    try {
+      const res = await fetch(
+        `https://your-api.com/refunds/${refund?.id}/status-package`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status_package: "delivered",
+          }),
+        }
+      );
+
+      const result = await res.json();
+
+      if (res.ok) {
+        alert("Pesanan ditandai sebagai selesai.");
+        setRefund(result.refund);
+      } else {
+        alert("Gagal memperbarui status: " + result.message);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Terjadi kesalahan saat update status.");
+    }
+  };
   const handleShippingSubmit = async () => {
     if (!trackingNumber || !courir) {
       alert("Semua field harus diisi");
@@ -1116,12 +1145,20 @@ export default function BuyProduct() {
                           </strong>
 
                           {refund?.status === "shipping" && (
-                            <button
-                              onClick={handleTrackPackageRefund}
-                              className="mt-4 block mx-auto px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >
-                              Tracking Package
-                            </button>
+                            <div>
+                              <button
+                                onClick={handleTrackPackageRefund}
+                                className="mt-4 mb-2 block mx-auto px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
+                              >
+                                Tracking Package
+                              </button>
+                              <button
+                                onClick={handleMarkAsDelivered}
+                                className="mt-4 mb-2 block mx-auto px-4 py-2 text-blue-400 border border-blue-400 rounded hover:bg-blue-100"
+                              >
+                                Pesanan selesai
+                              </button>
+                            </div>
                           )}
                         </p>
 
