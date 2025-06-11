@@ -632,7 +632,7 @@ export default function BuyProduct() {
       const res = await fetch(
         `https://backend-leftoverz-production.up.railway.app/api/v1/${refund?.id}/status-package`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
