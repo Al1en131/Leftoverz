@@ -627,7 +627,7 @@ export default function BuyProduct() {
   const handleMarkAsDelivered = async () => {
     try {
       const res = await fetch(
-        `https://your-api.com/refunds/${refund?.id}/status-package`,
+        `https://backend-leftoverz-production.up.railway.app/api/v1/${refund?.id}/status-package`,
         {
           method: "PATCH",
           headers: {
