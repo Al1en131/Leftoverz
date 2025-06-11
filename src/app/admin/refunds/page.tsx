@@ -31,23 +31,18 @@ type Refund = {
   tracking_number: string;
   status_package: string;
   courir: string;
+  image: string[];
   status: string | null;
   item?: { name: string };
   buyer?: { name: string };
   seller?: { name: string };
 };
 
-type RefundDisplay = {
-  id: number;
+type RefundDisplay = Refund & {
   item_name: string;
   buyer_name: string;
-  seller_name: string;
+  seller_name?: string;
   image: string[];
-  tracking_number: string;
-  status_package: string;
-  courir: string;
-  status: string | null;
-  created_at: string;
 };
 
 export default function Products() {
@@ -145,33 +140,25 @@ export default function Products() {
       const data: { refunds: Refund[] } = await response.json();
 
       const mappedRefunds: RefundDisplay[] = data.refunds.map((refund) => {
-        const trx = refund.transaction;
+        let parsedImage: string[] = [];
 
-        // safer image parse
-        let imageArray: string[] = [];
-        const imageData = trx?.item?.image;
-
-        if (typeof imageData === "string") {
+        if (typeof refund.image === "string") {
           try {
-            imageArray = JSON.parse(imageData);
+            const parsed = JSON.parse(refund.image);
+            parsedImage = Array.isArray(parsed) ? parsed : [];
           } catch {
-            imageArray = [imageData];
+            parsedImage = refund.image ? [refund.image] : [];
           }
-        } else if (Array.isArray(imageData)) {
-          imageArray = imageData;
+        } else if (Array.isArray(refund.image)) {
+          parsedImage = refund.image;
         }
 
         return {
-          id: refund.id,
+          ...refund,
           item_name: refund.item?.name || "Unknown",
           buyer_name: refund.buyer?.name || "Unknown",
           seller_name: refund.seller?.name || "Unknown",
-          image: imageArray,
-          tracking_number: refund.tracking_number || "-",
-          courir: refund.courir || "-",
-          status: refund.status || null,
-          status_package: refund.status_package || "-",
-          created_at: refund.created_at,
+          image: parsedImage,
         };
       });
 
@@ -186,6 +173,7 @@ export default function Products() {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     fetchRefunds();
   }, []);

@@ -352,9 +352,10 @@ export default function Refund() {
                           item.image &&
                           Array.isArray(item.image) &&
                           item.image.length > 0 &&
-                          typeof item.image[0] === "string" &&
-                          item.image[0].startsWith("/")
-                            ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
+                          typeof item.image[0] === "string"
+                            ? item.image[0].startsWith("/")
+                              ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
+                              : item.image[0] 
                             : "/images/default-item.png"
                         }
                         alt={item.item_name}
