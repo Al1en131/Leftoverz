@@ -1673,7 +1673,7 @@ export default function BuyProduct() {
             </svg>
           )}
         </button>
-        <div className="fixed bottom-[90px] lg:right-[200px] max-lg:right-40 z-50">
+        <div className="fixed bottom-6 lg:right-[200px] max-lg:right-40 z-50">
           <a
             target="_blank"
             rel="noopener noreferrer"
