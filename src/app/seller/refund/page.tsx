@@ -254,7 +254,14 @@ export default function Refund() {
               </thead>
               <tbody>
                 {refund.map((item, index) => (
-                  <tr key={index} className="border-b text-sm">
+                  <tr
+                    key={index}
+                    className={`border-b text-base transition ${
+                      theme === "dark"
+                        ? "bg-white/10 text-white"
+                        : "bg-black/5 text-blue-400"
+                    }`}
+                  >
                     {/* Image */}
                     <td className="px-6 py-3 text-center">
                       {Array.isArray(item.image) ? (

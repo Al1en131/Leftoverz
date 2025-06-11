@@ -946,11 +946,7 @@ export default function BuyProduct() {
                     transaction?.status_package !== "delivered" &&
                     (refund ? (
                       <button
-                        onClick={() =>
-                          refund.status === "approved"
-                            ? setShowShippingModal(true)
-                            : setShowStatusModal(true)
-                        }
+                        onClick={() => setShowStatusModal(true)}
                         className={`px-4 py-2 z-30 rounded-full bg-red-500 text-white`}
                       >
                         Lihat Status Refund
@@ -983,7 +979,7 @@ export default function BuyProduct() {
                             </label>
                             <input
                               type="text"
-                              className="w-full border p-2 rounded"
+                              className="w-full border bg-transparent p-2 rounded"
                               value={trackingNumber}
                               onChange={(e) =>
                                 setTrackingNumber(e.target.value)
@@ -1043,7 +1039,7 @@ export default function BuyProduct() {
                             <label className="block mb-1">Alasan</label>
                             <textarea
                               required
-                              className="w-full border rounded p-2"
+                              className="w-full border rounded p-2 bg-transparent"
                               value={reason}
                               onChange={(e) => setReason(e.target.value)}
                             />
@@ -1224,6 +1220,14 @@ export default function BuyProduct() {
                                   : "Pesanan Selesai"}
                               </button>
                             </div>
+                          )}
+                          {refund?.status === "approved" && (
+                            <button
+                              onClick={() => setShowShippingModal(true)}
+                              className="mt-4 mb-2 block mx-auto px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
+                            >
+                              Isi Data Pengiriman Barang
+                            </button>
                           )}
                         </p>
                       </div>

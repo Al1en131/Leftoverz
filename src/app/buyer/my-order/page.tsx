@@ -371,7 +371,7 @@ export default function MyOrder() {
                           }`}
                         >
                           {" "}
-                          {item.status_package}
+                          {item.status_package || "Pending"}
                         </span>
                         <p className="text-blue-400 text-base">
                           Rp. {item.total.toLocaleString()}
