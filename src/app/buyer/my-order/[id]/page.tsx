@@ -1061,7 +1061,7 @@ export default function BuyProduct() {
                   {showStatusModal && (
                     <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
-                        className={`w-full max-w-md p-6 rounded-lg shadow-lg border-2 ${
+                        className={`w-full relative max-w-md p-6 rounded-lg shadow-lg border-2 ${
                           theme === "dark"
                             ? "bg-[#080B2A] text-white"
                             : "bg-white text-[#080B2A]"
@@ -1156,7 +1156,9 @@ export default function BuyProduct() {
                                 : "text-gray-500"
                             }
                           >
-                            {refund?.status === "approved"
+                            {refund?.status_package === "delivered"
+                              ? "Barang Sudah Sampai"
+                              : refund?.status === "approved"
                               ? "Pengajuan Pengembalian Dana Disetujui"
                               : refund?.status === "rejected"
                               ? "Pengajuan Pengembalian Dana Ditolak"
@@ -1165,9 +1167,7 @@ export default function BuyProduct() {
                               : refund?.status === "refunded"
                               ? "Pengembalian Dana Sudah Berhasil"
                               : refund?.status === "shipping"
-                              ? "Barang Sedang Dikirim"
-                              : refund?.status_package === "delivered"
-                              ? "Barang Sudah Sampai"
+                              ? "Pengembalian Barang sedang Diproses"
                               : "Pengembalian Barang sedang Diproses"}
                           </strong>
 
