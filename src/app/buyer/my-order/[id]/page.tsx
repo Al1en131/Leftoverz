@@ -997,7 +997,7 @@ export default function BuyProduct() {
                               height={100}
                               width={100}
                               alt=""
-                              className="w-14 h-14"
+                              className="w-48 h-48"
                             />
                           )}
                           {refund?.status === "rejected" && (
@@ -1006,7 +1006,7 @@ export default function BuyProduct() {
                               height={100}
                               width={100}
                               alt=""
-                              className="w-14 h-14"
+                              className="w-48 h-48"
                             />
                           )}
                           {refund?.status === "requested" && (
@@ -1015,7 +1015,7 @@ export default function BuyProduct() {
                               height={100}
                               width={100}
                               alt=""
-                              className="w-14 h-14"
+                              className="w-48 h-48"
                             />
                           )}
                           {refund?.status === "shipping" && (
@@ -1024,7 +1024,7 @@ export default function BuyProduct() {
                               height={100}
                               width={100}
                               alt=""
-                              className="w-14 h-14"
+                              className="w-48 h-48"
                             />
                           )}
                           {refund?.status === "refunded" && (
@@ -1033,13 +1033,12 @@ export default function BuyProduct() {
                               height={100}
                               width={100}
                               alt=""
-                              className="w-14 h-14"
+                              className="w-48 h-48"
                             />
                           )}
                         </h2>
 
-                        <p>
-                          Status:{" "}
+                        <p className="text-center">
                           <strong
                             className={
                               refund?.status === "approved"
