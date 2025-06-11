@@ -310,7 +310,8 @@ export default function BuyProduct() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Refund gagal");
 
-      alert("Refund berhasil!");
+      setSuccessMessage("Pengajuan refund berhasil dikirim.");
+      setShowSuccessPopup(true);
       setShowModal(false);
       handleRefundSuccess?.();
     } catch (err: unknown) {
@@ -1101,7 +1102,7 @@ export default function BuyProduct() {
                             <button
                               type="button"
                               onClick={() => setShowModal(false)}
-                              className="px-4 py-2 bg-gray-300 rounded"
+                              className="px-4 py-2 bg-gray-500 rounded"
                             >
                               Batal
                             </button>

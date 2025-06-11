@@ -137,6 +137,7 @@ export default function Products() {
         throw new Error(errorData.message || "Failed to fetch refunds");
       }
 
+      // ✅ Data sekarang benar: { refunds: [...] }
       const data: { refunds: Refund[] } = await response.json();
 
       const mappedRefunds: RefundDisplay[] = data.refunds.map((refund) => {
