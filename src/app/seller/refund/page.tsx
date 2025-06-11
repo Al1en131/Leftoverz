@@ -330,7 +330,6 @@ export default function Refund() {
                         : "bg-black/5 text-blue-400"
                     }`}
                   >
-                    {/* Image */}
                     <td className="px-6 py-3 text-center">
                       <Image
                         src={
@@ -356,7 +355,7 @@ export default function Refund() {
                     <td className="px-6 py-3">{item.buyer_name}</td>
 
                     {/* Reason */}
-                    <td className="px-6 py-3">{item.reason}</td>
+                    <td className="px-6 py-3">{item.reason||"-"}</td>
 
                     {/* Kurir */}
                     <td className="px-6 py-3 text-center">
