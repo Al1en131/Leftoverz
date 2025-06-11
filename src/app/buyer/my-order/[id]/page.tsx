@@ -1094,7 +1094,7 @@ export default function BuyProduct() {
                             />
                           </svg>
                         </button>
-                        <h2 className="text-xl font-bold mb-4 flex justify-center items-center gap-2">
+                        <h2 className="text-xl font-bold mb-2.5 flex justify-center items-center gap-2">
                           {refund?.status === "approved" && (
                             <Image
                               src="/images/yes.svg"
