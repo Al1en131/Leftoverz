@@ -1160,9 +1160,12 @@ export default function BuyProduct() {
                               </button>
                               <button
                                 onClick={handleMarkAsDelivered}
-                                className="mt-4 mb-2 block mx-auto px-4 py-2 text-blue-400 border border-blue-400 rounded hover:bg-blue-100"
+                                className="mt-4 mb-2 block mx-auto px-4 py-2 text-blue-400 border border-blue-400 rounded"
+                                disabled={isSubmitting}
                               >
-                                Pesanan selesai
+                                {isSubmitting
+                                  ? "Menyimpan..."
+                                  : "Pesanan Selesai"}
                               </button>
                             </div>
                           )}
