@@ -30,7 +30,7 @@ export type RefundDisplayType = RefundType & {
   buyer_name: string;
 };
 
-export default function Transaction() {
+export default function Refund() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userId, setUserId] = useState<string | null>(null);
   const { theme, setTheme } = useTheme();
