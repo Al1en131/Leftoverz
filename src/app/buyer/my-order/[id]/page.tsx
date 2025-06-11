@@ -990,10 +990,10 @@ export default function BuyProduct() {
                             : "border-yellow-400"
                         }`}
                       >
-                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+                        <h2 className="text-xl font-bold mb-4 flex justify-center items-center gap-2">
                           {refund?.status === "approved" && (
                             <Image
-                              src="./images/yes.svg"
+                              src="/images/yes.svg"
                               height={100}
                               width={100}
                               alt=""
@@ -1002,7 +1002,7 @@ export default function BuyProduct() {
                           )}
                           {refund?.status === "rejected" && (
                             <Image
-                              src="./images/no.svg"
+                              src="/images/no.svg"
                               height={100}
                               width={100}
                               alt=""
@@ -1011,7 +1011,7 @@ export default function BuyProduct() {
                           )}
                           {refund?.status === "requested" && (
                             <Image
-                              src="./images/clock.svg"
+                              src="/images/clock.svg"
                               height={100}
                               width={100}
                               alt=""
@@ -1020,7 +1020,7 @@ export default function BuyProduct() {
                           )}
                           {refund?.status === "shipping" && (
                             <Image
-                              src="./images/maps.svg"
+                              src="/images/maps.svg"
                               height={100}
                               width={100}
                               alt=""
@@ -1029,14 +1029,13 @@ export default function BuyProduct() {
                           )}
                           {refund?.status === "refunded" && (
                             <Image
-                              src="./images/money.svg"
+                              src="/images/money.svg"
                               height={100}
                               width={100}
                               alt=""
                               className="w-14 h-14"
                             />
                           )}
-                          Status Refund
                         </h2>
 
                         <p>
