@@ -1048,7 +1048,7 @@ export default function BuyProduct() {
                             <button
                               type="button"
                               onClick={() => setShowShippingModal(false)}
-                              className="px-4 py-2 bg-gray-300 rounded"
+                              className="px-4 py-2 bg-gray-500 rounded"
                             >
                               Batal
                             </button>
@@ -1368,12 +1368,12 @@ export default function BuyProduct() {
               <button
                 onClick={handleMarkAsTransactionDelivered}
                 disabled={transaction?.status_package === "delivered"}
-                className={`px-4 py-3 text-lg tracking-wide w-full capitalize font-semibold rounded-full ${
+                className={`px-4 py-3 text-lg tracking-wide w-full border-2 capitalize font-semibold rounded-full ${
                   transaction?.status_package === "delivered"
                     ? "bg-blue-400 text-white cursor-not-allowed"
                     : transaction?.status_package === "refund"
                     ? "bg-red-400 text-white cursor-not-allowed"
-                    : "hover:bg-blue-50"
+                    : "hover:bg-blue-50 border-blue-400"
                 }`}
               >
                 {transaction?.status_package === "delivered"
