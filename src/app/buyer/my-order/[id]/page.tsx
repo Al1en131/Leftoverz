@@ -1067,10 +1067,10 @@ export default function BuyProduct() {
                             : "bg-white text-[#080B2A]"
                         } ${
                           refund?.status === "approved"
-                            ? "border-green-400"
+                            ? "border-blue-400"
                             : refund?.status === "rejected"
-                            ? "border-red-400"
-                            : "border-yellow-400"
+                            ? "border-blue-400"
+                            : "border-blue-400"
                         }`}
                       >
                         <button
