@@ -49,6 +49,7 @@ export default function Navbar() {
     { href: "/seller/about", label: "About" },
     { href: "/seller/my-product", label: "My Product" },
     { href: "/seller/transaction", label: "Transaction" },
+    { href: "/seller/refund", label: "Refund" },
     { href: "/seller/chat", label: "Chat" },
   ];
 
