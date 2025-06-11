@@ -1368,7 +1368,7 @@ export default function BuyProduct() {
               <button
                 onClick={handleMarkAsTransactionDelivered}
                 disabled={transaction?.status_package === "delivered"}
-                className={`px-4 py-3 text-lg tracking-wide border-2 w-full capitalize font-semibold rounded-full ${
+                className={`px-4 py-3 text-lg tracking-wide w-full capitalize font-semibold rounded-full ${
                   transaction?.status_package === "delivered"
                     ? "bg-blue-400 text-white cursor-not-allowed"
                     : transaction?.status_package === "refund"
