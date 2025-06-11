@@ -624,7 +624,10 @@ export default function BuyProduct() {
       fetchRefund();
     }
   }, [transaction?.id]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleMarkAsDelivered = async () => {
+    setIsSubmitting(true);
     try {
       const res = await fetch(
         `https://backend-leftoverz-production.up.railway.app/api/v1/${refund?.id}/status-package`,
@@ -650,8 +653,11 @@ export default function BuyProduct() {
     } catch (err) {
       console.error("Error:", err);
       alert("Terjadi kesalahan saat update status.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   const handleShippingSubmit = async () => {
     if (!trackingNumber || !courir) {
       alert("Semua field harus diisi");
