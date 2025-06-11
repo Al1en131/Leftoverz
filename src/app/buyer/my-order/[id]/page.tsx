@@ -1170,7 +1170,7 @@ export default function BuyProduct() {
                                 : refund?.status === "rejected"
                                 ? "text-red-500"
                                 : refund?.status === "requested"
-                                ? "text-yellow-500"
+                                ? "text-blue-400"
                                 : refund?.status === "refunded"
                                 ? "text-green-500"
                                 : refund?.status === "shipping"
@@ -1185,7 +1185,7 @@ export default function BuyProduct() {
                               : refund?.status === "rejected"
                               ? "Pengajuan Pengembalian Dana Ditolak"
                               : refund?.status === "requested"
-                              ? "Menunggu Persetujuan Penjual"
+                              ? "Menunggu Persetujuan Admin"
                               : refund?.status === "refunded"
                               ? "Pengembalian Dana Sudah Berhasil"
                               : refund?.status === "shipping"
@@ -1231,6 +1231,15 @@ export default function BuyProduct() {
                             >
                               Masukkan Info Pengiriman
                             </button>
+                          )}
+                          {refund?.status === "requested" && (
+                            <div>
+                              <p className="text-base text-blue-400 text-center">
+                                {" "}
+                                Harap pantau secara berkala status permintaan
+                                refund Anda.
+                              </p>
+                            </div>
                           )}
                         </p>
                       </div>
