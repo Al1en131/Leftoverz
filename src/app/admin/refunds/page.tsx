@@ -24,13 +24,6 @@ type RawTransaction = {
   buyer?: { name: string };
   seller?: { name: string };
 };
-
-type Transaction = RawTransaction & {
-  item_name: string;
-  buyer_name: string;
-  seller_name: string;
-  image: string[];
-};
 type Refund = {
   id: number;
   transaction: RawTransaction;
@@ -57,6 +50,12 @@ export default function Products() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedRefund, setSelectedRefund] = useState<RefundDisplay | null>(
+    null
+  );
+  const [newStatus, setNewStatus] = useState<string | null>(null);
+
   const [dateString, setDateString] = useState({
     day: "",
     fullDate: "",
@@ -102,13 +101,15 @@ export default function Products() {
   }, []);
 
   const getStatusColor = (status: string | null) => {
-    switch (status) {
-      case "success":
-        return "bg-green-700";
-      case "capture":
+    switch (status?.toLowerCase()) {
+      case "pending":
         return "bg-yellow-500";
-      case "failed":
-        return "bg-red-700";
+      case "approved":
+        return "bg-green-500";
+      case "rejected":
+        return "bg-red-500";
+      case "completed":
+        return "bg-blue-500";
       default:
         return "bg-gray-500";
     }
@@ -284,11 +285,10 @@ export default function Products() {
               <th className="px-3 py-3 text-left">Buyer</th>
               <th className="px-3 py-3 text-left">Seller</th>
               <th className="px-3 py-3 text-center">Status Refund</th>
-              <th className="px-3 py-3 text-center">Kurir</th>
-              <th className="px-3 py-3 text-center">No. Resi</th>
+              <th className="px-3 py-3 text-center">Courier</th>
+              <th className="px-3 py-3 text-center">AWB</th>
               <th className="px-3 py-3 text-center">Status Package</th>
               <th className="px-3 py-3 text-center">Action</th>
-
             </tr>
           </thead>
           <tbody>
@@ -300,42 +300,123 @@ export default function Products() {
                 <td className="px-3 py-4 text-white text-center">
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </td>
+
+                <td className="px-3 py-4 text-white text-center">
+                  {item.image && item.image.length > 0 ? (
+                    <Image
+                      width={100}
+                      height={100}
+                      src={item.image[0]}
+                      alt="Product"
+                      className="w-16 h-16 object-cover rounded-md mx-auto"
+                    />
+                  ) : (
+                    "-"
+                  )}
+                </td>
+
                 <td className="px-3 py-4 text-white text-left">
                   {item.item_name}
                 </td>
+
                 <td className="px-3 py-4 text-white text-left">
-                  {item.buyer_name && item.buyer_name.length > 25
+                  {item.buyer_name?.length > 25
                     ? item.buyer_name.slice(0, 25) + "..."
                     : item.buyer_name}
                 </td>
+
                 <td className="px-3 py-4 text-white text-left">
                   {item.seller_name}
                 </td>
-                <td className="px-3 py-4 text-white capitalize text-center">
-                  {item.payment_method
-                    .split("_")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
+
+                <td className="px-3 py-4 text-white text-center capitalize">
+                  {item.status || "-"}
                 </td>
-                <td className="px-3 py-4 capitalize text-white text-center">
+
+                <td className="px-3 py-4 text-white text-center capitalize">
                   {item.courir || "-"}
                 </td>
+
                 <td className="px-3 py-4 text-white text-center">
                   {item.awb || "-"}
                 </td>
+
                 <td className="px-3 py-4 text-center">
                   <span
                     className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
                       item.status
                     )} text-white`}
                   >
-                    {item.status}
+                    {item.status || "-"}
                   </span>
                 </td>
+
+                <td className="px-3 py-4 text-white text-center">
+                  <button
+                    onClick={() => {
+                      setSelectedRefund(item);
+                      setNewStatus(item.status); // isi default dari data
+                      setIsModalOpen(true);
+                    }}
+                    className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-sm"
+                  >
+                    Update
+                  </button>
+                </td>
+                {isModalOpen && selectedRefund && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                      <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                        Update Refund Status
+                      </h2>
+
+                      <select
+                        value={newStatus ?? "pending"}
+                        onChange={(e) => setNewStatus(e.target.value)}
+                        className="w-full border rounded p-2 mb-4"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="completed">Completed</option>
+                      </select>
+
+                      <div className="flex justify-end gap-3">
+                        <button
+                          onClick={() => setIsModalOpen(false)}
+                          className="px-4 py-2 rounded bg-gray-300 text-gray-800 hover:bg-gray-400"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={async () => {
+                            try {
+                              await fetch(`/api/refund/${selectedRefund.id}`, {
+                                method: "PUT",
+                                headers: {
+                                  "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ status: newStatus }),
+                              });
+                              setIsModalOpen(false);
+                              // Optional: refresh data setelah update
+                            } catch (error) {
+                              console.error("Failed to update refund:", error);
+                            }
+                          }}
+                          className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </tr>
             ))}
           </tbody>
         </table>
+
         <div className="flex justify-center my-4 gap-2">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
