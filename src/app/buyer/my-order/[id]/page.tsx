@@ -946,33 +946,9 @@ export default function BuyProduct() {
                             ? setShowShippingModal(true)
                             : setShowStatusModal(true)
                         }
-                        className={`px-4 py-2 z-30 rounded-full ${
-                          refund.status === "refunded"
-                            ? "bg-green-500 hover:bg-green-600"
-                            : refund.status === "requested"
-                            ? "bg-yellow-500 hover:bg-yellow-600"
-                            : refund.status === "approved"
-                            ? "bg-blue-500 hover:bg-blue-600"
-                            : refund.status === "shipping"
-                            ? "bg-indigo-500 hover:bg-indigo-600"
-                            : refund.status === "rejected"
-                            ? "bg-red-600 hover:bg-indigo-600"
-                            : "bg-gray-400"
-                        } text-white`}
+                        className={`px-4 py-2 z-30 rounded-full bg-red-500 text-white`}
                       >
-                        {refund.status_package === "delivered"
-                          ? "Barang Sudah Sampai"
-                          : refund.status === "refunded"
-                          ? "Refund Berhasil"
-                          : refund.status === "approved"
-                          ? "Refund disetujui"
-                          : refund.status === "shipping"
-                          ? "Barang Sedang Dikirim"
-                          : refund.status === "requested"
-                          ? "Menunggu Persetujuan"
-                          : refund.status === "rejected"
-                          ? "Refund Ditolak"
-                          : "Lihat Status Refund"}
+                        Lihat Status Refund
                       </button>
                     ) : (
                       <button
@@ -1333,7 +1309,7 @@ export default function BuyProduct() {
                 className={`px-4 py-3 text-lg tracking-wide border-2 w-full capitalize font-semibold rounded-full ${
                   transaction?.status_package === "delivered"
                     ? "bg-blue-400 text-white cursor-not-allowed"
-                    : "border-blue-400 hover:bg-blue-50"
+                    : "hover:bg-blue-50"
                 }`}
               >
                 {transaction?.status_package === "delivered"
