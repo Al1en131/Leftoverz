@@ -372,7 +372,7 @@ export default function Products() {
                       setNewStatus(item.status);
                       setIsModalOpen(true);
                     }}
-                    className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-md text-sm"
+                    className="bg-blue-600 hover:bg-blue-700 px-1.5 py-1.5 rounded-md text-sm"
                   >
                     <svg
                       className="w-4 h-4"
