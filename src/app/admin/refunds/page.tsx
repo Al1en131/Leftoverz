@@ -6,33 +6,27 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-type RawTransaction = {
-  id: number;
-  buyer_id: number;
-  seller_id: number;
-  item_id: number;
-  payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "pending" | "paid" | "cancelled" | null;
-  created_at: string;
-  awb: string;
-  courir: string;
-  item?: {
-    name: string;
-    image: string[];
-    price: number;
-  };
-  buyer?: { name: string };
-  seller?: { name: string };
+type RefundApiResponse = {
+  result: Refund[];
 };
 type Refund = {
   id: number;
-  transaction: RawTransaction;
-  created_at: string;
+  transaction_id: number;
+  reason: string;
+  status: string;
+  response: string | null;
+  image: string;
+  refunded_at: string;
   tracking_number: string;
   status_package: string;
   courir: string;
-  image: string[];
-  status: string | null;
+  created_at: string;
+  updated_at: string;
+  Transaction?: {
+    item?: { name: string };
+    buyer?: { name: string };
+    seller?: { name: string };
+  };
   item?: { name: string };
   buyer?: { name: string };
   seller?: { name: string };
@@ -41,7 +35,7 @@ type Refund = {
 type RefundDisplay = Refund & {
   item_name: string;
   buyer_name: string;
-  seller_name?: string;
+  seller_name: string;
   image: string[];
 };
 
@@ -132,33 +126,23 @@ export default function Products() {
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to fetch refunds");
-      }
+      const data: RefundApiResponse = await response.json();
+      console.log("Raw data dari backend:", data);
 
-      // ✅ Data sekarang benar: { refunds: [...] }
-      const data: { refunds: Refund[] } = await response.json();
-
-      const mappedRefunds: RefundDisplay[] = data.refunds.map((refund) => {
-        let parsedImage: string[] = [];
-
-        if (typeof refund.image === "string") {
-          try {
-            const parsed = JSON.parse(refund.image);
-            parsedImage = Array.isArray(parsed) ? parsed : [];
-          } catch {
-            parsedImage = refund.image ? [refund.image] : [];
-          }
-        } else if (Array.isArray(refund.image)) {
-          parsedImage = refund.image;
-        }
+      const mappedRefunds: RefundDisplay[] = data.result.map((refund) => {
+        const parsedImage =
+          refund.image && refund.image !== "" ? JSON.parse(refund.image) : [];
 
         return {
           ...refund,
-          item_name: refund.item?.name || "Unknown",
-          buyer_name: refund.buyer?.name || "Unknown",
-          seller_name: refund.seller?.name || "Unknown",
+          item_name:
+            refund.Transaction?.item?.name || refund.item?.name || "Unknown",
+          buyer_name:
+            refund.Transaction?.buyer?.name || refund.buyer?.name || "Unknown",
+          seller_name:
+            refund.Transaction?.seller?.name ||
+            refund.seller?.name ||
+            "Unknown",
           image: parsedImage,
         };
       });
@@ -168,7 +152,7 @@ export default function Products() {
       if (error instanceof Error) {
         console.error("Error fetching refunds:", error.message);
       } else {
-        console.error("An unknown error occurred:", error);
+        console.error("Unknown error fetching refunds");
       }
     } finally {
       setLoading(false);

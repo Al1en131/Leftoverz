@@ -1220,7 +1220,9 @@ export default function BuyProduct() {
                                 : "text-gray-500"
                             }
                           >
-                            {refund?.status_package === "delivered"
+                            {refund?.status === "refunded"
+                              ? "Pengembalian Dana Sudah Berhasil"
+                              : refund?.status_package === "delivered"
                               ? "Barang Sudah Sampai"
                               : refund?.status === "approved"
                               ? "Pengajuan Pengembalian Dana Disetujui"
@@ -1228,8 +1230,6 @@ export default function BuyProduct() {
                               ? "Pengajuan Pengembalian Dana Ditolak"
                               : refund?.status === "requested"
                               ? "Menunggu Persetujuan Admin"
-                              : refund?.status === "refunded"
-                              ? "Pengembalian Dana Sudah Berhasil"
                               : refund?.status === "shipping"
                               ? "Pengembalian Barang sedang Diproses"
                               : "Pengembalian Barang sedang Diproses"}
