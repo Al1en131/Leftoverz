@@ -15,7 +15,7 @@ type Refund = {
   reason: string;
   status: string;
   response: string | null;
-  image: string;
+  image: string[];
   refunded_at: string;
   tracking_number: string;
   status_package: string;
@@ -130,9 +130,20 @@ export default function Products() {
       console.log("Raw data dari backend:", data);
 
       const mappedRefunds: RefundDisplay[] = data.result.map((refund) => {
-        const parsedImage =
-          refund.image && refund.image !== "" ? JSON.parse(refund.image) : [];
+        let parsedImage: string[] = [];
 
+        if (typeof refund.image === "string") {
+          try {
+            const parsed = JSON.parse(refund.image);
+            if (Array.isArray(parsed)) {
+              parsedImage = parsed;
+            }
+          } catch {
+            parsedImage = [];
+          }
+        } else if (Array.isArray(refund.image)) {
+          parsedImage = refund.image;
+        }
         return {
           ...refund,
           item_name:
@@ -281,17 +292,22 @@ export default function Products() {
                 </td>
 
                 <td className="px-3 py-4 text-white text-center">
-                  {item.image && item.image.length > 0 ? (
-                    <Image
-                      width={100}
-                      height={100}
-                      src={item.image[0]}
-                      alt="Product"
-                      className="w-16 h-16 object-cover rounded-md mx-auto"
-                    />
-                  ) : (
-                    "-"
-                  )}
+                  <Image
+                    src={
+                      item.image &&
+                      Array.isArray(item.image) &&
+                      item.image.length > 0 &&
+                      typeof item.image[0] === "string"
+                        ? item.image[0].startsWith("/")
+                          ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
+                          : item.image[0]
+                        : "/images/default-item.png"
+                    }
+                    alt={item.item_name}
+                    width={100}
+                    height={100}
+                    className="w-16 h-16 object-cover rounded-2xl"
+                  />
                 </td>
 
                 <td className="px-3 py-4 text-white text-left">
