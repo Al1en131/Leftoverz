@@ -103,7 +103,7 @@ export default function Products() {
         return "bg-green-500";
       case "rejected":
         return "bg-red-500";
-      case "completed":
+      case "delivered":
         return "bg-blue-500";
       default:
         return "bg-gray-500";
@@ -325,7 +325,21 @@ export default function Products() {
                 </td>
 
                 <td className="px-3 py-4 text-white text-center capitalize">
-                  {item.status || "-"}
+                  <span
+                    className={`px-3 py-2 rounded-full text-sm font-semibold ${
+                      item.status === "requested"
+                        ? "bg-yellow-100 text-yellow-600"
+                        : item.status === "approved"
+                        ? "bg-green-100 text-green-600"
+                        : item.status === "rejected"
+                        ? "bg-red-100 text-red-600"
+                        : item.status === "refunded"
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {item.status || "-"}
+                  </span>
                 </td>
 
                 <td className="px-3 py-4 text-white text-center capitalize">
@@ -339,7 +353,7 @@ export default function Products() {
                 <td className="px-3 py-4 text-center">
                   <span
                     className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
-                      item.status
+                      item.status_package
                     )} text-white`}
                   >
                     {item.status_package || "-"}
@@ -359,8 +373,8 @@ export default function Products() {
                   </button>
                 </td>
                 {isModalOpen && selectedRefund && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-                    <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+                    <div className="bg-[#060B26] rounded-lg shadow-lg p-6 w-full max-w-md">
                       <h2 className="text-lg font-semibold mb-4 text-gray-800">
                         Update Refund Status
                       </h2>
