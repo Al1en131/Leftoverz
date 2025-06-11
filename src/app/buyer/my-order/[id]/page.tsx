@@ -1075,7 +1075,11 @@ export default function BuyProduct() {
                           refund?.status === "approved"
                             ? "border-blue-400"
                             : refund?.status === "rejected"
-                            ? "border-blue-400"
+                            ? "border-red-500"
+                            : refund?.status === "requested"
+                            ? "border-yellow-500"
+                            : refund?.status === "refunded"
+                            ? "border-green-500"
                             : "border-blue-400"
                         }`}
                       >
@@ -1150,7 +1154,7 @@ export default function BuyProduct() {
                           <strong
                             className={
                               refund?.status === "approved"
-                                ? "text-green-500"
+                                ? "text-blue-400"
                                 : refund?.status === "rejected"
                                 ? "text-red-500"
                                 : refund?.status === "requested"
