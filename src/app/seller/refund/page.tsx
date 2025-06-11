@@ -11,7 +11,7 @@ export type RefundType = {
   reason: string;
   status: "requested" | "approved" | "rejected" | "refunded" | "shipping";
   response?: string | null;
-  image?: string[];
+  image: string[];
   refunded_at?: string | null;
   tracking_number?: string | null;
   courir?: string | null;
@@ -96,24 +96,25 @@ export default function Refund() {
       if (res.ok) {
         const mappedRefunds: RefundDisplayType[] = response.refunds.map(
           (refund) => {
-            let imageArray: string[] = [];
+            let parsedImage: string[] = [];
 
-            const rawImage = refund.image;
-            if (typeof rawImage === "string") {
+            if (typeof refund.image === "string") {
               try {
-                imageArray = JSON.parse(rawImage);
+                const parsed = JSON.parse(refund.image);
+                if (Array.isArray(parsed)) {
+                  parsedImage = parsed;
+                }
               } catch {
-                imageArray = [rawImage];
+                parsedImage = [];
               }
-            } else if (Array.isArray(rawImage)) {
-              imageArray = rawImage;
+            } else if (Array.isArray(refund.image)) {
+              parsedImage = refund.image;
             }
-
             return {
               ...refund,
               item_name: refund.item?.name || "Unknown",
               buyer_name: refund.buyer?.name || "Unknown",
-              image: imageArray,
+              image: parsedImage,
             };
           }
         );

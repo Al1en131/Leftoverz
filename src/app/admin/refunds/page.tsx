@@ -30,6 +30,11 @@ type Refund = {
   created_at: string;
   tracking_number: string;
   status_package: string;
+  courir: string;
+  status: string | null;
+  item?: { name: string };
+  buyer?: { name: string };
+  seller?: { name: string };
 };
 
 type RefundDisplay = {
@@ -158,17 +163,14 @@ export default function Products() {
 
         return {
           id: refund.id,
-          item_name: trx?.item?.name || "Unknown",
-          buyer_name: trx?.buyer?.name || "Unknown",
-          seller_name: trx?.seller?.name || "Unknown",
+          item_name: refund.item?.name || "Unknown",
+          buyer_name: refund.buyer?.name || "Unknown",
+          seller_name: refund.seller?.name || "Unknown",
           image: imageArray,
-          payment_method: trx?.payment_method || "-",
-          price: trx?.item?.price || 0,
-          awb: trx?.awb || "-",
           tracking_number: refund.tracking_number || "-",
-          courir: trx?.courir || "-",
-          status: trx?.status || null,
-          status_package: refund.status_package || "-", 
+          courir: refund.courir || "-",
+          status: refund.status || null,
+          status_package: refund.status_package || "-",
           created_at: refund.created_at,
         };
       });
@@ -290,7 +292,7 @@ export default function Products() {
               <th className="px-3 py-3 text-left">Seller</th>
               <th className="px-3 py-3 text-center">Status Refund</th>
               <th className="px-3 py-3 text-center">Courier</th>
-              <th className="px-3 py-3 text-center">AWB</th>
+              <th className="px-3 py-3 text-center">No.Resi</th>
               <th className="px-3 py-3 text-center">Status Package</th>
               <th className="px-3 py-3 text-center">Action</th>
             </tr>
