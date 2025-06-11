@@ -355,7 +355,7 @@ export default function Refund() {
                     <td className="px-6 py-3">{item.buyer_name}</td>
 
                     {/* Reason */}
-                    <td className="px-6 py-3">{item.reason||"-"}</td>
+                    <td className="px-6 py-3">{item.reason || "-"}</td>
 
                     {/* Kurir */}
                     <td className="px-6 py-3 text-center">
@@ -374,7 +374,7 @@ export default function Refund() {
                     {/* Status Refund */}
                     <td className="px-6 py-3 text-center capitalize">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        className={`px-2 py-1 rounded-full text-base font-semibold ${
                           item.status === "requested"
                             ? "bg-yellow-100 text-yellow-600"
                             : item.status === "approved"
@@ -386,13 +386,13 @@ export default function Refund() {
                             : "bg-gray-100 text-gray-600"
                         }`}
                       >
-                        {item.status}
+                        {item.status||"-"}
                       </span>
                     </td>
 
                     {/* Status Package */}
                     <td className="px-6 py-3 text-center capitalize">
-                      {item.status_package}
+                      {item.status_package || "Pending"}
                     </td>
 
                     {/* Action */}
@@ -425,7 +425,7 @@ export default function Refund() {
                             />
                           </svg>
                         </button>
-                      )}
+                      ) || "-"}
                     </td>
                     {showTrackingModal && trackingData && (
                       <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
