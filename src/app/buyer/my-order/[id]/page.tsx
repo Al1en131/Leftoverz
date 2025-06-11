@@ -934,6 +934,8 @@ export default function BuyProduct() {
                           ? "Barang Sedang Dikirim"
                           : refund.status === "requested"
                           ? "Menunggu Persetujuan"
+                          : refund.status === "rejected"
+                          ? "Refund Ditolak"
                           : "Lihat Status Refund"}
                       </button>
                     ) : (
