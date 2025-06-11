@@ -924,7 +924,9 @@ export default function BuyProduct() {
                             : "bg-gray-400"
                         } text-white`}
                       >
-                        {refund.status === "refunded"
+                        {refund.status_package === "delivered"
+                          ? "Barang Sudah Sampai"
+                          : refund.status === "refunded"
                           ? "Refund Berhasil"
                           : refund.status === "approved"
                           ? "Refund disetujui"
