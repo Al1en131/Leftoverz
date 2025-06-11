@@ -1327,175 +1327,176 @@ export default function BuyProduct() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-4"></div>
-            <button
-              onClick={handleMarkAsTransactionDelivered}
-              className="px-4 py-3 text-lg tracking-wide border-2 border-blue-400 w-full capitalize font-semibold rounded-full"
-            >
-              Pesanan Selesai
-            </button>
-            <button
-              onClick={handleTrackPackage}
-              className="px-4 py-3 text-lg tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
-            >
-              Tracking Package
-            </button>
+            <div className="lg:flex max-lg:block max-lg:space-y-3 items-center gap-4">
+              <button
+                onClick={handleMarkAsTransactionDelivered}
+                className="px-4 py-3 text-lg tracking-wide border-2 border-blue-400 w-full capitalize font-semibold rounded-full"
+              >
+                Pesanan Selesai
+              </button>
+              <button
+                onClick={handleTrackPackage}
+                className="px-4 py-3 text-lg tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
+              >
+                Tracking Package
+              </button>
 
-            {showTrackingModal && trackingData && (
-              <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
-                <div
-                  className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 ${
-                    theme === "dark" ? "bg-[#080B2A]" : "bg-white"
-                  }`}
-                >
-                  <button
-                    className="absolute top-4 right-4 text-red-500 font-bold text-xl"
-                    onClick={() => setShowTrackingModal(false)}
+              {showTrackingModal && trackingData && (
+                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                  <div
+                    className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 ${
+                      theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+                    }`}
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="size-6"
+                    <button
+                      className="absolute top-4 right-4 text-red-500 font-bold text-xl"
+                      onClick={() => setShowTrackingModal(false)}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18 18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-
-                  <h2 className="text-xl font-bold mb-4 text-blue-500">
-                    Tracking Information
-                  </h2>
-
-                  <div
-                    className={`mb-4 ${
-                      theme === "dark" ? "text-white" : "text-blue-400"
-                    }`}
-                  >
-                    <p>
-                      <strong className="tracking-wider">AWB:</strong>{" "}
-                      {trackingData.summary.awb || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Courier:</strong>{" "}
-                      {trackingData.summary.courier || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Status:</strong>{" "}
-                      {trackingData.summary.status || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Date:</strong>{" "}
-                      {trackingData.summary.date || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Weight:</strong>{" "}
-                      {trackingData.summary.weight || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Cost:</strong> Rp{" "}
-                      {trackingData.summary.amount || "-"}
-                    </p>
-                  </div>
-
-                  <div
-                    className={`mb-4 ${
-                      theme === "dark" ? "text-white" : "text-blue-400"
-                    }`}
-                  >
-                    <p>
-                      <strong className="tracking-wider">From:</strong>{" "}
-                      {trackingData.detail.origin || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">To:</strong>{" "}
-                      {trackingData.detail.destination || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Shipper:</strong>{" "}
-                      {trackingData.detail.shipper || "-"}
-                    </p>
-                    <p>
-                      <strong className="tracking-wider">Receiver:</strong>{" "}
-                      {trackingData.detail.receiver || "-"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                      Tracking History
-                    </h3>
-                    <div className="mt-6 grow sm:mt-8 lg:mt-0">
-                      <div
-                        className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm ${
-                          theme === "dark" ? "bg-white/10" : "bg-white"
-                        }`}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="size-6"
                       >
-                        <h3
-                          className={`text-xl font-semibold ${
-                            theme === "dark" ? "text-white" : "text-gray-900"
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M6 18 18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+
+                    <h2 className="text-xl font-bold mb-4 text-blue-500">
+                      Tracking Information
+                    </h2>
+
+                    <div
+                      className={`mb-4 ${
+                        theme === "dark" ? "text-white" : "text-blue-400"
+                      }`}
+                    >
+                      <p>
+                        <strong className="tracking-wider">AWB:</strong>{" "}
+                        {trackingData.summary.awb || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Courier:</strong>{" "}
+                        {trackingData.summary.courier || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Status:</strong>{" "}
+                        {trackingData.summary.status || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Date:</strong>{" "}
+                        {trackingData.summary.date || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Weight:</strong>{" "}
+                        {trackingData.summary.weight || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Cost:</strong> Rp{" "}
+                        {trackingData.summary.amount || "-"}
+                      </p>
+                    </div>
+
+                    <div
+                      className={`mb-4 ${
+                        theme === "dark" ? "text-white" : "text-blue-400"
+                      }`}
+                    >
+                      <p>
+                        <strong className="tracking-wider">From:</strong>{" "}
+                        {trackingData.detail.origin || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">To:</strong>{" "}
+                        {trackingData.detail.destination || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Shipper:</strong>{" "}
+                        {trackingData.detail.shipper || "-"}
+                      </p>
+                      <p>
+                        <strong className="tracking-wider">Receiver:</strong>{" "}
+                        {trackingData.detail.receiver || "-"}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-semibold text-blue-500 mb-2">
+                        Tracking History
+                      </h3>
+                      <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                        <div
+                          className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm ${
+                            theme === "dark" ? "bg-white/10" : "bg-white"
                           }`}
                         >
-                          Tracking History
-                        </h3>
+                          <h3
+                            className={`text-xl font-semibold ${
+                              theme === "dark" ? "text-white" : "text-gray-900"
+                            }`}
+                          >
+                            Tracking History
+                          </h3>
 
-                        <ol className="relative ms-3 border-s border-gray-500">
-                          {trackingData?.history?.map((item, index) => (
-                            <li
-                              key={index}
-                              className={`mb-10 ms-6 ${
-                                index === 0
-                                  ? theme === "dark"
-                                    ? "text-primary-500"
-                                    : "text-primary-700"
-                                  : ""
-                              }`}
-                            >
-                              <span
-                                className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
-                                  index === 0 ? "bg-blue-400" : "bg-gray-500"
-                                } text-white`}
-                              >
-                                <svg
-                                  className="h-4 w-4"
-                                  fill="none"
-                                  viewBox="0 0 24 24"
-                                  stroke="currentColor"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M5 11.917 9.724 16.5 19 7.5"
-                                  />
-                                </svg>
-                              </span>
-                              <h4
-                                className={`mb-0.5 text-base font-semibold ${
-                                  theme === "dark"
-                                    ? "text-white"
-                                    : "text-gray-900"
+                          <ol className="relative ms-3 border-s border-gray-500">
+                            {trackingData?.history?.map((item, index) => (
+                              <li
+                                key={index}
+                                className={`mb-10 ms-6 ${
+                                  index === 0
+                                    ? theme === "dark"
+                                      ? "text-primary-500"
+                                      : "text-primary-700"
+                                    : ""
                                 }`}
                               >
-                                {item.date}
-                              </h4>
-                              <p className="text-sm text-blue-400">
-                                {item.desc}
-                              </p>
-                            </li>
-                          ))}
-                        </ol>
+                                <span
+                                  className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
+                                    index === 0 ? "bg-blue-400" : "bg-gray-500"
+                                  } text-white`}
+                                >
+                                  <svg
+                                    className="h-4 w-4"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M5 11.917 9.724 16.5 19 7.5"
+                                    />
+                                  </svg>
+                                </span>
+                                <h4
+                                  className={`mb-0.5 text-base font-semibold ${
+                                    theme === "dark"
+                                      ? "text-white"
+                                      : "text-gray-900"
+                                  }`}
+                                >
+                                  {item.date}
+                                </h4>
+                                <p className="text-sm text-blue-400">
+                                  {item.desc}
+                                </p>
+                              </li>
+                            ))}
+                          </ol>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
         <div className="fixed bottom-6 lg:right-[140px] max-lg:right-24 z-30">
