@@ -74,7 +74,7 @@ type RawTransaction = {
   total: number;
   awb: string;
   courir: string;
-  status_package: "processed" | "delivered";
+  status_package: "processed" | "delivered" | "refund";
   item?: {
     name: string;
     image: string[];
@@ -1309,11 +1309,15 @@ export default function BuyProduct() {
                 className={`px-4 py-3 text-lg tracking-wide border-2 w-full capitalize font-semibold rounded-full ${
                   transaction?.status_package === "delivered"
                     ? "bg-blue-400 text-white cursor-not-allowed"
+                    : transaction?.status_package === "refund"
+                    ? "bg-red-400 text-white cursor-not-allowed"
                     : "hover:bg-blue-50"
                 }`}
               >
                 {transaction?.status_package === "delivered"
                   ? "Pesanan Diterima"
+                  : transaction?.status_package === "refund"
+                  ? "Pesanan Dikembalikan"
                   : "Pesanan Selesai"}
               </button>
 

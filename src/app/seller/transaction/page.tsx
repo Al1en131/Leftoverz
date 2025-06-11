@@ -11,6 +11,7 @@ type RawTransaction = {
   seller_id: number;
   item_id: number;
   payment_method: string;
+  status_package: "delivered" | "processed" | "refund";
   status: "success" | null;
   created_at: string;
   total: number;
@@ -417,6 +418,7 @@ export default function Transaction() {
                   <th className="px-6 py-3 text-center">Status Payment</th>
                   <th className="px-6 py-3 text-center">Kurir</th>
                   <th className="px-6 py-3 text-center">No. Resi</th>
+                  <th className="px-6 py-3 text-center">Status Package</th>
                   <th className="px-6 py-3 text-center">Action</th>
                 </tr>
               </thead>
@@ -560,6 +562,23 @@ export default function Transaction() {
                         }`}
                       >
                         {item.awb || "-"}
+                      </td>
+                      <td
+                        className={`px-6 py-4 text-center ${
+                          theme === "dark" ? "text-white" : "text-blue-400"
+                        }`}
+                      >
+                        <span
+                          className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
+                            item.status_package === "delivered"
+                              ? "bg-green-700 text-white"
+                              : item.status_package === "processed"
+                              ? "bg-blue-400 text-white"
+                              : "bg-red-700 text-white"
+                          }`}
+                        >
+                          {item.status_package}
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-center space-x-2">
                         <button
