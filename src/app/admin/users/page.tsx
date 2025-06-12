@@ -56,8 +56,8 @@ export default function User() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("id-ID", optionsDay);
-    const fullDate = now.toLocaleDateString("id-ID", optionsDate);
+    const day = now.toLocaleDateString("en-US", optionsDay);
+    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
@@ -294,7 +294,7 @@ export default function User() {
       </div>
 
       <div
-        className="relative overflow-x-auto rounded-lg"
+        className="relative overflow-hidden rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -342,8 +342,8 @@ export default function User() {
           </div>
         </div>
 
-        <div className="w-full overflow-x-auto">
-          <table className="min-w-[800px] table-auto rounded-lg my-4">
+        <div className="overflow-x-auto">
+          <table className="w-full rounded-lg my-4">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-4 py-3 text-center">No.</th>
