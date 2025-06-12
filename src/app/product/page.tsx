@@ -18,10 +18,6 @@ type Province = {
   name: string;
 };
 
-type Option = {
-  value: string;
-  label: string;
-};
 type Product = {
   id: number;
   name: string;
@@ -69,17 +65,16 @@ export default function Product() {
     const fetchProvinces = async () => {
       try {
         const response = await fetch(
-          "https://api.binderbyte.com/wilayah/provinsi?api_key=..."
+          "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
         );
-        const data = await response.json();
-        if (data.status === 200 && Array.isArray(data.value)) {
-          const formatted: Province[] = data.value.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-          }));
+        const data: {
+          status: number;
+          value: Province[];
+        } = await response.json();
 
-          setProvinces(formatted);
-          setSelectedProvince(formatted[0]); // otomatis pilih pertama
+        if (data.status === 200 && Array.isArray(data.value)) {
+          setProvinces(data.value);
+          setSelectedProvince(data.value[0]); // atur default selected
         }
       } catch (error) {
         console.error("Failed to fetch provinces", error);
@@ -226,7 +221,6 @@ export default function Product() {
   const filteredProducts = useMemo(() => {
     let result = products;
 
-
     if (selectedProvince) {
       result = result.filter(
         (product) =>
@@ -305,6 +299,7 @@ export default function Product() {
     priceTo,
     selected.value,
     imageEmbedding,
+    selectedProvince,
   ]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
