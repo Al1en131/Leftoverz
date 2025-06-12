@@ -406,8 +406,6 @@ export default function Refund() {
                         {item.status || "-"}
                       </span>
                     </td>
-
-                    {/* Status Package */}
                     <td className="px-6 py-3 text-center capitalize">
                       {item.status_package || "Pending"}
                     </td>
