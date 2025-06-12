@@ -65,24 +65,30 @@ export default function Product() {
     const fetchProvinces = async () => {
       try {
         const response = await fetch(
-          "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
+          "https://api.binderbyte.com/wilayah/provinsi?api_key=..."
         );
         const data = await response.json();
-        console.log("Fetched data:", data); // ⬅️ PASTIKAN INI MUNCUL DI CONSOLE
 
         if (data.status === 200 && Array.isArray(data.value)) {
-          setProvinces(data.value);
-          setSelectedProvince(data.value[0]);
-        } else {
-          console.warn("Unexpected response:", data);
+          const formatted = data.value.map((item: any) => ({
+            id: String(item.id),
+            name: item.name,
+          }));
+          setProvinces(formatted);
+          setSelectedProvince(formatted[0]);
         }
       } catch (error) {
-        console.error("Fetch failed:", error);
+        console.error("Failed to fetch provinces", error);
       }
     };
 
     fetchProvinces();
   }, []);
+
+  // ✅ Debug hasilnya setelah diparse dan diset
+  useEffect(() => {
+    console.log("Provinces state updated:", provinces);
+  }, [provinces]);
 
   const fetchProducts = async () => {
     try {
