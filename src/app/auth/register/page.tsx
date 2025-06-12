@@ -57,19 +57,22 @@ export default function Register() {
     setError("");
 
     try {
-      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-          phone_number: formData.phone_number,
-          role: formData.role,
-        }),
-      });
+      const response = await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            password: formData.password,
+            phone_number: formData.phone_number,
+            role: formData.role,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -116,7 +119,7 @@ export default function Register() {
               theme === "dark" ? "text-white" : "text-blue-400"
             }`}
           >
-            Register your account
+            Buat akun Anda
           </h1>
 
           <form className="space-y-6" onSubmit={handleSubmit}>
@@ -127,7 +130,7 @@ export default function Register() {
                   theme === "dark" ? "text-white" : "text-blue-400"
                 }`}
               >
-                Name
+                Nama
               </label>
               <input
                 type="text"
@@ -175,7 +178,7 @@ export default function Register() {
                   theme === "dark" ? "text-white" : "text-blue-400"
                 }`}
               >
-                Phone Number
+                No. Hp
               </label>
               <input
                 type="tel"
@@ -223,7 +226,7 @@ export default function Register() {
                   theme === "dark" ? "text-white" : "text-blue-400"
                 }`}
               >
-                Role
+                Kategori Pengguna
               </label>
               <div className="flex gap-8 items-center">
                 <div>
@@ -277,12 +280,12 @@ export default function Register() {
               {loading ? "Registering..." : "Register"}
             </button>
             <p className="text-sm font-light text-gray-400">
-              Have an account?{" "}
+              Sudah punya akun?{" "}
               <Link
                 href="/auth/login"
                 className="font-medium text-blue-400 hover:underline"
               >
-                Log in here
+                Log in di sini
               </Link>
             </p>
           </form>
@@ -315,7 +318,7 @@ export default function Register() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Register Berhasil!
+              Registrasi Berhasil!
             </h2>
             <p className="mb-6 text-blue-400">Akun kamu berhasil dibuat.</p>
 

@@ -342,7 +342,7 @@ export default function BuyProduct() {
                 />
               </div>
               <h2 className="text-2xl font-bold mb-1 text-blue-400">
-                Success!
+               Sukses!
               </h2>
               <p className="mb-6 text-blue-400">{successMessage}</p>
               <button
@@ -523,7 +523,7 @@ export default function BuyProduct() {
             </div>
           </div>
           <div className={`p-10 border_section my-5 rounded-2xl bg-white/20`}>
-            <h3 className="text-3xl font-bold text-blue-400">Payment Detail</h3>
+            <h3 className="text-3xl font-bold text-blue-400">Detail Pembayaran</h3>
             <div
               className={`block items-center py-4 space-y-2 mb-4 border-b border-b-white`}
             >

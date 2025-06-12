@@ -315,23 +315,18 @@ export default function BuyerHome() {
             height={100}
             alt=""
             src="/images/bubble-3.svg"
-            className={`
-  absolute left-0 -z-0
-  max-lg:h-72 max-lg:w-72 max-lg:bottom-0 lg:h-[456px] lg:w-[456px]
-  lg:top-60
-  ${theme === "dark" ? "block" : "hidden"}
-`}
+            className={`absolute left-0 -z-0 max-lg:h-72 max-lg:w-72 max-lg:bottom-0 lg:h-[456px] lg:w-[456px] lg:top-60 ${
+              theme === "dark" ? "block" : "hidden"
+            }`}
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-4.svg"
-            className={`
-  absolute -top-28 -z-0 right-0
-  max-lg:w-72 max-lg:h-72 lg:h-[356px] lg:w-[356px]
-  ${theme === "dark" ? "block" : "hidden"}
-`}
+            className={`absolute -top-28 -z-0 right-0 max-lg:w-72 max-lg:h-72 lg:h-[356px] lg:w-[356px] ${
+              theme === "dark" ? "block" : "hidden"
+            }`}
           />
           <Image
             width={100}
@@ -369,21 +364,17 @@ export default function BuyerHome() {
             className="w-4 absolute top-56 opacity-20 left-[850px] max-lg:hidden -z-0"
           />
           <div
-            className={`
-    absolute inset-0 z-10
-    ${theme === "dark" ? "bg-white/5" : "bg-blue-400"}
-  `}
+            className={`absolute inset-0 z-10 ${
+              theme === "dark" ? "bg-white/5" : "bg-blue-400"
+            }`}
           ></div>
           <div
-            className={`
-  relative z-50
-  lg:w-2/4 max-lg:w-full
-  max-lg:text-center max-lg:justify-center
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+            className={`relative z-50 lg:w-2/4 max-lg:w-full max-lg:text-center max-lg:justify-center ${
+              theme === "dark" ? "text-white" : "text-[#080B2A]"
+            }`}
           >
             <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
-              Why Choose Us?
+              Tentang Kami
             </h4>
             <p className="text-lg max-lg:text-justify mb-6">
               Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
@@ -397,18 +388,14 @@ export default function BuyerHome() {
             </p>
 
             <Link
-              href="/buyer/about"
-              className={`
-  px-4 mt-4 py-3 text-center w-36 rounded-full
-  hover:bg-transparent
-  ${
-    theme === "dark"
-      ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
-      : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
-  }
-`}
+              href="/about"
+              className={`px-4 mt-4 py-3 text-center w-36 rounded-full hover:bg-transparent ${
+                theme === "dark"
+                  ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                  : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
+              }`}
             >
-              About Us
+              Baca Selengkapnya
             </Link>
           </div>
           <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
@@ -427,12 +414,9 @@ export default function BuyerHome() {
             height={100}
             alt=""
             src="/images/bubble-5.svg"
-            className={`
-  absolute z-0 -bottom-20 left-0
-  lg:h-[456px] lg:w-[456px]
-  max-lg:h-72 max-lg:w-72
-  ${theme === "dark" ? "lg:block" : "lg:hidden"} max-lg:hidden
-`}
+            className={`absolute z-0 -bottom-20 left-0 lg:h-[456px] lg:w-[456px] max-lg:h-72 max-lg:w-72 ${
+              theme === "dark" ? "lg:block" : "lg:hidden"
+            } max-lg:hidden`}
           />
           <Image
             width={100}
@@ -456,12 +440,11 @@ export default function BuyerHome() {
             className="w-4 absolute lg:top-20 max-lg:top-0 lg:left-56 max-lg:left-28 -z-0"
           />
           <div
-            className={`
-  text-center justify-center z-50
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+            className={`text-center justify-center z-50 ${
+              theme === "dark" ? "text-white" : "text-[#080B2A]"
+            }`}
           >
-            <h3 className="text-3xl font-bold ">Features</h3>
+            <h3 className="text-3xl font-bold ">Fitur</h3>
             <p className="">
               Fitur-fitur canggih yang memudahkan jual beli barang bekas dengan
               cepat dan aman.
@@ -542,12 +525,11 @@ export default function BuyerHome() {
               className="w-8 absolute lg:top-10 max-lg:top-16 right-5 -z-0"
             />
             <div
-              className={`
-  pb-12 text-center
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+              className={`pb-12 text-center ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
+              }`}
             >
-              <h3 className="text-3xl font-bold ">How It Work?</h3>
+              <h3 className="text-3xl font-bold ">Bagaimana Cara Kerjanya?</h3>
               <p className="">
                 Ikuti langkah mudah untuk jual atau beli barang bekas dengan
                 cepat dan nyaman di Leftoverz.
@@ -582,7 +564,8 @@ export default function BuyerHome() {
                       }`}
                     >
                       Gunakan fitur pencarian dan filter untuk menemukan barang
-                      yang diinginkan, lalu klik produk untuk melihat detailnya.
+                      yang diinginkan, lalu klik tombol detail untuk melihat
+                      detailnya.
                     </p>
                   </div>
                 </div>
@@ -596,9 +579,9 @@ export default function BuyerHome() {
                         theme === "dark" ? "text-white" : "text-[#080B2A]"
                       }`}
                     >
-                      Klik &apos;Beli&apos; atau tambahkan ke favorit jika ingin
-                      membeli lebih dari satu barang, lalu lanjutkan ke
-                      checkout.
+                      Klik &apos;Beli&apos; untuk melanjutkan ke proses
+                      checkout, atau tambahkan ke favorit jika ingin
+                      menyimpannya untuk nanti.
                     </p>
                   </div>
                 </div>
@@ -612,8 +595,9 @@ export default function BuyerHome() {
                         theme === "dark" ? "text-white" : "text-[#080B2A]"
                       }`}
                     >
-                      Periksa pesanan, pilih metode pembayaran (transfer,
-                      e-wallet, atau COD), lalu konfirmasi pesanan.
+                      Periksa pesanan, lalu klik tombol &apos;Beli
+                      Sekarang&apos; pilih metode pembayaran yang akan
+                      digunakan.
                     </p>
                   </div>
                 </div>
@@ -643,8 +627,8 @@ export default function BuyerHome() {
                       }`}
                     >
                       Tunggu barang dikirim sesuai estimasi waktu, lalu
-                      konfirmasi penerimaan dan beri ulasan setelah barang
-                      sampai.
+                      konfirmasi penerimaan dengan klik tombol &apos;Pesanan
+                      Selesai&apos; di halaman detail pesanan.
                     </p>
                   </div>
                 </div>
@@ -686,7 +670,9 @@ export default function BuyerHome() {
   ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
 `}
           >
-            <h3 className="text-3xl font-bold ">Newly Added Product</h3>
+            <h3 className="text-3xl font-bold ">
+              Barang yang Baru Ditambahkan
+            </h3>
             <p className="">
               Temukan produk-produk terbaru yang baru saja ditambahkan dan siap
               untuk kamu miliki.
@@ -761,7 +747,7 @@ export default function BuyerHome() {
               href="/buyer/product"
               className="bg-blue-400 px-4 py-3 text-center dark:text-white text-[#080B2A] w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
             >
-              Next
+              Selanjutnya
             </Link>
           </div>
         </div>
@@ -817,10 +803,10 @@ export default function BuyerHome() {
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              <h3 className="text-3xl font-bold ">Meet the Developer</h3>
-              <p className="">
-                Seorang developer yang antusias membangun solusi digital yang
-                bermanfaat.
+              <h3 className="text-3xl font-bold">Profil Developer Website</h3>
+              <p>
+                Hubungi developer jika ada kendala atau masukan terkait website
+                ini.
               </p>
             </div>
             <div className="bg-white/5 border-2 rounded-3xl p-8 border-blue-400">

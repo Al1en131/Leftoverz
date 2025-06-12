@@ -299,7 +299,7 @@ export default function Home() {
             }`}
           >
             <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
-              Why Choose Us?
+              Tentang Kami
             </h4>
             <p className="text-lg max-lg:text-justify mb-6">
               Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
@@ -320,7 +320,7 @@ export default function Home() {
                   : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
               }`}
             >
-              About Us
+              Baca Selengkapnya
             </Link>
           </div>
           <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
@@ -369,7 +369,7 @@ export default function Home() {
               theme === "dark" ? "text-white" : "text-[#080B2A]"
             }`}
           >
-            <h3 className="text-3xl font-bold ">Features</h3>
+            <h3 className="text-3xl font-bold ">Fitur</h3>
             <p className="">
               Fitur-fitur canggih yang memudahkan jual beli barang bekas dengan
               cepat dan aman.
@@ -454,7 +454,7 @@ export default function Home() {
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              <h3 className="text-3xl font-bold ">How It Work?</h3>
+              <h3 className="text-3xl font-bold ">Bagaimana Cara Kerjanya?</h3>
               <p className="">
                 Ikuti langkah mudah untuk jual atau beli barang bekas dengan
                 cepat dan nyaman di Leftoverz.
@@ -489,7 +489,8 @@ export default function Home() {
                       }`}
                     >
                       Gunakan fitur pencarian dan filter untuk menemukan barang
-                      yang diinginkan, lalu klik produk untuk melihat detailnya.
+                      yang diinginkan, lalu klik tombol detail untuk melihat
+                      detailnya.
                     </p>
                   </div>
                 </div>
@@ -503,9 +504,9 @@ export default function Home() {
                         theme === "dark" ? "text-white" : "text-[#080B2A]"
                       }`}
                     >
-                      Klik &apos;Beli&apos; atau tambahkan ke favorit jika ingin
-                      membeli lebih dari satu barang, lalu lanjutkan ke
-                      checkout.
+                      Klik &apos;Beli&apos; untuk melanjutkan ke proses
+                      checkout, atau tambahkan ke favorit jika ingin
+                      menyimpannya untuk nanti.
                     </p>
                   </div>
                 </div>
@@ -519,8 +520,9 @@ export default function Home() {
                         theme === "dark" ? "text-white" : "text-[#080B2A]"
                       }`}
                     >
-                      Periksa pesanan, pilih metode pembayaran (transfer,
-                      e-wallet, atau COD), lalu konfirmasi pesanan.
+                      Periksa pesanan, lalu klik tombol &apos;Beli
+                      Sekarang&apos; pilih metode pembayaran yang akan
+                      digunakan.
                     </p>
                   </div>
                 </div>
@@ -550,8 +552,8 @@ export default function Home() {
                       }`}
                     >
                       Tunggu barang dikirim sesuai estimasi waktu, lalu
-                      konfirmasi penerimaan dan beri ulasan setelah barang
-                      sampai.
+                      konfirmasi penerimaan dengan klik tombol &apos;Pesanan
+                      Selesai&apos; di halaman detail pesanan.
                     </p>
                   </div>
                 </div>
@@ -590,7 +592,9 @@ export default function Home() {
               theme === "dark" ? "text-white" : "text-[#080B2A]"
             }`}
           >
-            <h3 className="text-3xl font-bold ">Newly Added Product</h3>
+            <h3 className="text-3xl font-bold ">
+              Produk yang Baru Ditambahkan
+            </h3>
             <p className="">
               Temukan produk-produk terbaru yang baru saja ditambahkan dan siap
               untuk kamu miliki.
@@ -665,7 +669,7 @@ export default function Home() {
               href="/product"
               className="bg-blue-400 px-4 py-3 text-center dark:text-white text-[#080B2A] w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
             >
-              Next
+              Selanjutnya
             </Link>
           </div>
         </div>
@@ -721,10 +725,10 @@ export default function Home() {
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              <h3 className="text-3xl font-bold ">Meet the Developer</h3>
-              <p className="">
-                Seorang developer yang antusias membangun solusi digital yang
-                bermanfaat.
+              <h3 className="text-3xl font-bold">Profil Developer Website</h3>
+              <p>
+                Hubungi developer jika ada kendala atau masukan terkait website
+                ini.
               </p>
             </div>
             <div className="bg-white/5 border-2 rounded-3xl p-8 border-blue-400">

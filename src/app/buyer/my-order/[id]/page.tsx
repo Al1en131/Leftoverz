@@ -774,15 +774,13 @@ export default function BuyProduct() {
                   className="w-20 h-20"
                 />
               </div>
-              <h2 className="text-2xl font-bold mb-1 text-blue-400">
-                Success!
-              </h2>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
               <p className="mb-6 text-blue-400">{successMessage}</p>
               <button
                 onClick={handleCloseSuccessPopup}
                 className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
               >
-                OK
+                Ya
               </button>
             </div>
           </div>
@@ -871,7 +869,7 @@ export default function BuyProduct() {
                   >
                     {transaction?.item_name}
                   </p>
-                  <p className="text-blue-400 mb-1 text-base">Buyer :</p>
+                  <p className="text-blue-400 mb-1 text-base">Pembeli :</p>
                   <div className="flex items-center gap-2">
                     <span
                       className={`w-10 h-10 text-lg rounded-full flex items-center justify-center ${
@@ -925,7 +923,7 @@ export default function BuyProduct() {
                   </p>
                   {!loading && transaction && (
                     <div>
-                      <p className="text-blue-400 mt-3 text-base">Seller :</p>
+                      <p className="text-blue-400 mt-3 text-base">Penjual :</p>
 
                       <div className="mt-1 flex items-center gap-2">
                         <span
@@ -1016,9 +1014,7 @@ export default function BuyProduct() {
                         </h2>
                         <form onSubmit={handleShippingSubmit}>
                           <div className="mb-3">
-                            <label className="block mb-1">
-                              Tracking Number (Resi)
-                            </label>
+                            <label className="block mb-1">No.Resi</label>
                             <input
                               type="text"
                               className="w-full border bg-transparent p-2 rounded"
@@ -1088,9 +1084,7 @@ export default function BuyProduct() {
                           </div>
 
                           <div className="mb-3">
-                            <label className="block mb-1">
-                              Upload Bukti (opsional)
-                            </label>
+                            <label className="block mb-1">Upload Bukti</label>
                             <input
                               type="file"
                               accept="image/*"
@@ -1241,7 +1235,7 @@ export default function BuyProduct() {
                                 onClick={handleTrackPackageRefund}
                                 className="mt-4 mb-2 block mx-auto px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
                               >
-                                Tracking Package
+                                Lacak Paket
                               </button>
                               <button
                                 onClick={handleMarkAsDelivered}
@@ -1295,7 +1289,7 @@ export default function BuyProduct() {
                       : "bg-red-700 text-white"
                   }`}
                 >
-                  Payment {transaction?.status}
+                  Pembayaran {transaction?.status}
                 </button>
               </div>
             </div>
@@ -1305,7 +1299,7 @@ export default function BuyProduct() {
               }`}
             >
               <h3 className="text-3xl font-bold text-blue-400 mb-1">
-                Payment Detail
+                Detail Pembayaran
               </h3>
               <p className="text-blue-400 text-base mb-2">
                 {transaction?.order_id}
@@ -1388,7 +1382,7 @@ export default function BuyProduct() {
                 onClick={handleTrackPackage}
                 className="px-4 py-2 text-base tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
               >
-                Tracking Package
+                Lacak Paket
               </button>
 
               {showTrackingModal && trackingData && (
@@ -1419,7 +1413,7 @@ export default function BuyProduct() {
                     </button>
 
                     <h2 className="text-xl font-bold mb-4 text-blue-500">
-                      Tracking Information
+                      Informasi Pelacakan Paket
                     </h2>
 
                     <div
@@ -1432,7 +1426,7 @@ export default function BuyProduct() {
                         {trackingData.summary.awb || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">Courier:</strong>{" "}
+                        <strong className="tracking-wider">Kurir:</strong>{" "}
                         {trackingData.summary.courier || "-"}
                       </p>
                       <p>
@@ -1440,15 +1434,15 @@ export default function BuyProduct() {
                         {trackingData.summary.status || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">Date:</strong>{" "}
+                        <strong className="tracking-wider">Tanggal:</strong>{" "}
                         {trackingData.summary.date || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">Weight:</strong>{" "}
+                        <strong className="tracking-wider">Berat:</strong>{" "}
                         {trackingData.summary.weight || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">Cost:</strong> Rp{" "}
+                        <strong className="tracking-wider">Biaya:</strong> Rp{" "}
                         {trackingData.summary.amount || "-"}
                       </p>
                     </div>
@@ -1459,26 +1453,26 @@ export default function BuyProduct() {
                       }`}
                     >
                       <p>
-                        <strong className="tracking-wider">From:</strong>{" "}
+                        <strong className="tracking-wider">Dari:</strong>{" "}
                         {trackingData.detail.origin || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">To:</strong>{" "}
+                        <strong className="tracking-wider">Ke:</strong>{" "}
                         {trackingData.detail.destination || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">Shipper:</strong>{" "}
+                        <strong className="tracking-wider">Pengirim:</strong>{" "}
                         {trackingData.detail.shipper || "-"}
                       </p>
                       <p>
-                        <strong className="tracking-wider">Receiver:</strong>{" "}
+                        <strong className="tracking-wider">Penerima:</strong>{" "}
                         {trackingData.detail.receiver || "-"}
                       </p>
                     </div>
 
                     <div>
                       <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                        Tracking History
+                        Riwayat Pengiriman
                       </h3>
                       <div className="mt-6 grow sm:mt-8 lg:mt-0">
                         <div
@@ -1491,7 +1485,7 @@ export default function BuyProduct() {
                               theme === "dark" ? "text-white" : "text-gray-900"
                             }`}
                           >
-                            Tracking History
+                            Riwayat Pengiriman
                           </h3>
 
                           <ol className="relative ms-3 border-s border-gray-500">

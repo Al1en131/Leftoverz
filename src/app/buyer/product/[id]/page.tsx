@@ -457,7 +457,7 @@ export default function ProductDetail() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
             <button
               onClick={handleCloseSuccessPopup}
@@ -484,7 +484,7 @@ export default function ProductDetail() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-1 text-red-400">Error!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-red-400">Eror!</h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
             <button
               onClick={handleClosePopup}

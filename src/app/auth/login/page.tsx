@@ -125,7 +125,7 @@ export default function Login() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-red-400">
-              Login Failed!
+              Login Gagal!
             </h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
@@ -157,7 +157,7 @@ export default function Login() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Login successful
+              Login Sukses
             </h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
@@ -200,7 +200,7 @@ export default function Login() {
               theme === "dark" ? "text-white" : "text-blue-400"
             }`}
           >
-            Sign in to your account
+            Login ke akun Anda
           </h1>
           <form className="space-y-6" onSubmit={handleLogin}>
             <div>
@@ -210,7 +210,7 @@ export default function Login() {
                   theme === "dark" ? "text-white" : "text-blue-400"
                 }`}
               >
-                Your email
+                Email
               </label>
               <input
                 type="email"
@@ -256,11 +256,8 @@ export default function Login() {
                 }`}
               >
                 <input type="checkbox" className="w-4 h-4 mr-2" />
-                Remember me
+                Ingatkan saya
               </label>
-              <a href="#" className="text-blue-400 text-sm hover:underline">
-                Forgot password?
-              </a>
             </div>
             <button
               type="submit"
@@ -274,12 +271,12 @@ export default function Login() {
               {loading ? "Signing in..." : "Sign in"}
             </button>
             <p className="text-sm text-gray-400">
-              Don’t have an account?{" "}
+              Belum punya akun?{" "}
               <Link
                 href="/auth/register"
                 className="text-blue-400 hover:underline"
               >
-                Register
+                Registrasi
               </Link>
             </p>
           </form>

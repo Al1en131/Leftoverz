@@ -111,7 +111,7 @@ export default function About() {
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              About Us
+              Tentang Kami
             </h1>
           </div>
         </div>
@@ -145,21 +145,22 @@ export default function About() {
           </p>
           <p
             className={`
-      text-base text-justify mb-4 tracking-wide
-      ${theme === "dark" ? "text-white" : "text-blue-400"}
-    `}
+    text-base text-justify mb-4 tracking-wide
+    ${theme === "dark" ? "text-white" : "text-blue-400"}
+  `}
           >
             Marketplace ini juga menyediakan fitur unggulan untuk mendukung
-            pengalaman pengguna. Fitur pengiriman barang memungkinkan kamu untuk
-            mengirim barang secara aman dan terpercaya ke alamat tujuan, baik
-            dalam satu kota maupun antar pulau. Dengan sistem ini, kamu tak
-            perlu khawatir soal logistik dan dapat fokus pada proses jual beli.
+            pengalaman pengguna. Fitur informasi & pengecekan pengiriman barang
+            memungkinkan kamu untuk mengetahui status pengiriman secara
+            real-time dan memastikan barang sampai dengan aman ke alamat tujuan.
+            Dengan fitur ini, kamu bisa lebih tenang dalam proses jual beli
+            tanpa harus khawatir soal logistik.
           </p>
           <p
             className={`
-      text-base text-justify mb-4 tracking-wide
-      ${theme === "dark" ? "text-white" : "text-blue-400"}
-    `}
+    text-base text-justify mb-4 tracking-wide
+    ${theme === "dark" ? "text-white" : "text-blue-400"}
+  `}
           >
             Fitur Visual Search mempermudah pencarian produk dengan cara yang
             lebih interaktif. Cukup dengan mengunggah foto barang yang kamu
@@ -169,15 +170,27 @@ export default function About() {
           </p>
           <p
             className={`
-      text-base text-justify mb-4 tracking-wide
-      ${theme === "dark" ? "text-white" : "text-blue-400"}
-    `}
+    text-base text-justify mb-4 tracking-wide
+    ${theme === "dark" ? "text-white" : "text-blue-400"}
+  `}
           >
             Untuk kemudahan transaksi, Leftoverz juga menerapkan sistem
             pembayaran dengan auto-verification. Sistem ini memastikan
             pembayaran kamu terverifikasi secara otomatis tanpa harus menunggu
             konfirmasi manual, sehingga proses transaksi menjadi cepat dan aman.
           </p>
+          <p
+            className={`
+    text-base text-justify mb-4 tracking-wide
+    ${theme === "dark" ? "text-white" : "text-blue-400"}
+  `}
+          >
+            Selain itu, tersedia juga fitur pengembalian barang untuk memberikan
+            rasa aman bagi pembeli. Jika terdapat kendala pada produk yang
+            diterima, kamu dapat mengajukan pengembalian dengan mudah melalui
+            sistem yang telah disediakan.
+          </p>
+
           <p
             className={`
       text-base text-justify mb-4 tracking-wide
@@ -229,7 +242,7 @@ export default function About() {
   ${theme === "dark" ? "text-white" : "text-blue-400"}
 `}
           >
-            <h3 className="text-4xl font-bold mb-1">Question</h3>
+            <h3 className="text-4xl font-bold mb-1">Pertanyaan</h3>
             <p className="text-base text-gray-600">
               Jawaban dari pertanyaan ini akan muncul di sini.
             </p>
@@ -438,7 +451,7 @@ export default function About() {
                   <div className="p-5 border-b-0 border_accordion2 bg-white/10">
                     <p className="mb-2 text-blue-400">
                       Ya, Anda bisa mengatur alamat pengiriman melalui halaman
-                      profil Anda. Pastikan alamat diisi dengan lengkap agar
+                      detail profil Anda. Pastikan alamat diisi dengan lengkap agar
                       proses pengiriman berjalan lancar.
                     </p>
                   </div>
