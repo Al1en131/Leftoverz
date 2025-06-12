@@ -433,7 +433,7 @@ export default function Products() {
                   </span>
                 </td>
 
-                <td className="px-3 py-4 text-white text-center">
+                <td className="px-3 py-4 text-white flex justify-center text-center">
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => {
@@ -465,7 +465,7 @@ export default function Products() {
                           setSelectedRefund(item);
                           handleTrackPackageRefund();
                         }}
-                        className="mt-2 px-2 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
+                        className="mt-2 px-1.5 py-1.5 bg-blue-400 text-white rounded hover:bg-blue-500"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
