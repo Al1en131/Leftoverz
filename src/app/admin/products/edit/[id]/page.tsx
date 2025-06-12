@@ -319,8 +319,8 @@ export default function EditProduct() {
       year: "numeric",
     };
 
-    const day = now.toLocaleDateString("en-US", optionsDay);
-    const fullDate = now.toLocaleDateString("en-GB", optionsDate);
+    const day = now.toLocaleDateString("id-ID", optionsDay);
+    const fullDate = now.toLocaleDateString("id-ID", optionsDate);
 
     setDateString({ day, fullDate });
   }, []);
