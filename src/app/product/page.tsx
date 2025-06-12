@@ -74,22 +74,17 @@ export default function Product() {
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
-        const response = await fetch(
+        const res = await fetch(
           "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
         );
-        const data: BinderbyteProvinceResponse = await response.json();
-
-        if (data.status === 200 && Array.isArray(data.value)) {
-          const formatted: Province[] = data.value.map((item) => ({
-            id: String(item.id),
-            name: item.name,
-          }));
-
-          setProvinces(formatted);
-          setSelectedProvince(formatted[0]);
+        const data = await res.json();
+        if (data.code === "200" && Array.isArray(data.value)) {
+          setProvinces(data.value);
+        } else {
+          console.error("Gagal mengambil data:", data);
         }
       } catch (error) {
-        console.error("Failed to fetch provinces", error);
+        console.error("Error:", error);
       }
     };
 
