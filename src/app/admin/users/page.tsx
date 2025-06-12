@@ -343,7 +343,7 @@ export default function User() {
         </div>
 
         <div className="w-full overflow-x-auto">
-          <table className="min-w-full rounded-lg my-4">
+          <table className="min-w-[1000px] rounded-lg my-4">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-4 py-3 text-center">No.</th>
