@@ -282,16 +282,16 @@ export default function Products() {
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
-            <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
+            <span className="text-sm font-normal">Selamat Datang,</span>
+            <h2 className="text-xl font-semibold mb-1">Admin Leftoverz</h2>
             <p className="text-sm text-gray-300">
-              Glad to see you again! Ask me anything.
+              Selamat datang kembali! Kelola dashboard dengan mudah di sini
             </p>
             <Link
               href="/admin/"
               className="mt-4 text-white text-sm flex items-center gap-2"
             >
-              Tap to dashboard →
+              Ketuk untuk ke dashboard →
             </Link>
           </div>
           <div className="z-10">
@@ -315,8 +315,8 @@ export default function Products() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">Transaction List</h3>
-            <p>List of all transactions</p>
+            <h3 className="text-xl font-bold">Daftar Transaksi</h3>
+            <p>Daftar semua transaksi</p>
           </div>
           <div className="flex flex-wrap gap-2 items-center">
             <div className="relative flex-1 min-w-[200px] max-w-md">
@@ -342,16 +342,16 @@ export default function Products() {
           <thead className="text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-3 py-3 text-center">No.</th>
-              <th className="px-3 py-3 text-left">Product Name</th>
-              <th className="px-3 py-3 text-left">Buyer</th>
-              <th className="px-3 py-3 text-left">Seller</th>
-              <th className="px-3 py-3 text-center">Payment Method</th>
-              <th className="px-3 py-3 text-center">Price</th>
+              <th className="px-3 py-3 text-left">Nama Produk</th>
+              <th className="px-3 py-3 text-left">Pembeli</th>
+              <th className="px-3 py-3 text-left">Penjual</th>
+              <th className="px-3 py-3 text-center">Metode Pembayaran</th>
+              <th className="px-3 py-3 text-center">Harga</th>
               <th className="px-3 py-3 text-center">Kurir</th>
               <th className="px-3 py-3 text-center">No. Resi</th>
-              <th className="px-3 py-3 text-center">Status Payment</th>
-              <th className="px-3 py-3 text-center">Status Package</th>
-              <th className="px-3 py-3 text-center">Action</th>
+              <th className="px-3 py-3 text-center">Status Pembayaran</th>
+              <th className="px-3 py-3 text-center">Status Paket</th>
+              <th className="px-3 py-3 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -436,7 +436,7 @@ export default function Products() {
                     </svg>
                   </button>
                   {showTrackingModal && trackingData && (
-                    <div className="fixed inset-0 z-50 bg-black/20 flex items-center justify-center text-left">
+                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
                       <div
                         className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 bg-[#080B2A]`}
                       >
@@ -461,16 +461,16 @@ export default function Products() {
                         </button>
 
                         <h2 className="text-xl font-bold mb-4 text-blue-500">
-                          Tracking Information
+                          Informasi Pengiriman Paket
                         </h2>
 
                         <div className={`mb-4 text-white`}>
                           <p>
-                            <strong className="tracking-wider">AWB:</strong>{" "}
+                            <strong className="tracking-wider">No.Resi:</strong>{" "}
                             {trackingData.summary.awb || "-"}
                           </p>
                           <p>
-                            <strong className="tracking-wider">Courier:</strong>{" "}
+                            <strong className="tracking-wider">Kurir:</strong>{" "}
                             {trackingData.summary.courier || "-"}
                           </p>
                           <p>
@@ -478,35 +478,37 @@ export default function Products() {
                             {trackingData.summary.status || "-"}
                           </p>
                           <p>
-                            <strong className="tracking-wider">Date:</strong>{" "}
+                            <strong className="tracking-wider">Tanggal:</strong>{" "}
                             {trackingData.summary.date || "-"}
                           </p>
                           <p>
-                            <strong className="tracking-wider">Weight:</strong>{" "}
+                            <strong className="tracking-wider">Berat:</strong>{" "}
                             {trackingData.summary.weight || "-"}
                           </p>
                           <p>
-                            <strong className="tracking-wider">Cost:</strong> Rp{" "}
-                            {trackingData.summary.amount || "-"}
+                            <strong className="tracking-wider">Biaya:</strong>{" "}
+                            Rp {trackingData.summary.amount || "-"}
                           </p>
                         </div>
 
                         <div className={`mb-4 text-white`}>
                           <p>
-                            <strong className="tracking-wider">From:</strong>{" "}
+                            <strong className="tracking-wider">Dari:</strong>{" "}
                             {trackingData.detail.origin || "-"}
                           </p>
                           <p>
-                            <strong className="tracking-wider">To:</strong>{" "}
+                            <strong className="tracking-wider">Tujuan:</strong>{" "}
                             {trackingData.detail.destination || "-"}
                           </p>
                           <p>
-                            <strong className="tracking-wider">Shipper:</strong>{" "}
+                            <strong className="tracking-wider">
+                              Pengirim:
+                            </strong>{" "}
                             {trackingData.detail.shipper || "-"}
                           </p>
                           <p>
                             <strong className="tracking-wider">
-                              Receiver:
+                              Penerima:
                             </strong>{" "}
                             {trackingData.detail.receiver || "-"}
                           </p>
@@ -514,7 +516,7 @@ export default function Products() {
 
                         <div>
                           <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                            Tracking History
+                            Riwayat Pengiriman
                           </h3>
                           <div className="mt-6 grow sm:mt-8 lg:mt-0">
                             <div
@@ -523,7 +525,7 @@ export default function Products() {
                               <h3
                                 className={`text-xl font-semibold text-white`}
                               >
-                                Tracking History
+                                Riwayat Pengiriman
                               </h3>
 
                               <ol className="relative ms-3 border-s border-gray-500">
@@ -587,7 +589,20 @@ export default function Products() {
                 : "bg-blue-700 hover:bg-blue-800"
             } text-white`}
           >
-            Prev
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
+            </svg>
           </button>
 
           {Array.from({ length: totalPages }, (_, i) => (
@@ -597,7 +612,7 @@ export default function Products() {
               className={`px-3 py-1 rounded ${
                 currentPage === i + 1
                   ? "bg-blue-500 text-white"
-                  : "bg-gray-700 text-gray-300 hover:bg-blue-400"
+                  : "bg-gray-700 text-gray-300 hover:bg-gray-600"
               }`}
             >
               {i + 1}
@@ -615,7 +630,20 @@ export default function Products() {
                 : "bg-blue-700 hover:bg-blue-800"
             } text-white`}
           >
-            Next
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
+            </svg>
           </button>
         </div>
       </div>

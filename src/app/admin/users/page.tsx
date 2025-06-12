@@ -174,23 +174,23 @@ export default function User() {
               />
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Are you sure?
+              Apakah kamu yakin?
             </h2>
             <p className="mb-6 text-blue-400">
-              Do you want to delete this user?
+              Apakah kamu ingin menghapus pengguna ini?
             </p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleClosePopup}
                 className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-full"
               >
-                Cancel
+                Batal
               </button>
               <button
                 onClick={handleDelete}
                 className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full"
               >
-                Delete
+                Hapus
               </button>
             </div>
           </div>
@@ -208,13 +208,13 @@ export default function User() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
             <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -237,7 +237,7 @@ export default function User() {
               onClick={handleClosePopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -250,7 +250,7 @@ export default function User() {
         className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold">Users</h1>
+        <h1 className="text-3xl font-bold">User</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
             <p>{dateString.day}</p>
@@ -269,16 +269,16 @@ export default function User() {
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
-            <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
+            <span className="text-sm font-normal">Selamat Datang,</span>
+            <h2 className="text-xl font-semibold mb-1">Admin Leftoverz</h2>
             <p className="text-sm text-gray-300">
-              Glad to see you again! Ask me anything.
+              Selamat datang kembali! Kelola dashboard dengan mudah di sini
             </p>
             <Link
               href="/admin/"
               className="mt-4 text-white text-sm flex items-center gap-2"
             >
-              Tap to dashboard →
+              Ketuk untuk ke dashboard →
             </Link>
           </div>
           <div className="z-10">
@@ -302,8 +302,8 @@ export default function User() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">User List</h3>
-            <p>List of all registered users</p>
+            <h3 className="text-xl font-bold">Daftar Pengguna</h3>
+            <p>Daftar semua Pengguna</p>
           </div>
           <div className="flex flex-wrap gap-2 items-center">
             <div className="relative flex-1 min-w-[200px] max-w-md">
@@ -337,7 +337,7 @@ export default function User() {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Add User
+              Tambah
             </Link>
           </div>
         </div>
@@ -347,13 +347,13 @@ export default function User() {
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-4 py-3 text-center">No.</th>
-                <th className="px-4 py-3 text-left">Name</th>
+                <th className="px-4 py-3 text-left">Nama</th>
                 <th className="px-4 py-3 text-left">Email</th>
-                <th className="px-4 py-3 text-center">Phone Number</th>
-                <th className="px-4 py-3 text-center">Tipe Payment</th>
+                <th className="px-4 py-3 text-center">No. Hp</th>
+                <th className="px-4 py-3 text-center">Tipe Pembayaran</th>
                 <th className="px-4 py-3 text-center">No. Rek</th>
-                <th className="px-4 py-3 text-center">Role</th>
-                <th className="px-4 py-3 text-center">Action</th>
+                <th className="px-4 py-3 text-center">Kategori</th>
+                <th className="px-4 py-3 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody>

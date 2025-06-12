@@ -56,12 +56,15 @@ export default function EditProduct() {
     const fetchUsers = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/users", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://backend-leftoverz-production.up.railway.app/api/v1/users",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         const data = await response.json();
         if (Array.isArray(data.users)) setUsers(data.users);
       } catch (err) {
@@ -108,7 +111,10 @@ export default function EditProduct() {
 
         if (Array.isArray(parsedImage)) {
           setInitialImageUrls(
-            parsedImage.map((url: string) => `https://backend-leftoverz-production.up.railway.app${url}`)
+            parsedImage.map(
+              (url: string) =>
+                `https://backend-leftoverz-production.up.railway.app${url}`
+            )
           );
           setKeptInitialImages(parsedImage);
         }
@@ -156,10 +162,13 @@ export default function EditProduct() {
     formData.append("image", file);
 
     try {
-      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const text = await response.text();
@@ -337,7 +346,7 @@ export default function EditProduct() {
         className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold whitespace-nowrap">Edit Product</h1>
+        <h1 className="text-3xl font-bold whitespace-nowrap">Edit Produk</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
             <p>{dateString.day}</p>
@@ -358,14 +367,14 @@ export default function EditProduct() {
               />
             </div>
 
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -384,7 +393,7 @@ export default function EditProduct() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-red-400">
-              Something went wrong!
+              Terjadi Kesalahan!
             </h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
@@ -392,7 +401,7 @@ export default function EditProduct() {
               onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -407,10 +416,10 @@ export default function EditProduct() {
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white  p-6">
-            <span className="text-sm font-normal">Welcome back,</span>
+            <span className="text-sm font-normal">Selamat Datang,</span>
             <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
             <p className="text-sm text-gray-300">
-              Glad to see you again! Ask me anything.
+              Selamat datang kembali! Kelola dashboard dengan mudah di sini
             </p>
             <Link
               href="/admin/products/"
@@ -432,7 +441,7 @@ export default function EditProduct() {
                   />
                 </svg>
               </div>
-              Back to Data Products
+              Kembali
             </Link>
           </div>
           <div className="z-10">
@@ -477,12 +486,10 @@ export default function EditProduct() {
                   />
                 </svg>
                 <p className="mb-2 text-sm text-white">
-                  <span className="font-semibold">Click to upload</span> or drag
-                  and drop
+                  <span className="font-semibold">Klik untuk unggah</span> atau
+                  Geser dan Letakkan
                 </p>
-                <p className="text-xs text-white">
-                  SVG, PNG, JPG or GIF (MAX. 800x400px)
-                </p>
+                <p className="text-xs text-white">SVG, PNG, JPG atau GIF</p>
               </div>
               <input
                 id="dropzone-file"
@@ -571,7 +578,7 @@ export default function EditProduct() {
 
           <div className="mb-4">
             <label htmlFor="name" className="text-white block">
-              Product Name
+              Nama Produk
             </label>
             <input
               type="text"
@@ -586,7 +593,7 @@ export default function EditProduct() {
 
           <div className="mb-4">
             <label htmlFor="price" className="text-white block">
-              Price (Rp.)
+              Harga Jual
             </label>
             <input
               type="text"
@@ -600,7 +607,7 @@ export default function EditProduct() {
           </div>
           <div className="mb-4">
             <label htmlFor="original_price" className="text-white block">
-              Original Price (Rp.)
+              Harga Asli
             </label>
             <input
               type="text"
@@ -614,7 +621,7 @@ export default function EditProduct() {
           </div>
           <div className="mb-4">
             <label htmlFor="used_duration" className="text-white block">
-              Used Duration
+              Lama Penggunaan
             </label>
             <select
               name="used_duration"
@@ -624,35 +631,35 @@ export default function EditProduct() {
               value={formData.used_duration}
             >
               <option value="" disabled>
-                Select Used Duration
+                Pilih Berapa Lama Penggunaan
               </option>
               <option className="text-blue-400" value="New">
-                New
+                Lama
               </option>
               <option className="text-blue-400" value="1-3 months">
-                1–3 months
+                1–3 Bulan
               </option>
               <option className="text-blue-400" value="4-6 months">
-                4–6 months
+                4–6 Bulan
               </option>
               <option className="text-blue-400" value="7-12 months">
-                7–12 months
+                7–12 Bulan
               </option>
               <option className="text-blue-400" value="1-2 years">
-                1–2 years
+                1–2 Tahun
               </option>
               <option className="text-blue-400" value="3-4 years">
-                3–4 years
+                3–4 Tahun
               </option>
               <option className="text-blue-400" value="5+ years">
-                Over 5 years
+                Lebih dari 5 Tahun
               </option>
             </select>
           </div>
 
           <div className="mb-4">
             <label htmlFor="user_id" className="text-white block">
-              Seller
+              Penjual
             </label>
             <select
               name="user_id"
@@ -662,7 +669,7 @@ export default function EditProduct() {
               onChange={handleInputChange}
             >
               <option value="" disabled>
-                Select Seller
+                Pilih penjual
               </option>
               {(users || [])
                 .filter((user) => user.role === "penjual")
@@ -685,14 +692,14 @@ export default function EditProduct() {
               value={formData.status}
               onChange={handleInputChange}
             >
-              <option value="available">Available</option>
-              <option value="sold">Sold</option>
+              <option value="available">Tersedia</option>
+              <option value="sold">Terjual</option>
             </select>
           </div>
 
           <div className="mb-6">
             <label htmlFor="description" className="text-white block">
-              Product Description
+              Deskripsi
             </label>
             <textarea
               name="description"
@@ -709,7 +716,7 @@ export default function EditProduct() {
             type="submit"
             className="bg-blue-400 text-white py-3 px-6 rounded-xl w-full"
           >
-            Save Changes
+            Simpan
           </button>
         </form>
       </div>

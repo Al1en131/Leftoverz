@@ -311,22 +311,22 @@ export default function Dashboard() {
       <div className="grid grid-cols-4 gap-6 mb-6 z-20">
         {[
           {
-            label: "Buyer",
+            label: "Pembeli",
             value: pembeliCount.toLocaleString(),
             color: "text-green-400",
           },
           {
-            label: "Seller",
+            label: "Penjual",
             value: penjualCount.toLocaleString(),
             color: "text-green-400",
           },
           {
-            label: "Total Products",
+            label: "Total Produk",
             value: productCount.toLocaleString(),
             color: "text-red-400",
           },
           {
-            label: "Total purchase",
+            label: "Total Pembelian",
             value: transactionCount.toLocaleString(),
             color: "text-green-400",
           },
@@ -355,11 +355,14 @@ export default function Dashboard() {
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white  p-6">
-            <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
-            <p className="text-sm text-gray-300">Glad to see you again!</p>
+            <span className="text-sm font-normal">Selamat Datang,</span>
+            <h2 className="text-xl font-semibold mb-1">Admin Leftoverz</h2>
+            <p className="text-sm text-gray-300">
+              {" "}
+              Selamat datang kembali! Kelola dashboard dengan mudah di sini.
+            </p>
             <button className="mt-4 text-white text-sm flex items-center gap-2">
-              Tap to dashboard →
+              Jelajahi Fitur Admin →
             </button>
           </div>
           <div className="relative z-10">
@@ -384,10 +387,10 @@ export default function Dashboard() {
           <div className="mb-4 flex items-center justify-between">
             <div>
               <h3 className="text-xl font-bold white mb-2">
-                Latest Transactions
+                Transaksi Terbaru
               </h3>
               <span className="text-base font-normal text-white">
-                This is a list of latest transactions
+                Ini Data Transaksi yang Terbaru
               </span>
             </div>
             <div className="shrink-0">
@@ -395,7 +398,7 @@ export default function Dashboard() {
                 href="/admin/transactions"
                 className="text-sm font-medium text-cyan-600 hover:bg-blue-400 hover:text-white rounded-lg p-2"
               >
-                View all
+                Lihat Semua
               </Link>
             </div>
           </div>
@@ -410,19 +413,19 @@ export default function Dashboard() {
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Product Name
+                          Nama Produk
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Buyer
+                          Pembeli
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Price
+                          Harga
                         </th>
                       </tr>
                     </thead>
@@ -457,9 +460,9 @@ export default function Dashboard() {
         >
           <div className="mb-4 flex items-center justify-between">
             <div>
-              <h3 className="text-xl font-bold white mb-2">Latest Products</h3>
+              <h3 className="text-xl font-bold white mb-2">Produk Terbaru</h3>
               <span className="text-base font-normal text-white">
-                This is a list of latest products
+                Ini Data Produk yang terbaru
               </span>
             </div>
             <div className="shrink-0">
@@ -467,7 +470,7 @@ export default function Dashboard() {
                 href="/admin/products"
                 className="text-sm font-medium text-cyan-600 hover:bg-blue-400 hover:text-white rounded-lg p-2"
               >
-                View all
+                Lihat semua
               </Link>
             </div>
           </div>
@@ -482,19 +485,19 @@ export default function Dashboard() {
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Image
+                          Gambar
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Product Name
+                          Nama Produk
                         </th>
                         <th
                           scope="col"
                           className="p-4 text-left text-xs font-medium text-white uppercase tracking-wider"
                         >
-                          Price
+                          Harga
                         </th>
                       </tr>
                     </thead>

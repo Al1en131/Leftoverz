@@ -251,10 +251,10 @@ export default function User() {
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white p-6">
-            <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
+            <span className="text-sm font-normal">Selamat Datang,</span>
+            <h2 className="text-xl font-semibold mb-1">Admin Leftoverz</h2>
             <p className="text-sm text-gray-300">
-              Glad to see you again! Ask me anything.
+              Selamat datang kembali! Kelola dashboard dengan mudah di sini
             </p>
             <Link
               href="/admin/users/"
@@ -276,7 +276,7 @@ export default function User() {
                   />
                 </svg>
               </div>
-              Back to Data Users
+              Kembali
             </Link>
           </div>
           <div className="z-10">
@@ -301,7 +301,7 @@ export default function User() {
         >
           <div>
             <label htmlFor="name" className="block mb-1">
-              Name
+              Nama
             </label>
             <input
               type="text"
@@ -343,7 +343,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="role" className="block mb-1">
-              Role
+              Kategori
             </label>
             <select
               name="role"
@@ -353,22 +353,22 @@ export default function User() {
               value={formData.role}
             >
               <option value="" disabled>
-                Select role
+                Pilih KategorI Pengguna
               </option>
               <option className="text-blue-400" value="admin">
                 Admin
               </option>
               <option className="text-blue-400" value="penjual">
-                Seller
+                Penjual
               </option>
               <option className="text-blue-400" value="pembeli">
-                Buyer
+                Pembeli
               </option>
             </select>
           </div>
           <div>
             <label htmlFor="phone_number" className="block mb-1">
-              Number Phone
+              No. Hp
             </label>
             <input
               type="text"
@@ -382,7 +382,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="role" className="block mb-1">
-              Payment Type
+              Tipe Pembayaran
             </label>
             <select
               name="payment_type"
@@ -392,7 +392,7 @@ export default function User() {
               value={formData.payment_type}
             >
               <option value="" disabled>
-                Select payment type
+                Pilih Tipe Pembayaran
               </option>
               <option className="text-blue-400" value="gopay">
                 Gopay
@@ -416,7 +416,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="account_holder_name" className="block mb-1">
-              Account Holder Name
+              Nama Pemilik Rekening
             </label>
             <input
               type="text"
@@ -430,7 +430,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="payment_account_number" className="block mb-1">
-              Payment Account Number
+              No. Rek
             </label>
             <input
               type="number"
@@ -445,7 +445,7 @@ export default function User() {
           <div>
             {" "}
             <label htmlFor="phone_number" className="block mb-1">
-              Province
+              Provinsi
             </label>
             <select
               name="province"
@@ -455,7 +455,7 @@ export default function User() {
               value={formData.province}
             >
               <option value="" disabled>
-                Select province
+                Pilih Provinsi
               </option>
               {provinces.map((data: { id: string; name: string }) => (
                 <option
@@ -470,7 +470,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="kabupaten" className="block mb-1">
-              Regency
+              Kabupaten
             </label>
             <select
               name="regency"
@@ -480,7 +480,7 @@ export default function User() {
               value={formData.regency}
             >
               <option value="" disabled>
-                Select regency
+                Pilih Kabupaten
               </option>
               {regency.map((data: { id: string; name: string }) => (
                 <option
@@ -495,7 +495,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="district" className="block mb-1">
-              District
+              Kecamatan
             </label>
             <select
               name="subdistrict"
@@ -505,7 +505,7 @@ export default function User() {
               value={formData.subdistrict}
             >
               <option value="" disabled>
-                Select district
+                Pilih Kecamatan
               </option>
               {subdistricts.map((data: { id: string; name: string }) => (
                 <option
@@ -520,7 +520,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="village" className="block mb-1">
-              Village
+              Kelurahan
             </label>
             <select
               name="ward"
@@ -530,7 +530,7 @@ export default function User() {
               value={formData.ward}
             >
               <option value="" disabled>
-                Select village
+                Pilih Kelurahan
               </option>
               {wards.map((data: { id: string; name: string }) => (
                 <option
@@ -545,7 +545,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="postal_code" className="block mb-1">
-              Postal Code
+              Kode Pos
             </label>
             <input
               type="number"
@@ -559,7 +559,7 @@ export default function User() {
           </div>
           <div>
             <label htmlFor="address" className="block mb-1">
-              Address
+              Alamat
             </label>
             <textarea
               name="address"
@@ -575,7 +575,7 @@ export default function User() {
             type="submit"
             className="w-full py-2 bg-blue-400 hover:bg-blue-500 rounded text-white"
           >
-            Submit User
+            Simpan
           </button>
         </form>
         {showSuccessPopup && (
@@ -590,15 +590,13 @@ export default function User() {
                   className="w-20 h-20"
                 />
               </div>
-              <h2 className="text-2xl font-bold mb-1 text-blue-400">
-                Success!
-              </h2>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
               <p className="mb-6 text-blue-400">{successMessage}</p>
               <button
                 onClick={handleClosePopup}
                 className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
               >
-                OK
+                Ya
               </button>
             </div>
           </div>
@@ -616,14 +614,14 @@ export default function User() {
                 />
               </div>
               <h2 className="text-2xl font-bold mb-1 text-red-400">
-                Something went wrong!
+                Terjadi Kesalahan!
               </h2>
               <p className="mb-6 text-red-400">{errorMessage}</p>
               <button
                 onClick={handleCloseErrorPopup}
                 className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
               >
-                OK
+                Ya
               </button>
             </div>
           </div>

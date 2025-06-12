@@ -516,10 +516,10 @@ export default function AddProduct() {
                     7–12 Bulan
                   </option>
                   <option className="text-blue-400" value="1-2 years">
-                    1–2 Bulan
+                    1–2 Tahun
                   </option>
                   <option className="text-blue-400" value="3-4 years">
-                    3–4 Bulan
+                    3–4 Tahun
                   </option>
                   <option className="text-blue-400" value="5+ years">
                     Lebih dari 5 tahun

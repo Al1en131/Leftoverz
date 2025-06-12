@@ -209,23 +209,23 @@ export default function Products() {
               />
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Are you sure?
+              Apakah kamu yakin?
             </h2>
             <p className="mb-6 text-blue-400">
-              Do you want to delete this product?
+              Apakah Kamu yakin ingin menghapus produk ini?
             </p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleClosePopup}
                 className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-full"
               >
-                Cancel
+                Batal
               </button>
               <button
                 onClick={handleConfirmDelete}
                 className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full"
               >
-                Delete
+                Hapus
               </button>
             </div>
           </div>
@@ -249,7 +249,7 @@ export default function Products() {
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -272,7 +272,7 @@ export default function Products() {
               onClick={handleClosePopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -285,7 +285,7 @@ export default function Products() {
         className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold">Products</h1>
+        <h1 className="text-3xl font-bold">Produk</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
             <p>{dateString.day}</p>
@@ -303,16 +303,16 @@ export default function Products() {
         >
           <div className="absolute inset-0 opacity-40 rounded-lg"></div>
           <div className="relative z-10 text-white  p-6">
-            <span className="text-sm font-normal">Welcome back,</span>
-            <h2 className="text-xl font-semibold mb-1">Superadmin Leftoverz</h2>
+            <span className="text-sm font-normal">Selamat Datang,</span>
+            <h2 className="text-xl font-semibold mb-1">Admin Leftoverz</h2>
             <p className="text-sm text-gray-300">
-              Glad to see you again! Ask me anything.
+              Selamat datang kembali! Kelola dashboard dengan mudah di sini
             </p>
             <Link
               href="/admin/"
               className="mt-4 text-white text-sm flex items-center gap-2"
             >
-              Tap to dashboard →
+              Ketuk untuk ke dashboard →
             </Link>
           </div>
           <div className="z-10">
@@ -335,14 +335,14 @@ export default function Products() {
       >
         <div className="px-6 pt-5 pb-8 flex justify-between items-center">
           <div>
-            <h3 className="text-xl font-bold">Product List</h3>
-            <p>List of all products</p>
+            <h3 className="text-xl font-bold">Daftar Produk</h3>
+            <p>Daftar semua produk</p>
           </div>
           <div className="flex flex-wrap gap-2 items-center">
             <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Cari..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 pr-10 rounded text-white placeholder-gray-400 bg-transparent border border-gray-600 focus:outline-none"
@@ -370,7 +370,7 @@ export default function Products() {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Add Product
+              Tambah Produk
             </Link>
           </div>
         </div>
@@ -378,13 +378,13 @@ export default function Products() {
           <thead className=" text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-4 py-3 text-center">No.</th>
-              <th className="px-4 py-3 text-center">Image</th>
-              <th className="px-4 py-3 text-left">Product Name</th>
-              <th className="px-4 py-3 text-left">Seller</th>
-              <th className="px-4 py-3 text-left">Description</th>
-              <th className="px-4 py-3 text-center">Price</th>
+              <th className="px-4 py-3 text-center">Gambar</th>
+              <th className="px-4 py-3 text-left">Nama Produk</th>
+              <th className="px-4 py-3 text-left">Penjual</th>
+              <th className="px-4 py-3 text-left">Deskripsi</th>
+              <th className="px-4 py-3 text-center">Harga</th>
               <th className="px-4 py-3 text-center">Status</th>
-              <th className="px-4 py-3 text-center">Action</th>
+              <th className="px-4 py-3 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -498,17 +498,43 @@ export default function Products() {
             className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
             disabled={currentPage === 1}
           >
-            Previous
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.75 19.5 8.25 12l7.5-7.5"
+              />
+            </svg>
           </button>
           <span className="text-white font-semibold">
-            Page {currentPage} of {totalPages}
+            {currentPage} dari {totalPages}
           </span>
           <button
             onClick={handleNextPage}
             className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
             disabled={currentPage === totalPages}
           >
-            Next
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="size-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
+              />
+            </svg>
           </button>
         </div>
       </div>
