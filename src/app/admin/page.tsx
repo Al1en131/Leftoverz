@@ -54,7 +54,30 @@ export default function Dashboard() {
   const [transactionCount, setTransactionCount] = useState(0);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [currentDate, setCurrentDate] = useState<string>("");
+  const [dateString, setDateString] = useState({
+    day: "",
+    fullDate: "",
+  });
+  useEffect(() => {
+    const now = new Date();
+    const optionsDay: Intl.DateTimeFormatOptions = { weekday: "long" };
+    const optionsDate: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    };
 
+    const day = now.toLocaleDateString("id-ID", optionsDay);
+    const fullDate = now.toLocaleDateString("id-ID", optionsDate);
+
+    setDateString({ day, fullDate });
+  }, []);
+
+  useEffect(() => {
+    const today = new Date();
+    setCurrentDate(today.toLocaleDateString());
+  }, [currentDate]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -303,8 +326,8 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
-            <p>Wednesdey</p>
-            <p>12 Jul 2025</p>
+            <p>{dateString.day}</p>
+            <p>{dateString.fullDate}</p>
           </div>
         </div>
       </div>
