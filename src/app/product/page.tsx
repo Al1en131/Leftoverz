@@ -13,6 +13,15 @@ const options = [
   { value: "high-price", label: "Harga Tertinggi" },
 ];
 
+type Province = {
+  id: string;
+  name: string;
+};
+
+type Option = {
+  value: string;
+  label: string;
+};
 type Product = {
   id: number;
   name: string;
@@ -24,8 +33,8 @@ type Product = {
   price: number;
   status: string;
   user_id: number;
-  seller?: { name: string };
-  user?: { subdistrict: string };
+  seller?: { name: string; province: string };
+  user?: { subdistrict: string; province?: string };
   embedding: number[];
 };
 
@@ -45,6 +54,10 @@ export default function Product() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [selectedProvince, setSelectedProvince] = useState<Province | null>(
+    null
+  );
   const [products, setProducts] = useState<Product[]>([]);
   const [open, setOpen] = useState(false);
   const [image, setImage] = useState<string | null>(null);
@@ -52,6 +65,29 @@ export default function Product() {
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      try {
+        const response = await fetch(
+          "https://api.binderbyte.com/wilayah/provinsi?api_key=..."
+        );
+        const data = await response.json();
+        if (data.status === 200 && Array.isArray(data.value)) {
+          const formatted: Province[] = data.value.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+          }));
+
+          setProvinces(formatted);
+          setSelectedProvince(formatted[0]); // otomatis pilih pertama
+        }
+      } catch (error) {
+        console.error("Failed to fetch provinces", error);
+      }
+    };
+
+    fetchProvinces();
+  }, []);
 
   const fetchProducts = async () => {
     try {
@@ -95,7 +131,6 @@ export default function Product() {
             subdistrict: product.user?.subdistrict || "Unknown",
           };
         });
-
       setProducts(parsedProducts);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -189,8 +224,19 @@ export default function Product() {
   };
 
   const filteredProducts = useMemo(() => {
-    let result = products.filter((product) => {
-      const query = searchQuery.toLowerCase();
+    let result = products;
+
+
+    if (selectedProvince) {
+      result = result.filter(
+        (product) =>
+          product.user?.province?.toLowerCase() ===
+          selectedProvince.name.toLowerCase()
+      );
+    }
+
+    const query = searchQuery.toLowerCase();
+    result = result.filter((product) => {
       const nameMatch = product.name.toLowerCase().includes(query);
       const sellerMatch = product.seller?.name.toLowerCase().includes(query);
       const subdistrictMatch = product.user?.subdistrict
@@ -464,6 +510,30 @@ export default function Product() {
                     />
                   </div>
                 )}
+                <div className="mb-3">
+                  <label
+                    className={`text-base font-medium ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
+                    Provinsi
+                  </label>
+                  <Listbox
+                    value={selectedProvince}
+                    onChange={setSelectedProvince}
+                  >
+                    <Listbox.Button className="...">
+                      {selectedProvince?.name || "Pilih Provinsi"}
+                    </Listbox.Button>
+                    <Listbox.Options className="...">
+                      {provinces.map((province) => (
+                        <Listbox.Option key={province.id} value={province}>
+                          {province.name}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Listbox>
+                </div>
 
                 <div className="mb-3">
                   <label
