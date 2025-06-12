@@ -214,7 +214,7 @@ export default function User() {
       }
 
       setSuccessMessage(
-        userId ? "User updated successfully!" : "User created successfully!"
+        userId ? "User berhasil diedit!" : "User created successfully!"
       );
       setShowSuccessPopup(true);
 
@@ -241,7 +241,7 @@ export default function User() {
       } else if (typeof error === "string") {
         setErrorMessage(error);
       } else {
-        setErrorMessage("Something went wrong!");
+        setErrorMessage("Terjadi Kesalahan!");
       }
       setShowErrorPopup(true);
     }

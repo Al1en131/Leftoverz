@@ -279,7 +279,7 @@ export default function EditProduct() {
 
       const data = await res.json();
       if (res.ok) {
-        setSuccessMessage("Product successfully updated!");
+        setSuccessMessage("Produk berhasil diupdate!");
         setShowSuccessPopup(true);
       } else {
         setErrorMessage(data.message || "An error occurred.");
@@ -287,7 +287,7 @@ export default function EditProduct() {
       }
     } catch (err) {
       console.error(err);
-      setErrorMessage("Server error, please try again.");
+      setErrorMessage("Terjadi Kesalahan!");
       setShowErrorPopup(true);
     }
   };

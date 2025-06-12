@@ -164,7 +164,7 @@ export default function User() {
         throw new Error(result.message || "Failed to add user");
       }
 
-      setSuccessMessage("User created successfully!");
+      setSuccessMessage("User berhasil ditambahkan!");
       setShowSuccessPopup(true);
       setFormData({
         name: "",
@@ -188,7 +188,7 @@ export default function User() {
       } else if (typeof error === "string") {
         setErrorMessage(error);
       } else {
-        setErrorMessage("Something went wrong!");
+        setErrorMessage("Terjadi Kesalahan!");
       }
       setShowErrorPopup(true);
     }

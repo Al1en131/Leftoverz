@@ -221,7 +221,7 @@ export default function AddProduct() {
       const data = await response.json();
       if (response.ok) {
         setShowSuccessPopup(true);
-        setSuccessMessage("Product successfully created!");
+        setSuccessMessage("Produk berhasil ditambahkan!");
       } else {
         setShowErrorPopup(true);
         setErrorMessage(data.message || "An error occurred. Please try again.");
@@ -229,7 +229,7 @@ export default function AddProduct() {
     } catch (error) {
       console.error("Error creating product:", error);
       setShowErrorPopup(true);
-      setErrorMessage("Error creating product, please try again.");
+      setErrorMessage("Terjadi Kesalahan ketika menambahkan produk");
     }
   };
 
