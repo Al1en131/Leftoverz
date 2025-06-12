@@ -45,12 +45,12 @@ export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
 
   const navLinks = [
-    { href: "/seller", label: "Home" },
-    { href: "/seller/about", label: "About" },
-    { href: "/seller/my-product", label: "My Product" },
-    { href: "/seller/transaction", label: "Transaction" },
-    { href: "/seller/refund", label: "Refund" },
-    { href: "/seller/chat", label: "Chat" },
+    { href: "/seller", label: "Beranda" },
+    { href: "/seller/about", label: "Tentang Kami" },
+    { href: "/seller/my-product", label: "Produk Saya" },
+    { href: "/seller/transaction", label: "Transaksi" },
+    { href: "/seller/refund", label: "Pengembalian" },
+    { href: "/seller/chat", label: "Pesan" },
   ];
 
   return (
@@ -161,7 +161,7 @@ export default function Navbar() {
                     href="/seller/detail-profile"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                   >
-                    Edit Profile
+                    Edit Profil
                   </Link>
                   <button
                     className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
@@ -203,7 +203,7 @@ export default function Navbar() {
                   href="/seller/detail-profile"
                   className="block px-4 py-2 text-gray-800 z-50 hover:bg-gray-100"
                 >
-                  Edit Profile
+                  Edit Profil
                 </Link>
                 <button
                   className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"

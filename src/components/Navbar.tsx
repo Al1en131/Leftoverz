@@ -21,10 +21,7 @@ export default function Navbar() {
   return (
     <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <Link
-          href="/"
-          className="text-lg font-semibold"
-        >
+        <Link href="/" className="text-lg font-semibold">
           <Image
             width={100}
             height={100}
@@ -55,7 +52,11 @@ export default function Navbar() {
               }`}
             >
               {route === "/"
-                ? "Home"
+                ? "Beranda"
+                : route === "/about"
+                ? "Tentang Kami"
+                : route === "/product"
+                ? "Produk"
                 : route.replace("/", "").replace("-", " ")}
             </Link>
           ))}
@@ -120,7 +121,11 @@ export default function Navbar() {
               onClick={() => setIsOpen(false)}
             >
               {route === "/"
-                ? "Home"
+                ? "Beranda"
+                : route === "/about"
+                ? "Tentang Kami"
+                : route === "/product"
+                ? "Produk"
                 : route
                     .replace("/", "") // Hapus slash di awal
                     .replace(/-/g, " ") // Ganti "-" jadi spasi

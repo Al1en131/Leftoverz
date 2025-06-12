@@ -44,10 +44,10 @@ export default function NavbarBuyer() {
     }
   };
   const navLinks = [
-    { href: "/buyer", label: "Home" },
-    { href: "/buyer/about", label: "About" },
-    { href: "/buyer/product", label: "Product" },
-    { href: "/buyer/my-order", label: "My Order" },
+    { href: "/buyer", label: "Beranda" },
+    { href: "/buyer/about", label: "Tentang Kami" },
+    { href: "/buyer/product", label: "Produk" },
+    { href: "/buyer/my-order", label: "Pesanan Saya" },
   ];
 
   return (
@@ -154,7 +154,7 @@ export default function NavbarBuyer() {
                   href="/buyer/detail-profile"
                   className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
                 >
-                  Edit Profile
+                  Edit Profil
                 </Link>
                 <Link
                   href="/buyer/favorite"
@@ -202,7 +202,7 @@ export default function NavbarBuyer() {
                 href="/buyer/detail-profile"
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
-                Edit Profile
+                Edit Profil
               </Link>
               <Link
                 href="/buyer/favorite"
