@@ -75,7 +75,7 @@ export default function Product() {
     const fetchProvinces = async () => {
       try {
         const response = await fetch(
-          "https://api.binderbyte.com/wilayah/provinsi?api_key=..."
+          "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
         );
         const data: BinderbyteProvinceResponse = await response.json();
 
