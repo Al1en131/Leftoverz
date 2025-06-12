@@ -342,7 +342,7 @@ export default function User() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="w-full overflow-x-auto">
           <table className="min-w-full rounded-lg my-4">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
