@@ -18,16 +18,6 @@ type Province = {
   name: string;
 };
 
-type BinderbyteProvinceItem = {
-  id: string | number;
-  name: string;
-};
-
-type BinderbyteProvinceResponse = {
-  status: number;
-  value: BinderbyteProvinceItem[];
-};
-
 type Product = {
   id: number;
   name: string;
