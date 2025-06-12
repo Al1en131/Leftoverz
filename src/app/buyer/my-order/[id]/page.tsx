@@ -1428,7 +1428,7 @@ export default function BuyProduct() {
                       }`}
                     >
                       <p>
-                        <strong className="tracking-wider">AWB:</strong>{" "}
+                        <strong className="tracking-wider">No.resi:</strong>{" "}
                         {trackingData.summary.awb || "-"}
                       </p>
                       <p>

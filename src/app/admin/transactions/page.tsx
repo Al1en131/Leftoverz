@@ -16,6 +16,8 @@ type RawTransaction = {
   created_at: string;
   awb: string;
   courir: string;
+  total: number;
+  status_package: string;
   item?: {
     name: string;
     image: string[];
@@ -57,6 +59,21 @@ export default function Products() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+
+  const getStatusPackageColor = (status_package: string | null) => {
+    switch (status_package?.toLowerCase()) {
+      case "pending":
+        return "bg-yellow-500";
+      case "approved":
+        return "bg-green-500";
+      case "rejected":
+        return "bg-red-500";
+      case "delivered":
+        return "bg-blue-500";
+      default:
+        return "bg-gray-500";
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -294,7 +311,7 @@ export default function Products() {
                     .join(" ")}
                 </td>
                 <td className="px-3 py-4 text-white text-center">
-                  Rp {item.item?.price.toLocaleString("id-ID")}
+                  Rp {item.total.toLocaleString("id-ID")}
                 </td>
                 <td className="px-3 py-4 capitalize text-white text-center">
                   {item.courir}
@@ -309,6 +326,15 @@ export default function Products() {
                     )} text-white`}
                   >
                     {item.status}
+                  </span>
+                </td>
+                <td className="px-3 py-4 text-center">
+                  <span
+                    className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusPackageColor(
+                      item.status_package
+                    )} text-white`}
+                  >
+                    {item.status_package || "-"}
                   </span>
                 </td>
               </tr>

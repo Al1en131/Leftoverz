@@ -38,6 +38,26 @@ type RefundDisplay = Refund & {
   seller_name: string;
   image: string[];
 };
+type TrackingDataType = {
+  summary: {
+    awb: string;
+    courier: string;
+    status: string;
+    date: string;
+    weight: string;
+    amount: string;
+  };
+  detail: {
+    origin: string;
+    destination: string;
+    shipper: string;
+    receiver: string;
+  };
+  history: {
+    date: string;
+    desc: string;
+  }[];
+};
 
 export default function Products() {
   const router = useRouter();
@@ -47,6 +67,10 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRefund, setSelectedRefund] = useState<RefundDisplay | null>(
+    null
+  );
+  const [showTrackingModal, setShowTrackingModal] = useState(false);
+  const [trackingData, setTrackingData] = useState<TrackingDataType | null>(
     null
   );
   const [newStatus, setNewStatus] = useState("");
@@ -60,7 +84,10 @@ export default function Products() {
     (item) =>
       item.item_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.buyer_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.seller_name?.toLowerCase().includes(searchQuery.toLowerCase())
+      item.seller_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.courir?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.status?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.status_package?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
@@ -69,6 +96,47 @@ export default function Products() {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const handleTrackPackageRefund = async () => {
+    if (!selectedRefund) return;
+
+    try {
+      const courir = selectedRefund.courir?.toLowerCase();
+      const awb = selectedRefund.tracking_number;
+
+      if (!courir || !awb) {
+        alert("Data ekspedisi tidak lengkap.");
+        return;
+      }
+
+      const courierMap: Record<string, string> = {
+        jne: "jne",
+        jnt: "jnt",
+        sicepat: "sicepat",
+        "si cepat": "sicepat",
+      };
+
+      const courierParam = courierMap[courir];
+      if (!courierParam) {
+        alert("Kurir tidak dikenali.");
+        return;
+      }
+
+      const res = await fetch(
+        `https://api.binderbyte.com/v1/track?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d&courier=${courierParam}&awb=${awb}`
+      );
+
+      const result = await res.json();
+      if (result.status === 200) {
+        setTrackingData(result.data);
+        setShowTrackingModal(true);
+      } else {
+        alert("Tracking gagal: " + result.message);
+      }
+    } catch (err) {
+      console.error("Tracking Error:", err);
+      alert("Terjadi kesalahan saat tracking.");
+    }
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -296,7 +364,7 @@ export default function Products() {
                   {(currentPage - 1) * itemsPerPage + index + 1}
                 </td>
 
-                <td className="px-3 py-4 text-white text-center">
+                <td className="px-3 py-4 text-white text-center flex justify-center">
                   <Image
                     src={
                       item.image &&
@@ -366,30 +434,207 @@ export default function Products() {
                 </td>
 
                 <td className="px-3 py-4 text-white text-center">
-                  <button
-                    onClick={() => {
-                      setSelectedRefund(item);
-                      setNewStatus(item.status);
-                      setIsModalOpen(true);
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 px-1.5 py-1.5 rounded-md text-sm"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      aria-hidden="true"
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => {
+                        setSelectedRefund(item);
+                        setNewStatus(item.status);
+                        setIsModalOpen(true);
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 px-1.5 py-1.5 rounded-md text-sm"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
-                      />
-                    </svg>
-                  </button>
+                      <svg
+                        className="w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
+                        />
+                      </svg>
+                    </button>
+                    {(item.status === "shipping" && (
+                      <button
+                        onClick={() => {
+                          setSelectedRefund(item);
+                          handleTrackPackageRefund();
+                        }}
+                        className="mt-2 px-2 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-4 h-4"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                          />
+                        </svg>
+                      </button>
+                    )) ||
+                      "-"}
+                    {showTrackingModal && trackingData && (
+                      <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                        <div
+                          className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 bg-[#080B2A]`}
+                        >
+                          <button
+                            className="absolute top-4 right-4 text-red-500 font-bold text-xl"
+                            onClick={() => setShowTrackingModal(false)}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18 18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+
+                          <h2 className="text-xl font-bold mb-4 text-blue-500">
+                            Tracking Information
+                          </h2>
+
+                          <div className={`mb-4 text-white`}>
+                            <p>
+                              <strong className="tracking-wider">AWB:</strong>{" "}
+                              {trackingData.summary.awb || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Courier:
+                              </strong>{" "}
+                              {trackingData.summary.courier || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Status:
+                              </strong>{" "}
+                              {trackingData.summary.status || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">Date:</strong>{" "}
+                              {trackingData.summary.date || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Weight:
+                              </strong>{" "}
+                              {trackingData.summary.weight || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">Cost:</strong>{" "}
+                              Rp {trackingData.summary.amount || "-"}
+                            </p>
+                          </div>
+
+                          <div className={`mb-4 text-white`}>
+                            <p>
+                              <strong className="tracking-wider">From:</strong>{" "}
+                              {trackingData.detail.origin || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">To:</strong>{" "}
+                              {trackingData.detail.destination || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Shipper:
+                              </strong>{" "}
+                              {trackingData.detail.shipper || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Receiver:
+                              </strong>{" "}
+                              {trackingData.detail.receiver || "-"}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="text-lg font-semibold text-blue-500 mb-2">
+                              Tracking History
+                            </h3>
+                            <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                              <div
+                                className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm bg-white/10`}
+                              >
+                                <h3
+                                  className={`text-xl font-semibold text-white`}
+                                >
+                                  Tracking History
+                                </h3>
+
+                                <ol className="relative ms-3 border-s border-gray-500">
+                                  {trackingData?.history?.map((item, index) => (
+                                    <li
+                                      key={index}
+                                      className={`mb-10 ms-6 ${
+                                        index === 0 ? "text-primary-500" : ""
+                                      }`}
+                                    >
+                                      <span
+                                        className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
+                                          index === 0
+                                            ? "bg-blue-400"
+                                            : "bg-gray-500"
+                                        } text-white`}
+                                      >
+                                        <svg
+                                          className="h-4 w-4"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 11.917 9.724 16.5 19 7.5"
+                                          />
+                                        </svg>
+                                      </span>
+                                      <h4
+                                        className={`mb-0.5 text-base font-semibold text-white`}
+                                      >
+                                        {item.date}
+                                      </h4>
+                                      <p className="text-sm text-blue-400">
+                                        {item.desc}
+                                      </p>
+                                    </li>
+                                  ))}
+                                </ol>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </td>
                 {isModalOpen && selectedRefund && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
