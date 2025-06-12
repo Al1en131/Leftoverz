@@ -67,17 +67,17 @@ export default function Product() {
         const response = await fetch(
           "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
         );
-        const data: {
-          status: number;
-          value: Province[];
-        } = await response.json();
+        const data = await response.json();
+        console.log("Fetched data:", data); // ⬅️ PASTIKAN INI MUNCUL DI CONSOLE
 
         if (data.status === 200 && Array.isArray(data.value)) {
           setProvinces(data.value);
-          setSelectedProvince(data.value[0]); // atur default selected
+          setSelectedProvince(data.value[0]);
+        } else {
+          console.warn("Unexpected response:", data);
         }
       } catch (error) {
-        console.error("Failed to fetch provinces", error);
+        console.error("Fetch failed:", error);
       }
     };
 
