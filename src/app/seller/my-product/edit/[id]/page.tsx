@@ -95,7 +95,10 @@ export default function EditProduct() {
 
         if (Array.isArray(parsedImage)) {
           setInitialImageUrls(
-            parsedImage.map((url: string) => `https://backend-leftoverz-production.up.railway.app${url}`)
+            parsedImage.map(
+              (url: string) =>
+                `https://backend-leftoverz-production.up.railway.app${url}`
+            )
           );
           setKeptInitialImages(parsedImage); // ✅ ini yang benar
         }
@@ -112,12 +115,15 @@ export default function EditProduct() {
           // Jika image adalah array dan memiliki gambar
           setInitialImageUrls(
             parsedImage.map(
-              (imgUrl: string) => `https://backend-leftoverz-production.up.railway.app${imgUrl}`
+              (imgUrl: string) =>
+                `https://backend-leftoverz-production.up.railway.app${imgUrl}`
             )
           );
         } else if (parsedImage && parsedImage.url) {
           // Jika image adalah objek dan memiliki properti url
-          setInitialImageUrls([`https://backend-leftoverz-production.up.railway.app${parsedImage.url}`]);
+          setInitialImageUrls([
+            `https://backend-leftoverz-production.up.railway.app${parsedImage.url}`,
+          ]);
         } else {
           console.log("No valid image data found");
         }
@@ -175,10 +181,13 @@ export default function EditProduct() {
     formData.append("image", file);
 
     try {
-      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const text = await response.text();
@@ -336,16 +345,14 @@ export default function EditProduct() {
               />
             </div>
 
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Product Successfully Updated!
-            </h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
               onClick={handleClosePopup} // Menutup popup
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -368,7 +375,7 @@ export default function EditProduct() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-red-400">
-              Something went wrong!
+              Terjasi Kesalahan!
             </h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
@@ -376,7 +383,7 @@ export default function EditProduct() {
               onClick={handleCloseErrorPopup} // Menutup popup error
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -405,7 +412,7 @@ export default function EditProduct() {
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             ></div>
             <h1 className="text-5xl lg:text-6xl tracking-wide font-bold text-center absolute inset-0 flex justify-center items-center z-50">
-              Edit Product
+              Edit Produk
             </h1>
           </div>
         </div>
@@ -439,12 +446,10 @@ export default function EditProduct() {
                       />
                     </svg>
                     <p className="mb-2 text-sm">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Klik untuk unggah</span>{" "}
+                      atau Geser dan Letakkan
                     </p>
-                    <p className="text-xs">
-                      SVG, PNG, JPG or GIF (MAX. 800x400px)
-                    </p>
+                    <p className="text-xs">SVG, PNG, JPG atau GIF</p>
                   </div>
                   <input
                     id="dropzone-file"
@@ -548,7 +553,7 @@ export default function EditProduct() {
                 }`}
               >
                 <label htmlFor="name" className="block mb-1">
-                  Product Name
+                  Nama Produk
                 </label>
                 <input
                   type="text"
@@ -570,7 +575,7 @@ export default function EditProduct() {
                 }`}
               >
                 <label htmlFor="price" className="block mb-1">
-                  Price (Rp. )
+                  Harga Jual
                 </label>
                 <input
                   type="number"
@@ -592,7 +597,7 @@ export default function EditProduct() {
                 }`}
               >
                 <label htmlFor="original_price" className="block mb-1">
-                  Original Price (Rp.)
+                  Harga Beli
                 </label>
                 <input
                   type="text"
@@ -614,7 +619,7 @@ export default function EditProduct() {
                 }`}
               >
                 <label htmlFor="used_duration" className="block mb-1">
-                  Used Duration
+                  Lama Penggunaan
                 </label>
                 <select
                   name="used_duration"
@@ -628,10 +633,10 @@ export default function EditProduct() {
                   value={formData.used_duration}
                 >
                   <option value="" disabled>
-                    Select Used Duration
+                    Pilih Berapa Lama Penggunaan
                   </option>
                   <option className="text-blue-400" value="New">
-                    New
+                    Baru
                   </option>
                   <option className="text-blue-400" value="1-3 months">
                     1–3 months
@@ -673,10 +678,14 @@ export default function EditProduct() {
                   onChange={handleChange}
                 >
                   <option value="" disabled>
-                    Select Status
+                    Pilih Status
                   </option>
-                  <option className="text-blue-400" value="available">Available</option>
-                  <option className="text-blue-400" value="sold">Sold</option>
+                  <option className="text-blue-400" value="available">
+                    Tersedia
+                  </option>
+                  <option className="text-blue-400" value="sold">
+                    Terjual
+                  </option>
                 </select>
               </div>
               <div
@@ -685,7 +694,7 @@ export default function EditProduct() {
                 }`}
               >
                 <label htmlFor="description" className="block mb-1">
-                  Description
+                  Deskripsi
                 </label>
                 <textarea
                   name="description"
@@ -705,7 +714,7 @@ export default function EditProduct() {
                 type="submit"
                 className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500"
               >
-                Update Product
+                Perbarui
               </button>
             </form>
           </section>

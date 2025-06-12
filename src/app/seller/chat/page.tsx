@@ -400,7 +400,7 @@ export default function RoomChat() {
                   : "bg-white/30 text-[#080B2A]"
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             >
-              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Chat</h1>
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Pesan</h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
                 Kelola percakapan Anda dengan pembeli atau calon pembeli di
                 sini. Jawab pertanyaan, diskusikan detail produk, dan bangun

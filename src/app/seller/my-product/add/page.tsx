@@ -38,10 +38,13 @@ export default function AddProduct() {
     formData.append("image", file);
 
     try {
-      const response = await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/embed-local/create",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         const text = await response.text();
@@ -231,16 +234,14 @@ export default function AddProduct() {
               />
             </div>
 
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Product Successful Created!
-            </h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
               onClick={handleClosePopup} // Menutup popup
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -263,7 +264,7 @@ export default function AddProduct() {
             </div>
 
             <h2 className="text-2xl font-bold mb-1 text-red-400">
-              Something went wrong!
+              Terjadi Kesalahan!
             </h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
@@ -271,7 +272,7 @@ export default function AddProduct() {
               onClick={handleCloseErrorPopup} // Menutup popup error
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -346,7 +347,7 @@ export default function AddProduct() {
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             ></div>
             <h1 className="text-5xl lg:text-7xl tracking-wide font-bold text-center absolute inset-0 flex justify-center items-center z-50">
-              Add Product
+              Tambah Produk
             </h1>
           </div>
         </div>
@@ -380,12 +381,10 @@ export default function AddProduct() {
                       />
                     </svg>
                     <p className="mb-2 text-sm">
-                      <span className="font-semibold">Click to upload</span> or
-                      drag and drop
+                      <span className="font-semibold">Klik untuk unggah</span>{" "}
+                      atau geser dan letakkan
                     </p>
-                    <p className="text-xs">
-                      SVG, PNG, JPG or GIF (MAX. 800x400px)
-                    </p>
+                    <p className="text-xs">SVG, PNG, JPG atau GIF</p>
                   </div>
                   <input
                     id="dropzone-file"
@@ -420,7 +419,7 @@ export default function AddProduct() {
                 }`}
               >
                 <label htmlFor="name" className=" block">
-                  Product Name
+                  Nama Produk
                 </label>
                 <input
                   type="text"
@@ -444,7 +443,7 @@ export default function AddProduct() {
                 }`}
               >
                 <label htmlFor="price" className="block">
-                  Price (Rp.)
+                  Harga Jual
                 </label>
                 <input
                   type="text"
@@ -466,7 +465,7 @@ export default function AddProduct() {
                 }`}
               >
                 <label htmlFor="original_price" className="block">
-                  Original Price (Rp.)
+                  Harga Asli
                 </label>
                 <input
                   type="text"
@@ -488,7 +487,7 @@ export default function AddProduct() {
                 }`}
               >
                 <label htmlFor="used_duration" className="block">
-                  Used Duration
+                  Lama Penggunaan
                 </label>
                 <select
                   name="used_duration"
@@ -502,28 +501,28 @@ export default function AddProduct() {
                   value={formData.used_duration}
                 >
                   <option value="" disabled>
-                    Select Used Duration
+                    Pilih Berapa Lama Penggunaan
                   </option>
                   <option className="text-blue-400" value="New">
-                    New
+                    Baru
                   </option>
                   <option className="text-blue-400" value="1-3 months">
-                    1–3 months
+                    1–3 Bulan
                   </option>
                   <option className="text-blue-400" value="4-6 months">
-                    4–6 months
+                    4–6 Bulan
                   </option>
                   <option className="text-blue-400" value="7-12 months">
-                    7–12 months
+                    7–12 Bulan
                   </option>
                   <option className="text-blue-400" value="1-2 years">
-                    1–2 years
+                    1–2 Bulan
                   </option>
                   <option className="text-blue-400" value="3-4 years">
-                    3–4 years
+                    3–4 Bulan
                   </option>
                   <option className="text-blue-400" value="5+ years">
-                    Over 5 years
+                    Lebih dari 5 tahun
                   </option>
                 </select>
               </div>
@@ -548,10 +547,10 @@ export default function AddProduct() {
                   value={formData.status}
                 >
                   <option className="text-blue-400" value="available">
-                    Available
+                    Tersedia
                   </option>
                   <option className="text-blue-400" value="sold">
-                    Sold
+                    Terjual
                   </option>
                 </select>
               </div>
@@ -563,7 +562,7 @@ export default function AddProduct() {
                 }`}
               >
                 <label htmlFor="description" className="block">
-                  Description
+                  Deskripsi
                 </label>
                 <textarea
                   name="description"
@@ -585,7 +584,7 @@ export default function AddProduct() {
                 type="submit"
                 className="w-full bg-blue-400 text-white py-2 rounded-lg hover:bg-blue-500"
               >
-                Submit Product
+                Tambah
               </button>
             </form>
           </section>

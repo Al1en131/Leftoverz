@@ -342,7 +342,7 @@ export default function Transaction() {
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             >
               <h1 className="lg:text-6xl max-lg:text-4xl font-bold">
-                Transaction
+                Transaksi
               </h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
                 Kelola dan pantau semua transaksi Anda dengan mudah di satu
@@ -356,7 +356,7 @@ export default function Transaction() {
         <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center gap-4">
           <form className="w-full">
             <label className="mb-2 text-sm font-medium text-white sr-only">
-              Search
+              Cari
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
@@ -386,7 +386,7 @@ export default function Transaction() {
                     ? "text-white bg-white/10"
                     : "text-blue-400 bg-black/5"
                 }`}
-                placeholder="Search your transactions"
+                placeholder="Cari Data Transaksi"
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -408,18 +408,18 @@ export default function Transaction() {
                 }`}
               >
                 <tr className="border-b">
-                  <th className="px-6 py-3 text-center">Image</th>
-                  <th className="px-6 py-3 text-left">Product Name</th>
-                  <th className="px-6 py-3 text-left">Buyer</th>
-                  <th className="px-6 py-3 text-left">Address</th>
-                  <th className="px-6 py-3 center">Phone number</th>
-                  <th className="px-6 py-3 text-center">Payment Method</th>
-                  <th className="px-6 py-3 text-center">Price</th>
-                  <th className="px-6 py-3 text-center">Status Payment</th>
+                  <th className="px-6 py-3 text-center">Gambar</th>
+                  <th className="px-6 py-3 text-left">Nama Produk</th>
+                  <th className="px-6 py-3 text-left">Pembeli</th>
+                  <th className="px-6 py-3 text-left">Alamat</th>
+                  <th className="px-6 py-3 center">No. Hp</th>
+                  <th className="px-6 py-3 text-center">Metode Pembayaran</th>
+                  <th className="px-6 py-3 text-center">Harga</th>
+                  <th className="px-6 py-3 text-center">Status Pembayaran</th>
                   <th className="px-6 py-3 text-center">Kurir</th>
                   <th className="px-6 py-3 text-center">No. Resi</th>
-                  <th className="px-6 py-3 text-center">Status Package</th>
-                  <th className="px-6 py-3 text-center">Action</th>
+                  <th className="px-6 py-3 text-center">Status Paket</th>
+                  <th className="px-6 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
 
@@ -630,13 +630,13 @@ export default function Transaction() {
                               </button>
 
                               <h2 className="text-xl font-bold mb-4 text-blue-400">
-                                Edit Transaction
+                                Edit Transaksi
                               </h2>
 
                               <div className="space-y-4">
                                 <div>
                                   <label className="block text-sm font-medium text-blue-400">
-                                    Courier
+                                    Kurir
                                   </label>
                                   <select
                                     value={editData.courir}
@@ -744,7 +744,7 @@ export default function Transaction() {
                               </button>
 
                               <h2 className="text-xl font-bold mb-4 text-blue-500">
-                                Tracking Information
+                                Informasi Pengiriman Barang
                               </h2>
 
                               <div
@@ -756,13 +756,13 @@ export default function Transaction() {
                               >
                                 <p>
                                   <strong className="tracking-wider">
-                                    AWB:
+                                    No. Resi:
                                   </strong>{" "}
                                   {trackingData.summary.awb || "-"}
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    Courier:
+                                    Kurir:
                                   </strong>{" "}
                                   {trackingData.summary.courier || "-"}
                                 </p>
@@ -774,19 +774,19 @@ export default function Transaction() {
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    Date:
+                                    Tanggal
                                   </strong>{" "}
                                   {trackingData.summary.date || "-"}
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    Weight:
+                                    Berat:
                                   </strong>{" "}
                                   {trackingData.summary.weight || "-"}
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    Cost:
+                                    Biaya:
                                   </strong>{" "}
                                   Rp {trackingData.summary.amount || "-"}
                                 </p>
@@ -801,25 +801,25 @@ export default function Transaction() {
                               >
                                 <p>
                                   <strong className="tracking-wider">
-                                    From:
+                                    Dari:
                                   </strong>{" "}
                                   {trackingData.detail.origin || "-"}
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    To:
+                                    Untuk:
                                   </strong>{" "}
                                   {trackingData.detail.destination || "-"}
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    Shipper:
+                                    Pengirim:
                                   </strong>{" "}
                                   {trackingData.detail.shipper || "-"}
                                 </p>
                                 <p>
                                   <strong className="tracking-wider">
-                                    Receiver:
+                                    Penerima:
                                   </strong>{" "}
                                   {trackingData.detail.receiver || "-"}
                                 </p>
@@ -827,7 +827,7 @@ export default function Transaction() {
 
                               <div>
                                 <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                                  Tracking History
+                                  Riwayat Pengiriman
                                 </h3>
                                 <div className="mt-6 grow sm:mt-8 lg:mt-0">
                                   <div
@@ -844,7 +844,7 @@ export default function Transaction() {
                                           : "text-gray-900"
                                       }`}
                                     >
-                                      Tracking History
+                                      Riwayat Pengiriman
                                     </h3>
 
                                     <ol className="relative ms-3 border-s border-gray-500">
@@ -920,7 +920,20 @@ export default function Transaction() {
                   : "bg-blue-400 hover:bg-blue-800"
               } text-white`}
             >
-              Prev
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5"
+                />
+              </svg>
             </button>
 
             {Array.from({ length: totalPages }, (_, i) => (
@@ -948,7 +961,20 @@ export default function Transaction() {
                   : "bg-blue-400 hover:bg-blue-500"
               } text-white`}
             >
-              Next
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                />
+              </svg>
             </button>
           </div>
         </div>

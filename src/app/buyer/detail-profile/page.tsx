@@ -333,13 +333,13 @@ export default function DetailProfile() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
             <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -361,14 +361,14 @@ export default function DetailProfile() {
               />
             </div>
             <h2 className="text-2xl font-bold mb-1 text-red-400">
-              Something went wrong!
+              Terjadi kesalahan!
             </h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
             <button
               onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -443,7 +443,7 @@ export default function DetailProfile() {
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             ></div>
             <h1 className="text-5xl lg:text-7xl tracking-wide font-bold text-center absolute inset-0 flex justify-center items-center z-50">
-              Edit Profile
+              Edit Profil
             </h1>
           </div>
         </div>
@@ -482,7 +482,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Name
+                        Nama
                       </label>
                       <input
                         type="text"
@@ -524,7 +524,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Phone Number
+                        No. Hp
                       </label>
                       <input
                         type="tel"
@@ -545,7 +545,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Role
+                        Kategori Pengguna
                       </label>
                       <input
                         type="role"
@@ -568,7 +568,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Tipe Payment
+                        Tipe Pembayaran
                       </label>
                       <select
                         name="payment_type"
@@ -582,7 +582,7 @@ export default function DetailProfile() {
                         value={formData.payment_type}
                       >
                         <option value="" disabled>
-                          Select payment type
+                          Pilih Tipe Pembayaran
                         </option>
                         <option className="text-blue-400" value="gopay">
                           Gopay
@@ -656,7 +656,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Province
+                        Provinsi
                       </label>
                       <select
                         name="province"
@@ -686,7 +686,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Regency
+                        Kabupaten/Kota
                       </label>
                       <select
                         name="regency"
@@ -717,7 +717,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Subdistrict
+                        Kecamatan
                       </label>
                       <select
                         name="subdistrict"
@@ -748,7 +748,7 @@ export default function DetailProfile() {
                           theme === "dark" ? "text-white" : "text-blue-400"
                         }`}
                       >
-                        Ward
+                        Kelurahan
                       </label>
                       <select
                         name="ward"
@@ -803,7 +803,7 @@ export default function DetailProfile() {
                         theme === "dark" ? "text-white" : "text-blue-400"
                       }`}
                     >
-                      Address
+                      Alamat
                     </label>
                     <textarea
                       name="address"
@@ -822,7 +822,7 @@ export default function DetailProfile() {
                     type="submit"
                     className="w-full mt-6 bg-blue-400 text-white py-2 rounded-lg"
                   >
-                    Submit
+                    Simpan
                   </button>
                 </form>
               </div>

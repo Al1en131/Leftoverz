@@ -265,7 +265,7 @@ export default function MyProduct() {
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             >
               <h1 className="lg:text-6xl max-lg:text-4xl font-bold">
-                My Product
+                Produk Saya
               </h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
                 Ini adalah produk-produk yang kamu miliki. Kelola produkmu
@@ -279,7 +279,7 @@ export default function MyProduct() {
         <div className="py-10 lg:px-20 max-lg:px-6 lg:flex lg:justify-between max-lg:space-y-4 items-center gap-4">
           <form className="lg:w-10/12 max-lg:w-full">
             <label className="mb-2 text-sm font-medium text-white sr-only">
-              Search
+              Cari
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
@@ -311,7 +311,7 @@ export default function MyProduct() {
                     ? "text-white bg-white/10"
                     : "text-blue-400 bg-black/5"
                 }`}
-                placeholder="Search your products ..."
+                placeholder="Cari Produk Kamu ..."
               />
             </div>
           </form>
@@ -335,7 +335,7 @@ export default function MyProduct() {
                   d="M12 4.5v15m7.5-7.5h-15"
                 />
               </svg>
-              Add Product
+              Tambah Produk
             </Link>
           </div>
         </div>
@@ -351,14 +351,14 @@ export default function MyProduct() {
                 }`}
               >
                 <tr className="border-b">
-                  <th className="px-6 py-3 text-center">Image</th>
-                  <th className="px-2 py-3 text-left">Product Name</th>
-                  <th className="px-2 py-3 text-left">Description</th>
-                  <th className="px-6 py-3 text-left">Price</th>
-                  <th className="px-6 py-3 text-left">Original Price</th>
-                  <th className="px-6 py-3 text-left">Use Duration</th>
+                  <th className="px-6 py-3 text-center">Gambar</th>
+                  <th className="px-2 py-3 text-left">Nama Produk</th>
+                  <th className="px-2 py-3 text-left">Deskripsi</th>
+                  <th className="px-6 py-3 text-left">Harga Jual</th>
+                  <th className="px-6 py-3 text-left">Harga Asli</th>
+                  <th className="px-6 py-3 text-left">Lama Penggunaan</th>
                   <th className="px-6 py-3 text-center">Status</th>
-                  <th className="px-6 py-3 text-center">Action</th>
+                  <th className="px-6 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
               {loading ? (
@@ -515,7 +515,20 @@ export default function MyProduct() {
               className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-600 transition"
               disabled={currentPage === 1}
             >
-              Previous
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5"
+                />
+              </svg>
             </button>
             <span
               className={`font-semibold ${
@@ -529,7 +542,20 @@ export default function MyProduct() {
               className="px-4 py-2 text-sm font-bold text-white bg-blue-400 rounded-md shadow hover:bg-blue-600 transition"
               disabled={currentPage === totalPages}
             >
-              Next
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                />
+              </svg>
             </button>
           </div>
         </div>
@@ -550,13 +576,13 @@ export default function MyProduct() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
             <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -583,7 +609,7 @@ export default function MyProduct() {
               onClick={handleClosePopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -605,23 +631,23 @@ export default function MyProduct() {
               />
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
-              Are you sure?
+              Apakah kamu yakin?
             </h2>
             <p className="mb-6 text-blue-400">
-              Do you want to delete this product?
+              Apakah Kamu ingin menghapus produk ini?
             </p>
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleClosePopup}
                 className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-full"
               >
-                Cancel
+                Batal
               </button>
               <button
                 onClick={handleConfirmDelete}
                 className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full"
               >
-                Delete
+                Hapus
               </button>
             </div>
           </div>

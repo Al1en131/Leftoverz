@@ -260,11 +260,13 @@ export default function Refund() {
                   : "bg-white/30 text-[#080B2A]"
               } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
             >
-              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">Refund</h1>
+              <h1 className="lg:text-6xl max-lg:text-4xl font-bold">
+                Pengembalian Barang
+              </h1>
               <p className="max-lg:text-base lg:text-lg max-w-3xl">
-                Kelola dan pantau semua transaksi Anda dengan mudah di satu
-                tempat. Dapatkan informasi terkini dan detail tentang setiap
-                pembelian dan penjualan yang Anda lakukan melalui platform ini.
+                Kelola permintaan pengembalian dari pembeli dengan mudah. Tinjau
+                status, alasan, dan tindak lanjuti setiap pengembalian langsung
+                melalui dashboard ini.
               </p>
             </div>
           </div>
@@ -273,7 +275,7 @@ export default function Refund() {
         <div className="py-10 lg:px-20 max-lg:px-6 flex justify-between items-center gap-4">
           <form className="w-full">
             <label className="mb-2 text-sm font-medium text-white sr-only">
-              Search
+              Cari
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 start-0 flex items-center ps-3">
@@ -325,15 +327,15 @@ export default function Refund() {
                 }`}
               >
                 <tr className="border-b">
-                  <th className="px-6 py-3 text-center">Image</th>
-                  <th className="px-6 py-3 text-left">Product Name</th>
-                  <th className="px-6 py-3 text-left">Buyer</th>
-                  <th className="px-6 py-3 text-left">Reason</th>
+                  <th className="px-6 py-3 text-center">Gambar</th>
+                  <th className="px-6 py-3 text-left">Nama Produk</th>
+                  <th className="px-6 py-3 text-left">Pembeli</th>
+                  <th className="px-6 py-3 text-left">Alasan</th>
                   <th className="px-6 py-3 text-center">Kurir</th>
                   <th className="px-6 py-3 text-center">No. Resi</th>
                   <th className="px-6 py-3 text-center">Status Refund</th>
-                  <th className="px-6 py-3 text-center">Status Package</th>
-                  <th className="px-6 py-3 text-center">Action</th>
+                  <th className="px-6 py-3 text-center">Status Paket</th>
+                  <th className="px-6 py-3 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
@@ -355,7 +357,7 @@ export default function Refund() {
                           typeof item.image[0] === "string"
                             ? item.image[0].startsWith("/")
                               ? `https://backend-leftoverz-production.up.railway.app${item.image[0]}`
-                              : item.image[0] 
+                              : item.image[0]
                             : "/images/default-item.png"
                         }
                         alt={item.item_name}
@@ -471,7 +473,7 @@ export default function Refund() {
                           </button>
 
                           <h2 className="text-xl font-bold mb-4 text-blue-500">
-                            Tracking Information
+                            Informasi Pengiriman Paket
                           </h2>
 
                           <div
@@ -480,13 +482,13 @@ export default function Refund() {
                             }`}
                           >
                             <p>
-                              <strong className="tracking-wider">AWB:</strong>{" "}
+                              <strong className="tracking-wider">
+                                No. Resi:
+                              </strong>{" "}
                               {trackingData.summary.awb || "-"}
                             </p>
                             <p>
-                              <strong className="tracking-wider">
-                                Courier:
-                              </strong>{" "}
+                              <strong className="tracking-wider">Kurir:</strong>{" "}
                               {trackingData.summary.courier || "-"}
                             </p>
                             <p>
@@ -496,13 +498,13 @@ export default function Refund() {
                               {trackingData.summary.status || "-"}
                             </p>
                             <p>
-                              <strong className="tracking-wider">Date:</strong>{" "}
+                              <strong className="tracking-wider">
+                                Tanggal:
+                              </strong>{" "}
                               {trackingData.summary.date || "-"}
                             </p>
                             <p>
-                              <strong className="tracking-wider">
-                                Weight:
-                              </strong>{" "}
+                              <strong className="tracking-wider">Berat:</strong>{" "}
                               {trackingData.summary.weight || "-"}
                             </p>
                             <p>
@@ -517,22 +519,24 @@ export default function Refund() {
                             }`}
                           >
                             <p>
-                              <strong className="tracking-wider">From:</strong>{" "}
+                              <strong className="tracking-wider">Dari:</strong>{" "}
                               {trackingData.detail.origin || "-"}
                             </p>
                             <p>
-                              <strong className="tracking-wider">To:</strong>{" "}
+                              <strong className="tracking-wider">
+                                Tujuan:
+                              </strong>{" "}
                               {trackingData.detail.destination || "-"}
                             </p>
                             <p>
                               <strong className="tracking-wider">
-                                Shipper:
+                                Pengirim:
                               </strong>{" "}
                               {trackingData.detail.shipper || "-"}
                             </p>
                             <p>
                               <strong className="tracking-wider">
-                                Receiver:
+                                Penerima:
                               </strong>{" "}
                               {trackingData.detail.receiver || "-"}
                             </p>
@@ -540,7 +544,7 @@ export default function Refund() {
 
                           <div>
                             <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                              Tracking History
+                              Riwayat Pengiriman
                             </h3>
                             <div className="mt-6 grow sm:mt-8 lg:mt-0">
                               <div
@@ -555,7 +559,7 @@ export default function Refund() {
                                       : "text-gray-900"
                                   }`}
                                 >
-                                  Tracking History
+                                  Riwayat Pengiriman
                                 </h3>
 
                                 <ol className="relative ms-3 border-s border-gray-500">
