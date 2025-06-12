@@ -517,16 +517,56 @@ export default function Product() {
                     value={selectedProvince}
                     onChange={setSelectedProvince}
                   >
-                    <Listbox.Button className="...">
-                      {selectedProvince?.name || "Pilih Provinsi"}
-                    </Listbox.Button>
-                    <Listbox.Options className="...">
-                      {provinces.map((province) => (
-                        <Listbox.Option key={province.id} value={province}>
-                          {province.name}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
+                    <div className="relative mt-1">
+                      <Listbox.Button
+                        className={`w-full rounded-lg border p-2 flex justify-between items-center ${
+                          theme === "dark"
+                            ? "bg-white/30 text-white border-white"
+                            : "bg-black/5 text-blue-400 border-blue-400"
+                        }`}
+                      >
+                        {selectedProvince?.name || "Pilih Provinsi"}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          className="w-5 h-5 ml-2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </Listbox.Button>
+                      <Listbox.Options
+                        className={`absolute z-50 mt-1 w-full rounded-lg border shadow-lg max-h-60 overflow-auto ${
+                          theme === "dark"
+                            ? "bg-[#080B2A]/90 text-white border-white"
+                            : "bg-white text-black border-blue-400"
+                        }`}
+                      >
+                        {provinces.map((province) => (
+                          <Listbox.Option
+                            key={province.id}
+                            value={province}
+                            className={({ active }) =>
+                              `cursor-pointer px-4 py-2 ${
+                                active
+                                  ? theme === "dark"
+                                    ? "bg-white/20"
+                                    : "bg-blue-100"
+                                  : ""
+                              }`
+                            }
+                          >
+                            {province.name}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </div>
                   </Listbox>
                 </div>
 
