@@ -407,13 +407,13 @@ export default function Products() {
                     {item.status_package || "-"}
                   </span>
                 </td>
-                <td>
+                <td className="px-3 py-4 text-center flex justify-center">
                   <button
                     onClick={() => {
                       setSelectedRefund(item);
                       handleTrackPackageRefund();
                     }}
-                    className="mt-2 px-1.5 py-1.5 bg-blue-400 text-white rounded hover:bg-blue-500"
+                    className="mt-2 px-1.5 py-1.5 flex justify-center bg-blue-400 text-white rounded hover:bg-blue-500"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -436,7 +436,7 @@ export default function Products() {
                     </svg>
                   </button>
                   {showTrackingModal && trackingData && (
-                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                    <div className="fixed inset-0 z-50 bg-black/20 flex items-center justify-center text-left">
                       <div
                         className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 bg-[#080B2A]`}
                       >

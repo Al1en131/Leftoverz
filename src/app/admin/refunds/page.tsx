@@ -429,12 +429,12 @@ export default function Products() {
                       item.status_package
                     )} text-white`}
                   >
-                    {item.status_package || "-"}
+                    {item.status_package || "Pending"}
                   </span>
                 </td>
 
-                <td className="px-3 py-4 text-white flex justify-center text-center">
-                  <div className="flex items-center gap-2">
+                <td className="px-3 py-4 text-white text-center align-middle">
+                  <div className="flex items-center justify-center gap-2">
                     <button
                       onClick={() => {
                         setSelectedRefund(item);
