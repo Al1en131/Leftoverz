@@ -80,8 +80,6 @@ export default function Product() {
 
     fetchProvinces();
   }, []);
-
-  // ✅ Debug hasilnya setelah diparse dan diset
   useEffect(() => {
     console.log("Provinces state updated:", provinces);
   }, [provinces]);
@@ -531,7 +529,11 @@ export default function Product() {
                   >
                     <option value="">Pilih Provinsi</option>
                     {provinces.map((province) => (
-                      <option key={province.id} value={province.id}>
+                      <option
+                        className="text-blue-400"
+                        key={province.id}
+                        value={province.id}
+                      >
                         {province.name}
                       </option>
                     ))}
