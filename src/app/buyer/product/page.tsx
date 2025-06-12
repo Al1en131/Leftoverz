@@ -27,8 +27,12 @@ type Product = {
   status: string;
   user_id: number;
   seller?: { name: string };
-  user?: { subdistrict: string };
+  user?: { subdistrict: string; province?: string };
   embedding: number[];
+};
+type Province = {
+  id: string;
+  name: string;
 };
 
 export default function Product() {
@@ -45,7 +49,32 @@ export default function Product() {
   const [priceTo, setPriceTo] = useState("");
   const [selected, setSelected] = useState(options[0]);
   const [loading, setLoading] = useState(true);
+  const [provinces, setProvinces] = useState<Province[]>([]);
+  const [selectedProvince, setSelectedProvince] = useState<Province | null>(
+    null
+  );
+  useEffect(() => {
+    const fetchProvinces = async () => {
+      try {
+        const res = await fetch(
+          "https://api.binderbyte.com/wilayah/provinsi?api_key=23ef9d28f62d15ac694e6d87d2c384549e7ba507f87f85ae933cbe93ada1fe3d"
+        );
+        const data = await res.json();
+        if (data.code === "200" && Array.isArray(data.value)) {
+          setProvinces(data.value);
+        } else {
+          console.error("Gagal mengambil data:", data);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
 
+    fetchProvinces();
+  }, []);
+  useEffect(() => {
+    console.log("Provinces state updated:", provinces);
+  }, [provinces]);
   const fetchProducts = async () => {
     try {
       const response = await fetch(
@@ -180,8 +209,18 @@ export default function Product() {
   };
 
   const filteredProducts = useMemo(() => {
-    let result = products.filter((product) => {
-      const query = searchQuery.toLowerCase();
+    let result = products;
+
+    if (selectedProvince) {
+      result = result.filter(
+        (product) =>
+          product.user?.province?.toLowerCase() ===
+          selectedProvince.name.toLowerCase()
+      );
+    }
+
+    const query = searchQuery.toLowerCase();
+    result = result.filter((product) => {
       const nameMatch = product.name.toLowerCase().includes(query);
       const sellerMatch = product.seller?.name.toLowerCase().includes(query);
       const subdistrictMatch = product.user?.subdistrict
@@ -251,6 +290,7 @@ export default function Product() {
     priceTo,
     selected.value,
     imageEmbedding,
+    selectedProvince,
   ]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -431,7 +471,7 @@ export default function Product() {
   useEffect(() => {
     console.log("Favorites updated:", favorites);
   }, [favorites]);
-  
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -680,6 +720,40 @@ export default function Product() {
                     />
                   </div>
                 )}
+                <div className="mb-3">
+                  <label
+                    className={`text-base font-medium ${
+                      theme === "dark" ? "text-white" : "text-blue-400"
+                    }`}
+                  >
+                    Provinsi
+                  </label>
+                  <select
+                    value={selectedProvince?.id || ""}
+                    onChange={(e) => {
+                      const selected = provinces.find(
+                        (p) => p.id === e.target.value
+                      );
+                      setSelectedProvince(selected || null);
+                    }}
+                    className={`w-full mt-1 p-2 rounded-lg border ${
+                      theme === "dark"
+                        ? "bg-white/30 text-white border-white"
+                        : "bg-black/5 text-blue-400 border-blue-400"
+                    }`}
+                  >
+                    <option value="">Pilih Provinsi</option>
+                    {provinces.map((province) => (
+                      <option
+                        className="text-blue-400"
+                        key={province.id}
+                        value={province.id}
+                      >
+                        {province.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <div className="mb-3">
                   <label
