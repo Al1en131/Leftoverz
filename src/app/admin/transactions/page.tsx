@@ -404,7 +404,7 @@ export default function Products() {
                       item.status_package
                     )} text-white`}
                   >
-                    {item.status_package || "-"}
+                    {item.status_package || "Pending"}
                   </span>
                 </td>
                 <td className="px-3 py-4 text-center flex justify-center">
