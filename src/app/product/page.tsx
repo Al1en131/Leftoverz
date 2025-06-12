@@ -18,6 +18,16 @@ type Province = {
   name: string;
 };
 
+type BinderbyteProvinceItem = {
+  id: string | number;
+  name: string;
+};
+
+type BinderbyteProvinceResponse = {
+  status: number;
+  value: BinderbyteProvinceItem[];
+};
+
 type Product = {
   id: number;
   name: string;
@@ -67,13 +77,14 @@ export default function Product() {
         const response = await fetch(
           "https://api.binderbyte.com/wilayah/provinsi?api_key=..."
         );
-        const data = await response.json();
+        const data: BinderbyteProvinceResponse = await response.json();
 
         if (data.status === 200 && Array.isArray(data.value)) {
-          const formatted = data.value.map((item: any) => ({
+          const formatted: Province[] = data.value.map((item) => ({
             id: String(item.id),
             name: item.name,
           }));
+
           setProvinces(formatted);
           setSelectedProvince(formatted[0]);
         }
