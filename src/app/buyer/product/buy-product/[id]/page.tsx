@@ -341,15 +341,13 @@ export default function BuyProduct() {
                   className="w-20 h-20"
                 />
               </div>
-              <h2 className="text-2xl font-bold mb-1 text-blue-400">
-               Sukses!
-              </h2>
+              <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
               <p className="mb-6 text-blue-400">{successMessage}</p>
               <button
                 onClick={handleCloseSuccessPopup}
                 className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
               >
-                OK
+                Ya
               </button>
             </div>
           </div>
@@ -359,7 +357,7 @@ export default function BuyProduct() {
             <div className="bg-[#080B2A] border-yellow-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
               <div className="flex justify-center mb-4">
                 <Image
-                  src="/images/warning.svg" 
+                  src="/images/warning.svg"
                   width={80}
                   height={80}
                   alt="Warning"
@@ -523,7 +521,9 @@ export default function BuyProduct() {
             </div>
           </div>
           <div className={`p-10 border_section my-5 rounded-2xl bg-white/20`}>
-            <h3 className="text-3xl font-bold text-blue-400">Detail Pembayaran</h3>
+            <h3 className="text-3xl font-bold text-blue-400">
+              Detail Pembayaran
+            </h3>
             <div
               className={`block items-center py-4 space-y-2 mb-4 border-b border-b-white`}
             >

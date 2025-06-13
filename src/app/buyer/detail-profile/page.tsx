@@ -174,7 +174,7 @@ export default function DetailProfile() {
       }
     } catch (error) {
       console.error("Update error:", error);
-      setErrorMessage("Something went wrong, please try again.");
+      setErrorMessage("Terjadi kesalahan, mohon ulangi kembali.");
       setShowErrorPopup(true);
     }
   };
