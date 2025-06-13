@@ -220,10 +220,11 @@ export default function NavbarBuyer() {
                 </h4>
                 {chats
                   .filter(
-                    (chat: any) =>
-                      chat.sender_id !==  userId && chat.read_status === "0"
+                    (chat) =>
+                      chat.sender_id !== Number(userId) &&
+                      chat.read_status === "0"
                   )
-                  .map((chat: any) => (
+                  .map((chat) => (
                     <div key={chat.id} className="mb-2">
                       <p className="text-sm">
                         Pesan dari <strong>{chat.sender.name}</strong> terkait{" "}
@@ -238,8 +239,9 @@ export default function NavbarBuyer() {
                     </div>
                   ))}
                 {chats.filter(
-                  (chat: any) =>
-                    chat.sender_id !== userId && chat.read_status === "0"
+                  (chat) =>
+                    chat.sender_id !== Number(userId) &&
+                    chat.read_status === "0"
                 ).length === 0 && (
                   <p className="text-sm text-gray-500">Tidak ada pesan baru.</p>
                 )}
