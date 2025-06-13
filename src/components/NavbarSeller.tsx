@@ -237,10 +237,12 @@ export default function Navbar() {
   }, [userId]);
 
   useEffect(() => {
-    if (userId) {
+    const interval = setInterval(() => {
       fetchRefund();
       fetchTransactions();
-    }
+    }, 30000); // setiap 30 detik
+
+    return () => clearInterval(interval); // bersihkan saat unmount
   }, [userId, fetchRefund, fetchTransactions]);
 
   useEffect(() => {
@@ -479,7 +481,22 @@ export default function Navbar() {
                             : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                         }`}
                       >
-                        <div className="text-blue-500">📦</div>
+                        <div className="text-blue-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6 flex-shrink-0 text-blue-500"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+                            />
+                          </svg>
+                        </div>
                         <div className="flex flex-col">
                           <p className="text-base">
                             Transaksi dari{" "}
@@ -514,18 +531,28 @@ export default function Navbar() {
                             : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                         }`}
                       >
-                        <div className="text-blue-500">💰</div>
+                        <div className="text-blue-500">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6 flex-shrink-0 text-blue-500"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                            />
+                          </svg>
+                        </div>
                         <div className="flex flex-col">
                           <p className="text-base">
                             Refund diminta oleh{" "}
-                            <strong>
-                              {refund.buyer?.name || "Pembeli"}
-                            </strong>{" "}
+                            <strong>{refund.buyer?.name || "Pembeli"}</strong>{" "}
                             untuk produk{" "}
-                            <strong>
-                              {refund.item?.name || "Produk"}
-                            </strong>
-                            .
+                            <strong>{refund.item?.name || "Produk"}</strong>.
                           </p>
                           <Link
                             href="/seller/refund"
