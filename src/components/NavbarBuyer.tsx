@@ -215,7 +215,7 @@ export default function NavbarBuyer() {
               <div
                 className={`absolute right-0 mt-2 w-72 p-4 z-50 border shadow-md border-blue-400 rounded-md ${
                   theme === "dark"
-                    ? "bg-[#080B2A] text-blue-400"
+                    ? "bg-[#080B2A] text-white"
                     : "bg-white text-white"
                 }`}
               >
@@ -233,7 +233,7 @@ export default function NavbarBuyer() {
                       key={chat.id}
                       className={`mb-2 border p-2 rounded-md ${
                         theme === "dark"
-                          ? "bg-white/40 border-blue-400"
+                          ? "bg-white/30 border-blue-400"
                           : "bg-blue-400 border-blue-400"
                       }`}
                     >
@@ -243,7 +243,9 @@ export default function NavbarBuyer() {
                       </p>
                       <Link
                         href={`/buyer/product/${chat.Product.id}`}
-                        className="text-blue-500 text-sm hover:underline"
+                        className={`text-sm hover:underline ${
+                          theme === "dark" ? "text-blue-400" : "text-white"
+                        }`}
                       >
                         Lihat Produk
                       </Link>
