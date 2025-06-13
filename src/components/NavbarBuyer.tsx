@@ -238,9 +238,9 @@ export default function NavbarBuyer() {
                           : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                       }`}
                     >
-                      <p className="text-sm">
-                        Pesan dari <strong>{chat.sender.name}</strong> terkait
-                        produk <strong>{chat.Product.name}</strong>
+                      <p className="text-base">
+                        Pesan dari <strong className="tracking-wide">{chat.sender.name}</strong> terkait
+                        produk <strong className="tracking-wide">{chat.Product.name}</strong>
                       </p>
                       <Link
                         href={`/buyer/product/${chat.Product.id}`}
