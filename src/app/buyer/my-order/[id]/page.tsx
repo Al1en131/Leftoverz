@@ -1704,14 +1704,14 @@ export default function BuyProduct() {
             </svg>
           )}
         </button>
-        <div className="fixed bottom-6 border border-white lg:right-[200px] max-lg:right-40 z-30">
+        <div className="fixed bottom-6 lg:right-[200px] max-lg:right-40 z-30">
           <a
             target="_blank"
             rel="noopener noreferrer"
             href={`https://wa.me/${formatNoHp(
               product?.seller?.phone_number
             )}?text=Halo%20saya%20tertarik%20dengan%20produk%20Anda`}
-            className="bg-blue-400 text-white w-[52px] h-[52px] flex items-center justify-center rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="bg-blue-400 border border-white text-white w-[52px] h-[52px] flex items-center justify-center rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
