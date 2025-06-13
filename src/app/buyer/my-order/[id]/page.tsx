@@ -69,7 +69,7 @@ type RawTransaction = {
   seller_id: number;
   item_id: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "success" | "paid" | "cancelled" | "settlement" | null;
+  status: "success" | "paid" | "cancelled" | "settlement" | "refund" | null;
   created_at: string;
   total: number;
   awb: string;
@@ -1208,9 +1208,9 @@ export default function BuyProduct() {
                               : refund?.status_package === "delivered"
                               ? "Barang Sudah Sampai"
                               : refund?.status === "approved"
-                              ? "Pengajuan Pengembalian Dana Disetujui"
+                              ? "Pengajuan Pengembalian Barang Disetujui"
                               : refund?.status === "rejected"
-                              ? "Pengajuan Pengembalian Dana Ditolak"
+                              ? "Pengajuan Pengembalian Barang Ditolak"
                               : refund?.status === "requested"
                               ? "Menunggu Persetujuan Admin"
                               : refund?.status === "shipping"
@@ -1273,12 +1273,21 @@ export default function BuyProduct() {
                 </div>
                 <button
                   className={`px-4 py-2 z-30 rounded-full ${
-                    transaction?.status == "success"
+                    transaction?.status === "success"
                       ? "bg-green-700 text-white"
+                      : transaction?.status === "refund"
+                      ? "bg-yellow-600 text-white"
                       : "bg-red-700 text-white"
                   }`}
                 >
-                  Pembayaran {transaction?.status}
+                  Pembayaran{" "}
+                  {transaction?.status === "success"
+                    ? "Sukses"
+                    : transaction?.status === "refund"
+                    ? "Refund"
+                    : transaction?.status === "settlement"
+                    ? "Lunas"
+                    : "Gagal"}
                 </button>
               </div>
             </div>
@@ -1364,6 +1373,10 @@ export default function BuyProduct() {
                   ? "Pesanan Diterima"
                   : transaction?.status_package === "refund"
                   ? "Pesanan Dikembalikan"
+                  : transaction?.status_package === "processed"
+                  ? "Pesanan Diproses"
+                  : transaction?.status_package === "shipping"
+                  ? "Pesanan Dikirim"
                   : "Pesanan Selesai"}
               </button>
 

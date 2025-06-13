@@ -277,7 +277,7 @@ export default function Register() {
               }`}
               disabled={loading}
             >
-              {loading ? "Registering..." : "Register"}
+              {loading ? "Loading..." : "Registrasi"}
             </button>
             <p className="text-sm font-light text-gray-400">
               Sudah punya akun?{" "}

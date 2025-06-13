@@ -118,7 +118,6 @@ export default function BuyProduct() {
             };
             setUser(userData);
 
-            // Validasi data penting
             const requiredFields = [
               userData.address,
               userData.postal_code,
@@ -265,6 +264,7 @@ export default function BuyProduct() {
                 item_id: product.id,
                 payment_method: payment_type || "unknown",
                 status: transaction_status || "unknown",
+                status_package: "processed",
                 total,
               }),
             }

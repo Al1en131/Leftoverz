@@ -12,7 +12,7 @@ type RawTransaction = {
   buyer_id: number;
   seller_id: number;
   item_id: number;
-  status_package: "delivered" | "processed" | "refund";
+  status_package: "delivered" | "processed" | "refund" | "shipping";
   payment_method: "COD" | "e-wallet" | "bank transfer";
   status: "success" | "paid" | "cancelled" | null;
   created_at: string;
@@ -363,16 +363,22 @@ export default function MyOrder() {
                       <div className="my-4 flex justify-between items-center">
                         <span
                           className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-xl ${
-                            item.status_package == "delivered"
+                            item.status_package === "delivered"
                               ? "bg-green-700 text-white"
-                              : item.status_package == "processed"
-                              ? "bg-gray-500 text-white"
+                              : item.status_package === "processed"
+                              ? "bg-gray-600 text-white"
                               : "bg-red-700 text-white"
                           }`}
                         >
-                          {" "}
-                          {item.status_package || "Pending"}
+                          {item.status_package === "delivered"
+                            ? "Selesai"
+                            : item.status_package === "processed"
+                            ? "Sedang Diproses"
+                            : item.status_package === "shipping"
+                            ? "Sedang Dikirim"
+                            : "Sedang Diproses"}
                         </span>
+
                         <p className="text-blue-400 text-base">
                           Rp. {item.total.toLocaleString()}
                         </p>

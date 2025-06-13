@@ -31,7 +31,10 @@ export default function NavbarBuyer() {
   const [profileOpen, setProfileOpen] = useState(false);
   const handleLogout = async () => {
     try {
-      await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/logout", { method: "POST" });
+      await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/logout",
+        { method: "POST" }
+      );
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -47,6 +50,7 @@ export default function NavbarBuyer() {
     { href: "/buyer", label: "Beranda" },
     { href: "/buyer/about", label: "Tentang Kami" },
     { href: "/buyer/product", label: "Produk" },
+    { href: "/buyer/favorite", label: "Favorit" },
     { href: "/buyer/my-order", label: "Pesanan Saya" },
   ];
 
@@ -156,12 +160,6 @@ export default function NavbarBuyer() {
                 >
                   Edit Profil
                 </Link>
-                <Link
-                  href="/buyer/favorite"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-                >
-                  Favorit
-                </Link>
                 <button
                   className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
                   onClick={() => setShowLogoutPopup(true)}
@@ -203,12 +201,6 @@ export default function NavbarBuyer() {
                 className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
                 Edit Profil
-              </Link>
-              <Link
-                href="/buyer/favorite"
-                className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
-                Favorit
               </Link>
               <button
                 className="w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100"
