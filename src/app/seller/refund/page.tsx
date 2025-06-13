@@ -421,7 +421,7 @@ export default function Refund() {
                     </td>
 
                     {/* Action */}
-                    <td className="px-6 py-3 text-center">
+                    <td className="px-6 py-3 text-center flex justify-center items-center gap-2">
                       {item.status === "shipping" ||
                         (item.status === "refunded" && (
                           <button
@@ -459,7 +459,7 @@ export default function Refund() {
                           setNewStatus(item.status);
                           setIsModalOpen(true);
                         }}
-                        className="bg-blue-600 hover:bg-blue-700 px-1.5 py-1.5 rounded-md text-sm"
+                        className="bg-blue-600 hover:bg-blue-700 px-2 py-2 rounded-md text-sm"
                       >
                         <svg
                           className="w-4 h-4"
