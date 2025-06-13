@@ -141,7 +141,7 @@ export default function Register() {
                     ? "bg-white/5 text-white border-gray-300"
                     : "bg-white/5 text-blue-400 border-blue-400"
                 }`}
-                placeholder="username"
+                placeholder="Nama"
                 required
                 value={formData.name}
                 onChange={handleChange}

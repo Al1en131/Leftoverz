@@ -293,7 +293,7 @@ export default function EditProduct() {
       const result = await res.json();
       if (res.ok) {
         setShowSuccessPopup(true);
-        setSuccessMessage("Product berhasil diupdate!");
+        setSuccessMessage("Produk berhasil diupdate!");
       } else {
         setShowErrorPopup(true);
         setErrorMessage(result.message || "An error occurred.");
@@ -352,7 +352,7 @@ export default function EditProduct() {
               onClick={handleClosePopup} // Menutup popup
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
@@ -383,7 +383,7 @@ export default function EditProduct() {
               onClick={handleCloseErrorPopup} // Menutup popup error
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
