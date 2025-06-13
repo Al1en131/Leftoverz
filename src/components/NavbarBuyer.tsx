@@ -156,7 +156,7 @@ export default function NavbarBuyer() {
         </div>
       )}
       <div className="container mx-auto flex justify-between items-center">
-        <Link href="/" className=" text-lg font-semibold">
+        <Link href="/buyer/" className=" text-lg font-semibold">
           <Image
             width={100}
             height={100}
@@ -212,8 +212,14 @@ export default function NavbarBuyer() {
             </button>
 
             {showPopup && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#080B2A] shadow-md rounded-md p-4 z-50 text-black">
-                <h4 className="font-semibold text-gray-800 mb-2">
+              <div
+                className={`absolute right-0 mt-2 w-72 p-4 z-50 border shadow-md rounded-md ${
+                  theme === "dark"
+                    ? "bg-[#080B2A] text-white"
+                    : "bg-white text-black"
+                }border-blue-400`}
+              >
+                <h4 className="font-semibold text-blue-400 mb-2">
                   Pesan Masuk
                 </h4>
                 {chats
