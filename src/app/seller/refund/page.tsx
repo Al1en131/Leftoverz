@@ -414,7 +414,7 @@ export default function Refund() {
 
                     {/* Action */}
                     <td className="px-6 py-3 text-center">
-                      {(item.status === "shipping" && (
+                      {(item.status === "shipping" || item.status === "refunded" && (
                         <button
                           onClick={() => {
                             setSelectedRefund(item);
