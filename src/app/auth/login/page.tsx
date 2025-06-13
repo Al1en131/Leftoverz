@@ -68,6 +68,7 @@ export default function Login() {
         }
 
         setUserRole(data.role);
+        setSuccessMessage(data.message || "Berhasil masuk ke akun Anda");
         setShowSuccessPopup(true);
       } else {
         setErrorMessage(data.message || "Email atau password salah");
@@ -159,7 +160,7 @@ export default function Login() {
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
               Login Sukses
             </h2>
-            <p className="mb-6 text-blue-400">Berhasil masuk ke akun Anda</p>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
               onClick={handleCloseSuccessPopup}
