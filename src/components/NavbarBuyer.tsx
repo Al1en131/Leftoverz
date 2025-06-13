@@ -183,8 +183,7 @@ export default function NavbarBuyer() {
                   : theme === "dark"
                   ? "text-white"
                   : "text-blue-400"
-              }
-`}
+              }`}
             >
               {label}
             </Link>
@@ -197,7 +196,9 @@ export default function NavbarBuyer() {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-6 text-white"
+                className={`size-6 ${
+                  theme === "dark" ? "text-white" : "text-blue-400"
+                }`}
               >
                 <path
                   strokeLinecap="round"
