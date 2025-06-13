@@ -232,7 +232,7 @@ export default function BuyProduct() {
 
     fetchProduct();
   }, [productId]);
-  const fetchTransactionById = async () => {
+  const fetchTransactionById = useCallback(async () => {
     try {
       if (!userId || !transactionId) return;
 
@@ -275,12 +275,11 @@ export default function BuyProduct() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userId, transactionId]);
 
-  fetchTransactionById();
   useEffect(() => {
     fetchTransactionById();
-  }, [userId, transactionId]);
+  }, [fetchTransactionById]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -615,7 +614,7 @@ export default function BuyProduct() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
-  const fetchRefund = async () => {
+  const fetchRefund = useCallback(async () => {
     try {
       const res = await fetch(
         `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${transactionId}`
@@ -629,12 +628,12 @@ export default function BuyProduct() {
     } catch (error) {
       console.error("Gagal mengambil data refund:", error);
     }
-  };
+  }, [transactionId]);
   useEffect(() => {
     if (transactionId) {
       fetchRefund();
     }
-  }, [transactionId]);
+  }, [transactionId, fetchRefund]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 

@@ -6,6 +6,29 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
+interface Chat {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  item_id: number;
+  message: string;
+  read_status: "0" | "1";
+  sender: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  receiver: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  Product: {
+    id: number;
+    name: string;
+  };
+}
+
 export default function NavbarBuyer() {
   const { theme, setTheme } = useTheme();
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
@@ -13,19 +36,57 @@ export default function NavbarBuyer() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [userId, setUserId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("name");
+    const storedEmail = localStorage.getItem("email");
+    const storedUserId = localStorage.getItem("id");
+
+    if (storedName) setName(storedName);
+    if (storedEmail) setEmail(storedEmail);
+    if (storedUserId) setUserId(Number(storedUserId)); // 👈 konversi ke number
+  }, []);
+
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme && storedTheme !== theme) {
       setTheme(storedTheme);
     }
   }, [theme, setTheme]);
+  const [chats, setChats] = useState<Chat[]>([]);
+
+  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
-    const storedName = localStorage.getItem("name");
-    const storedEmail = localStorage.getItem("email");
-    if (storedName) setName(storedName);
-    if (storedEmail) setEmail(storedEmail);
-  }, []);
+    if (!userId) return;
+
+    const fetchChats = async () => {
+      try {
+        const res = await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/chats/user/${userId}`
+        );
+        const data = await res.json();
+
+        if (res.ok && data.chats) {
+          setChats(data.chats);
+
+          const numericUserId = Number(userId);
+
+          const unread = data.chats.some(
+            (chat: Chat) =>
+              chat.sender_id !== numericUserId && chat.read_status === "0"
+          );
+
+          setHasNewMessage(unread);
+        }
+      } catch (err) {
+        console.error("Gagal mengambil chat:", err);
+      }
+    };
+
+    fetchChats();
+  }, [userId]);
 
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -115,27 +176,75 @@ export default function NavbarBuyer() {
             <Link
               key={index}
               href={href}
-              className={`
-  capitalize
-  ${
-    pathname === href
-      ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-      : theme === "dark"
-      ? "text-white"
-      : "text-blue-400"
-  }
+              className={`capitalize ${
+                pathname === href
+                  ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+                  : theme === "dark"
+                  ? "text-white"
+                  : "text-blue-400"
+              }
 `}
             >
               {label}
             </Link>
           ))}
           <div className="relative">
+            <button className="relative">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="size-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                />
+              </svg>
+
+              {hasNewMessage && (
+                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+              )}
+            </button>
+
+            {hasNewMessage && (
+              <div className="absolute right-0 mt-2 w-64 bg-white shadow-md rounded-md p-4 z-50">
+                <h4 className="font-semibold text-gray-800 mb-2">
+                  Pesan Masuk
+                </h4>
+                {chats
+                  .filter(
+                    (chat) => chat.sender_id !== userId && !chat.read_status
+                  )
+                  .map((chat) => (
+                    <div key={chat.id} className="mb-2">
+                      <p className="text-sm">
+                        Pesan dari <strong>{chat.sender.name}</strong> terkait
+                        produk <strong>{chat.Product.name}</strong>
+                      </p>
+                      <Link
+                        href={`/product/${chat.Product.id}`}
+                        className="text-blue-500 text-sm hover:underline"
+                      >
+                        Lihat Produk
+                      </Link>
+                    </div>
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <div className="relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <span
-                className={`
-  w-10 h-10 rounded-full flex items-center justify-center
-  ${theme === "dark" ? "text-white bg-blue-400" : "text-white bg-blue-400"}
-`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  theme === "dark"
+                    ? "text-white bg-blue-400"
+                    : "text-white bg-blue-400"
+                }`}
               >
                 {name
                   ? name
