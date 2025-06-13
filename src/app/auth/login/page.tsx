@@ -159,7 +159,7 @@ export default function Login() {
             <h2 className="text-2xl font-bold mb-1 text-blue-400">
               Login Sukses
             </h2>
-            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <p className="mb-6 text-blue-400">Berhasil masuk ke akun Anda</p>
 
             <button
               onClick={handleCloseSuccessPopup}
