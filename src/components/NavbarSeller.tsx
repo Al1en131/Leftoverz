@@ -237,6 +237,13 @@ export default function Navbar() {
   }, [userId]);
 
   useEffect(() => {
+    if (userId) {
+      fetchRefund();
+      fetchTransactions();
+    }
+  }, [userId, fetchRefund, fetchTransactions]);
+
+  useEffect(() => {
     if (!userId) return;
 
     const interval = setInterval(async () => {
@@ -294,6 +301,7 @@ export default function Navbar() {
     { href: "/seller/refund", label: "Pengembalian" },
     { href: "/seller/chat", label: "Pesan" },
   ];
+  if (loading) return null;
 
   return (
     <>
@@ -460,54 +468,78 @@ export default function Navbar() {
                         </div>
                       </div>
                     ))}
-
-                  {chats.filter(
-                    (chat) =>
-                      chat.sender_id !== Number(userId) &&
-                      chat.read_status === "0"
-                  ).length === 0 && (
-                    <p className="text-sm text-gray-500">
-                      Tidak ada notifikasi baru.
-                    </p>
-                  )}
-                  {hasNewTransaction && (
-                    <div className="mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors dark:bg-white/5 dark:hover:bg-white/10 border-blue-400 bg-blue-50 hover:bg-blue-100">
-                      <div className="text-blue-500">📦</div>
-                      <div className="flex flex-col">
-                        <p className="text-base">
-                          Ada transaksi dengan status <strong>processed</strong>
-                          .
-                        </p>
-                        <Link
-                          href="/seller/transactions"
-                          className={`text-sm hover:underline ${
-                            theme === "dark" ? "text-blue-200" : "text-blue-600"
-                          }`}
-                        >
-                          Lihat Transaksi
-                        </Link>
+                  {transactions
+                    .filter((t) => t.status_package === "processed")
+                    .map((transaction) => (
+                      <div
+                        key={transaction.id}
+                        className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
+                          theme === "dark"
+                            ? "bg-white/5 hover:bg-white/10 border-blue-400"
+                            : "bg-blue-50 hover:bg-blue-100 border-blue-400"
+                        }`}
+                      >
+                        <div className="text-blue-500">📦</div>
+                        <div className="flex flex-col">
+                          <p className="text-base">
+                            Transaksi dari{" "}
+                            <strong>
+                              {transaction.buyer?.name || "Pengguna"}
+                            </strong>{" "}
+                            menunggu pengiriman.
+                          </p>
+                          <Link
+                            href="/seller/transactions"
+                            className={`text-sm hover:underline ${
+                              theme === "dark"
+                                ? "text-blue-200"
+                                : "text-blue-600"
+                            }`}
+                          >
+                            Lihat Transaksi
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    ))}
 
-                  {hasNewRefund && (
-                    <div className="mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors dark:bg-white/5 dark:hover:bg-white/10 border-blue-400 bg-blue-50 hover:bg-blue-100">
-                      <div className="text-blue-500">💰</div>
-                      <div className="flex flex-col">
-                        <p className="text-base">
-                          Ada permintaan <strong>refund</strong> baru.
-                        </p>
-                        <Link
-                          href="/seller/refund"
-                          className={`text-sm hover:underline ${
-                            theme === "dark" ? "text-blue-200" : "text-blue-600"
-                          }`}
-                        >
-                          Lihat Refund
-                        </Link>
+                  {/* Notifikasi Refund Requested */}
+                  {refund
+                    .filter((refund) => refund.status === "requested")
+                    .map((refund) => (
+                      <div
+                        key={refund.id}
+                        className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
+                          theme === "dark"
+                            ? "bg-white/5 hover:bg-white/10 border-blue-400"
+                            : "bg-blue-50 hover:bg-blue-100 border-blue-400"
+                        }`}
+                      >
+                        <div className="text-blue-500">💰</div>
+                        <div className="flex flex-col">
+                          <p className="text-base">
+                            Refund diminta oleh{" "}
+                            <strong>
+                              {refund.buyer?.name || "Pembeli"}
+                            </strong>{" "}
+                            untuk produk{" "}
+                            <strong>
+                              {refund.item?.name || "Produk"}
+                            </strong>
+                            .
+                          </p>
+                          <Link
+                            href="/seller/refund"
+                            className={`text-sm hover:underline ${
+                              theme === "dark"
+                                ? "text-blue-200"
+                                : "text-blue-600"
+                            }`}
+                          >
+                            Lihat Refund
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    ))}
                 </div>
               )}
             </div>

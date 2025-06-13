@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import { usePathname } from "next/navigation";
 import "../styles/globals.css";
 import ThemeProvider from "../components/theme-provider";
-import { useEffect } from "react";
+import { useEffect, ReactElement } from "react";
 import { useTheme } from "next-themes";
 
 export default function RootLayout({
@@ -33,7 +33,7 @@ export default function RootLayout({
     }
   }, [theme, setTheme]);
 
-  let NavbarComponent = Navbar;
+  let NavbarComponent: (() => ReactElement | null) | null = Navbar;
 
   if (isSellerPage) {
     NavbarComponent = NavbarSeller;
