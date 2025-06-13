@@ -68,7 +68,7 @@ export default function Login() {
         }
 
         setUserRole(data.role);
-        setSuccessMessage(data.message || "Berhasil masuk ke akun Anda");
+        setSuccessMessage("Berhasil masuk ke akun Anda");
         setShowSuccessPopup(true);
       } else {
         setErrorMessage(data.message || "Email atau password salah");

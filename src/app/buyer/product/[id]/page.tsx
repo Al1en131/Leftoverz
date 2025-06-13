@@ -463,7 +463,7 @@ export default function ProductDetail() {
               onClick={handleCloseSuccessPopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -490,7 +490,7 @@ export default function ProductDetail() {
               onClick={handleClosePopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Ya
             </button>
           </div>
         </div>
@@ -562,7 +562,7 @@ export default function ProductDetail() {
               />
             </svg>
           </div>
-          <p className="text-blue-400">Back to Products</p>
+          <p className="text-blue-400">Kembali</p>
         </Link>
         {loading || favoritesLoading ? (
           <div className="text-center text-blue-400">
