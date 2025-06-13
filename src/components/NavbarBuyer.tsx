@@ -162,15 +162,15 @@ export default function NavbarBuyer() {
             height={100}
             src="/images/logo.png"
             alt="Logo"
-            className={`${theme === "dark" ? "block" : "block"} h-12 w-36`}
+            className={`${theme === "dark" ? "block" : "hidden"} h-12 w-36`}
           />
-          {/* <Image
+          <Image
             width={100}
             height={100}
             src="/images/logo-light.png"
             alt="Logo"
             className={`${theme === "dark" ? "hidden" : "block"} h-12 w-36`}
-          /> */}
+          />
         </Link>
         <div className="hidden lg:flex items-center space-x-12 text-lg">
           {navLinks.map(({ href, label }, index) => (
@@ -213,11 +213,11 @@ export default function NavbarBuyer() {
 
             {showPopup && (
               <div
-                className={`absolute right-0 mt-2 w-72 p-4 z-50 border shadow-md rounded-md ${
+                className={`absolute right-0 mt-2 w-72 p-4 z-50 border shadow-md border-blue-400 rounded-md ${
                   theme === "dark"
-                    ? "bg-[#080B2A] text-white"
-                    : "bg-white text-black"
-                }border-blue-400`}
+                    ? "bg-[#080B2A] text-blue-400"
+                    : "bg-white text-white"
+                }`}
               >
                 <h4 className="font-semibold text-blue-400 mb-2">
                   Pesan Masuk
@@ -229,7 +229,14 @@ export default function NavbarBuyer() {
                       chat.read_status === "0"
                   )
                   .map((chat) => (
-                    <div key={chat.id} className="mb-2">
+                    <div
+                      key={chat.id}
+                      className={`mb-2 border ${
+                        theme === "dark"
+                          ? "bg-white/20 border-blue-400"
+                          : "bg-blue-400 border-blue-400"
+                      }`}
+                    >
                       <p className="text-sm">
                         Pesan dari <strong>{chat.sender.name}</strong> terkait
                         produk <strong>{chat.Product.name}</strong>
@@ -247,7 +254,9 @@ export default function NavbarBuyer() {
                     chat.sender_id !== Number(userId) &&
                     chat.read_status === "0"
                 ).length === 0 && (
-                  <p className="text-sm text-gray-500">Tidak ada pesan baru.</p>
+                  <p className="text-sm text-gray-500">
+                    Tidak ada notifikasi baru.
+                  </p>
                 )}
               </div>
             )}
