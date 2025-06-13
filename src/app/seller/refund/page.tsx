@@ -421,126 +421,129 @@ export default function Refund() {
                     </td>
 
                     {/* Action */}
-                    <td className="px-6 py-3 text-center flex justify-center items-center gap-2">
-                      {item.status === "shipping" ||
-                        (item.status === "refunded" && (
-                          <button
-                            onClick={() => {
-                              setSelectedRefund(item);
-                              handleTrackPackageRefund();
-                            }}
-                            className="mt-2 px-2 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth="1.5"
-                              stroke="currentColor"
-                              className="w-4 h-4"
+                    <td className="px-6 py-3 text-center">
+                      <div className="flex justify-center items-center gap-2">
+                        {item.status === "shipping" ||
+                          (item.status === "refunded" && (
+                            <button
+                              onClick={() => {
+                                setSelectedRefund(item);
+                                handleTrackPackageRefund();
+                              }}
+                              className="mt-2 px-2 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                              />
-                            </svg>
-                          </button>
-                        )) ||
-                        "-"}
-                      <button
-                        onClick={() => {
-                          setSelectedRefund(item);
-                          setNewStatus(item.status);
-                          setIsModalOpen(true);
-                        }}
-                        className="bg-blue-600 hover:bg-blue-700 px-2 py-2 rounded-md text-sm"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          aria-hidden="true"
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                />
+                              </svg>
+                            </button>
+                          )) ||
+                          "-"}
+                        <button
+                          onClick={() => {
+                            setSelectedRefund(item);
+                            setNewStatus(item.status);
+                            setIsModalOpen(true);
+                          }}
+                          className="bg-blue-600 hover:bg-blue-700 px-2 py-2 rounded-md text-sm"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
-                          />
-                        </svg>
-                      </button>
-                      {isModalOpen && selectedRefund && (
-                        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
-                          <div className="bg-[#060B26] rounded-lg shadow-lg p-6 w-full max-w-md">
-                            <h2 className="text-lg font-semibold mb-4 text-gray-800">
-                              Perbarui Status Pengembalian Barang
-                            </h2>
+                          <svg
+                            className="w-4 h-4"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
+                            />
+                          </svg>
+                        </button>
+                        {isModalOpen && selectedRefund && (
+                          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+                            <div className="bg-[#060B26] rounded-lg shadow-lg p-6 w-full max-w-md">
+                              <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                                Perbarui Status Pengembalian Barang
+                              </h2>
 
-                            <select
-                              value={newStatus}
-                              onChange={(e) => setNewStatus(e.target.value)}
-                              className="w-full border rounded p-2 mb-4"
-                            >
-                              <option value="requested">Requested</option>
-                              <option value="approved">Approved</option>
-                              <option value="rejected">Rejected</option>
-                              <option value="shipping">Shipping</option>
-                              <option value="refunded">Refunded</option>
-                            </select>
-
-                            <div className="flex justify-end gap-3">
-                              <button
-                                onClick={() => setIsModalOpen(false)}
-                                className="px-4 py-2 rounded bg-gray-300 text-gray-800 hover:bg-gray-400"
+                              <select
+                                value={newStatus}
+                                onChange={(e) => setNewStatus(e.target.value)}
+                                className="w-full border rounded p-2 mb-4"
                               >
-                                Batal
-                              </button>
-                              <button
-                                onClick={async () => {
-                                  try {
-                                    const token = localStorage.getItem("token");
-                                    const res = await fetch(
-                                      `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${selectedRefund.id}`,
-                                      {
-                                        method: "PUT",
-                                        headers: {
-                                          "Content-Type": "application/json",
-                                          Authorization: `Bearer ${token}`,
-                                        },
-                                        body: JSON.stringify({
-                                          status: newStatus,
-                                        }),
-                                      }
-                                    );
+                                <option value="requested">Requested</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="shipping">Shipping</option>
+                                <option value="refunded">Refunded</option>
+                              </select>
 
-                                    if (!res.ok)
-                                      throw new Error("Failed to update");
-                                    setIsModalOpen(false);
-                                    fetchRefund();
-                                  } catch (error) {
-                                    console.error(
-                                      "Failed to update refund:",
-                                      error
-                                    );
-                                    alert("Update gagal. Coba lagi.");
-                                  }
-                                }}
-                                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-                              >
-                                Simpan
-                              </button>
+                              <div className="flex justify-end gap-3">
+                                <button
+                                  onClick={() => setIsModalOpen(false)}
+                                  className="px-4 py-2 rounded bg-gray-300 text-gray-800 hover:bg-gray-400"
+                                >
+                                  Batal
+                                </button>
+                                <button
+                                  onClick={async () => {
+                                    try {
+                                      const token =
+                                        localStorage.getItem("token");
+                                      const res = await fetch(
+                                        `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${selectedRefund.id}`,
+                                        {
+                                          method: "PUT",
+                                          headers: {
+                                            "Content-Type": "application/json",
+                                            Authorization: `Bearer ${token}`,
+                                          },
+                                          body: JSON.stringify({
+                                            status: newStatus,
+                                          }),
+                                        }
+                                      );
+
+                                      if (!res.ok)
+                                        throw new Error("Failed to update");
+                                      setIsModalOpen(false);
+                                      fetchRefund();
+                                    } catch (error) {
+                                      console.error(
+                                        "Failed to update refund:",
+                                        error
+                                      );
+                                      alert("Update gagal. Coba lagi.");
+                                    }
+                                  }}
+                                  className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+                                >
+                                  Simpan
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )}
+                        )}
+                      </div>
                     </td>
                     {showTrackingModal && trackingData && (
                       <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
