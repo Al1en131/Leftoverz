@@ -232,54 +232,56 @@ export default function BuyProduct() {
 
     fetchProduct();
   }, [productId]);
-  useEffect(() => {
-    const fetchTransactionById = async () => {
-      try {
-        if (!userId || !transactionId) return;
+  const fetchTransactionById = async () => {
+    try {
+      if (!userId || !transactionId) return;
 
-        const res = await fetch(
-          `https://backend-leftoverz-production.up.railway.app/api/v1/${userId}/transaction/${transactionId}`
-        );
-        const response: { transaction: RawTransaction; message: string } =
-          await res.json();
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/${userId}/transaction/${transactionId}`
+      );
+      const response: { transaction: RawTransaction; message: string } =
+        await res.json();
 
-        if (res.ok) {
-          const t = response.transaction;
-          setProductId(t.item_id);
+      if (res.ok) {
+        const t = response.transaction;
+        setProductId(t.item_id);
 
-          let imageArray: string[] = [];
+        let imageArray: string[] = [];
 
-          if (typeof t.item?.image === "string") {
-            try {
-              imageArray = JSON.parse(t.item.image);
-            } catch {
-              imageArray = [t.item.image];
-            }
-          } else if (Array.isArray(t.item?.image)) {
-            imageArray = t.item.image;
+        if (typeof t.item?.image === "string") {
+          try {
+            imageArray = JSON.parse(t.item.image);
+          } catch {
+            imageArray = [t.item.image];
           }
-
-          const mappedTransaction: Transaction = {
-            ...t,
-            item_name: t.item?.name || "Unknown",
-            buyer_name: t.buyer?.name || "Unknown",
-            seller_name: t.seller?.name || "Unknown",
-            image: imageArray,
-          };
-
-          setTransaction(mappedTransaction);
-        } else {
-          console.error("Fetch error:", response.message);
+        } else if (Array.isArray(t.item?.image)) {
+          imageArray = t.item.image;
         }
-      } catch (error) {
-        console.error("Network error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
 
+        const mappedTransaction: Transaction = {
+          ...t,
+          item_name: t.item?.name || "Unknown",
+          buyer_name: t.buyer?.name || "Unknown",
+          seller_name: t.seller?.name || "Unknown",
+          image: imageArray,
+        };
+
+        setTransaction(mappedTransaction);
+      } else {
+        console.error("Fetch error:", response.message);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchTransactionById();
+  useEffect(() => {
     fetchTransactionById();
   }, [userId, transactionId]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -696,6 +698,7 @@ export default function BuyProduct() {
         setSuccessMessage("Pesanan ditandai sebagai selesai.");
         setShowSuccessPopup(true);
         setRefund(result.transaction);
+        await fetchTransactionById();
       } else {
         setSuccessMessage("Gagal memperbarui status: " + result.message);
         setShowSuccessPopup(true);
@@ -1356,7 +1359,7 @@ export default function BuyProduct() {
 
               <button
                 onClick={handleTrackPackage}
-                className="px-4 py-2 text-base tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-full"
+                className="px-4 py-2 text-base tracking-wide bg-blue-400 w-full capitalize font-semibold rounded-xl"
               >
                 Lacak Paket
               </button>
