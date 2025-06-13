@@ -62,7 +62,7 @@ export default function NavbarBuyer() {
   useEffect(() => {
     if (!userId) return;
 
-    const fetchChats = async () => {
+    const interval = setInterval(async () => {
       try {
         const res = await fetch(
           `https://backend-leftoverz-production.up.railway.app/api/v1/chats/user/${userId}`
@@ -71,65 +71,23 @@ export default function NavbarBuyer() {
 
         if (res.ok && data.chats) {
           setChats(data.chats);
-
-          const numericUserId = Number(userId);
-
           const unread = data.chats.some(
             (chat: Chat) =>
-              chat.sender_id !== numericUserId && chat.read_status === "0"
+              chat.sender_id !== userId && chat.read_status === "0"
           );
-
-          setHasNewMessage(unread);
+          setHasNewMessage(unread); // 🔁 update ping merah
         }
-      } catch (err) {
-        console.error("Gagal mengambil chat:", err);
+      } catch (error) {
+        console.error("Polling chat error:", error);
       }
-    };
+    }, 10000); // tiap 10 detik
 
-    fetchChats();
+    return () => clearInterval(interval); // bersihkan saat unmount
   }, [userId]);
 
-  const togglePopup = async () => {
-  setShowPopup(!showPopup);
-
-  if (!showPopup) {
-    // Jika pop-up baru akan dibuka dan ada pesan belum dibaca
-    const unreadChats = chats.filter(
-      (chat) => chat.sender_id !== userId && chat.read_status === "0"
-    );
-
-    if (unreadChats.length > 0) {
-      try {
-        await Promise.all(
-          unreadChats.map((chat) =>
-            fetch(
-              `https://backend-leftoverz-production.up.railway.app/api/v1/chats/${chat.id}/read`,
-              {
-                method: "PUT",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            )
-          )
-        );
-
-        // Update state lokal agar tidak perlu fetch ulang
-        setChats((prevChats) =>
-          prevChats.map((chat) =>
-            chat.sender_id !== userId
-              ? { ...chat, read_status: "1" }
-              : chat
-          )
-        );
-
-        setHasNewMessage(false);
-      } catch (error) {
-        console.error("Gagal mengupdate status read:", error);
-      }
-    }
-  }
-};
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -254,7 +212,7 @@ export default function NavbarBuyer() {
             </button>
 
             {showPopup && (
-              <div className="absolute right-0 mt-2 w-72 bg-white shadow-md rounded-md p-4 z-50 text-black">
+              <div className="absolute right-0 mt-2 w-72 bg-[#080B2A] shadow-md rounded-md p-4 z-50 text-black">
                 <h4 className="font-semibold text-gray-800 mb-2">
                   Pesan Masuk
                 </h4>
@@ -267,8 +225,8 @@ export default function NavbarBuyer() {
                   .map((chat) => (
                     <div key={chat.id} className="mb-2">
                       <p className="text-sm">
-                        Pesan dari <strong>{chat.sender.name}</strong> terkait produk{" "}
-                        <strong>{chat.Product.name}</strong>
+                        Pesan dari <strong>{chat.sender.name}</strong> terkait
+                        produk <strong>{chat.Product.name}</strong>
                       </p>
                       <Link
                         href={`/buyer/product/${chat.Product.id}`}
