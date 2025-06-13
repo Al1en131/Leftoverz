@@ -1525,7 +1525,7 @@ export default function BuyProduct() {
         <div className="fixed bottom-6 lg:right-[140px] max-lg:right-24 z-30">
           <button
             onClick={openChat}
-            className="relative bg-blue-400 hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
+            className="relative bg-blue-400 border border-white hover:bg-blue-400 text-white p-2.5 rounded-full shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-200"
           >
             <svg
               width="800px"
@@ -1704,7 +1704,7 @@ export default function BuyProduct() {
             </svg>
           )}
         </button>
-        <div className="fixed bottom-6 lg:right-[200px] max-lg:right-40 z-30">
+        <div className="fixed bottom-6 border border-white lg:right-[200px] max-lg:right-40 z-30">
           <a
             target="_blank"
             rel="noopener noreferrer"
