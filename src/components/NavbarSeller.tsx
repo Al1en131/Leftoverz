@@ -1,11 +1,95 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
 
+interface Chat {
+  id: number;
+  sender_id: number;
+  receiver_id: number;
+  item_id: number;
+  message: string;
+  read_status: "0" | "1";
+  sender: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  receiver: {
+    id: number;
+    name: string;
+    email: string;
+  };
+  Product: {
+    id: number;
+    name: string;
+  };
+}
+
+type RawTransaction = {
+  id: number;
+  buyer_id: number;
+  seller_id: number;
+  item_id: number;
+  payment_method: string;
+  status_package: "delivered" | "processed" | "refund";
+  status: "success" | null;
+  created_at: string;
+  total: number;
+  awb: string;
+  courir: string;
+  item?: {
+    name: string;
+    image: string[];
+    price: number;
+  };
+  buyer?: {
+    name: string;
+    ward: string;
+    regency: string;
+    subdistrict: string;
+    province: string;
+    address: string;
+    postal_code: number;
+    phone_number: number;
+  };
+  seller?: { name: string };
+};
+
+type Transaction = RawTransaction & {
+  item_name: string;
+  buyer_name: string;
+  seller_name: string;
+  image: string[];
+};
+
+export type RefundType = {
+  id: number;
+  transaction_id: number;
+  reason: string;
+  status: "requested" | "approved" | "rejected" | "refunded" | "shipping";
+  response?: string | null;
+  image: string[];
+  refunded_at?: string | null;
+  tracking_number?: string | null;
+  courir?: string | null;
+  created_at: string;
+  updated_at: string;
+  status_package: "delivered" | "processed";
+  item?: { name: string };
+  buyer?: { name: string };
+  item_name?: string;
+  buyer_name?: string;
+  seller_name?: string;
+};
+
+export type RefundDisplayType = RefundType & {
+  item_name: string;
+  buyer_name: string;
+};
 export default function Navbar() {
   const { theme, setTheme } = useTheme();
   useEffect(() => {
@@ -19,13 +103,168 @@ export default function Navbar() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [refund, setRefund] = useState<RefundDisplayType[]>([]);
 
   useEffect(() => {
     const storedName = localStorage.getItem("name");
     const storedEmail = localStorage.getItem("email");
+    const storedUserId = localStorage.getItem("id");
+
     if (storedName) setName(storedName);
     if (storedEmail) setEmail(storedEmail);
+    if (storedUserId) setUserId(Number(storedUserId)); // 👈 konversi ke number
   }, []);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme && storedTheme !== theme) {
+      setTheme(storedTheme);
+    }
+  }, [theme, setTheme]);
+  const [chats, setChats] = useState<Chat[]>([]);
+
+  const [hasNewMessage, setHasNewMessage] = useState(false);
+  const [hasNewTransaction, setHasNewTransaction] = useState(false);
+  const [hasNewRefund, setHasNewRefund] = useState(false);
+  const hasNotification = hasNewMessage || hasNewTransaction || hasNewRefund;
+
+  const fetchRefund = useCallback(async () => {
+    try {
+      if (!userId) return;
+
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/seller/${userId}/refund`
+      );
+
+      const response: { refunds: RefundType[]; message: string } =
+        await res.json();
+
+      if (res.ok) {
+        const mappedRefunds: RefundDisplayType[] = response.refunds.map(
+          (refund) => {
+            let parsedImage: string[] = [];
+
+            if (typeof refund.image === "string") {
+              try {
+                const parsed = JSON.parse(refund.image);
+                if (Array.isArray(parsed)) {
+                  parsedImage = parsed;
+                }
+              } catch {
+                parsedImage = [];
+              }
+            } else if (Array.isArray(refund.image)) {
+              parsedImage = refund.image;
+            }
+            return {
+              ...refund,
+              item_name: refund.item?.name || "Unknown",
+              buyer_name: refund.buyer?.name || "Unknown",
+              image: parsedImage,
+            };
+          }
+        );
+
+        setRefund(mappedRefunds);
+        const requestedExist = response.refunds.some(
+          (refund) => refund.status === "requested"
+        );
+        setHasNewRefund(requestedExist);
+      } else {
+        console.error("Fetch error:", response.message);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  const fetchTransactions = useCallback(async () => {
+    try {
+      if (!userId) return;
+
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/transactions/user/${userId}`
+      );
+      const response: { transactions: RawTransaction[]; message: string } =
+        await res.json();
+
+      if (res.ok) {
+        const mappedTransactions: Transaction[] = response.transactions.map(
+          (transaction) => {
+            const imageData = transaction.item?.image;
+            let imageArray: string[] = [];
+
+            if (typeof imageData === "string") {
+              try {
+                imageArray = JSON.parse(imageData);
+              } catch {
+                imageArray = [imageData];
+              }
+            } else if (Array.isArray(imageData)) {
+              imageArray = imageData;
+            }
+
+            return {
+              ...transaction,
+              item_name: transaction.item?.name || "Unknown",
+              price: transaction.item?.price || 0,
+              buyer_name: transaction.buyer?.name || "Unknown",
+              seller_name: transaction.seller?.name || "Unknown",
+              image: imageArray,
+            };
+          }
+        );
+
+        setTransactions(mappedTransactions);
+        const processedExist = response.transactions.some(
+          (transaction) => transaction.status_package === "processed"
+        );
+        setHasNewTransaction(processedExist);
+      } else {
+        console.error("Fetch error:", response.message);
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(
+          `https://backend-leftoverz-production.up.railway.app/api/v1/chats/user/${userId}`
+        );
+        const data = await res.json();
+
+        if (res.ok && data.chats) {
+          setChats(data.chats);
+          const unread = data.chats.some(
+            (chat: Chat) =>
+              chat.sender_id !== userId && chat.read_status === "0"
+          );
+          setHasNewMessage(unread); // 🔁 update ping merah
+        }
+      } catch (error) {
+        console.error("Polling chat error:", error);
+      }
+    }, 10000); // tiap 10 detik
+
+    return () => clearInterval(interval); // bersihkan saat unmount
+  }, [userId]);
+
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
 
   const handleLogout = async () => {
     try {
@@ -131,7 +370,147 @@ export default function Navbar() {
                 {label}
               </Link>
             ))}
+            <div className="relative">
+              <button onClick={togglePopup} className="relative">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className={`size-6 ${
+                    theme === "dark" ? "text-white" : "text-blue-400"
+                  }`}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"
+                  />
+                </svg>
 
+                {hasNotification && (
+                  <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
+                )}
+              </button>
+
+              {showPopup && (
+                <div
+                  className={`absolute right-0 mt-2 w-72 p-4 z-50 border shadow-md border-blue-400 rounded-md ${
+                    theme === "dark"
+                      ? "bg-[#080B2A] text-white"
+                      : "bg-white text-blue-400"
+                  }`}
+                >
+                  <h4 className="font-semibold text-blue-400 mb-2">
+                    Notifikasi
+                  </h4>
+                  {chats
+                    .filter(
+                      (chat) =>
+                        chat.sender_id !== Number(userId) &&
+                        chat.read_status === "0"
+                    )
+                    .map((chat) => (
+                      <div
+                        key={chat.id}
+                        className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
+                          theme === "dark"
+                            ? "bg-white/5 hover:bg-white/10 border-blue-400"
+                            : "bg-blue-50 hover:bg-blue-100 border-blue-400"
+                        }`}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6 flex-shrink-0 text-blue-500"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+                          />
+                        </svg>
+
+                        {/* TEXT */}
+                        <div className="flex flex-col">
+                          <p className="text-base">
+                            Pesan dari{" "}
+                            <strong className="tracking-wide">
+                              {chat.sender.name}
+                            </strong>{" "}
+                            terkait produk{" "}
+                            <strong className="tracking-wide">
+                              {chat.Product.name}
+                            </strong>
+                          </p>
+                          <Link
+                            href={`/buyer/product/${chat.Product.id}`}
+                            className={`text-sm hover:underline ${
+                              theme === "dark"
+                                ? "text-blue-200"
+                                : "text-blue-600"
+                            }`}
+                          >
+                            Lihat Produk
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+
+                  {chats.filter(
+                    (chat) =>
+                      chat.sender_id !== Number(userId) &&
+                      chat.read_status === "0"
+                  ).length === 0 && (
+                    <p className="text-sm text-gray-500">
+                      Tidak ada notifikasi baru.
+                    </p>
+                  )}
+                  {hasNewTransaction && (
+                    <div className="mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors dark:bg-white/5 dark:hover:bg-white/10 border-blue-400 bg-blue-50 hover:bg-blue-100">
+                      <div className="text-blue-500">📦</div>
+                      <div className="flex flex-col">
+                        <p className="text-base">
+                          Ada transaksi dengan status <strong>processed</strong>
+                          .
+                        </p>
+                        <Link
+                          href="/seller/transactions"
+                          className={`text-sm hover:underline ${
+                            theme === "dark" ? "text-blue-200" : "text-blue-600"
+                          }`}
+                        >
+                          Lihat Transaksi
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+
+                  {hasNewRefund && (
+                    <div className="mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors dark:bg-white/5 dark:hover:bg-white/10 border-blue-400 bg-blue-50 hover:bg-blue-100">
+                      <div className="text-blue-500">💰</div>
+                      <div className="flex flex-col">
+                        <p className="text-base">
+                          Ada permintaan <strong>refund</strong> baru.
+                        </p>
+                        <Link
+                          href="/seller/refund"
+                          className={`text-sm hover:underline ${
+                            theme === "dark" ? "text-blue-200" : "text-blue-600"
+                          }`}
+                        >
+                          Lihat Refund
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
             <div className="relative">
               <button onClick={() => setProfileOpen(!profileOpen)}>
                 <span

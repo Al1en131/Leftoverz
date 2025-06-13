@@ -236,7 +236,6 @@ export default function NavbarBuyer() {
                           : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                       }`}
                     >
-                      {/* ICON */}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
