@@ -564,7 +564,7 @@ export default function EditProduct() {
                       ? "bg-white/10 placeholder-white"
                       : "bg-white/30 placeholder-gray-400"
                   }`}
-                  placeholder="Enter product name"
+                  placeholder="Masukkan nama produk..."
                   value={formData.name}
                   onChange={handleChange}
                 />
@@ -586,7 +586,7 @@ export default function EditProduct() {
                       ? "bg-white/10 placeholder-white"
                       : "bg-white/30 placeholder-gray-400"
                   }`}
-                  placeholder="Enter product price"
+                  placeholder="Masukkan harga jual..."
                   value={displayPrice}
                   onChange={handleChange}
                 />
@@ -608,7 +608,7 @@ export default function EditProduct() {
                       ? "bg-white/10 placeholder-white"
                       : "bg-white/30 placeholder-gray-400"
                   }`}
-                  placeholder="Enter product original price"
+                  placeholder="masukkan harga beli..."
                   onChange={handleChange}
                   value={displayOriginalPrice}
                 />
@@ -705,7 +705,7 @@ export default function EditProduct() {
                       ? "bg-white/10 placeholder-white"
                       : "bg-white/30 placeholder-gray-400"
                   }`}
-                  placeholder="Enter product description"
+                  placeholder="Masukkan deskripsi produk"
                   value={formData.description}
                   onChange={handleChange}
                 />
