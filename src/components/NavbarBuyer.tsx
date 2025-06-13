@@ -234,7 +234,7 @@ export default function NavbarBuyer() {
                       key={chat.id}
                       className={`mb-2 border p-2 rounded-md transition-colors ${
                         theme === "dark"
-                          ? "bg-white/30 hover:bg-white/40 border-blue-400"
+                          ? "bg-white/20 hover:bg-white/30 border-blue-400"
                           : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                       }`}
                     >
@@ -244,9 +244,7 @@ export default function NavbarBuyer() {
                       </p>
                       <Link
                         href={`/buyer/product/${chat.Product.id}`}
-                        className={`text-sm hover:underline font-medium ${
-                          theme === "dark" ? "text-blue-300" : "text-blue-600"
-                        }`}
+                        className={`text-sm hover:underline font-medium text-blue-500`}
                       >
                         Lihat Produk
                       </Link>

@@ -29,7 +29,10 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await fetch("https://backend-leftoverz-production.up.railway.app/api/v1/logout", { method: "POST" });
+      await fetch(
+        "https://backend-leftoverz-production.up.railway.app/api/v1/logout",
+        { method: "POST" }
+      );
       localStorage.removeItem("token");
       localStorage.removeItem("email");
       localStorage.removeItem("role");
@@ -95,7 +98,7 @@ export default function Navbar() {
       <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
         {" "}
         <div className="container mx-auto flex justify-between items-center">
-          <Link href="/" className="text-lg font-semibold">
+          <Link href="/seller/" className="text-lg font-semibold">
             <Image
               width={100}
               height={100}
@@ -117,16 +120,13 @@ export default function Navbar() {
               <Link
                 key={index}
                 href={href}
-                className={`
-  capitalize
-  ${
-    pathname === href
-      ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
-      : theme === "dark"
-      ? "text-white"
-      : "text-blue-400"
-  }
-`}
+                className={`capitalize ${
+                  pathname === href
+                    ? "font-bold text-gradian border-b-2 pb-2 text-gradian-border tracking-wide"
+                    : theme === "dark"
+                    ? "text-white"
+                    : "text-blue-400"
+                }`}
               >
                 {label}
               </Link>
@@ -135,10 +135,11 @@ export default function Navbar() {
             <div className="relative">
               <button onClick={() => setProfileOpen(!profileOpen)}>
                 <span
-                  className={`
-  w-10 h-10 rounded-full flex items-center justify-center
-  ${theme === "dark" ? "text-white bg-blue-400" : "text-white bg-blue-400"}
-`}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    theme === "dark"
+                      ? "text-white bg-blue-400"
+                      : "text-white bg-blue-400"
+                  }`}
                 >
                   {name
                     ? name
@@ -177,10 +178,11 @@ export default function Navbar() {
           <div className="flex items-center gap-2 lg:hidden relative">
             <button onClick={() => setProfileOpen(!profileOpen)}>
               <span
-                className={`
-  w-10 h-10 rounded-full flex items-center justify-center
-  ${theme === "dark" ? "text-white bg-blue-400" : "text-white bg-blue-400"}
-`}
+                className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                  theme === "dark"
+                    ? "text-white bg-blue-400"
+                    : "text-white bg-blue-400"
+                }`}
               >
                 {name
                   ? name
@@ -244,13 +246,11 @@ export default function Navbar() {
             </button>
           </div>
         </div>
-        {/* Mobile Menu Dropdown */}
         {isOpen && (
           <div
-            className={`
-  block lg:hidden absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4
-  ${theme === "dark" ? "bg-[#080B2A]" : "bg-white"}
-`}
+            className={`block lg:hidden absolute top-full left-0 w-full py-4 px-6 z-40 space-y-4 ${
+              theme === "dark" ? "bg-[#080B2A]" : "bg-white"
+            }`}
           >
             {navLinks.map(({ href, label }, index) => (
               <Link
