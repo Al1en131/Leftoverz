@@ -231,9 +231,9 @@ export default function NavbarBuyer() {
                   .map((chat) => (
                     <div
                       key={chat.id}
-                      className={`mb-2 border ${
+                      className={`mb-2 border p-2 rounded-md ${
                         theme === "dark"
-                          ? "bg-white/20 border-blue-400"
+                          ? "bg-white/40 border-blue-400"
                           : "bg-blue-400 border-blue-400"
                       }`}
                     >
