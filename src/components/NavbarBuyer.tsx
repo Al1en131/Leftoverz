@@ -220,9 +220,7 @@ export default function NavbarBuyer() {
                     : "bg-white text-blue-400"
                 }`}
               >
-                <h4 className="font-semibold text-blue-400 mb-2">
-                  Pesan Masuk
-                </h4>
+                <h4 className="font-semibold text-blue-400 mb-2">Notifikasi</h4>
                 {chats
                   .filter(
                     (chat) =>
@@ -232,26 +230,52 @@ export default function NavbarBuyer() {
                   .map((chat) => (
                     <div
                       key={chat.id}
-                      className={`mb-2 border p-2 rounded-md transition-colors ${
+                      className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
                         theme === "dark"
                           ? "bg-white/5 hover:bg-white/10 border-blue-400"
                           : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                       }`}
                     >
-                      <p className="text-base">
-                        Pesan dari <strong className="tracking-wide">{chat.sender.name}</strong> terkait
-                        produk <strong className="tracking-wide">{chat.Product.name}</strong>
-                      </p>
-                      <Link
-                        href={`/buyer/product/${chat.Product.id}`}
-                        className={`text-sm hover:underline ${
-                          theme === "dark" ? "text-blue-200" : "text-blue-600"
-                        }`}
+                      {/* ICON */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-6 h-6 flex-shrink-0 text-blue-500"
                       >
-                        Lihat Produk
-                      </Link>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
+                        />
+                      </svg>
+
+                      {/* TEXT */}
+                      <div className="flex flex-col">
+                        <p className="text-base">
+                          Pesan dari{" "}
+                          <strong className="tracking-wide">
+                            {chat.sender.name}
+                          </strong>{" "}
+                          terkait produk{" "}
+                          <strong className="tracking-wide">
+                            {chat.Product.name}
+                          </strong>
+                        </p>
+                        <Link
+                          href={`/buyer/product/${chat.Product.id}`}
+                          className={`text-sm hover:underline ${
+                            theme === "dark" ? "text-blue-200" : "text-blue-600"
+                          }`}
+                        >
+                          Lihat Produk
+                        </Link>
+                      </div>
                     </div>
                   ))}
+
                 {chats.filter(
                   (chat) =>
                     chat.sender_id !== Number(userId) &&
