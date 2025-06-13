@@ -316,6 +316,7 @@ export default function BuyProduct() {
       setShowSuccessPopup(true);
       setShowModal(false);
       handleRefundSuccess?.();
+      await fetchRefund();
     } catch (err: unknown) {
       if (err instanceof Error) {
         alert("Gagal refund: " + err.message);
@@ -614,27 +615,27 @@ export default function BuyProduct() {
     setTheme(newTheme);
     localStorage.setItem("theme", newTheme);
   };
-  useEffect(() => {
-    const fetchRefund = async () => {
-      try {
-        const res = await fetch(
-          `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${transactionId}`
-        );
-        if (res.ok) {
-          const data = await res.json();
-          setRefund(data.refund);
-        } else {
-          setRefund(null); // Refund belum diajukan
-        }
-      } catch (error) {
-        console.error("Gagal mengambil data refund:", error);
+  const fetchRefund = async () => {
+    try {
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/refund/${transactionId}`
+      );
+      if (res.ok) {
+        const data = await res.json();
+        setRefund(data.refund);
+      } else {
+        setRefund(null); // Refund belum diajukan
       }
-    };
-
+    } catch (error) {
+      console.error("Gagal mengambil data refund:", error);
+    }
+  };
+  useEffect(() => {
     if (transactionId) {
       fetchRefund();
     }
   }, [transactionId]);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleMarkAsDelivered = async () => {
@@ -659,6 +660,7 @@ export default function BuyProduct() {
         setRefund(result.refund);
         setSuccessMessage("Pesanan ditandai sebagai selesai.");
         setShowSuccessPopup(true);
+        await fetchRefund();
       } else {
         setSuccessMessage("Gagal memperbarui status: " + result.message);
         setShowSuccessPopup(true);
@@ -735,6 +737,7 @@ export default function BuyProduct() {
         setSuccessMessage("Berhasil mengisi data pengiriman.");
         setRefund(data.refund);
         setShowShippingModal(false);
+        await fetchRefund();
       } else {
         setSuccessMessage(data.message || "Gagal menyimpan data.");
       }
@@ -1363,9 +1366,13 @@ export default function BuyProduct() {
                 disabled={transaction?.status_package === "delivered"}
                 className={`px-4 py-2 text-base tracking-wide w-full capitalize font-semibold rounded-xl ${
                   transaction?.status_package === "delivered"
-                    ? "bg-blue-400 text-white cursor-not-allowed"
+                    ? "bg-green-600 text-white cursor-not-allowed"
                     : transaction?.status_package === "refund"
                     ? "bg-red-500 text-white cursor-not-allowed"
+                    : transaction?.status_package === "processed"
+                    ? "bg-gray-600 text-white cursor-not-allowed"
+                    : transaction?.status_package === "shipping"
+                    ? "bg-orange-400 text-white cursor-not-allowed"
                     : "border-1 border-blue-400 hover:bg-blue-400"
                 }`}
               >

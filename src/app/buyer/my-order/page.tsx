@@ -367,16 +367,20 @@ export default function MyOrder() {
                               ? "bg-green-700 text-white"
                               : item.status_package === "processed"
                               ? "bg-gray-600 text-white"
+                              : item.status_package === "shipping"
+                              ? "bg-orange-500 text-white"
                               : "bg-red-700 text-white"
                           }`}
                         >
                           {item.status_package === "delivered"
                             ? "Selesai"
                             : item.status_package === "processed"
-                            ? "Sedang Diproses"
+                            ? "Diproses"
                             : item.status_package === "shipping"
-                            ? "Sedang Dikirim"
-                            : "Sedang Diproses"}
+                            ? "Dikirim"
+                            : item.status_package === "refund"
+                            ? "Dikembalikan"
+                            : "Diproses"}
                         </span>
 
                         <p className="text-blue-400 text-base">
