@@ -7,6 +7,7 @@ import NavbarBuyer from "./NavbarBuyer";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 import ThemeProvider from "./theme-provider";
+import { ComponentType } from "react";
 
 export default function MainLayout({
   children,
@@ -22,7 +23,8 @@ export default function MainLayout({
   const isBuyerPage = pathname.startsWith("/buyer");
   const isAdminPage = pathname.startsWith("/admin");
 
-  let NavbarComponent = Navbar;
+  let NavbarComponent: ComponentType = Navbar;
+
   if (isSellerPage) NavbarComponent = NavbarSeller;
   else if (isBuyerPage) NavbarComponent = NavbarBuyer;
 
