@@ -216,7 +216,7 @@ export default function NavbarBuyer() {
                 className={`absolute right-0 mt-2 w-72 p-4 z-50 border shadow-md border-blue-400 rounded-md ${
                   theme === "dark"
                     ? "bg-[#080B2A] text-white"
-                    : "bg-white text-white"
+                    : "bg-white text-blue-400"
                 }`}
               >
                 <h4 className="font-semibold text-blue-400 mb-2">
@@ -234,7 +234,7 @@ export default function NavbarBuyer() {
                       className={`mb-2 border p-2 rounded-md ${
                         theme === "dark"
                           ? "bg-white/30 border-blue-400"
-                          : "bg-blue-400 border-blue-400"
+                          : "border-blue-400"
                       }`}
                     >
                       <p className="text-sm">
@@ -244,7 +244,7 @@ export default function NavbarBuyer() {
                       <Link
                         href={`/buyer/product/${chat.Product.id}`}
                         className={`text-sm hover:underline ${
-                          theme === "dark" ? "text-blue-400" : "text-white"
+                          theme === "dark" ? "text-blue-300" : "text-blue-600"
                         }`}
                       >
                         Lihat Produk
