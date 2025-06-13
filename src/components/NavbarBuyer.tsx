@@ -231,7 +231,7 @@ export default function NavbarBuyer() {
                         <strong>{chat.Product.name}</strong>
                       </p>
                       <Link
-                        href={`/product/${chat.Product.id}`}
+                        href={`/buyer/product/${chat.Product.id}`}
                         className="text-blue-500 text-sm hover:underline"
                       >
                         Lihat Produk
