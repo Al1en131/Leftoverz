@@ -165,7 +165,7 @@ export default function AddProduct() {
       const data = await response.json();
       if (response.ok) {
         setShowSuccessPopup(true); // Menampilkan popup sukses
-        setSuccessMessage("Product successfully created!"); // Menambahkan pesan sukses
+        setSuccessMessage("Produk berhasil ditambahkan!"); // Menambahkan pesan sukses
       } else {
         setShowErrorPopup(true); // Menampilkan popup error
         setErrorMessage(data.message || "An error occurred. Please try again.");
@@ -173,7 +173,7 @@ export default function AddProduct() {
     } catch (error) {
       console.error("Error creating product:", error);
       setShowErrorPopup(true); // Menampilkan popup error
-      setErrorMessage("Error creating product, please try again.");
+      setErrorMessage("Gagal menambahkan produk!");
     }
   };
 
@@ -238,10 +238,10 @@ export default function AddProduct() {
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
             <button
-              onClick={handleClosePopup} // Menutup popup
+              onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
@@ -269,10 +269,10 @@ export default function AddProduct() {
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
             <button
-              onClick={handleCloseErrorPopup} // Menutup popup error
+              onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>

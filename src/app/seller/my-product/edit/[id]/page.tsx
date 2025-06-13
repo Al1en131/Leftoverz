@@ -293,7 +293,7 @@ export default function EditProduct() {
       const result = await res.json();
       if (res.ok) {
         setShowSuccessPopup(true);
-        setSuccessMessage("Product successfully updated!");
+        setSuccessMessage("Product berhasil diupdate!");
       } else {
         setShowErrorPopup(true);
         setErrorMessage(result.message || "An error occurred.");
@@ -301,7 +301,7 @@ export default function EditProduct() {
     } catch (error) {
       console.error("Error:", error);
       setShowErrorPopup(true);
-      setErrorMessage("Server error, please try again.");
+      setErrorMessage("Gagal mengupdate produk!");
     }
   };
 

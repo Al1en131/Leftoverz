@@ -174,7 +174,7 @@ export default function DetailProfile() {
       }
     } catch (error) {
       console.error("Update error:", error);
-      setErrorMessage("Terjadi kesalahan, mohon ulangi kembali.");
+      setErrorMessage("Terjadi Kesalahan. Mohon ulangi kembali!");
       setShowErrorPopup(true);
     }
   };
@@ -339,7 +339,7 @@ export default function DetailProfile() {
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
@@ -368,7 +368,7 @@ export default function DetailProfile() {
               onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+           Oke
             </button>
           </div>
         </div>
@@ -622,7 +622,7 @@ export default function DetailProfile() {
                             ? "bg-white/10 placeholder-white text-white"
                             : "bg-white/30 text-blue-400 placeholder-gray-400"
                         }`}
-                        placeholder="Enter account holder name"
+                        placeholder="Nama pemilik rekening"
                         onChange={handleChange}
                         value={formData.account_holder_name}
                       />
@@ -645,7 +645,7 @@ export default function DetailProfile() {
                             ? "bg-white/10 placeholder-white text-white"
                             : "bg-white/30 text-blue-400 placeholder-gray-400"
                         }`}
-                        placeholder="Enter payment account number"
+                        placeholder="No.rekening"
                         onChange={handleChange}
                         value={formData.payment_account_number}
                       />

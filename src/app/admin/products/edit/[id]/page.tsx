@@ -370,11 +370,11 @@ export default function EditProduct() {
             <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
 
-            <button
+           <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
@@ -397,11 +397,11 @@ export default function EditProduct() {
             </h2>
             <p className="mb-6 text-red-400">{errorMessage}</p>
 
-            <button
+             <button
               onClick={handleCloseErrorPopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
