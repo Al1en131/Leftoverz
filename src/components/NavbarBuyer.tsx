@@ -244,7 +244,9 @@ export default function NavbarBuyer() {
                       </p>
                       <Link
                         href={`/buyer/product/${chat.Product.id}`}
-                        className={`text-sm hover:underline font-medium text-blue-500`}
+                        className={`text-sm hover:underline ${
+                          theme === "dark" ? "text-blue-200" : "text-blue-600"
+                        }`}
                       >
                         Lihat Produk
                       </Link>
