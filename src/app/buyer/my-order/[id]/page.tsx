@@ -1119,17 +1119,7 @@ export default function BuyProduct() {
                           theme === "dark"
                             ? "bg-[#080B2A] text-white"
                             : "bg-white text-[#080B2A]"
-                        } ${
-                          refund?.status === "approved"
-                            ? "border-blue-400"
-                            : refund?.status === "rejected"
-                            ? "border-red-500"
-                            : refund?.status === "requested"
-                            ? "border-yellow-500"
-                            : refund?.status === "refunded"
-                            ? "border-green-500"
-                            : "border-blue-400"
-                        }`}
+                        } border-blue-400`}
                       >
                         <button
                           onClick={() => setShowStatusModal(false)}
@@ -1199,21 +1189,7 @@ export default function BuyProduct() {
                         </h2>
 
                         <p className="text-center">
-                          <strong
-                            className={
-                              refund?.status === "approved"
-                                ? "text-blue-400"
-                                : refund?.status === "rejected"
-                                ? "text-red-500"
-                                : refund?.status === "requested"
-                                ? "text-blue-400"
-                                : refund?.status === "refunded"
-                                ? "text-green-500"
-                                : refund?.status === "shipping"
-                                ? "text-blue-500"
-                                : "text-gray-500"
-                            }
-                          >
+                          <strong className="text-blue-400">
                             {refund?.status === "refunded"
                               ? "Pengembalian Dana Sudah Berhasil"
                               : refund?.status_package === "delivered"
