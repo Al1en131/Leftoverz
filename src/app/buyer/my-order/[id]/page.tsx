@@ -1036,12 +1036,22 @@ export default function BuyProduct() {
                               onChange={(e) => setCourir(e.target.value)}
                               required
                             >
-                              <option value="" disabled>
+                              <option
+                                value=""
+                                className="text-blue-400"
+                                disabled
+                              >
                                 Pilih Kurir
                               </option>
-                              <option value="JNE">JNE</option>
-                              <option value="JNT">J&T</option>
-                              <option value="SiCepat">SiCepat</option>
+                              <option className="text-blue-400" value="jne">
+                                JNE
+                              </option>
+                              <option className="text-blue-400" value="jnt">
+                                J&T
+                              </option>
+                              <option className="text-blue-400" value="sicepat">
+                                SiCepat
+                              </option>
                             </select>
                           </div>
                           <div className="flex justify-end gap-2">
