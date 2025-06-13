@@ -603,8 +603,8 @@ export default function RoomChat() {
                             <div
                               className={`py-3 px-4 rounded-xl ${
                                 isSender
-                                  ? "bg-blue-400 text-white rounded-bl-3xl rounded-tl-3xl"
-                                  : "bg-blue-300 text-white rounded-br-3xl rounded-tr-3xl"
+                                  ? "bg-blue-500 text-white rounded-bl-3xl rounded-tl-3xl"
+                                  : "bg-blue-400 text-white rounded-br-3xl rounded-tr-3xl"
                               }`}
                             >
                               {message.Product?.name && (
@@ -654,7 +654,7 @@ export default function RoomChat() {
                     <input
                       className="flex-1 bg-gray-300 text-black lg:py-2.5 max-lg:py-2 px-4 rounded-xl"
                       type="text"
-                      placeholder="Type your message here..."
+                      placeholder="Tulis pesanmu di sini..."
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                     />
