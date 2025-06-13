@@ -37,6 +37,7 @@ export default function NavbarBuyer() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [userId, setUserId] = useState<number | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
 
   useEffect(() => {
     const storedName = localStorage.getItem("name");
@@ -87,7 +88,9 @@ export default function NavbarBuyer() {
 
     fetchChats();
   }, [userId]);
-
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const handleLogout = async () => {
@@ -189,14 +192,14 @@ export default function NavbarBuyer() {
             </Link>
           ))}
           <div className="relative">
-            <button className="relative">
+            <button onClick={togglePopup} className="relative">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="size-6"
+                className="size-6 text-white"
               >
                 <path
                   strokeLinecap="round"
@@ -206,24 +209,25 @@ export default function NavbarBuyer() {
               </svg>
 
               {hasNewMessage && (
-                <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                <span className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
               )}
             </button>
 
-            {hasNewMessage && (
-              <div className="absolute right-0 mt-2 w-64 bg-white shadow-md rounded-md p-4 z-50">
+            {showPopup && (
+              <div className="absolute right-0 mt-2 w-72 bg-white shadow-md rounded-md p-4 z-50 text-black">
                 <h4 className="font-semibold text-gray-800 mb-2">
                   Pesan Masuk
                 </h4>
                 {chats
                   .filter(
-                    (chat) => chat.sender_id !== userId && !chat.read_status
+                    (chat: any) =>
+                      chat.sender_id !==  userId && chat.read_status === "0"
                   )
-                  .map((chat) => (
+                  .map((chat: any) => (
                     <div key={chat.id} className="mb-2">
                       <p className="text-sm">
-                        Pesan dari <strong>{chat.sender.name}</strong> terkait
-                        produk <strong>{chat.Product.name}</strong>
+                        Pesan dari <strong>{chat.sender.name}</strong> terkait{" "}
+                        <strong>{chat.Product.name}</strong>
                       </p>
                       <Link
                         href={`/product/${chat.Product.id}`}
@@ -233,6 +237,12 @@ export default function NavbarBuyer() {
                       </Link>
                     </div>
                   ))}
+                {chats.filter(
+                  (chat: any) =>
+                    chat.sender_id !== userId && chat.read_status === "0"
+                ).length === 0 && (
+                  <p className="text-sm text-gray-500">Tidak ada pesan baru.</p>
+                )}
               </div>
             )}
           </div>
