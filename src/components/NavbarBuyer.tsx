@@ -88,9 +88,49 @@ export default function NavbarBuyer() {
 
     fetchChats();
   }, [userId]);
-  const togglePopup = () => {
-    setShowPopup(!showPopup);
-  };
+
+  const togglePopup = async () => {
+  setShowPopup(!showPopup);
+
+  if (!showPopup) {
+    // Jika pop-up baru akan dibuka dan ada pesan belum dibaca
+    const unreadChats = chats.filter(
+      (chat) => chat.sender_id !== userId && chat.read_status === "0"
+    );
+
+    if (unreadChats.length > 0) {
+      try {
+        await Promise.all(
+          unreadChats.map((chat) =>
+            fetch(
+              `https://backend-leftoverz-production.up.railway.app/api/v1/chats/${chat.id}/read`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+          )
+        );
+
+        // Update state lokal agar tidak perlu fetch ulang
+        setChats((prevChats) =>
+          prevChats.map((chat) =>
+            chat.sender_id !== userId
+              ? { ...chat, read_status: "1" }
+              : chat
+          )
+        );
+
+        setHasNewMessage(false);
+      } catch (error) {
+        console.error("Gagal mengupdate status read:", error);
+      }
+    }
+  }
+};
+
   const [isOpen, setIsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const handleLogout = async () => {
@@ -227,7 +267,7 @@ export default function NavbarBuyer() {
                   .map((chat) => (
                     <div key={chat.id} className="mb-2">
                       <p className="text-sm">
-                        Pesan dari <strong>{chat.sender.name}</strong> terkait{" "}
+                        Pesan dari <strong>{chat.sender.name}</strong> terkait produk{" "}
                         <strong>{chat.Product.name}</strong>
                       </p>
                       <Link
