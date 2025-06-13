@@ -234,7 +234,7 @@ export default function NavbarBuyer() {
                       key={chat.id}
                       className={`mb-2 border p-2 rounded-md transition-colors ${
                         theme === "dark"
-                          ? "bg-white/20 hover:bg-white/30 border-blue-400"
+                          ? "bg-white/5 hover:bg-white/10 border-blue-400"
                           : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                       }`}
                     >
