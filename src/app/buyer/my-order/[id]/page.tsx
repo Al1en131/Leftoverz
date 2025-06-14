@@ -1381,8 +1381,6 @@ export default function BuyProduct() {
                   ? "Pesanan Dikembalikan"
                   : transaction?.status_package === "processed"
                   ? "Pesanan Diproses"
-                  : transaction?.status_package === "shipping"
-                  ? "Pesanan Dikirim"
                   : "Pesanan Selesai"}
               </button>
 
