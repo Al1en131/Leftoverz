@@ -423,10 +423,13 @@ export default function Refund() {
                     {/* Action */}
                     <td className="px-6 py-3 text-center">
                       <div className="flex justify-center items-center gap-2">
-                        {item.status === "shipping" ||
-                          item.status === "refunded" ||
-                          item.status === "requested" ||
-                          (item.status === "approved" && (
+                        {[
+                          "shipping",
+                          "refunded",
+                          "requested",
+                          "approved",
+                        ].includes(item.status) ? (
+                          item.status === "approved" ? (
                             <button
                               onClick={() => {
                                 setSelectedRefund(item);
@@ -454,8 +457,13 @@ export default function Refund() {
                                 />
                               </svg>
                             </button>
-                          )) ||
-                          "-"}
+                          ) : (
+                            "-" // atau ganti dengan apapun jika status bukan "approved" tapi masih termasuk yang lain
+                          )
+                        ) : (
+                          "-" // status tidak masuk dalam daftar
+                        )}
+
                         <button
                           onClick={() => {
                             setSelectedRefund(item);
