@@ -429,7 +429,7 @@ export default function Refund() {
                           "requested",
                           "approved",
                         ].includes(item.status) ? (
-                          item.status === "approved" ? (
+                          item.status === "shipping" ? (
                             <button
                               onClick={() => {
                                 setSelectedRefund(item);
