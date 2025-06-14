@@ -240,7 +240,7 @@ export default function Navbar() {
     const interval = setInterval(() => {
       fetchRefund();
       fetchTransactions();
-    }, 10000); 
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [userId, fetchRefund, fetchTransactions]);
@@ -261,14 +261,14 @@ export default function Navbar() {
             (chat: Chat) =>
               chat.sender_id !== userId && chat.read_status === "0"
           );
-          setHasNewMessage(unread); 
+          setHasNewMessage(unread);
         }
       } catch (error) {
         console.error("Polling chat error:", error);
       }
-    }, 10000); 
+    }, 10000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, [userId]);
 
   const togglePopup = () => {
@@ -457,7 +457,7 @@ export default function Navbar() {
                             </strong>
                           </p>
                           <Link
-                            href={`/buyer/product/${chat.Product.id}`}
+                            href={`/seller/chat`}
                             className={`text-sm hover:underline ${
                               theme === "dark"
                                 ? "text-blue-200"
@@ -507,7 +507,7 @@ export default function Navbar() {
                                 menunggu pengiriman.
                               </p>
                               <Link
-                                href="/seller/transactions"
+                                href="/seller/transaction"
                                 className={`text-sm hover:underline ${
                                   theme === "dark"
                                     ? "text-blue-200"
@@ -520,7 +520,6 @@ export default function Navbar() {
                           </div>
                         ))}
 
-                  {/* Notifikasi Refund Requested */}
                   {loading
                     ? null
                     : refund
@@ -573,6 +572,19 @@ export default function Navbar() {
                             </div>
                           </div>
                         ))}
+                  {chats.filter(
+                    (chat) =>
+                      chat.sender_id !== Number(userId) &&
+                      chat.read_status === "0"
+                  ).length === 0 &&
+                    transactions.filter((t) => t.status_package === "processed")
+                      .length === 0 &&
+                    refund.filter((r) => r.status === "requested").length ===
+                      0 && (
+                      <p className="text-sm text-center text-gray-500">
+                        Tidak ada notifikasi baru.
+                      </p>
+                    )}
                 </div>
               )}
             </div>

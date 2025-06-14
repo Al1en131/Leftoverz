@@ -424,7 +424,9 @@ export default function Refund() {
                     <td className="px-6 py-3 text-center">
                       <div className="flex justify-center items-center gap-2">
                         {item.status === "shipping" ||
-                          (item.status === "refunded" && (
+                          item.status === "refunded" ||
+                          item.status === "requested" ||
+                          (item.status === "approved" && (
                             <button
                               onClick={() => {
                                 setSelectedRefund(item);
@@ -490,11 +492,36 @@ export default function Refund() {
                                 onChange={(e) => setNewStatus(e.target.value)}
                                 className="w-full border rounded p-2 mb-4"
                               >
-                                <option className="text-blue-400" value="requested">Requested</option>
-                                <option className="text-blue-400" value="approved">Approved</option>
-                                <option className="text-blue-400" value="rejected">Rejected</option>
-                                <option className="text-blue-400" value="shipping">Shipping</option>
-                                <option className="text-blue-400" value="refunded">Refunded</option>
+                                <option
+                                  className="text-blue-400"
+                                  value="requested"
+                                >
+                                  Requested
+                                </option>
+                                <option
+                                  className="text-blue-400"
+                                  value="approved"
+                                >
+                                  Approved
+                                </option>
+                                <option
+                                  className="text-blue-400"
+                                  value="rejected"
+                                >
+                                  Rejected
+                                </option>
+                                <option
+                                  className="text-blue-400"
+                                  value="shipping"
+                                >
+                                  Shipping
+                                </option>
+                                <option
+                                  className="text-blue-400"
+                                  value="refunded"
+                                >
+                                  Refunded
+                                </option>
                               </select>
 
                               <div className="flex justify-end gap-3">
