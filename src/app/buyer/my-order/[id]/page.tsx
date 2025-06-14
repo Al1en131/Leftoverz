@@ -1214,7 +1214,7 @@ export default function BuyProduct() {
                               : refund?.status === "rejected"
                               ? "Pengajuan Pengembalian Barang Ditolak"
                               : refund?.status === "requested"
-                              ? "Menunggu Persetujuan Admin"
+                              ? "Menunggu Persetujuan Penjual"
                               : refund?.status === "shipping"
                               ? "Pengembalian Barang sedang Diproses"
                               : "Pengembalian Barang sedang Diproses"}
