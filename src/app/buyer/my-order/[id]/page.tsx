@@ -1370,8 +1370,6 @@ export default function BuyProduct() {
                     ? "bg-red-500 text-white cursor-not-allowed"
                     : transaction?.status_package === "processed"
                     ? "bg-gray-600 text-white cursor-not-allowed"
-                    : transaction?.status_package === "shipping"
-                    ? "bg-orange-400 text-white cursor-not-allowed"
                     : "border-1 border-blue-400 hover:bg-blue-400"
                 }`}
               >
