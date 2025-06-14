@@ -240,9 +240,9 @@ export default function Navbar() {
     const interval = setInterval(() => {
       fetchRefund();
       fetchTransactions();
-    }, 30000); // setiap 30 detik
+    }, 10000); 
 
-    return () => clearInterval(interval); // bersihkan saat unmount
+    return () => clearInterval(interval);
   }, [userId, fetchRefund, fetchTransactions]);
 
   useEffect(() => {
@@ -261,14 +261,14 @@ export default function Navbar() {
             (chat: Chat) =>
               chat.sender_id !== userId && chat.read_status === "0"
           );
-          setHasNewMessage(unread); // 🔁 update ping merah
+          setHasNewMessage(unread); 
         }
       } catch (error) {
         console.error("Polling chat error:", error);
       }
-    }, 10000); // tiap 10 detik
+    }, 10000); 
 
-    return () => clearInterval(interval); // bersihkan saat unmount
+    return () => clearInterval(interval); 
   }, [userId]);
 
   const togglePopup = () => {
