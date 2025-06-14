@@ -464,7 +464,7 @@ export default function Navbar() {
                                 : "text-blue-600"
                             }`}
                           >
-                            Lihat Produk
+                            Lihat Chat
                           </Link>
                         </div>
                       </div>
