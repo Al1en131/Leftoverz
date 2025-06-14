@@ -428,7 +428,7 @@ export default function Refund() {
                           "shipping",
                           "refunded",
                           "requested",
-                        ].includes(item.status) ? (
+                        ].includes(item.status?.toLowerCase().trim()) ? (
                           <button
                             onClick={() => {
                               setSelectedRefund(item);
