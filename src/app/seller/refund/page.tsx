@@ -490,11 +490,11 @@ export default function Refund() {
                                 onChange={(e) => setNewStatus(e.target.value)}
                                 className="w-full border rounded p-2 mb-4"
                               >
-                                <option value="requested">Requested</option>
-                                <option value="approved">Approved</option>
-                                <option value="rejected">Rejected</option>
-                                <option value="shipping">Shipping</option>
-                                <option value="refunded">Refunded</option>
+                                <option className="text-blue-400" value="requested">Requested</option>
+                                <option className="text-blue-400" value="approved">Approved</option>
+                                <option className="text-blue-400" value="rejected">Rejected</option>
+                                <option className="text-blue-400" value="shipping">Shipping</option>
+                                <option className="text-blue-400" value="refunded">Refunded</option>
                               </select>
 
                               <div className="flex justify-end gap-3">

@@ -303,7 +303,6 @@ export default function Navbar() {
     { href: "/seller/refund", label: "Pengembalian" },
     { href: "/seller/chat", label: "Pesan" },
   ];
-  if (loading) return null;
 
   return (
     <>
@@ -470,103 +469,110 @@ export default function Navbar() {
                         </div>
                       </div>
                     ))}
-                  {transactions
-                    .filter((t) => t.status_package === "processed")
-                    .map((transaction) => (
-                      <div
-                        key={transaction.id}
-                        className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
-                          theme === "dark"
-                            ? "bg-white/5 hover:bg-white/10 border-blue-400"
-                            : "bg-blue-50 hover:bg-blue-100 border-blue-400"
-                        }`}
-                      >
-                        <div className="text-blue-500">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-6 h-6 flex-shrink-0 text-blue-500"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col">
-                          <p className="text-base">
-                            Transaksi dari{" "}
-                            <strong>
-                              {transaction.buyer?.name || "Pengguna"}
-                            </strong>{" "}
-                            menunggu pengiriman.
-                          </p>
-                          <Link
-                            href="/seller/transactions"
-                            className={`text-sm hover:underline ${
+                  {loading
+                    ? null
+                    : transactions
+                        .filter((t) => t.status_package === "processed")
+                        .map((transaction) => (
+                          <div
+                            key={transaction.id}
+                            className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
                               theme === "dark"
-                                ? "text-blue-200"
-                                : "text-blue-600"
+                                ? "bg-white/5 hover:bg-white/10 border-blue-400"
+                                : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                             }`}
                           >
-                            Lihat Transaksi
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
+                            <div className="text-blue-500">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-6 h-6 flex-shrink-0 text-blue-500"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex flex-col">
+                              <p className="text-base">
+                                Transaksi dari{" "}
+                                <strong>
+                                  {transaction.buyer?.name || "Pengguna"}
+                                </strong>{" "}
+                                menunggu pengiriman.
+                              </p>
+                              <Link
+                                href="/seller/transactions"
+                                className={`text-sm hover:underline ${
+                                  theme === "dark"
+                                    ? "text-blue-200"
+                                    : "text-blue-600"
+                                }`}
+                              >
+                                Lihat Transaksi
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
 
                   {/* Notifikasi Refund Requested */}
-                  {refund
-                    .filter((refund) => refund.status === "requested")
-                    .map((refund) => (
-                      <div
-                        key={refund.id}
-                        className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
-                          theme === "dark"
-                            ? "bg-white/5 hover:bg-white/10 border-blue-400"
-                            : "bg-blue-50 hover:bg-blue-100 border-blue-400"
-                        }`}
-                      >
-                        <div className="text-blue-500">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-6 h-6 flex-shrink-0 text-blue-500"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                            />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col">
-                          <p className="text-base">
-                            Refund diminta oleh{" "}
-                            <strong>{refund.buyer?.name || "Pembeli"}</strong>{" "}
-                            untuk produk{" "}
-                            <strong>{refund.item?.name || "Produk"}</strong>.
-                          </p>
-                          <Link
-                            href="/seller/refund"
-                            className={`text-sm hover:underline ${
+                  {loading
+                    ? null
+                    : refund
+                        .filter((refund) => refund.status === "requested")
+                        .map((refund) => (
+                          <div
+                            key={refund.id}
+                            className={`mb-2 border p-2 rounded-md flex gap-3 items-start transition-colors ${
                               theme === "dark"
-                                ? "text-blue-200"
-                                : "text-blue-600"
+                                ? "bg-white/5 hover:bg-white/10 border-blue-400"
+                                : "bg-blue-50 hover:bg-blue-100 border-blue-400"
                             }`}
                           >
-                            Lihat Refund
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
+                            <div className="text-blue-500">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-6 h-6 flex-shrink-0 text-blue-500"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                                />
+                              </svg>
+                            </div>
+                            <div className="flex flex-col">
+                              <p className="text-base">
+                                Refund diminta oleh{" "}
+                                <strong>
+                                  {refund.buyer?.name || "Pembeli"}
+                                </strong>{" "}
+                                untuk produk{" "}
+                                <strong>{refund.item?.name || "Produk"}</strong>
+                                .
+                              </p>
+                              <Link
+                                href="/seller/refund"
+                                className={`text-sm hover:underline ${
+                                  theme === "dark"
+                                    ? "text-blue-200"
+                                    : "text-blue-600"
+                                }`}
+                              >
+                                Lihat Refund
+                              </Link>
+                            </div>
+                          </div>
+                        ))}
                 </div>
               )}
             </div>
