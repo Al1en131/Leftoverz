@@ -581,7 +581,7 @@ export default function Navbar() {
                       .length === 0 &&
                     refund.filter((r) => r.status === "requested").length ===
                       0 && (
-                      <p className="text-sm text-center text-gray-500">
+                      <p className="text-sm text-left text-gray-500">
                         Tidak ada notifikasi baru.
                       </p>
                     )}
