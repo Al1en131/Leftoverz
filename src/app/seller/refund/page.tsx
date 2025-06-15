@@ -377,7 +377,7 @@ export default function Refund() {
                     ? "text-white bg-white/10"
                     : "text-blue-400 bg-black/5"
                 }`}
-                placeholder="Search your transactions"
+                placeholder="Cari data pengembalian barang yang kamu punya..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);

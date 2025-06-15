@@ -128,21 +128,6 @@ export default function Products() {
     currentPage * itemsPerPage
   );
 
-  const getStatusPackageColor = (status_package: string | null) => {
-    switch (status_package?.toLowerCase()) {
-      case "pending":
-        return "bg-yellow-500";
-      case "approved":
-        return "bg-green-500";
-      case "rejected":
-        return "bg-red-500";
-      case "delivered":
-        return "bg-blue-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
