@@ -609,6 +609,24 @@ export default function Refund() {
                                   Barang Sedang Dikirim
                                 </option>
                               </select>
+                              <button
+                                onClick={() => handleMarkAsDelivered(item)}
+                                className={`mt-4 mb-2 block mx-auto px-4 py-2 rounded border ${
+                                  item.status_package === "delivered"
+                                    ? "bg-blue-400 text-white border-blue-400 cursor-default"
+                                    : "text-blue-400 border-blue-400 hover:bg-blue-500 hover:text-white"
+                                }`}
+                                disabled={
+                                  isSubmitting ||
+                                  item.status_package === "delivered"
+                                }
+                              >
+                                {isSubmitting
+                                  ? "Menyimpan..."
+                                  : item.status_package === "delivered"
+                                  ? "Pengembalian Barang Selesai"
+                                  : "Tandai Barang Sudah Diterima"}
+                              </button>
 
                               <div className="flex justify-end gap-3">
                                 <button
@@ -651,24 +669,6 @@ export default function Refund() {
                                   className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
                                 >
                                   Simpan
-                                </button>
-                                <button
-                                  onClick={() => handleMarkAsDelivered(item)}
-                                  className={`mt-4 mb-2 block mx-auto px-4 py-2 rounded border ${
-                                    item.status_package === "delivered"
-                                      ? "bg-blue-400 text-white border-blue-400 cursor-default"
-                                      : "text-blue-400 border-blue-400 hover:bg-blue-500 hover:text-white"
-                                  }`}
-                                  disabled={
-                                    isSubmitting ||
-                                    item.status_package === "delivered"
-                                  }
-                                >
-                                  {isSubmitting
-                                    ? "Menyimpan..."
-                                    : item.status_package === "delivered"
-                                    ? "Pengembalian Barang Berhasil"
-                                    : "Pesanan Selesai"}
                                 </button>
                               </div>
                             </div>
