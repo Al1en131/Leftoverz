@@ -162,21 +162,6 @@ export default function Products() {
     setDateString({ day, fullDate });
   }, []);
 
-  const getStatusColor = (status: string | null) => {
-    switch (status?.toLowerCase()) {
-      case "pending":
-        return "bg-yellow-500";
-      case "approved":
-        return "bg-green-500";
-      case "rejected":
-        return "bg-red-500";
-      case "delivered":
-        return "bg-blue-500";
-      default:
-        return "bg-gray-500";
-    }
-  };
-
   const fetchRefunds = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -341,9 +326,9 @@ export default function Products() {
               <th className="px-3 py-3 text-left">Nama Produk</th>
               <th className="px-3 py-3 text-left">Pembeli</th>
               <th className="px-3 py-3 text-left">Penjual</th>
-              <th className="px-3 py-3 text-center">Status Refund</th>
               <th className="px-3 py-3 text-center">Kurir</th>
               <th className="px-3 py-3 text-center">No.Resi</th>
+              <th className="px-3 py-3 text-center">Status Refund</th>
               <th className="px-3 py-3 text-center">Status Pengiriman</th>
               <th className="px-3 py-3 text-center">Aksi</th>
             </tr>
@@ -392,6 +377,13 @@ export default function Products() {
                 </td>
 
                 <td className="px-3 py-4 text-white text-center capitalize">
+                  {item.courir || "-"}
+                </td>
+
+                <td className="px-3 py-4 text-white text-center">
+                  {item.tracking_number || "-"}
+                </td>
+                <td className="px-6 py-3 text-center capitalize">
                   <span
                     className={`px-3 py-2 rounded-full text-sm font-semibold ${
                       item.status === "requested"
@@ -405,25 +397,34 @@ export default function Products() {
                         : "bg-gray-100 text-gray-600"
                     }`}
                   >
-                    {item.status || "-"}
+                    {item.status === "requested"
+                      ? "Pengajuan"
+                      : item.status === "approved"
+                      ? "Disetujui"
+                      : item.status === "rejected"
+                      ? "Ditolak"
+                      : item.status === "refunded"
+                      ? "Berhasil"
+                      : item.status === "shipping"
+                      ? "Pengiriman"
+                      : item.status || "-"}
                   </span>
                 </td>
-
-                <td className="px-3 py-4 text-white text-center capitalize">
-                  {item.courir || "-"}
-                </td>
-
-                <td className="px-3 py-4 text-white text-center">
-                  {item.tracking_number || "-"}
-                </td>
-
-                <td className="px-3 py-4 text-center">
+                <td className="px-6 py-3 text-center capitalize">
                   <span
-                    className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
-                      item.status_package
-                    )} text-white`}
+                    className={`px-3 py-2 rounded-full text-sm font-semibold ${
+                      item.status_package === "processed"
+                        ? "bg-yellow-100 text-yellow-600"
+                        : item.status_package === "delivered"
+                        ? "bg-green-100 text-green-600"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
                   >
-                    {item.status_package || "Pending"}
+                    {item.status_package === "processed"
+                      ? "Dikirim"
+                      : item.status_package === "delivered"
+                      ? "Diterima"
+                      : item.status_package || "Pending"}
                   </span>
                 </td>
 

@@ -611,7 +611,7 @@ export default function Refund() {
                               </select>
                               <button
                                 onClick={() => handleMarkAsDelivered(item)}
-                                className={`my-2 block px-4 py-2 rounded border ${
+                                className={`mb-3 block px-4 py-2 rounded border ${
                                   item.status_package === "delivered"
                                     ? "bg-blue-400 text-white border-blue-400 cursor-default"
                                     : "text-blue-400 border-blue-400 hover:bg-blue-500 hover:text-white"
