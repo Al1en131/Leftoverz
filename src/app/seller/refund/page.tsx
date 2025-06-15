@@ -575,7 +575,7 @@ export default function Refund() {
                         {isModalOpen && selectedRefund && (
                           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
                             <div className="bg-[#060B26] border border-blue-400 rounded-lg shadow-lg p-6 w-full max-w-md">
-                              <h2 className="text-lg font-semibold mb-4 text-white">
+                              <h2 className="text-lg font-semibold mb-6 text-white">
                                 Perbarui Status Pengembalian Barang
                               </h2>
 
@@ -611,7 +611,7 @@ export default function Refund() {
                               </select>
                               <button
                                 onClick={() => handleMarkAsDelivered(item)}
-                                className={`mt-4 mb-2 block mx-auto px-4 py-2 rounded border ${
+                                className={`my-2 block px-4 py-2 rounded border ${
                                   item.status_package === "delivered"
                                     ? "bg-blue-400 text-white border-blue-400 cursor-default"
                                     : "text-blue-400 border-blue-400 hover:bg-blue-500 hover:text-white"
