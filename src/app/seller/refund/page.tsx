@@ -413,11 +413,35 @@ export default function Refund() {
                             : "bg-gray-100 text-gray-600"
                         }`}
                       >
-                        {item.status || "-"}
+                        {item.status === "requested"
+                          ? "Pengajuan"
+                          : item.status === "approved"
+                          ? "Disetujui"
+                          : item.status === "rejected"
+                          ? "Ditolak"
+                          : item.status === "refunded"
+                          ? "Berhasil"
+                          : item.status === "shipping"
+                          ? "Pengiriman"
+                          : item.status || "-"}
                       </span>
                     </td>
                     <td className="px-6 py-3 text-center capitalize">
-                      {item.status_package || "Pending"}
+                      <span
+                        className={`px-3 py-2 rounded-full text-sm font-semibold ${
+                          item.status_package === "processed"
+                            ? "bg-yellow-100 text-yellow-600"
+                            : item.status_package === "delivered"
+                            ? "bg-green-100 text-green-600"
+                            : "bg-gray-100 text-gray-600"
+                        }`}
+                      >
+                        {item.status_package === "processed"
+                          ? "Menunggu Persetujuan"
+                          : item.status_package === "delivered"
+                          ? "Disetujui"
+                          : item.status_package || "Pending"}
+                      </span>
                     </td>
 
                     {/* Action */}
@@ -500,25 +524,25 @@ export default function Refund() {
                                   className="text-blue-400"
                                   value="requested"
                                 >
-                                  Requested
+                                  Pengajuan
                                 </option>
                                 <option
                                   className="text-blue-400"
                                   value="approved"
                                 >
-                                  Approved
+                                  Disetujui
                                 </option>
                                 <option
                                   className="text-blue-400"
                                   value="rejected"
                                 >
-                                  Rejected
+                                  Ditolak
                                 </option>
                                 <option
                                   className="text-blue-400"
                                   value="shipping"
                                 >
-                                  Shipping
+                                  Barang Sedang Dikirim
                                 </option>
                               </select>
 
