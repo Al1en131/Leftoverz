@@ -501,7 +501,7 @@ export default function Refund() {
                         }`}
                       >
                         {item.status_package === "processed"
-                          ? "Menunggu Persetujuan"
+                          ? "Dikirim"
                           : item.status_package === "delivered"
                           ? "Diterima"
                           : item.status_package || "Pending"}
