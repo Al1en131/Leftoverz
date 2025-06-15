@@ -637,42 +637,6 @@ export default function BuyProduct() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleMarkAsDelivered = async () => {
-    setIsSubmitting(true);
-    try {
-      const res = await fetch(
-        `https://backend-leftoverz-production.up.railway.app/api/v1/${refund?.id}/status-package`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            status_package: "delivered",
-          }),
-        }
-      );
-
-      const result = await res.json();
-
-      if (res.ok) {
-        setRefund(result.refund);
-        setSuccessMessage("Pesanan ditandai sebagai selesai.");
-        setShowSuccessPopup(true);
-        await fetchRefund();
-      } else {
-        setSuccessMessage("Gagal memperbarui status: " + result.message);
-        setShowSuccessPopup(true);
-      }
-    } catch (err) {
-      console.error("Error:", err);
-      setSuccessMessage("Terjadi kesalahan saat update status.");
-      setShowSuccessPopup(true);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   const handleCloseSuccessPopup = () => {
     setShowSuccessPopup(false);
   };
@@ -759,7 +723,7 @@ export default function BuyProduct() {
     }
   }, [router]);
 
-  if (isLoading) return null;
+  if (isLoading || isSubmitting) return null;
   return (
     <>
       <div
@@ -1227,25 +1191,7 @@ export default function BuyProduct() {
                                 className="mt-4 mb-2 block mx-auto px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500"
                               >
                                 Lacak Paket
-                              </button>
-                              <button
-                                onClick={handleMarkAsDelivered}
-                                className={`mt-4 mb-2 block mx-auto px-4 py-2 rounded border ${
-                                  refund?.status_package === "delivered"
-                                    ? "bg-blue-400 text-white border-blue-400 cursor-default"
-                                    : "text-blue-400 border-blue-400 hover:bg-blue-500 hover:text-white"
-                                }`}
-                                disabled={
-                                  isSubmitting ||
-                                  refund?.status_package === "delivered"
-                                }
-                              >
-                                {isSubmitting
-                                  ? "Menyimpan..."
-                                  : refund?.status_package === "delivered"
-                                  ? "Pengembalian Barang Berhasil"
-                                  : "Pesanan Selesai"}
-                              </button>
+                              </button>                             
                             </div>
                           )}
                           {refund?.status === "approved" && (

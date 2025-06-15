@@ -183,6 +183,47 @@ export default function Refund() {
   useEffect(() => {
     fetchRefund();
   }, [fetchRefund]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const handleMarkAsDelivered = async (item: RefundDisplayType) => {
+    setIsSubmitting(true);
+    try {
+      const res = await fetch(
+        `https://backend-leftoverz-production.up.railway.app/api/v1/${item.id}/status-package`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            status_package: "delivered",
+          }),
+        }
+      );
+
+      const result = await res.json();
+
+      if (res.ok) {
+        setSuccessMessage("Pesanan ditandai sebagai selesai.");
+        setShowSuccessPopup(true);
+        await fetchRefund(); // refresh data
+      } else {
+        setSuccessMessage("Gagal memperbarui status: " + result.message);
+        setShowSuccessPopup(true);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      setSuccessMessage("Terjadi kesalahan saat update status.");
+      setShowSuccessPopup(true);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCloseSuccessPopup = () => {
+    setShowSuccessPopup(false);
+  };
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -201,6 +242,29 @@ export default function Refund() {
         theme === "dark" ? "dark:bg-[#080B2A]" : "bg-white"
       } min-h-screen`}
     >
+      {showSuccessPopup && (
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
+          <div className="bg-[#080B2A] border-blue-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/images/succes.svg"
+                width={80}
+                height={80}
+                alt="Success"
+                className="w-20 h-20"
+              />
+            </div>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
+            <p className="mb-6 text-blue-400">{successMessage}</p>
+            <button
+              onClick={handleCloseSuccessPopup}
+              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+            >
+              Ya
+            </button>
+          </div>
+        </div>
+      )}
       <main>
         <Image
           width={100}
@@ -439,7 +503,7 @@ export default function Refund() {
                         {item.status_package === "processed"
                           ? "Menunggu Persetujuan"
                           : item.status_package === "delivered"
-                          ? "Disetujui"
+                          ? "Diterima"
                           : item.status_package || "Pending"}
                       </span>
                     </td>
@@ -587,6 +651,24 @@ export default function Refund() {
                                   className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
                                 >
                                   Simpan
+                                </button>
+                                <button
+                                  onClick={() => handleMarkAsDelivered(item)}
+                                  className={`mt-4 mb-2 block mx-auto px-4 py-2 rounded border ${
+                                    item.status_package === "delivered"
+                                      ? "bg-blue-400 text-white border-blue-400 cursor-default"
+                                      : "text-blue-400 border-blue-400 hover:bg-blue-500 hover:text-white"
+                                  }`}
+                                  disabled={
+                                    isSubmitting ||
+                                    item.status_package === "delivered"
+                                  }
+                                >
+                                  {isSubmitting
+                                    ? "Menyimpan..."
+                                    : item.status_package === "delivered"
+                                    ? "Pengembalian Barang Berhasil"
+                                    : "Pesanan Selesai"}
                                 </button>
                               </div>
                             </div>
