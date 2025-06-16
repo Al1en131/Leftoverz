@@ -353,7 +353,7 @@ export default function User() {
               value={formData.role}
             >
               <option value="" disabled>
-                Pilih KategorI Pengguna
+                Pilih Kategori Pengguna
               </option>
               <option className="text-blue-400" value="admin">
                 Admin
