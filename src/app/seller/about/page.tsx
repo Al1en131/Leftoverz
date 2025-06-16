@@ -107,7 +107,7 @@ export default function About() {
               }`}
             ></div>{" "}
             <h1
-              className={`max-lg:text-4xl lg:text-6xl tracking-wide font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 ${
+              className={`max-lg:text-4xl lg:text-6xl tracking-wide font-bold text-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >

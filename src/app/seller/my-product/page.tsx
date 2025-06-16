@@ -262,7 +262,7 @@ export default function MyProduct() {
                 theme === "dark"
                   ? "bg-black/50 text-white"
                   : "bg-white/30 text-[#080B2A]"
-              } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-30`}
+              } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-20`}
             >
               <h1 className="lg:text-6xl max-lg:text-4xl font-bold">
                 Produk Saya
