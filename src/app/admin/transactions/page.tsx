@@ -239,7 +239,7 @@ export default function Products() {
     );
   }
   return (
-    <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
+    <div className="bg-[#060B26] text-white px-6 py-6 relative">
       <Image
         width={100}
         height={100}
@@ -292,7 +292,7 @@ export default function Products() {
       </div>
 
       <div
-        className="relative overflow-x-auto rounded-lg"
+        className="relative w-full rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -323,255 +323,267 @@ export default function Products() {
           </div>
         </div>
 
-        <table className="w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
-          <thead className="text-white text-md">
-            <tr className="border-b-2 border-[#56577A]">
-              <th className="px-3 py-3 text-center">No.</th>
-              <th className="px-3 py-3 text-left">Nama Produk</th>
-              <th className="px-3 py-3 text-left">Pembeli</th>
-              <th className="px-3 py-3 text-left">Penjual</th>
-              <th className="px-3 py-3 text-center">Metode Pembayaran</th>
-              <th className="px-3 py-3 text-center">Harga</th>
-              <th className="px-3 py-3 text-center">Kurir</th>
-              <th className="px-3 py-3 text-center">No. Resi</th>
-              <th className="px-3 py-3 text-center">Status Pembayaran</th>
-              <th className="px-3 py-3 text-center">Status Paket</th>
-              <th className="px-3 py-3 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedTransactions.map((item, index) => (
-              <tr
-                key={item.id}
-                className="transition border-b border-[#56577A]"
-              >
-                <td className="px-3 py-4 text-white text-center">
-                  {(currentPage - 1) * itemsPerPage + index + 1}
-                </td>
-                <td className="px-3 py-4 text-white text-left">
-                  {item.item_name}
-                </td>
-                <td className="px-3 py-4 text-white text-left">
-                  {item.buyer_name && item.buyer_name.length > 25
-                    ? item.buyer_name.slice(0, 25) + "..."
-                    : item.buyer_name}
-                </td>
-                <td className="px-3 py-4 text-white text-left">
-                  {item.seller_name}
-                </td>
-                <td className="px-3 py-4 text-white capitalize text-center">
-                  {item.payment_method
-                    .split("_")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
-                </td>
-                <td className="px-3 py-4 text-white text-center">
-                  Rp {item.total.toLocaleString("id-ID")}
-                </td>
-                <td className="px-3 py-4 capitalize text-white text-center">
-                  {item.courir}
-                </td>
-                <td className="px-3 py-4 text-white text-center">
-                  {item.awb || "-"}
-                </td>
-                <td className="px-3 py-4 text-center">
-                  <span
-                    className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
-                      item.status
-                    )} text-white`}
-                  >
-                    {item.status}
-                  </span>
-                </td>
-                <td className="px-3 py-4 text-center">
-                  <span
-                    className={`px-3 py-2 rounded-full text-sm font-semibold ${
-                      item.status_package === "processed"
-                        ? "bg-yellow-100 text-yellow-600"
-                        : item.status_package === "delivered"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-red-100 text-red-600"
-                    }`}
-                  >
-                    {item.status_package === "processed"
-                      ? "Dikirim"
-                      : item.status_package === "delivered"
-                      ? "Diterima"
-                      : item.status_package || "Dikembalikan"}
-                  </span>
-                </td>
-                <td className="px-3 py-4 text-center flex justify-center">
-                  <button
-                    onClick={() => {
-                      setSelectedRefund(item);
-                      handleTrackPackageRefund();
-                    }}
-                    className="mt-2 px-1.5 py-1.5 flex justify-center bg-blue-400 text-white rounded hover:bg-blue-500"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-4 h-4"
+        <div className="w-full overflow-x-auto">
+          <table className="min-w-max w-full rounded-lg my-4 overflow-hidden">
+            <thead className="text-white text-md">
+              <tr className="border-b-2 border-[#56577A]">
+                <th className="px-3 py-3 text-center">No.</th>
+                <th className="px-3 py-3 text-left">Nama Produk</th>
+                <th className="px-3 py-3 text-left">Pembeli</th>
+                <th className="px-3 py-3 text-left">Penjual</th>
+                <th className="px-3 py-3 text-center">Metode Pembayaran</th>
+                <th className="px-3 py-3 text-center">Harga</th>
+                <th className="px-3 py-3 text-center">Kurir</th>
+                <th className="px-3 py-3 text-center">No. Resi</th>
+                <th className="px-3 py-3 text-center">Status Pembayaran</th>
+                <th className="px-3 py-3 text-center">Status Paket</th>
+                <th className="px-3 py-3 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {paginatedTransactions.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className="transition border-b border-[#56577A]"
+                >
+                  <td className="px-3 py-4 text-white text-center">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </td>
+                  <td className="px-3 py-4 text-white text-left">
+                    {item.item_name}
+                  </td>
+                  <td className="px-3 py-4 text-white text-left">
+                    {item.buyer_name && item.buyer_name.length > 25
+                      ? item.buyer_name.slice(0, 25) + "..."
+                      : item.buyer_name}
+                  </td>
+                  <td className="px-3 py-4 text-white text-left">
+                    {item.seller_name}
+                  </td>
+                  <td className="px-3 py-4 text-white capitalize text-center">
+                    {item.payment_method
+                      .split("_")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
+                  </td>
+                  <td className="px-3 py-4 text-white text-center">
+                    Rp {item.total.toLocaleString("id-ID")}
+                  </td>
+                  <td className="px-3 py-4 capitalize text-white text-center">
+                    {item.courir}
+                  </td>
+                  <td className="px-3 py-4 text-white text-center">
+                    {item.awb || "-"}
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <span
+                      className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
+                        item.status
+                      )} text-white`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                      />
-                    </svg>
-                  </button>
-                  {showTrackingModal && trackingData && (
-                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
-                      <div
-                        className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 bg-[#080B2A]`}
+                      {item.status}
+                    </span>
+                  </td>
+                  <td className="px-3 py-4 text-center">
+                    <span
+                      className={`px-3 py-2 rounded-full text-sm font-semibold ${
+                        item.status_package === "processed"
+                          ? "bg-yellow-100 text-yellow-600"
+                          : item.status_package === "delivered"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-red-100 text-red-600"
+                      }`}
+                    >
+                      {item.status_package === "processed"
+                        ? "Dikirim"
+                        : item.status_package === "delivered"
+                        ? "Diterima"
+                        : item.status_package || "Dikembalikan"}
+                    </span>
+                  </td>
+                  <td className="px-3 py-4 text-center flex justify-center">
+                    <button
+                      onClick={() => {
+                        setSelectedRefund(item);
+                        handleTrackPackageRefund();
+                      }}
+                      className="mt-2 px-1.5 py-1.5 flex justify-center bg-blue-400 text-white rounded hover:bg-blue-500"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="currentColor"
+                        className="w-4 h-4"
                       >
-                        <button
-                          className="absolute top-4 right-4 text-red-500 font-bold text-xl"
-                          onClick={() => setShowTrackingModal(false)}
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                        />
+                      </svg>
+                    </button>
+                    {showTrackingModal && trackingData && (
+                      <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center text-left">
+                        <div
+                          className={`w-full max-w-3xl p-6 rounded-xl shadow-xl overflow-y-auto max-h-[90vh] relative scrollbar-hidden border-2 border-blue-400 bg-[#080B2A]`}
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="size-6"
+                          <button
+                            className="absolute top-4 right-4 text-red-500 font-bold text-xl"
+                            onClick={() => setShowTrackingModal(false)}
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M6 18 18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-
-                        <h2 className="text-xl font-bold mb-4 text-blue-500">
-                          Informasi Pengiriman Paket
-                        </h2>
-
-                        <div className={`mb-4 text-white`}>
-                          <p>
-                            <strong className="tracking-wider">No.Resi:</strong>{" "}
-                            {trackingData.summary.awb || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">Kurir:</strong>{" "}
-                            {trackingData.summary.courier || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">Status:</strong>{" "}
-                            {trackingData.summary.status || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">Tanggal:</strong>{" "}
-                            {trackingData.summary.date || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">Berat:</strong>{" "}
-                            {trackingData.summary.weight || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">Biaya:</strong>{" "}
-                            Rp {trackingData.summary.amount || "-"}
-                          </p>
-                        </div>
-
-                        <div className={`mb-4 text-white`}>
-                          <p>
-                            <strong className="tracking-wider">Dari:</strong>{" "}
-                            {trackingData.detail.origin || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">Tujuan:</strong>{" "}
-                            {trackingData.detail.destination || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">
-                              Pengirim:
-                            </strong>{" "}
-                            {trackingData.detail.shipper || "-"}
-                          </p>
-                          <p>
-                            <strong className="tracking-wider">
-                              Penerima:
-                            </strong>{" "}
-                            {trackingData.detail.receiver || "-"}
-                          </p>
-                        </div>
-
-                        <div>
-                          <h3 className="text-lg font-semibold text-blue-500 mb-2">
-                            Riwayat Pengiriman
-                          </h3>
-                          <div className="mt-6 grow sm:mt-8 lg:mt-0">
-                            <div
-                              className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm bg-white/10`}
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="size-6"
                             >
-                              <h3
-                                className={`text-xl font-semibold text-white`}
-                              >
-                                Riwayat Pengiriman
-                              </h3>
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6 18 18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
 
-                              <ol className="relative ms-3 border-s border-gray-500">
-                                {trackingData?.history?.map((item, index) => (
-                                  <li
-                                    key={index}
-                                    className={`mb-10 ms-6 ${
-                                      index === 0 ? "text-primary-500" : ""
-                                    }`}
-                                  >
-                                    <span
-                                      className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
-                                        index === 0
-                                          ? "bg-blue-400"
-                                          : "bg-gray-500"
-                                      } text-white`}
+                          <h2 className="text-xl font-bold mb-4 text-blue-500">
+                            Informasi Pengiriman Paket
+                          </h2>
+
+                          <div className={`mb-4 text-white`}>
+                            <p>
+                              <strong className="tracking-wider">
+                                No.Resi:
+                              </strong>{" "}
+                              {trackingData.summary.awb || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">Kurir:</strong>{" "}
+                              {trackingData.summary.courier || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Status:
+                              </strong>{" "}
+                              {trackingData.summary.status || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Tanggal:
+                              </strong>{" "}
+                              {trackingData.summary.date || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">Berat:</strong>{" "}
+                              {trackingData.summary.weight || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">Biaya:</strong>{" "}
+                              Rp {trackingData.summary.amount || "-"}
+                            </p>
+                          </div>
+
+                          <div className={`mb-4 text-white`}>
+                            <p>
+                              <strong className="tracking-wider">Dari:</strong>{" "}
+                              {trackingData.detail.origin || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Tujuan:
+                              </strong>{" "}
+                              {trackingData.detail.destination || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Pengirim:
+                              </strong>{" "}
+                              {trackingData.detail.shipper || "-"}
+                            </p>
+                            <p>
+                              <strong className="tracking-wider">
+                                Penerima:
+                              </strong>{" "}
+                              {trackingData.detail.receiver || "-"}
+                            </p>
+                          </div>
+
+                          <div>
+                            <h3 className="text-lg font-semibold text-blue-500 mb-2">
+                              Riwayat Pengiriman
+                            </h3>
+                            <div className="mt-6 grow sm:mt-8 lg:mt-0">
+                              <div
+                                className={`space-y-6 rounded-lg border border-blue-400 p-6 shadow-sm bg-white/10`}
+                              >
+                                <h3
+                                  className={`text-xl font-semibold text-white`}
+                                >
+                                  Riwayat Pengiriman
+                                </h3>
+
+                                <ol className="relative ms-3 border-s border-gray-500">
+                                  {trackingData?.history?.map((item, index) => (
+                                    <li
+                                      key={index}
+                                      className={`mb-10 ms-6 ${
+                                        index === 0 ? "text-primary-500" : ""
+                                      }`}
                                     >
-                                      <svg
-                                        className="h-4 w-4"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
+                                      <span
+                                        className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
+                                          index === 0
+                                            ? "bg-blue-400"
+                                            : "bg-gray-500"
+                                        } text-white`}
                                       >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M5 11.917 9.724 16.5 19 7.5"
-                                        />
-                                      </svg>
-                                    </span>
-                                    <h4
-                                      className={`mb-0.5 text-base font-semibold text-white`}
-                                    >
-                                      {item.date}
-                                    </h4>
-                                    <p className="text-sm text-blue-400">
-                                      {item.desc}
-                                    </p>
-                                  </li>
-                                ))}
-                              </ol>
+                                        <svg
+                                          className="h-4 w-4"
+                                          fill="none"
+                                          viewBox="0 0 24 24"
+                                          stroke="currentColor"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M5 11.917 9.724 16.5 19 7.5"
+                                          />
+                                        </svg>
+                                      </span>
+                                      <h4
+                                        className={`mb-0.5 text-base font-semibold text-white`}
+                                      >
+                                        {item.date}
+                                      </h4>
+                                      <p className="text-sm text-blue-400">
+                                        {item.desc}
+                                      </p>
+                                    </li>
+                                  ))}
+                                </ol>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="flex justify-center my-4 gap-2">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

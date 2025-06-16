@@ -327,7 +327,7 @@ export default function Products() {
         </div>
       </div>
       <div
-        className="relative overflow-x-auto rounded-lg"
+        className="relative overflow-x-auto w-full rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -374,7 +374,7 @@ export default function Products() {
             </Link>
           </div>
         </div>
-        <table className="w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
+        <table className="min-w-max w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
           <thead className=" text-white text-md">
             <tr className="border-b-2 border-[#56577A]">
               <th className="px-4 py-3 text-center">No.</th>
