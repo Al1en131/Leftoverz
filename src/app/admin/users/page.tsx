@@ -125,13 +125,13 @@ export default function User() {
       );
 
       const data = await response.json();
-      if (data?.message === "User deleted successfully") {
+      if (data?.message === "User berhasil dihapus") {
         setUsers(users.filter((user) => user.id !== userToDelete));
         setShowSuccessPopup(true);
-        setSuccessMessage("User deleted successfully");
+        setSuccessMessage("User berhasil dihapus");
       } else {
         setShowErrorPopup(true);
-        setErrorMessage("Failed to delete user");
+        setErrorMessage("Gagal menghapus user");
       }
     } catch (error) {
       console.error("Failed to delete user:", error);
