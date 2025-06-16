@@ -302,7 +302,7 @@ export default function Products() {
             <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Cari..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);

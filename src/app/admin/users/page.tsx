@@ -309,7 +309,7 @@ export default function User() {
             <div className="relative flex-1 min-w-[200px] max-w-md">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="Cari..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full px-4 py-2 pr-10 rounded text-white placeholder-gray-400 bg-transparent border border-gray-600 focus:outline-none"
