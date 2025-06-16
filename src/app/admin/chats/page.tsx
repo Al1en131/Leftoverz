@@ -170,7 +170,7 @@ export default function Chats() {
         </div>
       </div>
       <div
-        className="relative overflow-x-auto w-full rounded-lg"
+        className="relative w-full rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -197,70 +197,72 @@ export default function Chats() {
             </div>
           </div>
         </div>
-        <table className="min-w-max w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
-          <thead className="text-white text-md">
-            <tr className="border-b-2 border-[#56577A]">
-              <th className="px-3 py-3 text-center">No.</th>
-              <th className="px-3 py-3 text-left">Pengirim</th>
-              <th className="px-3 py-3 text-left">Penerima</th>
-              <th className="px-3 py-3 text-left">Pesan</th>
-              <th className="px-3 py-3 text-left">Produk</th>
-              <th className="px-3 py-3 text-center">Status Terbaca</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto">
+          <table className="min-w-max w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
+            <thead className="text-white text-md">
+              <tr className="border-b-2 border-[#56577A]">
+                <th className="px-3 py-3 text-center">No.</th>
+                <th className="px-3 py-3 text-left">Pengirim</th>
+                <th className="px-3 py-3 text-left">Penerima</th>
+                <th className="px-3 py-3 text-left">Pesan</th>
+                <th className="px-3 py-3 text-left">Produk</th>
+                <th className="px-3 py-3 text-center">Status Terbaca</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {loading ? (
-              <tr>
-                <td colSpan={5} className="text-center py-6">
-                  Loading chats...
-                </td>
-              </tr>
-            ) : chats.length === 0 ? (
-              <tr>
-                <td colSpan={5} className="text-center py-6">
-                  Tidak ada pesan
-                </td>
-              </tr>
-            ) : (
-              paginatedchats.map((chat, index) => (
-                <tr key={chat.id} className="border-b border-[#56577A]">
-                  <td className="px-3 py-4 text-center">
-                    {" "}
-                    {(currentPage - 1) * itemsPerPage + index + 1}
-                  </td>
-                  <td className="px-3 py-4 text-left">
-                    {chat.sender?.name && chat.sender.name.length > 25
-                      ? chat.sender.name.slice(0, 25) + "..."
-                      : chat.sender?.name}
-                  </td>
-                  <td className="px-3 py-4 text-left">
-                    {chat.receiver?.name && chat.receiver.name.length > 25
-                      ? chat.receiver.name.slice(0, 25) + "..."
-                      : chat.receiver?.name}
-                  </td>
-                  <td className="px-3 py-4 text-left">{chat.message}</td>
-                  <td className="px-3 py-4 text-left">
-                    {chat.Product?.name && chat.Product.name.length > 25
-                      ? chat.Product.name.slice(0, 25) + "..."
-                      : chat.Product?.name}
-                  </td>
-                  <td className="px-3 py-4 text-center">
-                    {chat.read_status == 0 ? (
-                      <button className="px-4 py-1 bg-red-500 text-white rounded-full text-sm">
-                        Belum Dibaca
-                      </button>
-                    ) : (
-                      <button className="px-4 py-1 bg-blue-400 text-white rounded-full text-sm">
-                        Sudah Dibaca
-                      </button>
-                    )}
+            <tbody>
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="text-center py-6">
+                    Loading chats...
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : chats.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="text-center py-6">
+                    Tidak ada pesan
+                  </td>
+                </tr>
+              ) : (
+                paginatedchats.map((chat, index) => (
+                  <tr key={chat.id} className="border-b border-[#56577A]">
+                    <td className="px-3 py-4 text-center">
+                      {" "}
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </td>
+                    <td className="px-3 py-4 text-left">
+                      {chat.sender?.name && chat.sender.name.length > 25
+                        ? chat.sender.name.slice(0, 25) + "..."
+                        : chat.sender?.name}
+                    </td>
+                    <td className="px-3 py-4 text-left">
+                      {chat.receiver?.name && chat.receiver.name.length > 25
+                        ? chat.receiver.name.slice(0, 25) + "..."
+                        : chat.receiver?.name}
+                    </td>
+                    <td className="px-3 py-4 text-left">{chat.message}</td>
+                    <td className="px-3 py-4 text-left">
+                      {chat.Product?.name && chat.Product.name.length > 25
+                        ? chat.Product.name.slice(0, 25) + "..."
+                        : chat.Product?.name}
+                    </td>
+                    <td className="px-3 py-4 text-center">
+                      {chat.read_status == 0 ? (
+                        <button className="px-4 py-1 bg-red-500 text-white rounded-full text-sm">
+                          Belum Dibaca
+                        </button>
+                      ) : (
+                        <button className="px-4 py-1 bg-blue-400 text-white rounded-full text-sm">
+                          Sudah Dibaca
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
         <div className="flex justify-center my-4 gap-2">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

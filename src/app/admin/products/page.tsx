@@ -245,7 +245,7 @@ export default function Products() {
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
-           <button
+            <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
@@ -327,7 +327,7 @@ export default function Products() {
         </div>
       </div>
       <div
-        className="relative overflow-x-auto w-full rounded-lg"
+        className="relative w-full rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -374,124 +374,126 @@ export default function Products() {
             </Link>
           </div>
         </div>
-        <table className="min-w-max w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
-          <thead className=" text-white text-md">
-            <tr className="border-b-2 border-[#56577A]">
-              <th className="px-4 py-3 text-center">No.</th>
-              <th className="px-4 py-3 text-center">Gambar</th>
-              <th className="px-4 py-3 text-left">Nama Produk</th>
-              <th className="px-4 py-3 text-left">Penjual</th>
-              <th className="px-4 py-3 text-left">Deskripsi</th>
-              <th className="px-4 py-3 text-center">Harga</th>
-              <th className="px-4 py-3 text-center">Status</th>
-              <th className="px-4 py-3 text-center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentProducts.map((product, index) => (
-              <tr
-                key={product.id}
-                className="transition border-b border-[#56577A]"
-              >
-                <td className="px-4 py-4 text-white text-center">
-                  {index + 1 + (currentPage - 1) * itemsPerPage}
-                </td>
-                <td className="px-4 py-4 text-white text-center flex justify-center">
-                  <Image
-                    src={
-                      product.image &&
-                      Array.isArray(product.image) &&
-                      product.image.length > 0 &&
-                      typeof product.image[0] === "string" &&
-                      product.image[0].startsWith("/")
-                        ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
-                        : "/images/default-product.png"
-                    }
-                    alt={product.name}
-                    width={100}
-                    height={100}
-                    className="w-12 h-12 object-cover rounded-2xl"
-                  />
-                </td>
-                <td className="px-4 py-4 text-white text-left">
-                  {product.name && product.name.length > 17
-                    ? product.name.slice(0, 17) + "..."
-                    : product.name}
-                </td>
-                <td className="px-4 py-4 text-white text-left">
-                  {product.seller?.name && product.seller?.name.length > 20
-                    ? product.seller?.name.slice(0, 20) + "..."
-                    : product.seller?.name}
-                </td>
-                <td className="px-4 py-4 text-white text-left">
-                  {product.description && product.description.length > 20
-                    ? product.description.slice(0, 20) + "..."
-                    : product.description}
-                </td>
-                <td className="px-4 py-4 text-white text-center">
-                  Rp {product.price.toLocaleString("id-ID")}
-                </td>
-                <td className="px-4 py-4 text-center">
-                  <span
-                    className={`px-4 py-2 text-sm capitalize tracking-wide font-semibold rounded-full ${
-                      product.status === "available"
-                        ? "bg-green-700 text-white"
-                        : "bg-red-700 text-white"
-                    }`}
-                  >
-                    {product.status}
-                  </span>
-                </td>
-                <td className="px-4 py-4 space-x-2 text-center">
-                  {/* Tombol Edit */}
-                  <Link
-                    href={`/admin/products/edit/${product.id}`}
-                    className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
-                      />
-                    </svg>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      setSelectedProductId(product.id);
-                      setShowConfirmPopup(true);
-                    }}
-                    className="inline-flex items-center justify-center p-1 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                      />
-                    </svg>
-                  </button>
-                </td>
+        <div className=" overflow-x-auto">
+          <table className="min-w-max w-full rounded-lg my-4 max-lg:px-6 overflow-hidden">
+            <thead className=" text-white text-md">
+              <tr className="border-b-2 border-[#56577A]">
+                <th className="px-4 py-3 text-center">No.</th>
+                <th className="px-4 py-3 text-center">Gambar</th>
+                <th className="px-4 py-3 text-left">Nama Produk</th>
+                <th className="px-4 py-3 text-left">Penjual</th>
+                <th className="px-4 py-3 text-left">Deskripsi</th>
+                <th className="px-4 py-3 text-center">Harga</th>
+                <th className="px-4 py-3 text-center">Status</th>
+                <th className="px-4 py-3 text-center">Aksi</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentProducts.map((product, index) => (
+                <tr
+                  key={product.id}
+                  className="transition border-b border-[#56577A]"
+                >
+                  <td className="px-4 py-4 text-white text-center">
+                    {index + 1 + (currentPage - 1) * itemsPerPage}
+                  </td>
+                  <td className="px-4 py-4 text-white text-center flex justify-center">
+                    <Image
+                      src={
+                        product.image &&
+                        Array.isArray(product.image) &&
+                        product.image.length > 0 &&
+                        typeof product.image[0] === "string" &&
+                        product.image[0].startsWith("/")
+                          ? `https://backend-leftoverz-production.up.railway.app${product.image[0]}`
+                          : "/images/default-product.png"
+                      }
+                      alt={product.name}
+                      width={100}
+                      height={100}
+                      className="w-12 h-12 object-cover rounded-2xl"
+                    />
+                  </td>
+                  <td className="px-4 py-4 text-white text-left">
+                    {product.name && product.name.length > 17
+                      ? product.name.slice(0, 17) + "..."
+                      : product.name}
+                  </td>
+                  <td className="px-4 py-4 text-white text-left">
+                    {product.seller?.name && product.seller?.name.length > 20
+                      ? product.seller?.name.slice(0, 20) + "..."
+                      : product.seller?.name}
+                  </td>
+                  <td className="px-4 py-4 text-white text-left">
+                    {product.description && product.description.length > 20
+                      ? product.description.slice(0, 20) + "..."
+                      : product.description}
+                  </td>
+                  <td className="px-4 py-4 text-white text-center">
+                    Rp {product.price.toLocaleString("id-ID")}
+                  </td>
+                  <td className="px-4 py-4 text-center">
+                    <span
+                      className={`px-4 py-2 text-sm capitalize tracking-wide font-semibold rounded-full ${
+                        product.status === "available"
+                          ? "bg-green-700 text-white"
+                          : "bg-red-700 text-white"
+                      }`}
+                    >
+                      {product.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-4 space-x-2 text-center">
+                    {/* Tombol Edit */}
+                    <Link
+                      href={`/admin/products/edit/${product.id}`}
+                      className="inline-flex items-center justify-center px-1 py-1 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z"
+                        />
+                      </svg>
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setSelectedProductId(product.id);
+                        setShowConfirmPopup(true);
+                      }}
+                      className="inline-flex items-center justify-center p-1 text-sm font-bold text-white bg-red-500 rounded-md shadow hover:bg-red-600 transition"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="flex justify-center gap-4 my-4 items-center">
           <button
             onClick={handlePreviousPage}
