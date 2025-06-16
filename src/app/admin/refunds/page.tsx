@@ -717,7 +717,7 @@ export default function Products() {
           </table>
         </div>
 
-        <div className="flex justify-center my-4 gap-2">
+        <div className="flex justify-center pb-4 my-4 gap-2">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
@@ -779,7 +779,7 @@ export default function Products() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
+                d="m8.25 4.5 7.5 7.5-7.5 7.5"
               />
             </svg>
           </button>
