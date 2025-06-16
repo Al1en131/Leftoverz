@@ -552,7 +552,7 @@ export default function User() {
               name="postal_code"
               id="postal_code"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter postal code"
+              placeholder="Masukkan kode pos..."
               onChange={handleChange}
               value={formData.postal_code}
             />
