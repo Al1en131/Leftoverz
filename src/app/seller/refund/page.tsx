@@ -573,7 +573,7 @@ export default function Refund() {
                           </svg>
                         </button>
                         {isModalOpen && selectedRefund && (
-                          <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/30">
+                          <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30">
                             <div className="bg-[#060B26] border border-blue-400 rounded-lg shadow-lg p-6 w-full max-w-md">
                               <h2 className="text-lg font-semibold mb-6 text-white">
                                 Perbarui Status Pengembalian Barang
@@ -586,12 +586,6 @@ export default function Refund() {
                               >
                                 <option
                                   className="text-blue-400"
-                                  value="requested"
-                                >
-                                  Pengajuan
-                                </option>
-                                <option
-                                  className="text-blue-400"
                                   value="approved"
                                 >
                                   Disetujui
@@ -601,12 +595,6 @@ export default function Refund() {
                                   value="rejected"
                                 >
                                   Ditolak
-                                </option>
-                                <option
-                                  className="text-blue-400"
-                                  value="shipping"
-                                >
-                                  Barang Sedang Dikirim
                                 </option>
                               </select>
                               <button
