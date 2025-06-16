@@ -117,7 +117,7 @@ export default function NavbarBuyer() {
   ];
 
   return (
-    <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
+    <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-20">
       {showLogoutPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-100">
           <div
