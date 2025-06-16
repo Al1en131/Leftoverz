@@ -412,7 +412,7 @@ export default function RoomChat() {
         </div>
         <div className="lg:px-20 max-lg:px-6 py-10 justify-center items-center rounded-lg ">
           <div
-            className={`lg:p-10 max-lg:p-4 rounded-2xl border-2 border-blue-400 ${
+            className={`lg:p-10 max-lg:p-4 rounded-xl border-2 border-blue-400 ${
               theme === "dark" ? "bg-white/5" : "bg-black/5"
             }`}
           >
@@ -422,7 +422,7 @@ export default function RoomChat() {
                   <div className="border-b-2 border-blue-400 py-4 px-2">
                     <input
                       type="text"
-                      placeholder="search chatting"
+                      placeholder="Cari pesan..."
                       className="py-2 px-2 border-2 border-blue-400 text-blue-400 rounded-xl w-full"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
