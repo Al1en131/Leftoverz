@@ -983,7 +983,7 @@ export default function Transaction() {
         onClick={toggleTheme}
         aria-label="Toggle theme"
         title="Toggle theme"
-        className={`fixed bottom-6 lg:right-20 max-md:right-8 z-50 p-3 rounded-full bg-blue-400 ${
+        className={`fixed bottom-6 lg:right-20 max-md:right-8 z-30 p-3 rounded-full bg-blue-400 ${
           theme === "dark"
             ? "text-white border border-white"
             : "text-[#080B2A] border border-[#080B2A]"
