@@ -344,7 +344,7 @@ export default function AddProduct() {
                 theme === "dark"
                   ? "bg-black/50 text-white"
                   : "bg-white/15 text-[#080B2A]"
-              } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-40`}
+              } backdrop-blur-md rounded-2xl flex flex-col justify-center max-lg:p-6 lg:ps-20 gap-2 z-30`}
             ></div>
             <h1 className="text-5xl lg:text-7xl tracking-wide font-bold text-center absolute inset-0 flex justify-center items-center z-50">
               Tambah Produk
