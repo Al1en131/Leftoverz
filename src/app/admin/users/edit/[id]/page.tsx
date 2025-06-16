@@ -677,7 +677,7 @@ export default function User() {
             type="submit"
             className="w-full py-2 bg-blue-400 hover:bg-blue-500 rounded text-white"
           >
-            {userId ? "Update User" : "Submit User"}
+            {userId ? "Perbarui" : "Simpan"}
           </button>
         </form>
 
