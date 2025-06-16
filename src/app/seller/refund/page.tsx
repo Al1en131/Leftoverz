@@ -584,6 +584,9 @@ export default function Refund() {
                                 onChange={(e) => setNewStatus(e.target.value)}
                                 className="w-full border rounded p-2 mb-4"
                               >
+                                <option className="text-blue-400">
+                                  Pilih Status Pengembalian
+                                </option>
                                 <option
                                   className="text-blue-400"
                                   value="approved"
