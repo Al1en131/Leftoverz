@@ -344,12 +344,12 @@ export default function Dashboard() {
             color: "text-green-400",
           },
           {
-            label: "Total Produk",
+            label: "Produk",
             value: productCount.toLocaleString(),
             color: "text-red-400",
           },
           {
-            label: "Total Pembelian",
+            label: "Pembelian",
             value: transactionCount.toLocaleString(),
             color: "text-green-400",
           },
