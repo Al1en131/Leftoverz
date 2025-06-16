@@ -115,11 +115,11 @@ export default function Products() {
       setProducts((prev) =>
         prev.filter((product) => product.id !== selectedProductId)
       );
-      setSuccessMessage("Product deleted successfully.");
+      setSuccessMessage("Produk berhasil dihapus.");
       setShowSuccessPopup(true);
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setErrorMessage(error.message || "Failed to delete product.");
+        setErrorMessage(error.message || "Gagal menghapus produk.");
       } else {
         setErrorMessage("Failed to delete product.");
       }
