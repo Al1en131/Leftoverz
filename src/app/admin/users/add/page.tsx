@@ -233,7 +233,7 @@ export default function User() {
         className="w-full absolute right-0 top-0 h-full mb-0"
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
-        <h1 className="text-3xl font-bold whitespace-nowrap">Add User</h1>
+        <h1 className="text-3xl font-bold whitespace-nowrap">Tambah Pengguna</h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
             <p>{dateString.day}</p>

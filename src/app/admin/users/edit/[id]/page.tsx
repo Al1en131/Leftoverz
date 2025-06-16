@@ -343,7 +343,7 @@ export default function User() {
       />
       <div className="flex justify-between items-center mb-7 relative z-20">
         <h1 className="text-3xl font-bold whitespace-nowrap">
-          {userId ? "Edit User" : "Create User"}
+          {userId ? "Edit Pengguna" : "Create User"}
         </h1>
         <div className="relative flex justify-end gap-4 w-full">
           <div className="block">
