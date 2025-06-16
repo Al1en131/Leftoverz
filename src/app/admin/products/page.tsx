@@ -243,7 +243,7 @@ export default function Products() {
                 className="w-20 h-20"
               />
             </div>
-            <h2 className="text-2xl font-bold mb-1 text-blue-400">Success!</h2>
+            <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
             <button
               onClick={handleClosePopup}
