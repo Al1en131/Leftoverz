@@ -210,7 +210,7 @@ export default function User() {
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
-            <button
+           <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
@@ -294,7 +294,7 @@ export default function User() {
       </div>
 
       <div
-        className="rounded-lg"
+        className="relative w-full rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -342,8 +342,8 @@ export default function User() {
           </div>
         </div>
 
-        <div className="relative overflow-x-auto">
-          <table className="w-full rounded-lg my-4">
+        <div className="overflow-x-auto">
+          <table className="min-w-max w-full rounded-lg my-4">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-4 py-3 text-center">No.</th>
