@@ -486,7 +486,7 @@ export default function Refund() {
                           : item.status === "refunded"
                           ? "Berhasil"
                           : item.status === "shipping"
-                          ? "Pengiriman"
+                          ? "Proses"
                           : item.status || "-"}
                       </span>
                     </td>
