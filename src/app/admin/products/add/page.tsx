@@ -444,7 +444,7 @@ export default function AddProduct() {
               name="name"
               id="name"
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product name"
+              placeholder="Masukkan nama produk..."
               onChange={handleChange}
               value={formData.name}
             />
@@ -459,7 +459,7 @@ export default function AddProduct() {
               name="price"
               id="price"
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product price"
+              placeholder="Masukkan harga jual..."
               onChange={handleChange}
               value={displayPrice}
             />
@@ -473,7 +473,7 @@ export default function AddProduct() {
               name="original_price"
               id="original_price"
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product original price"
+              placeholder="Masukkan harga asli..."
               onChange={handleChange}
               value={displayOriginalPrice}
             />
@@ -575,7 +575,7 @@ export default function AddProduct() {
               id="description"
               rows={4}
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product description"
+              placeholder="Masukkan deskripsi produk..."
               onChange={handleChange}
               value={formData.description}
             />

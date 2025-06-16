@@ -494,7 +494,7 @@ export default function Products() {
             </tbody>
           </table>
         </div>
-        <div className="flex justify-center gap-4 my-4 items-center">
+        <div className="flex justify-center pb-4 gap-4 my-4 items-center">
           <button
             onClick={handlePreviousPage}
             className="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded-md shadow hover:bg-blue-600 transition"

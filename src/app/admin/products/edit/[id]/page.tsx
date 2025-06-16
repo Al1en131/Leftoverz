@@ -585,7 +585,7 @@ export default function EditProduct() {
               name="name"
               id="name"
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product name"
+              placeholder="Masukkan nama produk..."
               value={formData.name}
               onChange={handleInputChange}
             />
@@ -600,7 +600,7 @@ export default function EditProduct() {
               name="price"
               id="price"
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product price"
+              placeholder="Masukkan harga jual..."
               value={displayPrice}
               onChange={handleInputChange}
             />
@@ -614,7 +614,7 @@ export default function EditProduct() {
               name="original_price"
               id="original_price"
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product original price"
+              placeholder="Masukkan harga asli..."
               onChange={handleInputChange}
               value={displayOriginalPrice}
             />
@@ -706,7 +706,7 @@ export default function EditProduct() {
               id="description"
               rows={5}
               className="w-full border bg-white/30 text-white placeholder-white border-blue-400 p-2 rounded-lg"
-              placeholder="Enter product description"
+              placeholder="Masukkan deskripsi produk..."
               value={formData.description}
               onChange={handleInputChange}
             />
