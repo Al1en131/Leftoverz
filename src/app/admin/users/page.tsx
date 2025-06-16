@@ -446,7 +446,7 @@ export default function User() {
           </table>
         </div>
 
-        <div className="flex justify-center my-6">
+        <div className="flex justify-center pb-4 my-6">
           <button
             onClick={() => paginate(currentPage - 1)}
             disabled={currentPage === 1}
