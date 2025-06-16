@@ -210,7 +210,7 @@ export default function User() {
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
-           <button
+            <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
@@ -342,8 +342,8 @@ export default function User() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full rounded-lg my-4">
+        <div className="overflow-x-auto max-w-full">
+          <table className="w-max rounded-lg my-4">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-4 py-3 text-center">No.</th>
