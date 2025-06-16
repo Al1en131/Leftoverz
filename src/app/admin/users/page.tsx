@@ -160,7 +160,7 @@ export default function User() {
 
   if (isLoading) return null;
   return (
-    <div className=" bg-[#060B26] text-white px-6 py-6 relative">
+    <div className=" bg-[#060B26] min-h-screen text-white px-6 py-6 relative">
       {showConfirmPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
