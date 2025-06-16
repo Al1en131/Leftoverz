@@ -294,7 +294,7 @@ export default function User() {
       </div>
 
       <div
-        className="relative overflow-x-auto rounded-lg"
+        className="relative overflow-x-hidden rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
