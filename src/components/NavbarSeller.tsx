@@ -307,7 +307,7 @@ export default function Navbar() {
   return (
     <>
       {showLogoutPopup && (
-        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-30">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-100">
           <div
             className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
               theme === "dark" ? "bg-[#080B2A]" : "bg-white"
@@ -343,7 +343,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
-      <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-50">
+      <nav className="absolute top-0 left-0 w-full py-6 max-lg:px-6 px-20 bg-transparent z-30">
         {" "}
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/seller/" className="text-lg font-semibold">
