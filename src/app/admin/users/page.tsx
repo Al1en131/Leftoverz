@@ -294,7 +294,7 @@ export default function User() {
       </div>
 
       <div
-        className="relative overflow-x-hidden rounded-lg"
+        className="rounded-lg"
         style={{
           background:
             "linear-gradient(to bottom right, rgba(6, 11, 38, 0.74), rgba(26, 31, 55, 0.5))",
@@ -342,8 +342,8 @@ export default function User() {
           </div>
         </div>
 
-        <div className="overflow-x-auto w-full">
-          <table className="min-w-[900px] w-full rounded-lg my-4">
+        <div className="relative overflow-x-auto">
+          <table className="w-full rounded-lg my-4">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
                 <th className="px-4 py-3 text-center">No.</th>
