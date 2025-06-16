@@ -62,7 +62,7 @@ const Sidebar = () => {
       ),
     },
     {
-      label: "Users",
+      label: "Pengguna",
       href: "/admin/users",
       icon: (
         <svg
@@ -83,7 +83,7 @@ const Sidebar = () => {
       ),
     },
     {
-      label: "Products",
+      label: "Produk",
       href: "/admin/products",
       icon: (
         <svg
@@ -106,7 +106,7 @@ const Sidebar = () => {
       ),
     },
     {
-      label: "Transactions",
+      label: "Transaksi",
       href: "/admin/transactions",
       icon: (
         <svg
@@ -128,7 +128,7 @@ const Sidebar = () => {
       ),
     },
     {
-      label: "Refunds",
+      label: "Pengembalian",
       href: "/admin/refunds",
       icon: (
         <svg
@@ -141,7 +141,7 @@ const Sidebar = () => {
       ),
     },
     {
-      label: "Chats",
+      label: "Pesan",
       href: "/admin/chats",
       icon: (
         <svg
