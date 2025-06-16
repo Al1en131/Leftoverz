@@ -420,7 +420,7 @@ export default function User() {
               name="name"
               id="name"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter name"
+              placeholder="Masukkan nama..."
               onChange={handleChange}
               value={formData.name}
             />
@@ -435,7 +435,7 @@ export default function User() {
               name="email"
               id="email"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter email"
+              placeholder="Masukkan email..."
               onChange={handleChange}
               value={formData.email}
             />
@@ -475,7 +475,7 @@ export default function User() {
               name="phone_number"
               id="phone_number"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter phone number"
+              placeholder="Masukkan no.hp..."
               onChange={handleChange}
               value={formData.phone_number}
             />
@@ -523,7 +523,7 @@ export default function User() {
               name="account_holder_name"
               id="account_holder_name"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter account holder name"
+              placeholder="Masukkan nama akun rekeing..."
               onChange={handleChange}
               value={formData.account_holder_name}
             />
@@ -537,7 +537,7 @@ export default function User() {
               name="payment_account_number"
               id="payment_account_number"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter payment account number"
+              placeholder="Masukkan no.rekening"
               onChange={handleChange}
               value={formData.payment_account_number}
             />
@@ -666,7 +666,7 @@ export default function User() {
               name="address"
               id="address"
               className="w-full p-2 bg-white/20 text-white rounded"
-              placeholder="Enter address"
+              placeholder="Masukkan alamat..."
               onChange={handleChange}
               value={formData.address}
               rows={3}
