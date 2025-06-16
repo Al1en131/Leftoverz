@@ -205,7 +205,7 @@ export default function Refund() {
       const result = await res.json();
 
       if (res.ok) {
-        setSuccessMessage("Pesanan ditandai sebagai selesai.");
+        setSuccessMessage("Pengembalian Barang ditandai sebagai selesai.");
         setShowSuccessPopup(true);
         await fetchRefund(); // refresh data
       } else {
