@@ -307,7 +307,7 @@ export default function Navbar() {
   return (
     <>
       {showLogoutPopup && (
-        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-100">
+        <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-30">
           <div
             className={`border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center ${
               theme === "dark" ? "bg-[#080B2A]" : "bg-white"
