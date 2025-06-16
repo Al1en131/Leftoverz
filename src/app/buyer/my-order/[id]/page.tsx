@@ -997,7 +997,7 @@ export default function BuyProduct() {
                           <div className="mb-3">
                             <label className="block mb-1">Kurir</label>
                             <select
-                              className="w-full border p-2 rounded"
+                              className="w-full border text-blue-400 p-2 rounded"
                               value={courir}
                               onChange={(e) => setCourir(e.target.value)}
                               required
