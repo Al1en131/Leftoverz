@@ -160,7 +160,7 @@ export default function User() {
 
   if (isLoading) return null;
   return (
-    <div className="min-h-screen bg-[#060B26] text-white px-6 py-6 relative">
+    <div className=" bg-[#060B26] text-white px-6 py-6 relative">
       {showConfirmPopup && (
         <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
           <div className="bg-[#080B2A] border-blue-400 border rounded-lg py-8 px-14 shadow-lg text-center">
@@ -210,7 +210,7 @@ export default function User() {
             </div>
             <h2 className="text-2xl font-bold mb-1 text-blue-400">Sukses!</h2>
             <p className="mb-6 text-blue-400">{successMessage}</p>
-           <button
+            <button
               onClick={handleClosePopup}
               className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
             >
@@ -342,7 +342,7 @@ export default function User() {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="w-full overflow-x-auto">
           <table className="min-w-max w-full rounded-lg my-4 overflow-hidden">
             <thead className="text-white text-md">
               <tr className="border-b-2 border-[#56577A]">
