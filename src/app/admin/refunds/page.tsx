@@ -662,6 +662,9 @@ export default function Products() {
                               onChange={(e) => setNewStatus(e.target.value)}
                               className="w-full border rounded p-2 mb-4"
                             >
+                              <option className="text-blue-400">
+                                Pilih Status
+                              </option>
                               <option
                                 className="text-blue-400"
                                 value="refunded"
