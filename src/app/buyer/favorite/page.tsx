@@ -314,7 +314,7 @@ export default function Favorite() {
               onClick={handleClosePopup}
               className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
