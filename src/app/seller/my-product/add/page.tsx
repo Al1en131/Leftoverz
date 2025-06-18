@@ -78,19 +78,16 @@ export default function AddProduct() {
         return;
       }
 
-      // Update gambar
       setFormData((prev) => ({
         ...prev,
         image: [...prev.image, ...selectedFiles],
       }));
 
-      // Tampilkan preview
       const newPreviews = selectedFiles.map((file) =>
         URL.createObjectURL(file)
       );
       setImagePreviews((prev) => [...prev, ...newPreviews]);
 
-      // Ambil embedding hanya dari file pertama (atau pertama kali upload)
       if (formData.image.length === 0 && selectedFiles.length > 0) {
         const embeddingResult = await getEmbeddingFromImage(selectedFiles[0]);
         if (embeddingResult) {

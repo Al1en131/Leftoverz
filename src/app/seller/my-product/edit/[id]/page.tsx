@@ -100,10 +100,9 @@ export default function EditProduct() {
                 `https://backend-leftoverz-production.up.railway.app${url}`
             )
           );
-          setKeptInitialImages(parsedImage); // ✅ ini yang benar
+          setKeptInitialImages(parsedImage); 
         }
         try {
-          // Coba parse string JSON jika perlu
           parsedImage = JSON.parse(image);
         } catch {
           console.log("Image is not in valid JSON format, skipping parsing.");
@@ -112,7 +111,6 @@ export default function EditProduct() {
         console.log("Parsed image data:", parsedImage);
 
         if (Array.isArray(parsedImage) && parsedImage.length > 0) {
-          // Jika image adalah array dan memiliki gambar
           setInitialImageUrls(
             parsedImage.map(
               (imgUrl: string) =>
@@ -120,7 +118,6 @@ export default function EditProduct() {
             )
           );
         } else if (parsedImage && parsedImage.url) {
-          // Jika image adalah objek dan memiliki properti url
           setInitialImageUrls([
             `https://backend-leftoverz-production.up.railway.app${parsedImage.url}`,
           ]);
@@ -128,7 +125,7 @@ export default function EditProduct() {
           console.log("No valid image data found");
         }
 
-        console.log("image:", parsedImage); // Periksa isi data yang diparsing
+        console.log("image:", parsedImage); 
       } catch (error) {
         console.error("Error:", error);
         setShowErrorPopup(true);
@@ -150,7 +147,7 @@ export default function EditProduct() {
     if (name === "image" && files?.length) {
       setFormData((prev) => ({
         ...prev,
-        [name]: Array.from(files), // Menyimpan file yang diupload dalam array
+        [name]: Array.from(files), 
       }));
     } else if (name === "price") {
       const raw = value.replace(/\D/g, "");
@@ -227,7 +224,6 @@ export default function EditProduct() {
     setImagePreviews(updatedPreviews);
 
     if (newFiles.length > 0) {
-      // Ambil embedding dari gambar pertama yang baru diupload
       const embeddingResult = await getEmbeddingFromImage(newFiles[0]);
       if (embeddingResult) {
         setEmbedding(embeddingResult);

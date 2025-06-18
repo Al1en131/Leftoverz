@@ -580,7 +580,7 @@ export default function MyProduct() {
             <p className="mb-6 text-blue-400">{successMessage}</p>
            <button
               onClick={handleClosePopup}
-              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              className="bg-blue-400 hover:bg-blue-500 text-white tracking-wide font-semibold py-2 px-6 rounded-full"
             >
               Oke
             </button>
@@ -607,9 +607,9 @@ export default function MyProduct() {
             <p className="mb-6 text-red-400">{errorMessage}</p>
             <button
               onClick={handleClosePopup}
-              className="bg-red-400 hover:bg-red-500 text-white font-semibold py-2 px-6 rounded-full"
+              className="bg-red-400 hover:bg-red-500 text-white tracking-wide font-semibold py-2 px-6 rounded-full"
             >
-              Ya
+              Oke
             </button>
           </div>
         </div>
