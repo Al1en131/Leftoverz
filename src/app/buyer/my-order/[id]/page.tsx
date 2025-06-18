@@ -1207,7 +1207,7 @@ export default function BuyProduct() {
                           )}
                           {refund?.status === "requested" && (
                             <div>
-                              <p className="text-base text-blue-400 text-center">
+                              <p className="text-base mt-1 text-white text-center">
                                 {" "}
                                 Harap pantau secara berkala status permintaan
                                 refund Anda.
