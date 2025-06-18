@@ -178,7 +178,7 @@ export default function BuyerHome() {
               </button>
               <button
                 onClick={() => setShowLogoutPopup(false)}
-                className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-full"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full"
               >
                 Batal
               </button>

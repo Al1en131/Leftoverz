@@ -217,7 +217,7 @@ export default function Products() {
             <div className="flex justify-center gap-4">
               <button
                 onClick={handleClosePopup}
-                className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-full"
+                className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-2 px-6 rounded-full"
               >
                 Batal
               </button>

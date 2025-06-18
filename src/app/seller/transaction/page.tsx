@@ -673,7 +673,7 @@ export default function Transaction() {
                                 <div className="flex justify-end gap-2">
                                   <button
                                     onClick={() => setShowEditModal(false)}
-                                    className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                                    className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
                                   >
                                     Batal
                                   </button>
@@ -864,7 +864,7 @@ export default function Transaction() {
                                               className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
                                                 index === 0
                                                   ? "bg-blue-400"
-                                                  : "bg-gray-500"
+                                                  : "bg-gray-600"
                                               } text-white`}
                                             >
                                               <svg

@@ -591,7 +591,7 @@ export default function Products() {
                                             className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
                                               index === 0
                                                 ? "bg-blue-400"
-                                                : "bg-gray-500"
+                                                : "bg-gray-600"
                                             } text-white`}
                                           >
                                             <svg

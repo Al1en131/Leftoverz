@@ -309,9 +309,9 @@ export default function BuyProduct() {
       );
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Refund gagal");
+      if (!res.ok) throw new Error(data.message || "Pengajuan gagal");
 
-      setSuccessMessage("Pengajuan refund berhasil dikirim.");
+      setSuccessMessage("Pengajuan Pengembalian Barang berhasil dikirim.");
       setShowSuccessPopup(true);
       setShowModal(false);
       handleRefundSuccess?.();
@@ -958,14 +958,14 @@ export default function BuyProduct() {
                         onClick={() => setShowStatusModal(true)}
                         className={`px-4 py-2 z-30 rounded-full bg-red-500 text-white`}
                       >
-                        Lihat Status Refund
+                        Lihat Status Pengembalian
                       </button>
                     ) : (
                       <button
                         onClick={() => setShowModal(true)}
                         className="px-4 py-2 z-30 rounded-full bg-red-500 hover:bg-red-600 text-white"
                       >
-                        Ajukan Refund
+                        Ajukan Pengembalian
                       </button>
                     ))}
 
@@ -1024,7 +1024,7 @@ export default function BuyProduct() {
                             <button
                               type="button"
                               onClick={() => setShowShippingModal(false)}
-                              className="px-4 py-2 bg-gray-500 rounded"
+                              className="px-4 py-2 bg-gray-600 rounded"
                             >
                               Batal
                             </button>
@@ -1049,7 +1049,7 @@ export default function BuyProduct() {
                         }`}
                       >
                         <h2 className="text-lg font-semibold mb-4">
-                          Ajukan Refund
+                          Ajukan Pengembalian Barang
                         </h2>
                         <form onSubmit={handleSubmit}>
                           <div className="mb-3">
@@ -1063,7 +1063,7 @@ export default function BuyProduct() {
                           </div>
 
                           <div className="mb-3">
-                            <label className="block mb-1">Upload Bukti</label>
+                            <label className="block mb-1">Unggah Bukti</label>
                             <input
                               type="file"
                               accept="image/*"
@@ -1075,7 +1075,7 @@ export default function BuyProduct() {
                             <button
                               type="button"
                               onClick={() => setShowModal(false)}
-                              className="px-4 py-2 bg-gray-500 rounded"
+                              className="px-4 py-2 bg-gray-600 rounded"
                             >
                               Batal
                             </button>
@@ -1084,7 +1084,7 @@ export default function BuyProduct() {
                               disabled={loading}
                               className="px-4 py-2 bg-blue-600 text-white rounded"
                             >
-                              {loading ? "Mengirim..." : "Kirim Refund"}
+                              {loading ? "Mengirim..." : "Kirim Pengajuan"}
                             </button>
                           </div>
                         </form>
@@ -1232,7 +1232,7 @@ export default function BuyProduct() {
                   {transaction?.status === "success"
                     ? "Sukses"
                     : transaction?.status === "refund"
-                    ? "Refund"
+                    ? "Dikembalikan"
                     : transaction?.status === "settlement"
                     ? "Lunas"
                     : "Gagal"}
@@ -1452,7 +1452,7 @@ export default function BuyProduct() {
                               >
                                 <span
                                   className={`absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full ${
-                                    index === 0 ? "bg-blue-400" : "bg-gray-500"
+                                    index === 0 ? "bg-blue-400" : "bg-gray-600"
                                   } text-white`}
                                 >
                                   <svg
