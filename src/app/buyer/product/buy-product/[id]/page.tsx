@@ -354,7 +354,7 @@ export default function BuyProduct() {
         )}
         {showIncompleteProfilePopup && (
           <div className="fixed inset-0 bg-black/55 flex items-center justify-center z-50">
-            <div className="bg-[#080B2A] border-yellow-400 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
+            <div className="bg-[#080B2A] border-yellow-500 border z-50 rounded-lg py-8 px-14 shadow-lg text-center">
               <div className="flex justify-center mb-4">
                 <Image
                   src="/images/warning.svg"
@@ -364,10 +364,10 @@ export default function BuyProduct() {
                   className="w-20 h-20"
                 />
               </div>
-              <h2 className="text-2xl font-bold mb-1 text-yellow-400">
+              <h2 className="text-2xl font-bold mb-1 text-yellow-500">
                 Lengkapi Profil
               </h2>
-              <p className="mb-6 text-yellow-400">
+              <p className="mb-6 text-yellow-500">
                 Harap lengkapi alamat dan data wilayah Anda di halaman Edit
                 Profile terlebih dahulu.
               </p>
@@ -376,7 +376,7 @@ export default function BuyProduct() {
                   setShowIncompleteProfilePopup(false);
                   router.push("/buyer/detail-profile");
                 }}
-                className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold py-2 px-6 rounded-full"
+                className="bg-yellow-500 hover:bg-yellow-500 text-white font-semibold py-2 px-6 rounded-full"
               >
                 Edit Profil
               </button>
