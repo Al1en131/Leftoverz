@@ -125,19 +125,22 @@ export default function User() {
       );
 
       const data = await response.json();
-      if (data?.message === "User berhasil dihapus") {
+      console.log("Delete response:", data); // Cek isi respons dari backend
+
+      if (response.ok) {
         setUsers(users.filter((user) => user.id !== userToDelete));
         setShowSuccessPopup(true);
         setSuccessMessage("User berhasil dihapus");
       } else {
         setShowErrorPopup(true);
-        setErrorMessage("Gagal menghapus user");
+        setErrorMessage(data?.message || "Gagal menghapus user");
       }
     } catch (error) {
       console.error("Failed to delete user:", error);
       setShowErrorPopup(true);
-      setErrorMessage("An error occurred while deleting the user");
+      setErrorMessage("Terjadi kesalahan saat menghapus user");
     }
+
     setShowConfirmPopup(false);
     setUserToDelete(null);
   };
