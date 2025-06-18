@@ -254,7 +254,7 @@ export default function MyOrder() {
                 <input
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
-                  placeholder="Search all data your order..."
+                  placeholder="Cari pesanana kamu..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />

@@ -406,7 +406,7 @@ export default function Favorite() {
                 <input
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
-                  placeholder="Search All Products"
+                  placeholder="Cari produk..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                   required
