@@ -623,7 +623,7 @@ export default function Product() {
                 <input
                   type="search"
                   className="block p-2.5 w-full z-20 text-base text-white bg-white/10 lg:rounded-lg max-lg:rounded-lg border border-blue-400"
-                  placeholder="Search All Products"
+                  placeholder="Cari Produk..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
