@@ -132,9 +132,9 @@ export default function Login() {
 
             <button
               onClick={handleCloseErrorPopup}
-              className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-6 rounded-full"
+              className="bg-red-500 hover:bg-red-600 tracking-wide text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Oke
             </button>
           </div>
         </div>
@@ -164,9 +164,9 @@ export default function Login() {
 
             <button
               onClick={handleCloseSuccessPopup}
-              className="bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-full"
+              className="bg-blue-400 hover:bg-blue-500 tracking-wide text-white font-semibold py-2 px-6 rounded-full"
             >
-              OK
+              Oke
             </button>
           </div>
         </div>
