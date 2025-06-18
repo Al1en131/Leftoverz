@@ -177,7 +177,7 @@ export default function Home() {
               </span>
             </h1>
             <p
-              className={`lg:text-4xl max-lg:text-xl font-bold z-20 ${
+              className={`lg:text-4xl max-lg:text-xl tracking-wide font-bold z-20 ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
