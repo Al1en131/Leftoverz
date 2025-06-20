@@ -191,22 +191,18 @@ export default function SellerHome() {
           height={100}
           alt=""
           src="/images/bubble.svg"
-          className={`
-        lg:h-[356px] lg:w-[356px]
-        ${theme === "dark" ? "block" : "hidden"}
-        max-lg:w-52 max-lg:h-72 absolute top-0 left-0
-      `}
+          className={`lg:h-[356px] lg:w-[356px] ${
+            theme === "dark" ? "block" : "hidden"
+          } max-lg:w-52 max-lg:h-72 absolute top-0 left-0`}
         />
         <Image
           width={100}
           height={100}
           alt=""
           src="/images/bubble-2.svg"
-          className={`
-        lg:h-[356px] lg:w-[356px]
-        ${theme === "dark" ? "block" : "hidden"}
-        max-lg:w-52 max-lg:h-72 absolute top-0 right-0
-      `}
+          className={`lg:h-[356px] lg:w-[356px] ${
+            theme === "dark" ? "block" : "hidden"
+          } max-lg:w-52 max-lg:h-72 absolute top-0 right-0`}
         />
         <Image
           width={100}
@@ -244,31 +240,29 @@ export default function SellerHome() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 lg:left-[550px] max-lg:hidden -z-0"
         />
-        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-28 lg:pb-14 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
+        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-36 lg:pb-16 max-lg:pb-14 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
             <h1 className="lg:text-8xl max-lg:text-5xl leading-14 lg:mb-6 max-md:mb-2 font-bold text-blue-400">
               Left
               <span
-                className={`
-        ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-      `}
+                className={`${
+                  theme === "dark" ? "text-white" : "text-[#080B2A]"
+                }`}
               >
                 overz
               </span>
             </h1>
             <p
-              className={`
-        lg:text-4xl max-lg:text-xl font-bold z-20
-        ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-      `}
+              className={`lg:text-4xl max-lg:text-2xl tracking-wide font-bold z-20 ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
+              }`}
             >
               Barang Bekas Kos dengan Harga Terjangkau dan Kualitas Terjamin
             </p>
             <p
-              className={`
-        text-lg max-lg:text-base leading-6 z-20
-        ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-      `}
+              className={`text-lg max-lg:text-lg leading-6 max-lg:mt-3 z-20 ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
+              }`}
             >
               Jual beli barang bekas kos yang masih layak pakai dan berkualitas.
               Hemat uang, dapatkan barang yang kamu butuhkan, dan bantu kurangi
@@ -277,7 +271,7 @@ export default function SellerHome() {
             <div className="flex gap-4 pt-4 max-lg:justify-center">
               <button
                 onClick={() => setShowLogoutPopup(true)}
-                className="bg-blue-400 px-4 py-3 max-lg:py-1 max-lg:px-3 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                className="bg-blue-400 px-4 py-3 max-lg:py-2 text-center text-white lg:w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400"
               >
                 Logout
               </button>
@@ -289,20 +283,18 @@ export default function SellerHome() {
               height={10}
               alt="Hero"
               src="/images/hero-dark.svg"
-              className={`
-        z-40 w-full block max-lg:hidden
-        ${theme === "dark" ? "hidden" : "block"}
-      `}
+              className={`z-40 w-full block max-lg:hidden ${
+                theme === "dark" ? "hidden" : "block"
+              }`}
             />
             <Image
               width={100}
               height={10}
               alt="Hero Dark"
               src="/images/hero.svg"
-              className={`
-        z-40 w-full block max-lg:hidden
-        ${theme === "dark" ? "block" : "hidden"}
-      `}
+              className={`z-40 w-full block max-lg:hidden ${
+                theme === "dark" ? "block" : "hidden"
+              }`}
             />
           </div>
         </div>
@@ -361,51 +353,54 @@ export default function SellerHome() {
             className="w-4 absolute top-56 opacity-20 left-[850px] max-lg:hidden -z-0"
           />
           <div
-            className={`absolute inset-0 z-10 ${
+            className={`absolute inset-0 z-0 ${
               theme === "dark" ? "bg-white/5" : "bg-blue-400"
             }`}
           ></div>
-          <div
-            className={`relative z-50 lg:w-2/4 max-lg:w-full max-lg:text-center max-lg:justify-center ${
-              theme === "dark" ? "text-white" : "text-[#080B2A]"
-            }`}
-          >
-            <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
-              Tentang Kami
-            </h4>
-            <p className="text-lg max-lg:text-justify mb-6">
-              Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
-              bagi para anak kost dan perantau yang ingin menjual atau membeli
-              barang bekas berkualitas dengan mudah. Kami menawarkan fitur
-              pengiriman yang handal, pencarian visual yang memudahkan menemukan
-              barang impian, serta sistem pembayaran otomatis yang aman dan
-              cepat. Dengan Leftoverz, proses pindah kost jadi lebih ringan, dan
-              kebutuhan peralatan kost baru pun bisa terpenuhi tanpa harus
-              merogoh kocek dalam.
-            </p>
 
-            <Link
-              href="/about"
-              className={`px-4 mt-4 py-3 text-center w-36 rounded-full hover:bg-transparent ${
-                theme === "dark"
-                  ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
-                  : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
+          <div className="relative z-50 lg:flex lg:justify-between max-lg:block max-lg:py-4 max-lg:text-center max-lg:space-y-4 items-center w-full">
+            <div
+              className={`lg:w-2/4 max-lg:w-full ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              Baca Selengkapnya
-            </Link>
-          </div>
-          <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
-            <Image
-              width={100}
-              height={100}
-              alt=""
-              src="/images/hero-2.svg"
-              className="lg:h-[456px] max-lg:h-60 w-full"
-            />
+              <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
+                Tentang Kami
+              </h4>
+              <p className="text-lg max-lg:text-justify mb-6">
+                Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
+                bagi para anak kost dan perantau yang ingin menjual atau membeli
+                barang bekas berkualitas dengan mudah. Kami menawarkan fitur
+                pengiriman yang handal, pencarian visual yang memudahkan
+                menemukan barang impian, serta sistem pembayaran otomatis yang
+                aman dan cepat. Dengan Leftoverz, proses pindah kost jadi lebih
+                ringan, dan kebutuhan peralatan kost baru pun bisa terpenuhi
+                tanpa harus merogoh kocek dalam.
+              </p>
+
+              <Link
+                href="/about"
+                className={`px-4 mt-4 py-3 text-center w-36 rounded-full hover:bg-transparent ${
+                  theme === "dark"
+                    ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                    : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
+                }`}
+              >
+                Baca Selengkapnya
+              </Link>
+            </div>
+            <div className="lg:w-2/4 max-lg:w-full max-lg:pt-8 lg:flex lg:justify-end">
+              <Image
+                width={100}
+                height={100}
+                alt="Gambar Hero"
+                src="/images/hero-2.svg"
+                className="lg:h-[456px] max-lg:h-60 w-full"
+              />
+            </div>
           </div>
         </div>
-        <div className="lg:p-20 max-lg:p-6 w-full relative">
+        <div className="lg:p-20 max-lg:px-6 max-lg:py-10 w-full relative">
           <Image
             width={100}
             height={100}
@@ -491,28 +486,28 @@ export default function SellerHome() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-6 w-full">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:py-10 w-full">
           <div className="flex flex-col items-center justify-center relative">
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-11 -z-0"
+              className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-5 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute top-20 lg:left-56 max-lg:left-10 -z-0"
+              className="w-4 absolute top-20 lg:left-56 max-lg:left-8 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute lg:top-6 lg:right-20 max-lg:right-14 max-lg:top-4 -z-0"
+              className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-0 max-lg:-top-2 -z-0"
             />
             <Image
               width={100}
@@ -522,7 +517,7 @@ export default function SellerHome() {
               className="w-8 absolute lg:top-10 max-lg:top-16 right-5 -z-0"
             />
             <div
-              className={`pb-12 text-center ${
+              className={`lg:pb-12 max-lg:pb-10 text-center ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
@@ -639,20 +634,18 @@ export default function SellerHome() {
             height={100}
             alt=""
             src="/images/bubble-6.svg"
-            className={`
-  lg:w-[456px] max-lg:w-72 absolute -top-44 left-0 -z-0
-  ${theme === "dark" ? "block" : "hidden"}
-`}
+            className={`lg:w-[456px] max-lg:w-72 absolute -top-44 left-0 -z-0 ${
+              theme === "dark" ? "block" : "hidden"
+            }`}
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/bubble-7.svg"
-            className={`
-  lg:w-[456px] max-lg:w-72 absolute -bottom-10 right-0 -z-0
-  ${theme === "dark" ? "block" : "hidden"}
-`}
+            className={`lg:w-[456px] max-lg:w-72 absolute -bottom-10 right-0 -z-0 ${
+              theme === "dark" ? "block" : "hidden"
+            }`}
           />
           <Image
             width={100}
@@ -662,10 +655,9 @@ export default function SellerHome() {
             className="w-8 absolute top-44 right-20 max-lg:hidden -z-0"
           />
           <div
-            className={`
-  pb-12 text-center 
-  ${theme === "dark" ? "text-white" : "text-[#080B2A]"}
-`}
+            className={`pb-12 text-center ${
+              theme === "dark" ? "text-white" : "text-[#080B2A]"
+            }`}
           >
             <h3 className="text-3xl font-bold ">
               Produk yang Baru Ditambahkan
