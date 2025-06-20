@@ -294,8 +294,7 @@ export default function Home() {
             }`}
           ></div>
 
-          {/* Layer konten utama */}
-          <div className="relative z-50 lg:flex lg:justify-between max-lg:block max-lg:text-center lg:px-20 max-lg:px-6 max-lg:py-6 max-lg:space-y-4 items-center w-full">
+          <div className="relative z-50 lg:w-2/4 max-lg:w-full max-lg:text-center max-lg:justify-center items-center w-full">
             <div
               className={`lg:w-2/4 max-lg:w-full ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
