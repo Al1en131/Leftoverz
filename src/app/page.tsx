@@ -294,7 +294,7 @@ export default function Home() {
             }`}
           ></div>
 
-          <div className="relative z-50 lg:flex lg:justify-between max-lg:block max-lg:text-center max-lg:space-y-4 items-center w-full">
+          <div className="relative z-50 lg:flex lg:justify-between max-lg:block max-lg:py-4 max-lg:text-center max-lg:space-y-4 items-center w-full">
             <div
               className={`lg:w-2/4 max-lg:w-full ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
@@ -325,7 +325,7 @@ export default function Home() {
                 Baca Selengkapnya
               </Link>
             </div>
-            <div className="lg:w-2/4 max-lg:w-full lg:flex lg:justify-end">
+            <div className="lg:w-2/4 max-lg:w-full max-lg:py-4 lg:flex lg:justify-end">
               <Image
                 width={100}
                 height={100}
@@ -443,7 +443,7 @@ export default function Home() {
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-5 max-lg:top-4 -z-0"
+              className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-2 max-lg:top-4 -z-0"
             />
             <Image
               width={100}
