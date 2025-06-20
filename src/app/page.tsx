@@ -289,12 +289,15 @@ export default function Home() {
             className="w-4 absolute top-56 opacity-20 left-[850px] max-lg:hidden -z-0"
           />
           <div
-            className={`absolute inset-0 z-10 ${
+            className={`absolute inset-0 z-0 ${
               theme === "dark" ? "bg-white/5" : "bg-blue-400"
             }`}
-          >
+          ></div>
+
+          {/* Layer konten utama */}
+          <div className="relative z-50 lg:flex lg:justify-between max-lg:block max-lg:text-center lg:px-20 max-lg:px-6 max-lg:py-6 max-lg:space-y-4 items-center w-full">
             <div
-              className={`relative z-50 lg:w-2/4 max-lg:w-full max-lg:text-center max-lg:justify-center ${
+              className={`lg:w-2/4 max-lg:w-full ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
@@ -302,14 +305,8 @@ export default function Home() {
                 Tentang Kami
               </h4>
               <p className="text-lg max-lg:text-justify mb-6">
-                Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
-                bagi para anak kost dan perantau yang ingin menjual atau membeli
-                barang bekas berkualitas dengan mudah. Kami menawarkan fitur
-                pengiriman yang handal, pencarian visual yang memudahkan
-                menemukan barang impian, serta sistem pembayaran otomatis yang
-                aman dan cepat. Dengan Leftoverz, proses pindah kost jadi lebih
-                ringan, dan kebutuhan peralatan kost baru pun bisa terpenuhi
-                tanpa harus merogoh kocek dalam.
+                Leftoverz hadir untuk memberikan solusi praktis dan
+                terpercaya...
               </p>
 
               <Link
@@ -323,13 +320,13 @@ export default function Home() {
                 Baca Selengkapnya
               </Link>
             </div>
-            <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
+            <div className="lg:w-2/4 max-lg:w-full lg:flex lg:justify-end">
               <Image
                 width={100}
                 height={100}
-                alt=""
+                alt="Gambar Hero"
                 src="/images/hero-2.svg"
-                className="lg:h-[456px] max-lg:h-60 z-50 w-full"
+                className="lg:h-[456px] max-lg:h-60 w-full"
               />
             </div>
           </div>
