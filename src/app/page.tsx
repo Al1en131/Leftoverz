@@ -195,7 +195,7 @@ export default function Home() {
             <div className="flex gap-4 pt-4 max-lg:justify-center">
               <Link
                 href="/auth/register"
-                className={`bg-blue-400 px-4 py-3 max-lg:py-1 max-lg:px-3 text-center lg:w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400 ${
+                className={`bg-blue-400 px-4 py-3 max-lg:py-2  text-center lg:w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400 ${
                   theme === "dark" ? "text-white" : "text-[#080B2A]"
                 }`}
               >
@@ -203,7 +203,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/auth/login"
-                className={`border-2 border-blue-400 max-lg:py-1 max-lg:px-3 lg:w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-blue-400  ${
+                className={`border-2 border-blue-400 max-lg:py-2  lg:w-36 bg-transparent px-4 py-3 rounded-full text-center hover:bg-blue-400  ${
                   theme === "dark"
                     ? "hover:text-white text-blue-400"
                     : "hover:text-white text-blue-400"
