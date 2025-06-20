@@ -336,7 +336,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="lg:p-20 max-lg:px-6 max-lg:10 w-full relative">
+        <div className="lg:p-20 max-lg:px-6 max-lg:py-10 w-full relative">
           <Image
             width={100}
             height={100}
@@ -422,7 +422,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-6 w-full">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-10 w-full">
           <div className="flex flex-col items-center justify-center relative">
             <Image
               width={100}
