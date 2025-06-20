@@ -164,7 +164,7 @@ export default function Home() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 lg:left-[550px] max-lg:hidden -z-0"
         />
-        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-36 lg:pb-16 max-lg:pb-16 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
+        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-36 lg:pb-16 max-lg:pb-14 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
             <h1 className="lg:text-8xl max-lg:text-5xl leading-14 lg:mb-6 max-md:mb-2 font-bold text-blue-400">
               Left
