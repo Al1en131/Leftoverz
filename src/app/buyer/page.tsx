@@ -380,7 +380,7 @@ export default function BuyerHome() {
               </p>
 
               <Link
-                href="/about"
+                href="/buyer/about"
                 className={`px-4 mt-4 py-3 text-center w-36 rounded-full hover:bg-transparent ${
                   theme === "dark"
                     ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"

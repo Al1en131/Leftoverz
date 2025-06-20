@@ -595,9 +595,7 @@ export default function Home() {
               theme === "dark" ? "text-white" : "text-[#080B2A]"
             }`}
           >
-            <h3 className="text-3xl font-bold ">
-              Produk Baru
-            </h3>
+            <h3 className="text-3xl font-bold ">Produk Baru</h3>
             <p className="">
               Temukan produk-produk terbaru yang baru saja ditambahkan dan siap
               untuk kamu miliki.
@@ -677,6 +675,27 @@ export default function Home() {
           </div>
         </div>
         <div className="relative w-full text-[#080B2A] dark:text-white shadow-md">
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-5 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute top-20 lg:left-56 max-lg:left-8 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-0 max-lg:-top-2 -z-0"
+          />
           <div className="lg:py-12 max-lg:pb-12 max-lg:px-6 lg:px-20">
             <div
               className={`lg:pb-12 max-lg:pb-10 text-center ${
