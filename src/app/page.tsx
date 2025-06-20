@@ -429,21 +429,21 @@ export default function Home() {
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-11 -z-0"
+              className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-8 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute top-20 lg:left-56 max-lg:left-10 -z-0"
+              className="w-4 absolute top-20 lg:left-56 max-lg:left-8 -z-0"
             />
             <Image
               width={100}
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-0 max-lg:top-0 -z-0"
+              className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-0 max-lg:-top-2 -z-0"
             />
             <Image
               width={100}
