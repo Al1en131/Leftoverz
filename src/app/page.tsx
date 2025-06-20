@@ -677,7 +677,7 @@ export default function Home() {
           </div>
         </div>
         <div className="relative w-full text-[#080B2A] dark:text-white shadow-md">
-          <div className="py-12 max-lg:px-8 lg:px-20">
+          <div className="lg:py-12 max-lg:py-10 max-lg:px-8 lg:px-20">
             <div
               className={`lg:pb-12 max-lg:pb-10 text-center ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
