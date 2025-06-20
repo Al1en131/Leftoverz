@@ -290,47 +290,48 @@ export default function Home() {
           />
           <div
             className={`absolute inset-0 z-10 ${
-              theme === "dark" ? "bg-white/5" : "bg-blue-400/60"
-            }`}
-          ></div>
-          <div
-            className={`relative z-50 lg:w-2/4 max-lg:w-full max-lg:text-center max-lg:justify-center ${
-              theme === "dark" ? "text-white" : "text-[#080B2A]"
+              theme === "dark" ? "bg-white/5" : "bg-blue-400"
             }`}
           >
-            <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
-              Tentang Kami
-            </h4>
-            <p className="text-lg max-lg:text-justify mb-6">
-              Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
-              bagi para anak kost dan perantau yang ingin menjual atau membeli
-              barang bekas berkualitas dengan mudah. Kami menawarkan fitur
-              pengiriman yang handal, pencarian visual yang memudahkan menemukan
-              barang impian, serta sistem pembayaran otomatis yang aman dan
-              cepat. Dengan Leftoverz, proses pindah kost jadi lebih ringan, dan
-              kebutuhan peralatan kost baru pun bisa terpenuhi tanpa harus
-              merogoh kocek dalam.
-            </p>
-
-            <Link
-              href="/about"
-              className={`px-4 mt-4 py-3 text-center w-36 rounded-full hover:bg-transparent ${
-                theme === "dark"
-                  ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
-                  : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
+            <div
+              className={`relative z-50 lg:w-2/4 max-lg:w-full max-lg:text-center max-lg:justify-center ${
+                theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              Baca Selengkapnya
-            </Link>
-          </div>
-          <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
-            <Image
-              width={100}
-              height={100}
-              alt=""
-              src="/images/hero-2.svg"
-              className="lg:h-[456px] max-lg:h-60 z-50 w-full"
-            />
+              <h4 className="lg:text-5xl max-lg:text-4xl font-bold pb-4">
+                Tentang Kami
+              </h4>
+              <p className="text-lg max-lg:text-justify mb-6">
+                Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
+                bagi para anak kost dan perantau yang ingin menjual atau membeli
+                barang bekas berkualitas dengan mudah. Kami menawarkan fitur
+                pengiriman yang handal, pencarian visual yang memudahkan
+                menemukan barang impian, serta sistem pembayaran otomatis yang
+                aman dan cepat. Dengan Leftoverz, proses pindah kost jadi lebih
+                ringan, dan kebutuhan peralatan kost baru pun bisa terpenuhi
+                tanpa harus merogoh kocek dalam.
+              </p>
+
+              <Link
+                href="/about"
+                className={`px-4 mt-4 py-3 text-center w-36 rounded-full hover:bg-transparent ${
+                  theme === "dark"
+                    ? "bg-blue-400 text-white hover:text-blue-400 hover:border-2 hover:border-blue-400"
+                    : "bg-white text-[#080B2A] hover:text-white hover:border-2 hover:border-white"
+                }`}
+              >
+                Baca Selengkapnya
+              </Link>
+            </div>
+            <div className="lg:w-2/4 z-50 max-lg:w-full lg:flex lg:justify-end">
+              <Image
+                width={100}
+                height={100}
+                alt=""
+                src="/images/hero-2.svg"
+                className="lg:h-[456px] max-lg:h-60 z-50 w-full"
+              />
+            </div>
           </div>
         </div>
         <div className="lg:p-20 max-lg:p-6 w-full relative">
