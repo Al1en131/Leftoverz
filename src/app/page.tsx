@@ -443,7 +443,7 @@ export default function Home() {
               height={100}
               alt=""
               src="/images/Star-1.svg"
-              className="w-4 absolute lg:top-6 lg:right-20 max-lg:right-14 max-lg:top-4 -z-0"
+              className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-5 max-lg:top-4 -z-0"
             />
             <Image
               width={100}
