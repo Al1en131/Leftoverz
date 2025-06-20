@@ -164,7 +164,7 @@ export default function Home() {
           src="/images/Star-1.svg"
           className="w-4 absolute top-36 lg:left-[550px] max-lg:hidden -z-0"
         />
-        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-36 lg:pb-16 max-lg:pb-20 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
+        <div className="lg:flex lg:justify-between max-lg:justify-center max-lg:w-full z-20 items-center lg:pt-36 max-lg:pt-36 lg:pb-16 max-lg:pb-16 lg:px-20 max-lg:px-6 max-lg:text-center text-left">
           <div className="lg:w-1/2 max-lg:w-full block lg:space-y-4 max-lg:space-y-1 z-20">
             <h1 className="lg:text-8xl max-lg:text-5xl leading-14 lg:mb-6 max-md:mb-2 font-bold text-blue-400">
               Left
@@ -177,14 +177,14 @@ export default function Home() {
               </span>
             </h1>
             <p
-              className={`lg:text-4xl max-lg:text-xl tracking-wide font-bold z-20 ${
+              className={`lg:text-4xl max-lg:text-2xl tracking-wide font-bold z-20 ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
               Barang Bekas Kos dengan Harga Terjangkau dan Kualitas Terjamin
             </p>
             <p
-              className={`text-lg max-lg:text-base leading-6 max-lg:mt-3 z-20 ${
+              className={`text-lg max-lg:text-lg leading-6 max-lg:mt-3 z-20 ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
