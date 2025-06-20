@@ -680,21 +680,21 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-2 left-64 max-lg:8 -z-0"
+            className="w-4 absolute top-2 left-72 max-lg:10 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-20 lg:left-40 max-lg:left-4 -z-0"
+            className="w-4 absolute top-20 lg:left-40 max-lg:left-8 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute lg:top-6 lg:right-20 max-lg:left-0 max-lg:-top-2 -z-0"
+            className="w-4 absolute lg:top-6 lg:right-48 max-lg:right-0 max-lg:-top-2 -z-0"
           />
           <div className="lg:py-12 max-lg:pb-12 max-lg:px-6 lg:px-20">
             <div
