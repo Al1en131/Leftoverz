@@ -329,7 +329,7 @@ export default function Home() {
               height={100}
               alt=""
               src="/images/hero-2.svg"
-              className="lg:h-[456px] max-lg:h-60 w-full"
+              className="lg:h-[456px] max-lg:h-60 z-50 w-full"
             />
           </div>
         </div>
