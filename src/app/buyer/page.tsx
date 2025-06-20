@@ -733,7 +733,7 @@ export default function BuyerHome() {
           <div className="flex justify-center mt-10">
             <Link
               href="/buyer/product"
-              className="bg-blue-400 px-4 py-3 text-center dark:text-white text-[#080B2A] w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
+              className="bg-blue-400 px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
             >
               Selanjutnya
             </Link>
