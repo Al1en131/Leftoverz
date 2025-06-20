@@ -234,7 +234,7 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="lg:justify-between max-lg:justify-center lg:px-20 max-lg:px-6 max-lg:py-6 max-lg:space-y-4 lg:flex max-lg:block items-center relative lg:mb-10 max-lg:mb-0 w-full">
+        <div className="lg:justify-between max-lg:justify-center lg:px-20 max-lg:px-6 max-lg:py-10 max-lg:space-y-4 lg:flex max-lg:block items-center relative lg:mb-10 max-lg:mb-0 w-full">
           <Image
             width={100}
             height={100}
