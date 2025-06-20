@@ -305,8 +305,14 @@ export default function Home() {
                 Tentang Kami
               </h4>
               <p className="text-lg max-lg:text-justify mb-6">
-                Leftoverz hadir untuk memberikan solusi praktis dan
-                terpercaya...
+                Leftoverz hadir untuk memberikan solusi praktis dan terpercaya
+                bagi para anak kost dan perantau yang ingin menjual atau membeli
+                barang bekas berkualitas dengan mudah. Kami menawarkan fitur
+                pengiriman yang handal, pencarian visual yang memudahkan
+                menemukan barang impian, serta sistem pembayaran otomatis yang
+                aman dan cepat. Dengan Leftoverz, proses pindah kost jadi lebih
+                ringan, dan kebutuhan peralatan kost baru pun bisa terpenuhi
+                tanpa harus merogoh kocek dalam.
               </p>
 
               <Link
