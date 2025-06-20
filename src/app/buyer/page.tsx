@@ -740,6 +740,27 @@ export default function BuyerHome() {
           </div>
         </div>
         <div className="relative w-full text-[#080B2A] dark:text-white shadow-md">
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute top-2 lg:left-80 max-lg:left-14 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute top-20 lg:left-40 max-lg:left-8 -z-0"
+          />
+          <Image
+            width={100}
+            height={100}
+            alt=""
+            src="/images/Star-1.svg"
+            className="w-4 absolute lg:top-6 lg:right-48 max-lg:right-4 max-lg:-top-2 -z-0"
+          />
           <div className="lg:py-12 max-lg:pb-12 max-lg:px-6 lg:px-20">
             <div
               className={`lg:pb-12 max-lg:pb-10 text-center ${
