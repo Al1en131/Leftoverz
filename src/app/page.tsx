@@ -453,7 +453,7 @@ export default function Home() {
               className="w-8 absolute lg:top-10 max-lg:top-16 right-5 -z-0"
             />
             <div
-              className={`lg:pb-12 max-lg:pb-8 text-center ${
+              className={`lg:pb-12 max-lg:pb-10 text-center ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
@@ -591,7 +591,7 @@ export default function Home() {
             className="w-8 absolute top-44 right-20 max-lg:hidden -z-0"
           />
           <div
-            className={`pb-12 text-center ${
+            className={`lg:pb-12 max-lg:pb-10 text-center ${
               theme === "dark" ? "text-white" : "text-[#080B2A]"
             }`}
           >
@@ -724,7 +724,7 @@ export default function Home() {
         <div className="relative w-full text-[#080B2A] dark:text-white shadow-md">
           <div className="py-12 max-lg:px-8 lg:px-20">
             <div
-              className={`pb-12 text-center ${
+              className={`lg:pb-12 max-lg:pb-10 text-center ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
