@@ -325,7 +325,7 @@ export default function Home() {
                 Baca Selengkapnya
               </Link>
             </div>
-            <div className="lg:w-2/4 max-lg:w-full max-lg:py-4 lg:flex lg:justify-end">
+            <div className="lg:w-2/4 max-lg:w-full max-lg:pt-8 lg:flex lg:justify-end">
               <Image
                 width={100}
                 height={100}
