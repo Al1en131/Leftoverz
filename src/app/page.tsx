@@ -155,7 +155,7 @@ export default function Home() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute lg:top-44 lg:left-56 max-lg:right-5 max-lg:top-72 -z-0"
+          className="w-4 absolute lg:top-44 lg:left-56 max-lg:hidden -z-0"
         />
         <Image
           width={100}
@@ -196,7 +196,7 @@ export default function Home() {
               <Link
                 href="/auth/register"
                 className={`bg-blue-400 px-4 py-3 max-lg:py-2  text-center lg:w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-400 ${
-                  theme === "dark" ? "text-white" : "text-[#080B2A]"
+                  theme === "dark" ? "text-white" : "text-white"
                 }`}
               >
                 Registrasi
