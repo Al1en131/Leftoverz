@@ -453,7 +453,7 @@ export default function Home() {
               className="w-8 absolute lg:top-10 max-lg:top-16 right-5 -z-0"
             />
             <div
-              className={`lg:pb-12 max-lg:pb-5 text-center ${
+              className={`lg:pb-12 max-lg:pb-8 text-center ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
@@ -564,7 +564,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:py-10 w-full justify-center relative">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-10 w-full justify-center relative">
           <Image
             width={100}
             height={100}
