@@ -400,7 +400,7 @@ export default function SellerHome() {
             </div>
           </div>
         </div>
-        <div className="lg:p-20 max-lg:px-6 max-lg:pb-10 w-full relative">
+        <div className="lg:p-20 max-lg:px-6 max-lg:py-12 w-full relative">
           <Image
             width={100}
             height={100}
@@ -486,7 +486,7 @@ export default function SellerHome() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-10 w-full">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-12 w-full">
           <div className="flex flex-col items-center justify-center relative">
             <Image
               width={100}
@@ -628,7 +628,7 @@ export default function SellerHome() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-10 w-full justify-center relative">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-12 w-full justify-center relative">
           <Image
             width={100}
             height={100}
@@ -724,7 +724,7 @@ export default function SellerHome() {
           </div>
         </div>
         <div className="relative w-full text-[#080B2A] dark:text-white shadow-md">
-          <div className="lg:py-12 max-lg:pb-10 max-lg:px-6 lg:px-20">
+          <div className="lg:py-12 max-lg:pb-12 max-lg:px-6 lg:px-20">
             <div
               className={`lg:pb-12 max-lg:pb-10 text-center ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
