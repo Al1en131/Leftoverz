@@ -231,7 +231,7 @@ export default function SellerHome() {
           height={100}
           alt=""
           src="/images/Star-1.svg"
-          className="w-4 absolute lg:top-44 lg:left-56 max-lg:right-5 max-lg:top-72 -z-0"
+          className="w-4 absolute lg:top-44 lg:left-56 max-lg:hidden -z-0"
         />
         <Image
           width={100}
