@@ -660,9 +660,7 @@ export default function BuyerHome() {
               theme === "dark" ? "text-white" : "text-[#080B2A]"
             }`}
           >
-            <h3 className="text-3xl font-bold ">
-              Barang yang Baru Ditambahkan
-            </h3>
+            <h3 className="text-3xl font-bold ">Produk Baru</h3>
             <p className="">
               Temukan produk-produk terbaru yang baru saja ditambahkan dan siap
               untuk kamu miliki.
@@ -748,7 +746,7 @@ export default function BuyerHome() {
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              <h3 className="text-3xl font-bold">Profil Developer Website</h3>
+              <h3 className="text-3xl font-bold">Profil Developer</h3>
               <p>
                 Hubungi developer jika ada kendala atau masukan terkait website
                 ini.

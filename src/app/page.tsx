@@ -596,7 +596,7 @@ export default function Home() {
             }`}
           >
             <h3 className="text-3xl font-bold ">
-              Produk yang Baru Ditambahkan
+              Produk Baru
             </h3>
             <p className="">
               Temukan produk-produk terbaru yang baru saja ditambahkan dan siap
@@ -683,7 +683,7 @@ export default function Home() {
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
-              <h3 className="text-3xl font-bold">Profil Developer Website</h3>
+              <h3 className="text-3xl font-bold">Profil Developer</h3>
               <p>
                 Hubungi developer jika ada kendala atau masukan terkait website
                 ini.
