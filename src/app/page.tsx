@@ -290,7 +290,7 @@ export default function Home() {
           />
           <div
             className={`absolute inset-0 z-10 ${
-              theme === "dark" ? "bg-white/5" : "bg-blue-400"
+              theme === "dark" ? "bg-white/5" : "bg-blue-400/20"
             }`}
           ></div>
           <div
