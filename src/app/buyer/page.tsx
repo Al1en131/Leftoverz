@@ -752,7 +752,7 @@ export default function BuyerHome() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-20 lg:left-40 max-lg:left-8 -z-0"
+            className="w-4 absolute top-20 lg:left-40 max-lg:left-14 -z-0"
           />
           <Image
             width={100}

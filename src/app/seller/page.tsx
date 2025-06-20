@@ -741,7 +741,7 @@ export default function SellerHome() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute lg:top-6 lg:right-48 max-lg:right-4 max-lg:-top-2 -z-0"
+            className="w-4 absolute lg:top-6 lg:right-48 max-lg:right-14 max-lg:-top-2 -z-0"
           />
           <div className="lg:py-12 max-lg:pb-12 max-lg:px-6 lg:px-20">
             <div

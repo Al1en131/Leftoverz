@@ -668,7 +668,7 @@ export default function Home() {
           <div className="flex justify-center mt-10">
             <Link
               href="/product"
-              className="bg-blue-400 px-4 py-3 text-center dark:text-white text-[#080B2A] w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
+              className="bg-blue-400 px-4 py-3 text-center text-white w-36 rounded-full hover:bg-transparent hover:text-blue-400 hover:border-2 hover:border-blue-text-blue-400"
             >
               Selanjutnya
             </Link>
@@ -694,7 +694,7 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute lg:top-6 lg:right-48 max-lg:right-4 max-lg:-top-2 -z-0"
+            className="w-4 absolute lg:top-6 lg:right-48 max-lg:right-14 max-lg:-top-2 -z-0"
           />
           <div className="lg:py-12 max-lg:pb-12 max-lg:px-6 lg:px-20">
             <div
