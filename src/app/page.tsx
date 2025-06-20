@@ -564,7 +564,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:pb-6 w-full justify-center relative">
+        <div className="lg:px-20 lg:pb-20 max-lg:px-6 max-lg:py-10 w-full justify-center relative">
           <Image
             width={100}
             height={100}
