@@ -774,7 +774,7 @@ export default function BuyerHome() {
                   </h2>
                   <p
                     className={`mb-3 ${
-                      theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      theme === "dark" ? "text-blue-400" : "text-blue-400"
                     }`}
                   >
                     Web Developer | Frontend Developer
