@@ -680,14 +680,14 @@ export default function Home() {
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute -bottom-8 lg:right-96 max-lg:right-5 -z-0"
+            className="w-4 absolute top-2 left-64 max-lg:8 -z-0"
           />
           <Image
             width={100}
             height={100}
             alt=""
             src="/images/Star-1.svg"
-            className="w-4 absolute top-20 lg:left-56 max-lg:left-8 -z-0"
+            className="w-4 absolute top-20 lg:left-40 max-lg:left-4 -z-0"
           />
           <Image
             width={100}
