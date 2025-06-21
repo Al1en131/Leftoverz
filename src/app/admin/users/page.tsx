@@ -125,7 +125,7 @@ export default function User() {
       );
 
       const data = await response.json();
-      console.log("Delete response:", data); // Cek isi respons dari backend
+      console.log("Delete response:", data); 
 
       if (response.ok) {
         setUsers(users.filter((user) => user.id !== userToDelete));

@@ -16,7 +16,7 @@ export default function AddProduct() {
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [displayOriginalPrice, setDisplayOriginalPrice] = useState("");
   const [successMessage, setSuccessMessage] = useState(
-    "Product successfully created!"
+    "Produk berhasil ditambahkan!"
   );
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
