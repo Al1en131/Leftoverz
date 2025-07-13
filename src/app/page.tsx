@@ -184,7 +184,7 @@ export default function Home() {
               Barang Bekas Kos dengan Harga Terjangkau dan Kualitas Terjamin
             </p>
             <p
-              className={`text-lg max-lg:text-lg leading-6 max-lg:mt-3 z-20 ${
+              className={`lg:text-xl max-lg:text-lg leading-6 max-lg:mt-3 z-20 ${
                 theme === "dark" ? "text-white" : "text-[#080B2A]"
               }`}
             >
