@@ -159,19 +159,6 @@ export default function Products() {
     setDateString({ day, fullDate });
   }, []);
 
-  const getStatusColor = (status: string | null) => {
-    switch (status) {
-      case "success":
-        return "bg-green-700";
-      case "capture":
-        return "bg-yellow-500";
-      case "failed":
-        return "bg-red-700";
-      default:
-        return "bg-gray-600";
-    }
-  };
-
   const fetchTransactions = async () => {
     try {
       const token = localStorage.getItem("token");
