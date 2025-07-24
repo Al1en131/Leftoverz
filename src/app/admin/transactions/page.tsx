@@ -12,7 +12,14 @@ type RawTransaction = {
   seller_id: number;
   item_id: number;
   payment_method: "COD" | "e-wallet" | "bank transfer";
-  status: "pending" | "paid" | "cancelled" | null;
+  status:
+    | "pending"
+    | "paid"
+    | "cancelled"
+    | "refund"
+    | "success"
+    | "failed"
+    | null;
   created_at: string;
   awb: string;
   courir: string;
@@ -379,11 +386,27 @@ export default function Products() {
                   </td>
                   <td className="px-3 py-4 text-center">
                     <span
-                      className={`px-4 py-2 text-sm tracking-wide capitalize rounded-full ${getStatusColor(
-                        item.status
-                      )} text-white`}
+                      className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
+                        item.status === "success"
+                          ? "bg-green-700 text-white"
+                          : item.status === "pending"
+                          ? "bg-yellow-500 text-white"
+                          : item.status === "failed"
+                          ? "bg-red-700 text-white"
+                          : item.status === "refund"
+                          ? "bg-gray-500 text-white"
+                          : "bg-blue-500 text-white"
+                      }`}
                     >
-                      {item.status}
+                      {item.status === "success"
+                        ? "Sukses"
+                        : item.status === "pending"
+                        ? "Menunggu"
+                        : item.status === "failed"
+                        ? "Gagal"
+                        : item.status === "refund"
+                        ? "Dikembalikan"
+                        : item.status}
                     </span>
                   </td>
                   <td className="px-3 py-4 text-center">
