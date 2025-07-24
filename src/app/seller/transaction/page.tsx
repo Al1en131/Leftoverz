@@ -547,7 +547,7 @@ export default function Transaction() {
                               ? "bg-yellow-500 text-white"
                               : item.status === "failed"
                               ? "bg-red-700 text-white"
-                              : item.status === "canceled"
+                              : item.status === "refund"
                               ? "bg-gray-500 text-white"
                               : "bg-blue-500 text-white"
                           }`}
