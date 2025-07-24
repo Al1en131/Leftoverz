@@ -543,10 +543,24 @@ export default function Transaction() {
                           className={`px-4 py-2 text-sm tracking-wide capitalize font-semibold rounded-full ${
                             item.status === "success"
                               ? "bg-green-700 text-white"
-                              : "bg-red-700 text-white"
+                              : item.status === "pending"
+                              ? "bg-yellow-500 text-white"
+                              : item.status === "failed"
+                              ? "bg-red-700 text-white"
+                              : item.status === "canceled"
+                              ? "bg-gray-500 text-white"
+                              : "bg-blue-500 text-white"
                           }`}
                         >
-                          {item.status}
+                          {item.status === "success"
+                            ? "Sukses"
+                            : item.status === "pending"
+                            ? "Menunggu"
+                            : item.status === "failed"
+                            ? "Gagal"
+                            : item.status === "refund"
+                            ? "Dikembalikan"
+                            : item.status}
                         </span>
                       </td>
                       <td
